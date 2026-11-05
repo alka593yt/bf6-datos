@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel BF6 · Datos</title>
+<style>
+:root{
+  --bg:#111; --panel:#1a1a1a; --panel-2:#222; --input:#2a2a2a; --line:#2e2e2e; --line-2:#3d3d3d;
+  --text:#f2f2f2; --muted:#9a9a9a; --dim:#6f6f6f; --accent:#ffa500; --accent-ink:#1a1100;
+  --danger:#ff6b6b; --ok:#4cc38a; --warn:#f2c94c; --radius:8px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+input,select,textarea{background:var(--input);border:1px solid var(--line-2);border-radius:6px;padding:6px 8px;min-width:0}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+textarea{width:100%;resize:vertical}
+.btn{background:var(--panel-2);border:1px solid var(--line-2);border-radius:6px;padding:6px 12px;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.primary:disabled{opacity:.45;cursor:default}
+.btn.danger{color:var(--danger)}
+.btn.small{padding:3px 8px;font-size:12.5px}
+.muted{color:var(--muted)}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:10px;border:1px solid var(--line-2);color:var(--muted)}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.tag.dirty{color:var(--accent);border-color:var(--accent)}
+
+/* Inicio de sesión */
+#login{max-width:520px;margin:8vh auto;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius)}
+#login h1{margin:0 0 6px;font-size:22px}
+#login ol{padding-left:20px;color:var(--muted)}
+#login ol li{margin:4px 0}
+#login a{color:var(--accent)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.err{color:var(--danger);min-height:1.4em}
+
+/* Aplicación */
+#app{display:none;height:100%;flex-direction:column}
+header.top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+header.top h1{font-size:17px;margin:0;letter-spacing:.04em}
+header.top h1 span{color:var(--accent)}
+.grow{flex:1}
+#status{font-size:12.5px;color:var(--muted)}
+.layout{flex:1;display:grid;grid-template-columns:280px minmax(0,1fr);min-height:0}
+aside{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:var(--panel)}
+aside .tools{padding:10px;display:grid;gap:8px;border-bottom:1px solid var(--line)}
+#list{overflow:auto;flex:1}
+.cat{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);padding:10px 12px 4px}
+.item{display:flex;align-items:center;gap:6px;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;padding:6px 12px;color:var(--text)}
+.item:hover{background:var(--panel-2)}
+.item.sel{background:var(--panel-2);border-left-color:var(--accent)}
+.item .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+main{overflow:auto;min-height:0}
+.wrap{max-width:1000px;padding:18px 20px 60px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:14px 0 16px;flex-wrap:wrap}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:8px 12px;color:var(--muted)}
+.tabs button.on{color:var(--text);border-bottom-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
+.field{display:grid;gap:4px;align-content:start}
+.field label{font-size:12px;color:var(--muted)}
+.field .hint{font-size:11.5px;color:var(--dim)}
+.field input,.field select{width:100%}
+h2{font-size:20px;margin:0}
+h3{font-size:14px;margin:18px 0 8px;color:var(--accent);letter-spacing:.04em;text-transform:uppercase}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:11.5px;color:var(--muted);font-weight:500}
+td input{width:90px}
+.tablewrap{overflow-x:auto}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.note{font-size:12.5px;color:var(--muted);margin:6px 0}
+.empty{padding:40px;color:var(--muted);text-align:center}
+
+/* Diálogo de confirmación propio */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+#modal .box{background:var(--panel);border:1px solid var(--line-2);border-radius:var(--radius);padding:18px;max-width:440px;width:100%}
+#modal h3{margin-top:0}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--panel-2);border:1px solid var(--line-2);padding:8px 14px;border-radius:6px;display:none;z-index:60;max-width:90vw}
+@media (max-width:760px){
+  .layout{grid-template-columns:1fr}
+  aside{max-height:40vh;border-right:0;border-bottom:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ INICIO DE SESIÓN ============ -->
+<section id="login">
+  <h1>Panel de armas BF6</h1>
+  <p class="muted">Para editar los datos necesitas tu clave de GitHub. Se guarda solo en este navegador.</p>
+  <div class="field"><label for="tokenInput">Clave de GitHub (token)</label>
+    <input id="tokenInput" type="password" autocomplete="off" placeholder="github_pat_..."></div>
+  <div class="row" style="margin-top:10px"><button class="btn primary" id="loginBtn">Entrar</button>
+    <label class="row muted"><input type="checkbox" id="rememberToken" checked> Recordar en este navegador</label></div>
+  <p class="err" id="loginErr"></p>
+  <details><summary class="muted">¿Cómo creo la clave?</summary>
+    <ol>
+      <li>Abre <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>.</li>
+      <li>Nombre: "Panel BF6". Caducidad: la que prefieras (por ejemplo, 1 año).</li>
+      <li>Repository access: <b>Only select repositories</b> → <b>bf6-datos</b>.</li>
+      <li>Permissions → Repository permissions → <b>Contents: Read and write</b>.</li>
+      <li>Pulsa Generate token, cópialo y pégalo aquí.</li>
+    </ol></details>
+</section>
+
+<!-- ============ APLICACIÓN ============ -->
+<div id="app">
+  <header class="top">
+    <h1>PANEL <span>BF6</span></h1>
+    <span id="status"></span>
+    <span class="grow"></span>
+    <button class="btn" id="schemaBtn">Campos</button>
+    <button class="btn" id="reloadBtn">Recargar</button>
+    <button class="btn primary" id="saveBtn" disabled>Guardar cambios</button>
+    <button class="btn small" id="logoutBtn" title="Borrar la clave de este navegador">Salir</button>
+  </header>
+  <div class="layout">
+    <aside>
+      <div class="tools">
+        <input id="search" type="search" placeholder="Buscar arma..." aria-label="Buscar arma">
+        <div class="row"><button class="btn primary" id="newBtn" style="flex:1">+ Nueva arma</button>
+          <label class="row muted" style="font-size:12.5px"><input type="checkbox" id="onlyReview"> Por revisar</label></div>
+      </div>
+      <div id="list"></div>
+    </aside>
+    <main><div class="wrap" id="editor"></div></main>
+  </div>
+</div>
+
+<div id="modal" role="dialog" aria-modal="true"><div class="box"><h3 id="modalTitle"></h3><p id="modalText" class="muted"></p>
+  <div class="row" style="justify-content:flex-end"><button class="btn" id="modalNo">Cancelar</button><button class="btn primary" id="modalYes">Confirmar</button></div></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+/* ================= CONFIGURACIÓN ================= */
+const REPO = { owner: 'alka593yt', name: 'bf6-datos', branch: 'main', path: 'data/armas.json' };
+const TOKEN_KEY = 'bf6admin_token';
+const VIDA_DEF = 100;
+
+/* ================= CÁLCULOS (misma regla en todo el sistema) ================= */
+// Balas para matar: vida / daño, redondeado hacia arriba (24.84 -> 4.03 -> 5).
+function calcBalas(vida, dano) { return dano > 0 ? Math.ceil(vida / dano - 1e-9) : null; }
+// TTK en ms: tiempo entre la primera y la última bala.
+function calcTTK(cadencia, balas) { return cadencia > 0 && balas ? Math.round((60 / cadencia) * (balas - 1) * 1000) : null; }
+// Tramos [[desde, daño], ...] -> 201 valores (0..200 m).
+function expandirTramos(t, max = 200) {
+  const out = []; let j = 0;
+  for (let m = 0; m <= max; m++) { while (j + 1 < t.length && t[j + 1][0] <= m) j++; out.push(t.length && t[0][0] <= m ? t[j][1] : null); }
+  return out;
+}
+// "0-20:36.44, 21-74:28.93, 75-200:24" -> [[0,36.44],[21,28.93],[75,24]]
+function parsearTramos(txt) {
+  const out = [];
+  for (const p of String(txt).split(/[,;\n]+/)) {
+    const m = p.trim().match(/^(\d+)\s*(?:-\s*\d+)?\s*:\s*(\d+(?:[.,]\d+)?)$/);
+    if (m) out.push([+m[1], +m[2].replace(',', '.')]);
+  }
+  return normalizarTramos(out);
+}
+function normalizarTramos(t) {
+  const s = t.filter(r => Number.isFinite(r[0]) && r[0] >= 0 && r[0] <= 200).sort((a, b) => a[0] - b[0]);
+  const out = [];
+  for (const r of s) { if (out.length && out[out.length - 1][0] === r[0]) out[out.length - 1] = r; else if (!out.length || out[out.length - 1][1] !== r[1]) out.push(r); }
+  return out;
+}
+
+/* ================= UTILIDADES ================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const clone = o => JSON.parse(JSON.stringify(o));
+const slug = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const camel = s => slug(s).replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+function num(v) { const s = String(v ?? '').trim().replace(',', '.'); if (s === '') return null; const n = Number(s); return Number.isFinite(n) ? n : s; }
+function toast(msg, ms = 2600) { const t = $('toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => t.style.display = 'none', ms); }
+function confirmar(titulo, texto) {
+  return new Promise(res => {
+    $('modalTitle').textContent = titulo; $('modalText').textContent = texto; $('modal').style.display = 'flex';
+    const fin = v => { $('modal').style.display = 'none'; $('modalYes').onclick = $('modalNo').onclick = null; res(v); };
+    $('modalYes').onclick = () => fin(true); $('modalNo').onclick = () => fin(false); $('modalYes').focus();
+  });
+}
+const b64ToUtf8 = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0)));
+function utf8ToB64(str) { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(bin); }
+
+/* ================= GITHUB ================= */
+let TOKEN = null;
+async function gh(path, opts = {}) {
+  const r = await fetch('https://api.github.com' + path, { ...opts, headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + TOKEN, 'X-GitHub-Api-Version': '2022-11-28', ...(opts.headers || {}) } });
+  if (!r.ok) { const e = new Error((await r.json().catch(() => ({}))).message || ('HTTP ' + r.status)); e.status = r.status; throw e; }
+  return r.status === 204 ? null : r.json();
+}
+async function leerArchivo() {
+  const r = await gh(`/repos/${REPO.owner}/${REPO.name}/contents/${REPO.path}?ref=${REPO.branch}&t=${Date.now()}`);
+  // Archivos grandes (>1 MB) llegan sin contenido: se piden por el blob.
+  const txt = r.content ? b64ToUtf8(r.content) : b64ToUtf8((await gh(`/repos/${REPO.owner}/${REPO.name}/git/blobs/${r.sha}`)).content);
+  return { doc: JSON.parse(txt), sha: r.sha };
+}
+async function escribirArchivo(doc, sha, mensaje) {
+  return gh(`/repos/${REPO.owner}/${REPO.name}/contents/${REPO.path}`, { method: 'PUT', body: JSON.stringify({ message: mensaje, content: utf8ToB64(JSON.stringify(doc, null, 1) + '\n'), sha, branch: REPO.branch }) });
+}
+
+/* ================= ESTADO ================= */
+const S = { doc: null, sha: null, sel: null, tab: 'general', dirty: new Set(), schemaDirty: false, deleted: new Set(), nuevas: new Set(), vida: VIDA_DEF, view: 'arma' };
+const esquema = () => S.doc.esquema;
+const armas = () => S.doc.armas;
+const armaSel = () => armas().find(a => a.id === S.sel);
+function marcar(id) { if (id) S.dirty.add(id); refrescarCabecera(); renderLista(); }
+function refrescarCabecera() {
+  const n = S.dirty.size + S.deleted.size + (S.schemaDirty ? 1 : 0);
+  $('saveBtn').disabled = n === 0;
+  $('saveBtn').textContent = n ? `Guardar cambios (${n})` : 'Guardar cambios';
+  $('status').textContent = `${armas().length} armas · actualizado ${S.doc.actualizado || '—'}`;
+}
+window.addEventListener('beforeunload', e => { if (S.doc && (S.dirty.size || S.deleted.size || S.schemaDirty)) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ================= LISTA ================= */
+function renderLista() {
+  const q = slug($('search').value), soloRev = $('onlyReview').checked;
+  const cats = [...new Set(armas().map(a => a.categoria || 'Sin categoría'))].sort();
+  let html = '';
+  for (const c of cats) {
+    const items = armas().filter(a => (a.categoria || 'Sin categoría') === c && (!q || slug(a.nombre).includes(q)) && (!soloRev || a.revisar))
+      .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { numeric: true }));
+    if (!items.length) continue;
+    html += `<div class="cat">${esc(c)} · ${items.length}</div>` + items.map(a =>
+      `<button class="item${a.id === S.sel ? ' sel' : ''}" data-id="${esc(a.id)}"><span class="n">${esc(a.nombre)}</span>${a.revisar ? '<span class="tag warn">revisar</span>' : ''}${S.dirty.has(a.id) ? '<span class="tag dirty">sin guardar</span>' : ''}</button>`).join('');
+  }
+  $('list').innerHTML = html || '<div class="empty">Sin resultados</div>';
+}
+$('list').addEventListener('click', e => { const b = e.target.closest('.item'); if (b) { S.sel = b.dataset.id; S.view = 'arma'; renderLista(); renderEditor(); } });
+$('search').addEventListener('input', renderLista);
+$('onlyReview').addEventListener('change', renderLista);
+
+/* ================= EDITOR DE ARMA ================= */
+function campo(label, html, hint) { return `<div class="field"><label>${esc(label)}</label>${html}${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</div>`; }
+function inputTxt(path, v, extra = '') { return `<input data-path="${esc(path)}" value="${esc(v ?? '')}" ${extra}>`; }
+function inputNum(path, v, ph = '') { return `<input data-path="${esc(path)}" data-num="1" inputmode="decimal" value="${esc(v ?? '')}" placeholder="${esc(ph)}">`; }
+
+function renderEditor() {
+  const ed = $('editor');
+  if (S.view === 'campos') return renderCampos();
+  const a = armaSel();
+  if (!a) { ed.innerHTML = '<div class="empty">Elige un arma de la lista o crea una nueva.</div>'; return; }
+  const tabs = [['general', 'General'], ['stats', 'Estadísticas'], ['dano', 'Daño'], ['equip', `Equipamientos (${(a.equipamientos || []).length})`]];
+  ed.innerHTML = `<div class="row"><h2>${esc(a.nombre)}</h2>${a.revisar ? '<span class="tag warn">revisar</span>' : ''}<span class="grow"></span>
+      <button class="btn small" id="dupBtn">Duplicar</button><button class="btn small danger" id="delBtn">Eliminar</button></div>
+    ${a.notas ? `<p class="note">${esc(a.notas)}</p>` : ''}
+    <div class="tabs">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+    <div id="tabBody"></div>`;
+  ({ general: tabGeneral, stats: tabStats, dano: tabDano, equip: tabEquip })[S.tab](a);
+}
+$('editor').addEventListener('click', async e => {
+  const t = e.target.closest('[data-tab]'); if (t) { S.tab = t.dataset.tab; renderEditor(); return; }
+  if (e.target.id === 'delBtn') {
+    const a = armaSel();
+    if (await confirmar('Eliminar arma', `¿Eliminar «${a.nombre}»? Se quitará al guardar los cambios.`)) {
+      S.doc.armas = armas().filter(x => x.id !== a.id); S.dirty.delete(a.id); S.deleted.add(a.id); S.sel = null; marcar(); renderEditor();
+    }
+  }
+  if (e.target.id === 'dupBtn') { const a = clone(armaSel()); a.nombre += ' (copia)'; a.id = idUnico(slug(a.nombre)); armas().push(a); S.sel = a.id; marcar(a.id); renderEditor(); }
+});
+
+// Edición genérica: data-path="base.cadencia" escribe en el arma seleccionada.
+function setPath(obj, path, val) {
+  const ks = path.split('.'); let o = obj;
+  for (let i = 0; i < ks.length - 1; i++) { if (o[ks[i]] == null || typeof o[ks[i]] !== 'object') o[ks[i]] = /^\d+$/.test(ks[i + 1]) ? [] : {}; o = o[ks[i]]; }
+  const k = ks[ks.length - 1];
+  if (val === null || val === '' || val === undefined) delete o[k]; else o[k] = val;
+}
+$('editor').addEventListener('change', e => {
+  const el = e.target; if (!el.dataset.path || S.view !== 'arma') return;
+  const a = armaSel();
+  let v = el.type === 'checkbox' ? (el.checked || null) : el.dataset.num ? num(el.value) : el.value.trim();
+  if (el.dataset.path === 'nombre') {
+    if (!v) { toast('El arma necesita un nombre.'); el.value = a.nombre; return; }
+    if (armas().some(x => x !== a && x.nombre.toLowerCase() === v.toLowerCase())) { toast('Ya hay otra arma con ese nombre.'); el.value = a.nombre; return; }
+  }
+  setPath(a, el.dataset.path, v);
+  // Un arma nueva (aún sin guardar) toma su clave del nombre definitivo.
+  if (el.dataset.path === 'nombre' && S.nuevas.has(a.id)) {
+    S.nuevas.delete(a.id); S.dirty.delete(a.id); a.id = ''; a.id = idUnico(slug(v)); S.nuevas.add(a.id); S.sel = a.id;
+  }
+  marcar(a.id);
+  if (['nombre', 'revisar', 'categoria'].includes(el.dataset.path)) renderEditor();
+  if (S.tab === 'dano' || el.dataset.path === 'base.cadencia' || el.dataset.path === 'cadenciaTTK') { if (S.tab === 'dano') tabDano(a); }
+});
+
+function tabGeneral(a) {
+  const cats = [...new Set(armas().map(x => x.categoria).filter(Boolean))].sort();
+  const otros = esquema().otros.map(o => campo(o.nombre, o.opciones
+    ? `<select data-path="${esc(o.id)}"><option value=""></option>${o.opciones.map(op => `<option ${a[o.id] === op ? 'selected' : ''}>${esc(op)}</option>`).join('')}</select>`
+    : inputTxt(o.id, a[o.id]))).join('');
+  $('tabBody').innerHTML = `<div class="grid">
+      ${campo('Nombre', inputTxt('nombre', a.nombre))}
+      ${campo('Categoría', inputTxt('categoria', a.categoria, 'list="catList"') + `<datalist id="catList">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist>`)}
+      ${campo('ID del analizador', inputTxt('idAnalizador', a.idAnalizador, 'placeholder="ej. m433"'), 'Une el arma con sus accesorios en el constructor.')}
+      ${campo('Modo de disparo', `<select data-path="modoDisparo"><option value=""></option>${['auto', 'rafaga', 'semi'].map(m => `<option ${a.modoDisparo === m ? 'selected' : ''}>${m}</option>`).join('')}</select>`, 'Solo si el arma tiene varios modos.')}
+      ${otros}
+    </div>
+    ${a.imagen ? `<p><img src="${esc(a.imagen)}" alt="" onerror="this.remove()" style="max-height:60px;background:#000;border-radius:6px;padding:4px"></p>` : ''}
+    <h3>Seguimiento</h3>
+    <label class="row"><input type="checkbox" data-path="revisar" ${a.revisar ? 'checked' : ''}> Marcar "por revisar"</label>
+    <div class="field" style="margin-top:10px"><label>Notas internas</label><textarea data-path="notas" rows="3">${esc(a.notas || '')}</textarea></div>`;
+}
+
+function tabStats(a) {
+  const grupos = esquema().grupos;
+  const stats = esquema().estadisticas;
+  const bloque = (titulo, lista) => lista.length ? `<h3>${esc(titulo)}</h3><div class="grid">${lista.map(s =>
+    campo(`${s.nombre}${s.unidad ? ' (' + s.unidad + ')' : ''}`, s.tipo === 'texto' ? inputTxt('base.' + s.id, a.base?.[s.id]) : inputNum('base.' + s.id, a.base?.[s.id]),
+      s.mejor ? (s.mejor === 'mayor' ? 'Más es mejor' : 'Menos es mejor') : '')).join('')}</div>` : '';
+  const mun = esquema().municiones.map(m => campo(`${m.nombre} (multiplicador)`, inputNum('municion.' + m.id, a.municion?.[m.id]))).join('');
+  $('tabBody').innerHTML = grupos.map(g => bloque(g.nombre, stats.filter(s => s.grupo === g.id))).join('')
+    + bloque('Otros datos', stats.filter(s => !s.grupo))
+    + `<h3>Munición</h3><div class="grid">${mun}${campo('Cadencia para TTK (opcional)', inputNum('cadenciaTTK', a.cadenciaTTK), 'Solo si el TTK real usa otra cadencia que la mostrada.')}</div>`;
+}
+
+/* ---------- Daño por tramos ---------- */
+function tablaTramos(prefix, tramos, cadencia) {
+  const filas = (tramos || []).map((r, i) => {
+    const hasta = i + 1 < tramos.length ? tramos[i + 1][0] - 1 : 200;
+    const b = calcBalas(S.vida, r[1]), t = calcTTK(cadencia, b);
+    return `<tr><td><input data-tr="${prefix}" data-i="${i}" data-k="0" inputmode="numeric" value="${r[0]}" style="width:60px"></td><td class="muted">${hasta}</td>
+      <td><input data-tr="${prefix}" data-i="${i}" data-k="1" inputmode="decimal" value="${r[1] ?? ''}" style="width:80px"></td><td>${b ?? '—'}</td><td>${t ?? '—'}</td>
+      <td><button class="btn small" data-trdel="${prefix}" data-i="${i}" aria-label="Quitar tramo">×</button></td></tr>`;
+  }).join('');
+  return `<div class="tablewrap"><table><thead><tr><th>Desde (m)</th><th>Hasta</th><th>Daño</th><th>Balas</th><th>TTK (ms)</th><th></th></tr></thead><tbody>${filas || '<tr><td colspan="6" class="muted">Sin datos</td></tr>'}</tbody></table></div>
+    <div class="row" style="margin-top:8px"><button class="btn small" data-tradd="${prefix}">+ Tramo</button><button class="btn small" data-trpaste="${prefix}">Pegar tramos</button></div>`;
+}
+function getTramos(a, prefix) { const [base, z] = prefix.split(':'); const tgt = base === 'b' ? a : a.equipamientos[+base]; tgt.dano = tgt.dano || {}; return [tgt, z]; }
+function tabDano(a) {
+  const cad = a.cadenciaTTK || a.base?.cadencia;
+  $('tabBody').innerHTML = `<div class="row" style="margin-bottom:10px"><label class="muted" for="vidaPrev">Vista previa con vida</label>
+      <input id="vidaPrev" inputmode="numeric" value="${S.vida}" style="width:70px"><span class="note">Cadencia usada: ${cad ?? '—'} RPM. Balas = vida ÷ daño, redondeado hacia arriba.</span></div>
+    <div class="zones">${esquema().zonas.map(z => `<div class="card"><h3 style="margin-top:0">${esc(z.nombre)}</h3>${tablaTramos('b:' + z.id, a.dano?.[z.id], cad)}</div>`).join('')}</div>`;
+}
+$('editor').addEventListener('change', e => {
+  const el = e.target;
+  if (el.id === 'vidaPrev') { S.vida = Math.max(1, num(el.value) || VIDA_DEF); tabDano(armaSel()); return; }
+  if (!el.dataset.tr) return;
+  const a = armaSel(); const [tgt, z] = getTramos(a, el.dataset.tr);
+  const t = tgt.dano[z] || []; const v = num(el.value);
+  t[+el.dataset.i][+el.dataset.k] = typeof v === 'number' ? v : null;
+  tgt.dano[z] = normalizarTramos(t.filter(r => r[0] != null));
+  marcar(a.id); S.tab === 'dano' ? tabDano(a) : tabEquip(a);
+});
+$('editor').addEventListener('click', async e => {
+  const el = e.target; const a = armaSel(); if (!a) return;
+  const p = el.dataset.tradd || el.dataset.trdel || el.dataset.trpaste; if (!p) return;
+  const [tgt, z] = getTramos(a, p); const t = tgt.dano[z] || [];
+  if (el.dataset.tradd) { const last = t[t.length - 1]; t.push([last ? Math.min(200, last[0] + 1) : 0, last ? last[1] : null]); tgt.dano[z] = t; }
+  if (el.dataset.trdel) { t.splice(+el.dataset.i, 1); tgt.dano[z] = t; if (!t.length) delete tgt.dano[z]; }
+  if (el.dataset.trpaste) {
+    const box = document.createElement('div'); box.className = 'card';
+    box.innerHTML = `<p class="note">Formato: <code>inicio-fin:daño</code> separados por coma. Ejemplo: <code>0-30:49.26, 31-74:40, 75-200:34</code></p>
+      <textarea rows="3"></textarea><div class="row" style="margin-top:6px"><button class="btn primary small">Aplicar</button><button class="btn small">Cancelar</button></div>`;
+    el.closest('.card, .zones, #tabBody').appendChild(box); box.querySelector('textarea').focus();
+    const [ok, no] = box.querySelectorAll('button');
+    no.onclick = () => box.remove();
+    ok.onclick = () => { const r = parsearTramos(box.querySelector('textarea').value); if (!r.length) { toast('No reconocí ningún tramo. Usa el formato 0-30:49.26'); return; }
+      tgt.dano[z] = r; marcar(a.id); S.tab === 'dano' ? tabDano(a) : tabEquip(a); };
+    return;
+  }
+  marcar(a.id); S.tab === 'dano' ? tabDano(a) : tabEquip(a);
+});
+
+/* ---------- Equipamientos ---------- */
+function tabEquip(a) {
+  a.equipamientos = a.equipamientos || [];
+  const stats = esquema().estadisticas.filter(s => s.visible);
+  const html = a.equipamientos.map((eq, i) => `<div class="card">
+      <div class="row"><div class="field" style="flex:1"><label>Nombre que verán en la página</label>${inputTxt(`equipamientos.${i}.nombre`, eq.nombre)}</div>
+        <button class="btn small" data-equp="${i}" ${i === 0 ? 'disabled' : ''}>↑</button><button class="btn small danger" data-eqdel="${i}">Eliminar</button></div>
+      <h3>Accesorios</h3><div class="grid">${esquema().ranuras.map(r => campo(r.nombre, inputTxt(`equipamientos.${i}.accesorios.${r.id}`, eq.accesorios?.[r.id]))).join('')}</div>
+      <h3>Estadísticas propias</h3><p class="note">Déjalas vacías para usar las de la Base. Cuando esté listo el constructor, se calcularán solas a partir de los accesorios.</p>
+      <div class="grid">${stats.map(s => campo(`${s.nombre}${s.unidad ? ' (' + s.unidad + ')' : ''}`, inputNum(`equipamientos.${i}.estadisticas.${s.id}`, eq.estadisticas?.[s.id], a.base?.[s.id] ?? ''))).join('')}</div>
+      <h3>Daño propio</h3>${eq.dano && Object.keys(eq.dano).length
+        ? `<div class="zones">${esquema().zonas.map(z => `<div><b>${esc(z.nombre)}</b>${tablaTramos(i + ':' + z.id, eq.dano[z.id], eq.estadisticas?.cadencia || a.base?.cadencia)}</div>`).join('')}</div>
+           <button class="btn small" data-eqdano="${i}" data-off="1" style="margin-top:8px">Usar el daño de la Base</button>`
+        : `<p class="note">Usa el daño de la Base.</p><button class="btn small" data-eqdano="${i}">Darle daño propio (copia de la Base)</button>`}
+    </div>`).join('');
+  $('tabBody').innerHTML = (html || '<p class="note">Esta arma no tiene equipamientos.</p>') + `<button class="btn primary" id="eqAdd">+ Agregar equipamiento</button>`;
+}
+$('editor').addEventListener('change', e => {
+  // Equipamientos: el editor genérico ya guardó el valor; limpia objetos vacíos.
+  const a = S.view === 'arma' && armaSel(); if (!a || !e.target.dataset.path?.startsWith('equipamientos.')) return;
+  for (const eq of a.equipamientos) for (const k of ['accesorios', 'estadisticas']) if (eq[k] && !Object.keys(eq[k]).length && k !== 'accesorios') delete eq[k];
+});
+$('editor').addEventListener('click', async e => {
+  const el = e.target; const a = S.view === 'arma' && armaSel(); if (!a) return;
+  if (el.id === 'eqAdd') { a.equipamientos.push({ nombre: `Equip. ${a.equipamientos.length + 1}`, accesorios: {} }); }
+  else if (el.dataset.eqdel) { if (!await confirmar('Eliminar equipamiento', `¿Eliminar «${a.equipamientos[+el.dataset.eqdel].nombre}»?`)) return; a.equipamientos.splice(+el.dataset.eqdel, 1); }
+  else if (el.dataset.equp) { const i = +el.dataset.equp; [a.equipamientos[i - 1], a.equipamientos[i]] = [a.equipamientos[i], a.equipamientos[i - 1]]; }
+  else if (el.dataset.eqdano) { const eq = a.equipamientos[+el.dataset.eqdano]; if (el.dataset.off) delete eq.dano; else eq.dano = clone(a.dano || {}); }
+  else return;
+  marcar(a.id); tabEquip(a); renderEditor();
+});
+
+/* ================= NUEVA ARMA ================= */
+function idUnico(base) { let id = base || 'arma', i = 2; while (armas().some(a => a.id === id)) id = `${base}-${i++}`; return id; }
+$('newBtn').addEventListener('click', () => {
+  let nombre = 'Nueva arma', i = 2; while (armas().some(a => a.nombre === nombre)) nombre = `Nueva arma ${i++}`;
+  const a = { id: idUnico(slug(nombre)), nombre, categoria: '', base: { vida: VIDA_DEF }, dano: {}, equipamientos: [] };
+  armas().push(a); S.nuevas.add(a.id); S.sel = a.id; S.tab = 'general'; S.view = 'arma'; marcar(a.id); renderEditor();
+  setTimeout(() => document.querySelector('[data-path="nombre"]')?.select(), 0);
+});
+
+/* ================= CAMPOS (ESQUEMA) ================= */
+function renderCampos() {
+  const e = esquema();
+  const usados = id => armas().some(a => a.base?.[id] != null || (a.equipamientos || []).some(q => q.estadisticas?.[id] != null));
+  $('editor').innerHTML = `<div class="row"><h2>Campos</h2><span class="grow"></span><button class="btn" id="backBtn">Volver a las armas</button></div>
+    <p class="note">Estos campos los leen la página admin y tu página pública. Agregar un campo no rompe nada: las armas sin ese dato muestran "—".</p>
+    <h3>Estadísticas</h3><div class="tablewrap"><table><thead><tr><th>Nombre</th><th>Unidad</th><th>Grupo</th><th>Mejor</th><th>Visible</th><th>Clave</th><th></th></tr></thead><tbody>
+    ${e.estadisticas.map((s, i) => `<tr>
+      <td><input data-sc="estadisticas.${i}.nombre" value="${esc(s.nombre)}" style="width:170px"></td>
+      <td><input data-sc="estadisticas.${i}.unidad" value="${esc(s.unidad || '')}" style="width:60px"></td>
+      <td><select data-sc="estadisticas.${i}.grupo"><option value="">—</option>${e.grupos.map(g => `<option value="${g.id}" ${s.grupo === g.id ? 'selected' : ''}>${esc(g.nombre)}</option>`).join('')}</select></td>
+      <td><select data-sc="estadisticas.${i}.mejor"><option value="">—</option><option value="mayor" ${s.mejor === 'mayor' ? 'selected' : ''}>Mayor</option><option value="menor" ${s.mejor === 'menor' ? 'selected' : ''}>Menor</option></select></td>
+      <td><input type="checkbox" data-sc="estadisticas.${i}.visible" ${s.visible ? 'checked' : ''}></td>
+      <td class="muted">${esc(s.id)}</td>
+      <td>${usados(s.id) ? '' : `<button class="btn small danger" data-scdel="${i}">Quitar</button>`}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="row" style="margin-top:10px"><input id="newStat" placeholder="Nombre del nuevo campo (ej. Vel. al esprintar)" style="flex:1"><button class="btn primary" id="addStat">Agregar estadística</button></div>
+    <h3>Zonas de daño</h3><div class="tablewrap"><table><thead><tr><th>Nombre</th><th>Color</th><th>Clave</th></tr></thead><tbody>
+    ${e.zonas.map((z, i) => `<tr><td><input data-sc="zonas.${i}.nombre" value="${esc(z.nombre)}"></td><td><input type="color" data-sc="zonas.${i}.color" value="${esc(z.color || '#ffffff')}" style="padding:0;width:44px;height:30px"></td><td class="muted">${esc(z.id)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="row" style="margin-top:10px"><input id="newZone" placeholder="Nueva zona (ej. Brazos)" style="flex:1"><button class="btn primary" id="addZone">Agregar zona</button></div>
+    <h3>Otros datos con opciones</h3><div class="grid">${e.otros.map((o, i) => o.opciones ? campo(o.nombre, `<input data-sc="otros.${i}.opciones" data-list="1" value="${esc(o.opciones.join(', '))}">`, 'Opciones separadas por coma') : '').join('')}</div>`;
+}
+$('schemaBtn').addEventListener('click', () => { S.view = 'campos'; renderEditor(); });
+$('editor').addEventListener('change', e => {
+  const el = e.target; if (!el.dataset.sc) return;
+  let v = el.type === 'checkbox' ? el.checked : el.value.trim();
+  if (el.dataset.list) v = v.split(',').map(x => x.trim()).filter(Boolean);
+  if (v === '' && /\.(grupo|mejor)$/.test(el.dataset.sc)) v = null;
+  const ks = el.dataset.sc.split('.'); esquema()[ks[0]][+ks[1]][ks[2]] = v;
+  S.schemaDirty = true; refrescarCabecera();
+});
+$('editor').addEventListener('click', e => {
+  if (S.view !== 'campos') return;
+  const el = e.target, sc = esquema();
+  if (el.id === 'backBtn') { S.view = 'arma'; renderEditor(); return; }
+  if (el.id === 'addStat') { const n = $('newStat').value.trim(); if (!n) return; let id = camel(n) || 'campo', i = 2; while (sc.estadisticas.some(s => s.id === id)) id = camel(n) + i++;
+    sc.estadisticas.push({ id, nombre: n, unidad: '', grupo: null, mejor: null, visible: true }); }
+  else if (el.id === 'addZone') { const n = $('newZone').value.trim(); if (!n) return; let id = camel(n) || 'zona', i = 2; while (sc.zonas.some(z => z.id === id)) id = camel(n) + i++;
+    sc.zonas.push({ id, nombre: n, color: '#9aa0a6' }); }
+  else if (el.dataset.scdel) sc.estadisticas.splice(+el.dataset.scdel, 1);
+  else return;
+  S.schemaDirty = true; refrescarCabecera(); renderCampos();
+});
+
+/* ================= VALIDACIÓN Y GUARDADO ================= */
+function validar() {
+  const errs = [], nombres = new Set();
+  for (const a of armas()) {
+    const n = a.nombre.trim().toLowerCase();
+    if (!n) errs.push('Hay un arma sin nombre.');
+    if (nombres.has(n)) errs.push(`El nombre «${a.nombre}» está repetido.`); nombres.add(n);
+    for (const [z, t] of Object.entries(a.dano || {})) {
+      if (t.length && t[0][0] !== 0) errs.push(`${a.nombre}: el daño de ${z} debe empezar en el metro 0.`);
+      if (t.some(r => typeof r[1] !== 'number' || r[1] <= 0)) errs.push(`${a.nombre}: hay un tramo de ${z} sin daño válido.`);
+    }
+  }
+  return errs;
+}
+function mensajeCommit() {
+  const nombres = [...S.dirty].map(id => armas().find(a => a.id === id)?.nombre).filter(Boolean);
+  const partes = [];
+  if (nombres.length) partes.push('Actualizar ' + (nombres.length > 4 ? nombres.length + ' armas' : nombres.join(', ')));
+  if (S.deleted.size) partes.push('eliminar ' + [...S.deleted].join(', '));
+  if (S.schemaDirty) partes.push('campos');
+  return 'Panel: ' + (partes.join('; ') || 'cambios');
+}
+// Aplica mis cambios sobre una versión más nueva del archivo (si alguien guardó antes).
+function fusionar(remoto) {
+  const doc = clone(remoto);
+  if (S.schemaDirty) doc.esquema = clone(esquema());
+  doc.armas = doc.armas.filter(a => !S.deleted.has(a.id));
+  for (const id of S.dirty) {
+    const mio = armas().find(a => a.id === id); if (!mio) continue;
+    const i = doc.armas.findIndex(a => a.id === id);
+    if (i >= 0) doc.armas[i] = clone(mio); else doc.armas.push(clone(mio));
+  }
+  return doc;
+}
+$('saveBtn').addEventListener('click', async () => {
+  const errs = validar(); if (errs.length) { toast(errs[0], 5000); return; }
+  const btn = $('saveBtn'); btn.disabled = true; btn.textContent = 'Guardando...';
+  S.doc.actualizado = new Date().toISOString().slice(0, 10);
+  const msg = mensajeCommit();
+  try {
+    let r;
+    try { r = await escribirArchivo(S.doc, S.sha, msg); }
+    catch (err) {
+      if (err.status !== 409) throw err;
+      const remoto = await leerArchivo();      // Otro guardado se adelantó: fusiona y reintenta una vez.
+      S.doc = fusionar(remoto.doc); S.doc.actualizado = new Date().toISOString().slice(0, 10);
+      r = await escribirArchivo(S.doc, remoto.sha, msg);
+    }
+    S.sha = r.content.sha; S.dirty.clear(); S.deleted.clear(); S.nuevas.clear(); S.schemaDirty = false;
+    refrescarCabecera(); renderLista(); renderEditor();
+    toast('Guardado. Tu página lo mostrará en unos minutos.');
+  } catch (err) {
+    refrescarCabecera();
+    toast(err.status === 401 || err.status === 403 ? 'La clave no tiene permiso para escribir. Revisa que tenga "Contents: Read and write" sobre bf6-datos.' : 'No se pudo guardar: ' + err.message, 6000);
+  }
+});
+$('reloadBtn').addEventListener('click', async () => {
+  if ((S.dirty.size || S.deleted.size || S.schemaDirty) && !await confirmar('Recargar', 'Perderás los cambios sin guardar. ¿Continuar?')) return;
+  await cargar();
+});
+
+/* ================= ARRANQUE ================= */
+async function cargar() {
+  $('status').textContent = 'Cargando...';
+  const { doc, sha } = await leerArchivo();
+  Object.assign(S, { doc, sha, dirty: new Set(), deleted: new Set(), nuevas: new Set(), schemaDirty: false });
+  if (!armas().some(a => a.id === S.sel)) S.sel = null;
+  refrescarCabecera(); renderLista(); renderEditor();
+}
+async function entrar(token, recordar) {
+  TOKEN = token; $('loginErr').textContent = '';
+  try {
+    await gh(`/repos/${REPO.owner}/${REPO.name}`);
+    if (recordar) { try { localStorage.setItem(TOKEN_KEY, token); } catch (e) {} }
+    $('login').style.display = 'none'; $('app').style.display = 'flex';
+    await cargar();
+  } catch (err) {
+    TOKEN = null; try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+    $('login').style.display = 'block'; $('app').style.display = 'none';
+    $('loginErr').textContent = err.status === 401 ? 'La clave no es válida o caducó.' : err.status === 404 ? 'La clave no tiene acceso al repositorio bf6-datos.' : 'No se pudo conectar: ' + err.message;
+  }
+}
+$('loginBtn').addEventListener('click', () => { const t = $('tokenInput').value.trim(); if (t) entrar(t, $('rememberToken').checked); });
+$('tokenInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
+$('logoutBtn').addEventListener('click', async () => {
+  if ((S.dirty.size || S.deleted.size || S.schemaDirty) && !await confirmar('Salir', 'Tienes cambios sin guardar. ¿Salir igual?')) return;
+  try { localStorage.removeItem(TOKEN_KEY); } catch (e) {} location.reload();
+});
+(function () { let t = null; try { t = localStorage.getItem(TOKEN_KEY); } catch (e) {} if (t) entrar(t, true); })();
+</script>
+</body>
+</html>
