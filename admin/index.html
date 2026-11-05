@@ -507,6 +507,8 @@ $('saveBtn').addEventListener('click', async () => {
       r = await escribirArchivo(S.doc, remoto.sha, msg);
     }
     S.sha = r.content.sha; S.dirty.clear(); S.deleted.clear(); S.nuevas.clear(); S.schemaDirty = false;
+    // Pide a jsDelivr que olvide la copia vieja, para que la página pública vea el cambio pronto.
+    fetch(`https://purge.jsdelivr.net/gh/${REPO.owner}/${REPO.name}@${REPO.branch}/${REPO.path}`, { mode: 'no-cors' }).catch(() => {});
     refrescarCabecera(); renderLista(); renderEditor();
     toast('Guardado. Tu página lo mostrará en unos minutos.');
   } catch (err) {
