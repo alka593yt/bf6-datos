@@ -79,6 +79,26 @@ td input{width:90px}
 .empty{padding:40px;color:var(--muted);text-align:center}
 
 /* Diálogo de confirmación propio */
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid var(--line-2);border-radius:20px;padding:4px 12px}
+.chip i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.chip.on{border-color:var(--accent);color:var(--accent)}
+.de-zonas{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 12px}
+.de-chart{width:100%;display:block}
+.de-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.de-tools .card{margin-bottom:12px}
+h4{margin:0 0 8px;font-size:13px}
+.de-tools label{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;color:var(--muted)}
+.de-grid{display:grid;grid-template-columns:40px repeat(10,minmax(54px,1fr));gap:2px;min-width:620px;user-select:none;touch-action:none;outline:none}
+.de-grid:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.de-grid .h{font-size:11px;color:var(--dim);text-align:center;padding:2px 0}
+.de-grid .rowh{text-align:right;padding-right:6px;align-self:center}
+.de-grid .c{position:relative;background:var(--input);border:1px solid transparent;border-radius:3px;font-size:12px;text-align:center;padding:4px 2px;cursor:cell;font-variant-numeric:tabular-nums;min-height:24px}
+.de-grid .c.ini{font-weight:700;border-left:2px solid var(--line-2)}
+.de-grid .c.rampa{background:#2a2618;color:#f0d9a8}
+.de-grid .c.vacio{color:var(--dim)}
+.de-grid .c.off{visibility:hidden}
+.de-grid .c.sel{border-color:var(--accent);background:#3a2c10}
+.de-grid .fh{position:absolute;right:-3px;bottom:-3px;width:8px;height:8px;background:var(--accent);border:1px solid #111;cursor:crosshair}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
 #modal .box{background:var(--panel);border:1px solid var(--line-2);border-radius:var(--radius);padding:18px;max-width:440px;width:100%}
 #modal h3{margin-top:0}
@@ -150,26 +170,65 @@ const VIDA_DEF = 100;
 function calcBalas(vida, dano) { return dano > 0 ? Math.ceil(vida / dano - 1e-9) : null; }
 // TTK en ms: tiempo entre la primera y la última bala.
 function calcTTK(cadencia, balas) { return cadencia > 0 && balas ? Math.round((60 / cadencia) * (balas - 1) * 1000) : null; }
-// Tramos [[desde, daño], ...] -> 201 valores (0..200 m).
-function expandirTramos(t, max = 200) {
-  const out = []; let j = 0;
-  for (let m = 0; m <= max; m++) { while (j + 1 < t.length && t[j + 1][0] <= m) j++; out.push(t.length && t[0][0] <= m ? t[j][1] : null); }
-  return out;
+/* Daño por tramos: [[desde, daño], [desde, daño, "rampa"], ...]
+   Un tramo normal mantiene su daño hasta el siguiente tramo.
+   Un tramo "rampa" va en línea recta desde su daño hasta el daño del siguiente tramo. */
+const r2 = v => v == null ? null : Math.round((v + 1e-9) * 100) / 100;
+const r4 = v => v == null ? null : Math.round(v * 10000) / 10000;
+const esRampa = (t, i) => t[i][2] === 'rampa' && i + 1 < t.length && t[i][1] != null && t[i + 1][1] != null;
+function indiceEn(t, m) { let i = -1; for (let k = 0; k < t.length && t[k][0] <= m; k++) i = k; return i; }
+function valorExacto(t, m) {
+  const i = indiceEn(t, m); if (i < 0) return null;
+  const r = t[i];
+  if (!esRampa(t, i)) return r[1];
+  const n = t[i + 1]; return r[1] + (n[1] - r[1]) * (m - r[0]) / (n[0] - r[0]);
 }
-// "0-20:36.44, 21-74:28.93, 75-200:24" -> [[0,36.44],[21,28.93],[75,24]]
-function parsearTramos(txt) {
-  const out = [];
-  for (const p of String(txt).split(/[,;\n]+/)) {
-    const m = p.trim().match(/^(\d+)\s*(?:-\s*\d+)?\s*:\s*(\d+(?:[.,]\d+)?)$/);
-    if (m) out.push([+m[1], +m[2].replace(',', '.')]);
-  }
-  return normalizarTramos(out);
-}
+const valorEn = (t, m) => r2(valorExacto(t, m));
+function expandirTramos(t, max = 200) { const out = []; for (let m = 0; m <= max; m++) out.push(valorEn(t || [], m)); return out; }
 function normalizarTramos(t) {
-  const s = t.filter(r => Number.isFinite(r[0]) && r[0] >= 0 && r[0] <= 200).sort((a, b) => a[0] - b[0]);
+  const s = [];
+  t.filter(r => Number.isInteger(r[0]) && r[0] >= 0 && r[0] <= 200).sort((a, b) => a[0] - b[0])
+    .forEach(r => { const x = [r[0], typeof r[1] === 'number' ? r4(r[1]) : null]; if (r[2] === 'rampa') x.push('rampa');
+      if (s.length && s[s.length - 1][0] === x[0]) s[s.length - 1] = x; else s.push(x); });
   const out = [];
-  for (const r of s) { if (out.length && out[out.length - 1][0] === r[0]) out[out.length - 1] = r; else if (!out.length || out[out.length - 1][1] !== r[1]) out.push(r); }
+  s.forEach((r, i) => {
+    if (r[2] === 'rampa' && !(i + 1 < s.length && r[1] != null && s[i + 1][1] != null && s[i + 1][1] !== r[1])) r.length = 2;
+    const p = out[out.length - 1];
+    if (p && p.length === 2 && r.length === 2 && p[1] === r[1]) return;   // tramo repetido
+    out.push(r);
+  });
+  while (out.length && out[out.length - 1][1] == null && out.length > 1 && out[out.length - 2][1] == null) out.pop();
   return out;
+}
+// Sustituye los metros a..b por "nuevos" sin alterar los metros de fuera.
+function reemplazarRango(t, a, b, nuevos) {
+  t = t || [];
+  const res = t.filter(r => r[0] < a).map(r => r.slice());
+  if (a > 0) {
+    const i = indiceEn(t, a - 1);
+    if (i >= 0 && esRampa(t, i) && t[i][0] < a - 1) res.push([a - 1, r4(valorExacto(t, a - 1))]);
+  }
+  res.push(...nuevos.map(r => r.slice()));
+  if (b < 200) {
+    const i = indiceEn(t, b + 1);
+    if (i >= 0) { const r = [b + 1, r4(valorExacto(t, b + 1))]; if (esRampa(t, i)) r.push('rampa'); res.push(r); }
+    else res.push([b + 1, null]);
+  }
+  res.push(...t.filter(r => r[0] > b + 1).map(r => r.slice()));
+  return normalizarTramos(res);
+}
+const ponerTramo = (t, a, b, v) => reemplazarRango(t, a, b, [[a, v]]);
+const ponerRampa = (t, a, va, b, vb) => b <= a ? ponerTramo(t, a, a, va) : reemplazarRango(t, a, b, [[a, va, 'rampa'], [b, vb]]);
+// Texto: "0-75:80, 76-100:80>100, 101-200:62"  ("a>b" = rampa de a hasta b)
+function parsearTramos(txt) {
+  let t = []; let n = 0;
+  for (const p of String(txt).split(/[,;\n]+/)) {
+    const m = p.trim().replace(/,/g, '.').match(/^(\d+)\s*-\s*(\d+)\s*:\s*(\d+(?:\.\d+)?)\s*(?:>\s*(\d+(?:\.\d+)?))?$/);
+    if (!m) continue;
+    const a = Math.min(200, +m[1]), b = Math.min(200, Math.max(a, +m[2]));
+    t = m[4] != null ? ponerRampa(t, a, +m[3], b, +m[4]) : ponerTramo(t, a, b, +m[3]); n++;
+  }
+  return n ? t : null;
 }
 
 /* ================= UTILIDADES ================= */
@@ -235,7 +294,7 @@ function renderLista() {
   }
   $('list').innerHTML = html || '<div class="empty">Sin resultados</div>';
 }
-$('list').addEventListener('click', e => { const b = e.target.closest('.item'); if (b) { S.sel = b.dataset.id; S.view = 'arma'; renderLista(); renderEditor(); } });
+$('list').addEventListener('click', e => { const b = e.target.closest('.item'); if (b) { S.sel = b.dataset.id; S.view = 'arma'; S.de.sel = null; S.de.fuente = 'base'; renderLista(); renderEditor(); } });
 $('search').addEventListener('input', renderLista);
 $('onlyReview').addEventListener('change', renderLista);
 
@@ -323,55 +382,276 @@ function tabStats(a) {
     + `<h3>Munición</h3><div class="grid">${mun}${campo('Cadencia para TTK (opcional)', inputNum('cadenciaTTK', a.cadenciaTTK), 'Solo si el TTK real usa otra cadencia que la mostrada.')}</div>`;
 }
 
-/* ---------- Daño por tramos ---------- */
-function tablaTramos(prefix, tramos, cadencia) {
-  const filas = (tramos || []).map((r, i) => {
-    const hasta = i + 1 < tramos.length ? tramos[i + 1][0] - 1 : 200;
-    const b = calcBalas(S.vida, r[1]), t = calcTTK(cadencia, b);
-    return `<tr><td><input data-tr="${prefix}" data-i="${i}" data-k="0" inputmode="numeric" value="${r[0]}" style="width:60px"></td><td class="muted">${hasta}</td>
-      <td><input data-tr="${prefix}" data-i="${i}" data-k="1" inputmode="decimal" value="${r[1] ?? ''}" style="width:80px"></td><td>${b ?? '—'}</td><td>${t ?? '—'}</td>
-      <td><button class="btn small" data-trdel="${prefix}" data-i="${i}" aria-label="Quitar tramo">×</button></td></tr>`;
-  }).join('');
-  return `<div class="tablewrap"><table><thead><tr><th>Desde (m)</th><th>Hasta</th><th>Daño</th><th>Balas</th><th>TTK (ms)</th><th></th></tr></thead><tbody>${filas || '<tr><td colspan="6" class="muted">Sin datos</td></tr>'}</tbody></table></div>
-    <div class="row" style="margin-top:8px"><button class="btn small" data-tradd="${prefix}">+ Tramo</button><button class="btn small" data-trpaste="${prefix}">Pegar tramos</button></div>`;
+/* ---------- Daño: gráfico, herramientas, rejilla y tramos ---------- */
+S.de = { fuente: 'base', zona: null, sel: null, anchor: null };
+const fmtD = v => v == null ? '' : String(r2(v));
+function deFuenteObj(a) { const eq = S.de.fuente !== 'base' && a.equipamientos?.[+S.de.fuente]; return eq && eq.dano ? eq : (S.de.fuente = 'base', a); }
+function deCadencia(a) { return S.de.fuente === 'base' ? (a.cadenciaTTK || a.base?.cadencia) : (a.equipamientos[+S.de.fuente].estadisticas?.cadencia || a.base?.cadencia); }
+const deTramos = a => deFuenteObj(a).dano?.[S.de.zona] || [];
+function deGuardar(a, t) {
+  const tgt = deFuenteObj(a); tgt.dano = tgt.dano || {};
+  if (!t || !t.some(r => r[1] != null)) delete tgt.dano[S.de.zona]; else tgt.dano[S.de.zona] = t;
+  marcar(a.id); renderDanoVista(a);
 }
-function getTramos(a, prefix) { const [base, z] = prefix.split(':'); const tgt = base === 'b' ? a : a.equipamientos[+base]; tgt.dano = tgt.dano || {}; return [tgt, z]; }
+function numCampo(id) { const v = num($(id)?.value); return typeof v === 'number' ? v : null; }
+function metro(v) { return v == null ? null : Math.max(0, Math.min(200, Math.round(v))); }
+
 function tabDano(a) {
-  const cad = a.cadenciaTTK || a.base?.cadencia;
-  $('tabBody').innerHTML = `<div class="row" style="margin-bottom:10px"><label class="muted" for="vidaPrev">Vista previa con vida</label>
-      <input id="vidaPrev" inputmode="numeric" value="${S.vida}" style="width:70px"><span class="note">Cadencia usada: ${cad ?? '—'} RPM. Balas = vida ÷ daño, redondeado hacia arriba.</span></div>
-    <div class="zones">${esquema().zonas.map(z => `<div class="card"><h3 style="margin-top:0">${esc(z.nombre)}</h3>${tablaTramos('b:' + z.id, a.dano?.[z.id], cad)}</div>`).join('')}</div>`;
+  const zonas = esquema().zonas;
+  if (!zonas.some(z => z.id === S.de.zona)) S.de.zona = (zonas.find(z => z.id === 'pecho') || zonas[0]).id;
+  deFuenteObj(a);
+  const fuentes = [['base', 'Base']].concat((a.equipamientos || []).map((e, i) => e.dano ? [String(i), e.nombre] : null).filter(Boolean));
+  $('tabBody').innerHTML = `
+    <div class="row" style="margin-bottom:10px">
+      <label class="muted" for="deFuente">Daño de</label><select id="deFuente">${fuentes.map(([v, l]) => `<option value="${v}" ${S.de.fuente === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>
+      <label class="muted" for="vidaPrev">Vida</label><input id="vidaPrev" inputmode="numeric" value="${S.vida}" style="width:64px">
+      <span class="note">Cadencia: ${deCadencia(a) ?? '—'} RPM · Balas = vida ÷ daño, redondeado hacia arriba</span>
+    </div>
+    <div class="card"><canvas id="deChart" class="de-chart" aria-label="Curva de daño por distancia"></canvas><div id="deHover" class="note">Pasa el ratón por el gráfico para ver el daño en cada metro.</div></div>
+    <div class="de-zonas" role="group" aria-label="Zona">${zonas.map(z => `<button class="chip${z.id === S.de.zona ? ' on' : ''}" data-dezona="${esc(z.id)}"><i style="background:${esc(z.color || '#aaa')}"></i>${esc(z.nombre)}</button>`).join('')}</div>
+    <div class="de-tools">
+      <div class="card"><h4>Rellenar tramo</h4>
+        <div class="row"><label>Desde <input id="tA" inputmode="numeric" style="width:58px"></label><label>Hasta <input id="tB" inputmode="numeric" style="width:58px"></label>
+          <label>Daño <input id="tV" inputmode="decimal" style="width:74px"></label><button class="btn primary small" id="tAplicar">Aplicar</button></div>
+        <p class="note">El mismo daño en todos los metros del tramo.</p></div>
+      <div class="card"><h4>Rampa (valores escalonados)</h4>
+        <div class="row"><label>Desde <input id="rA" inputmode="numeric" style="width:58px"></label><label>con <input id="rVA" inputmode="decimal" style="width:74px"></label>
+          <span class="muted">→</span><label>Hasta <input id="rB" inputmode="numeric" style="width:58px"></label><label>con <input id="rVB" inputmode="decimal" style="width:74px"></label>
+          <button class="btn primary small" id="rAplicar">Aplicar rampa</button></div>
+        <p class="note" id="rPrev">Calcula cada metro intermedio en línea recta.</p></div>
+      <div class="card"><h4>Más</h4>
+        <div class="row"><button class="btn small" id="dePegar">Pegar tramos</button><button class="btn small" id="deCopiar">Copiar de otra zona</button><button class="btn small danger" id="deVaciar">Vaciar zona</button></div>
+        <div id="deExtra"></div></div>
+    </div>
+    <div class="card">
+      <div class="row" style="margin-bottom:8px"><b>Rejilla 0–200 m</b><span id="deSelInfo" class="note">Haz clic y arrastra para elegir metros.</span><span class="grow"></span>
+        <input id="deSelVal" inputmode="decimal" placeholder="Daño" style="width:80px" aria-label="Daño para la selección">
+        <button class="btn primary small" id="deSelFill">Rellenar selección</button><button class="btn small" id="deSelRamp">Rampa en la selección</button><button class="btn small danger" id="deSelClear">Borrar selección</button></div>
+      <div class="tablewrap"><div id="deGrid" class="de-grid" tabindex="0" aria-label="Rejilla de daño por metro"></div></div>
+      <p class="note">Escribe un número y pulsa Enter para rellenar lo seleccionado · Supr borra · Shift + clic amplía la selección · arrastra el cuadrito naranja de una casilla para copiar su valor.</p>
+    </div>
+    <div class="card"><h4>Tramos guardados</h4><div id="deTabla"></div></div>`;
+  renderDanoVista(a);
+  if (S.de.sel) deRellenarCampos(a);
 }
-$('editor').addEventListener('change', e => {
-  const el = e.target;
-  if (el.id === 'vidaPrev') { S.vida = Math.max(1, num(el.value) || VIDA_DEF); tabDano(armaSel()); return; }
-  if (!el.dataset.tr) return;
-  const a = armaSel(); const [tgt, z] = getTramos(a, el.dataset.tr);
-  const t = tgt.dano[z] || []; const v = num(el.value);
-  t[+el.dataset.i][+el.dataset.k] = typeof v === 'number' ? v : null;
-  tgt.dano[z] = normalizarTramos(t.filter(r => r[0] != null));
-  marcar(a.id); S.tab === 'dano' ? tabDano(a) : tabEquip(a);
-});
-$('editor').addEventListener('click', async e => {
-  const el = e.target; const a = armaSel(); if (!a) return;
-  const p = el.dataset.tradd || el.dataset.trdel || el.dataset.trpaste; if (!p) return;
-  const [tgt, z] = getTramos(a, p); const t = tgt.dano[z] || [];
-  if (el.dataset.tradd) { const last = t[t.length - 1]; t.push([last ? Math.min(200, last[0] + 1) : 0, last ? last[1] : null]); tgt.dano[z] = t; }
-  if (el.dataset.trdel) { t.splice(+el.dataset.i, 1); tgt.dano[z] = t; if (!t.length) delete tgt.dano[z]; }
-  if (el.dataset.trpaste) {
-    const box = document.createElement('div'); box.className = 'card';
-    box.innerHTML = `<p class="note">Formato: <code>inicio-fin:daño</code> separados por coma. Ejemplo: <code>0-30:49.26, 31-74:40, 75-200:34</code></p>
-      <textarea rows="3"></textarea><div class="row" style="margin-top:6px"><button class="btn primary small">Aplicar</button><button class="btn small">Cancelar</button></div>`;
-    el.closest('.card, .zones, #tabBody').appendChild(box); box.querySelector('textarea').focus();
-    const [ok, no] = box.querySelectorAll('button');
-    no.onclick = () => box.remove();
-    ok.onclick = () => { const r = parsearTramos(box.querySelector('textarea').value); if (!r.length) { toast('No reconocí ningún tramo. Usa el formato 0-30:49.26'); return; }
-      tgt.dano[z] = r; marcar(a.id); S.tab === 'dano' ? tabDano(a) : tabEquip(a); };
-    return;
+
+function renderDanoVista(a) {
+  if (!$('deGrid')) return;
+  dibujarCurva(a); renderGrid(a); renderTablaTramos(a); deInfoSel(a);
+}
+
+/* Gráfico */
+let deHoverM = null;
+function dibujarCurva(a) {
+  const cv = $('deChart'); if (!cv) return;
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = 200;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + 'px';
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const tgt = deFuenteObj(a), zonas = esquema().zonas;
+  const series = zonas.map(z => ({ z, v: expandirTramos(tgt.dano?.[z.id] || []) }));
+  const max = Math.max(10, ...series.flatMap(s => s.v.filter(x => x != null)));
+  const top = Math.ceil(max * 1.1 / 10) * 10;
+  const L = 38, R = 10, T = 8, B = 22, x = m => L + (W - L - R) * m / 200, y = v => T + (H - T - B) * (1 - v / top);
+  g.font = '11px system-ui'; g.fillStyle = '#8a8a8a'; g.strokeStyle = '#2a2a2a'; g.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) { const v = top * i / 4; g.beginPath(); g.moveTo(L, y(v)); g.lineTo(W - R, y(v)); g.stroke(); g.textAlign = 'right'; g.fillText(r2(v), L - 5, y(v) + 4); }
+  for (let m = 0; m <= 200; m += 25) { g.textAlign = m === 200 ? 'right' : 'center'; g.fillText(m + (m === 200 ? ' m' : ''), m === 200 ? W - R : x(m), H - 6); }
+  if (S.de.sel) { g.fillStyle = 'rgba(255,165,0,.12)'; g.fillRect(x(S.de.sel.a), T, Math.max(2, x(S.de.sel.b) - x(S.de.sel.a)), H - T - B); }
+  series.forEach(s => {
+    const sel = s.z.id === S.de.zona; g.strokeStyle = s.z.color || '#aaa'; g.globalAlpha = sel ? 1 : .35; g.lineWidth = sel ? 2.5 : 1.3;
+    g.beginPath(); let on = false;
+    s.v.forEach((v, m) => { if (v == null) { on = false; return; } on ? g.lineTo(x(m), y(v)) : g.moveTo(x(m), y(v)); on = true; });
+    g.stroke(); g.globalAlpha = 1;
+  });
+  if (deHoverM != null) { g.strokeStyle = '#ffa500'; g.lineWidth = 1; g.beginPath(); g.moveTo(x(deHoverM), T); g.lineTo(x(deHoverM), H - B); g.stroke(); }
+  cv.onmousemove = e => {
+    const r = cv.getBoundingClientRect(); const m = metro((e.clientX - r.left - L) / (W - L - R) * 200);
+    if (m === deHoverM) return; deHoverM = m; dibujarCurva(a);
+    const cad = deCadencia(a);
+    $('deHover').innerHTML = `<b>${m} m</b> · ` + series.map(s => { const v = s.v[m]; const b = calcBalas(S.vida, v);
+      return `<span style="color:${esc(s.z.color)}">${esc(s.z.nombre)}</span> ${v ?? '—'}${b ? ` (${b} balas · ${calcTTK(cad, b) ?? '—'} ms)` : ''}`; }).join(' · ');
+  };
+  cv.onmouseleave = () => { deHoverM = null; dibujarCurva(a); };
+}
+window.addEventListener('resize', () => { const a = S.view === 'arma' && armaSel(); if (a && $('deChart')) dibujarCurva(a); });
+
+/* Rejilla */
+function renderGrid(a) {
+  const t = deTramos(a), v = expandirTramos(t), ini = new Set(t.map(r => r[0]));
+  const enRampa = new Array(201).fill(false);
+  t.forEach((r, i) => { if (esRampa(t, i)) for (let m = r[0]; m < t[i + 1][0]; m++) enRampa[m] = true; });
+  const sel = S.de.sel;
+  let h = '<div class="h"></div>' + Array.from({ length: 10 }, (_, i) => `<div class="h">+${i}</div>`).join('');
+  for (let f = 0; f <= 20; f++) {
+    h += `<div class="h rowh">${f * 10}</div>`;
+    for (let c = 0; c < 10; c++) {
+      const m = f * 10 + c;
+      if (m > 200) { h += '<div class="c off"></div>'; continue; }
+      const cls = ['c', ini.has(m) ? 'ini' : '', enRampa[m] ? 'rampa' : '', v[m] == null ? 'vacio' : '', sel && m >= sel.a && m <= sel.b ? 'sel' : ''].join(' ');
+      h += `<div class="${cls}" data-m="${m}" title="${m} m">${fmtD(v[m])}${sel && sel.a === sel.b && m === sel.a && v[m] != null ? '<span class="fh" title="Arrastra para copiar este valor"></span>' : ''}</div>`;
+    }
   }
-  marcar(a.id); S.tab === 'dano' ? tabDano(a) : tabEquip(a);
+  $('deGrid').innerHTML = h;
+}
+function deMarcarSel() {
+  const sel = S.de.sel;
+  $('deGrid').querySelectorAll('.c[data-m]').forEach(c => { const m = +c.dataset.m; c.classList.toggle('sel', !!sel && m >= sel.a && m <= sel.b); });
+}
+function deInfoSel(a) {
+  const el = $('deSelInfo'); if (!el) return;
+  const s = S.de.sel;
+  if (!s) { el.textContent = 'Haz clic y arrastra para elegir metros.'; return; }
+  const t = deTramos(a);
+  el.textContent = s.a === s.b ? `Metro ${s.a} · daño ${valorEn(t, s.a) ?? '—'}` : `Metros ${s.a}–${s.b} (${s.b - s.a + 1} m) · de ${valorEn(t, s.a) ?? '—'} a ${valorEn(t, s.b) ?? '—'}`;
+}
+function deRellenarCampos(a) {
+  const s = S.de.sel; if (!s || !$('tA')) return; const t = deTramos(a);
+  $('tA').value = s.a; $('tB').value = s.b; $('rA').value = s.a; $('rB').value = s.b;
+  $('rVA').value = fmtD(valorEn(t, s.a)); $('rVB').value = fmtD(valorEn(t, s.b));
+  if (!$('tV').value) $('tV').value = fmtD(valorEn(t, s.a));
+  dePrevRampa();
+}
+let deDrag = null;
+document.addEventListener('pointerdown', e => {
+  const grid = e.target.closest('#deGrid'); if (!grid) return;
+  const cell = e.target.closest('.c[data-m]'); if (!cell) return;
+  e.preventDefault(); grid.focus();
+  const m = +cell.dataset.m, a = armaSel();
+  if (e.target.classList.contains('fh')) { deDrag = { modo: 'copiar', origen: m, valor: valorExacto(deTramos(a), m) }; S.de.anchor = m; }
+  else {
+    if (e.shiftKey && S.de.anchor != null) S.de.sel = { a: Math.min(S.de.anchor, m), b: Math.max(S.de.anchor, m) };
+    else { S.de.anchor = m; S.de.sel = { a: m, b: m }; }
+    deDrag = { modo: 'sel' };
+  }
+  deMarcarSel();
+});
+document.addEventListener('pointermove', e => {
+  if (!deDrag) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY)?.closest?.('#deGrid .c[data-m]'); if (!el) return;
+  const m = +el.dataset.m; S.de.sel = { a: Math.min(S.de.anchor, m), b: Math.max(S.de.anchor, m) }; deMarcarSel();
+});
+document.addEventListener('pointerup', () => {
+  if (!deDrag) return; const d = deDrag; deDrag = null; const a = armaSel(); if (!a || !$('deGrid')) return;
+  if (d.modo === 'copiar' && S.de.sel && S.de.sel.b > S.de.sel.a && d.valor != null) { deGuardar(a, ponerTramo(deTramos(a), S.de.sel.a, S.de.sel.b, r4(d.valor))); toast(`Copiado ${r2(d.valor)} a los metros ${S.de.sel.a}–${S.de.sel.b}.`); }
+  else renderDanoVista(a);
+  deRellenarCampos(a); $('deGrid')?.focus();
+});
+document.addEventListener('keydown', e => {
+  if (e.target.id !== 'deGrid' || !S.de.sel) return;
+  const a = armaSel();
+  if (/^[0-9.,]$/.test(e.key)) { e.preventDefault(); const i = $('deSelVal'); i.value = e.key; i.focus(); return; }
+  if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); deGuardar(a, reemplazarRango(deTramos(a), S.de.sel.a, S.de.sel.b, [[S.de.sel.a, null]])); return; }
+  const paso = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -10, ArrowDown: 10 }[e.key]; if (!paso) return;
+  e.preventDefault();
+  const fin = metro((e.shiftKey ? (S.de.sel.a === S.de.anchor ? S.de.sel.b : S.de.sel.a) : S.de.anchor) + paso);
+  if (e.shiftKey) S.de.sel = { a: Math.min(S.de.anchor, fin), b: Math.max(S.de.anchor, fin) }; else { S.de.anchor = fin; S.de.sel = { a: fin, b: fin }; }
+  renderDanoVista(a); deRellenarCampos(a); $('deGrid').focus();
 });
 
+/* Tabla de tramos */
+function renderTablaTramos(a) {
+  const t = deTramos(a), cad = deCadencia(a);
+  const filas = t.map((r, i) => {
+    const hasta = i + 1 < t.length ? t[i + 1][0] - 1 : 200, ramp = esRampa(t, i);
+    const vFin = ramp ? r2(valorExacto(t, hasta)) : r[1];
+    const b1 = calcBalas(S.vida, r[1]), b2 = calcBalas(S.vida, vFin);
+    const bTxt = b1 == null ? '—' : (b1 === b2 ? b1 : `${b1} → ${b2}`), tTxt = b1 == null ? '—' : (b1 === b2 ? calcTTK(cad, b1) : `${calcTTK(cad, b1)} → ${calcTTK(cad, b2)}`);
+    return `<tr><td><input data-tt="0" data-i="${i}" inputmode="numeric" value="${r[0]}" style="width:56px"></td><td class="muted">${hasta}</td>
+      <td><input data-tt="1" data-i="${i}" inputmode="decimal" value="${fmtD(r[1])}" placeholder="sin dato" style="width:76px">${ramp ? ` <span class="muted">→ ${r2(t[i + 1][1])}</span>` : ''}</td>
+      <td><select data-tt="2" data-i="${i}" ${i + 1 < t.length ? '' : 'disabled'}><option value="">Fijo</option><option value="rampa" ${r[2] === 'rampa' ? 'selected' : ''}>Rampa</option></select></td>
+      <td>${bTxt}</td><td>${tTxt ?? '—'}</td><td><button class="btn small" data-ttdel="${i}" aria-label="Quitar tramo">×</button></td></tr>`;
+  }).join('');
+  $('deTabla').innerHTML = `<div class="tablewrap"><table><thead><tr><th>Desde (m)</th><th>Hasta</th><th>Daño</th><th>Tipo</th><th>Balas</th><th>TTK (ms)</th><th></th></tr></thead>
+    <tbody>${filas || '<tr><td colspan="7" class="muted">Sin datos en esta zona. Usa "Rellenar tramo" o la rejilla.</td></tr>'}</tbody></table></div>
+    <p class="note">Una rampa va en línea recta hasta el daño del tramo siguiente. Quitar un tramo une sus metros con el anterior.</p>`;
+}
+
+function dePrevRampa() {
+  const a = numCampo('rA'), b = numCampo('rB'), va = numCampo('rVA'), vb = numCampo('rVB'), el = $('rPrev'); if (!el) return;
+  if ([a, b, va, vb].some(x => x == null) || b <= a) { el.textContent = 'Calcula cada metro intermedio en línea recta.'; return; }
+  const paso = (vb - va) / (b - a);
+  el.textContent = `${paso >= 0 ? 'Sube' : 'Baja'} ${Math.abs(r4(paso))} por metro: ${a} m → ${r2(va)}, ${a + 1} m → ${r2(va + paso)}, ${a + 2} m → ${r2(va + 2 * paso)} … ${b} m → ${r2(vb)}`;
+}
+
+/* Eventos del editor de daño */
+$('editor').addEventListener('input', e => { if (['rA', 'rB', 'rVA', 'rVB'].includes(e.target.id)) dePrevRampa(); });
+$('editor').addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const id = e.target.id;
+  if (id === 'deSelVal') { e.preventDefault(); $('deSelFill').click(); }
+  else if (['tA', 'tB', 'tV'].includes(id)) { e.preventDefault(); $('tAplicar').click(); }
+  else if (['rA', 'rB', 'rVA', 'rVB'].includes(id)) { e.preventDefault(); $('rAplicar').click(); }
+});
+$('editor').addEventListener('change', e => {
+  const el = e.target, a = S.view === 'arma' && armaSel(); if (!a || S.tab !== 'dano') return;
+  if (el.id === 'vidaPrev') { S.vida = Math.max(1, num(el.value) || VIDA_DEF); renderDanoVista(a); return; }
+  if (el.id === 'deFuente') { S.de.fuente = el.value; S.de.sel = null; tabDano(a); return; }
+  if (el.dataset.tt == null) return;
+  const t = deTramos(a).map(r => r.slice()), i = +el.dataset.i, k = +el.dataset.tt;
+  if (k === 0) { const m = metro(num(el.value)); if (m == null) { renderDanoVista(a); return; } t[i][0] = m; }
+  if (k === 1) { const v = num(el.value); t[i][1] = typeof v === 'number' && v > 0 ? v : null; }
+  if (k === 2) { if (el.value === 'rampa') t[i][2] = 'rampa'; else t[i].length = 2; }
+  deGuardar(a, normalizarTramos(t));
+});
+$('editor').addEventListener('click', async e => {
+  const el = e.target, a = S.view === 'arma' && armaSel(); if (!a || S.tab !== 'dano') return;
+  if (el.dataset.dezona) { S.de.zona = el.dataset.dezona; tabDano(a); return; }
+  const t = deTramos(a);
+  if (el.dataset.ttdel != null) { const n = t.map(r => r.slice()); n.splice(+el.dataset.ttdel, 1); deGuardar(a, normalizarTramos(n)); return; }
+  switch (el.id) {
+    case 'tAplicar': {
+      const x = metro(numCampo('tA')), y = metro(numCampo('tB')), v = numCampo('tV');
+      if (x == null || y == null || v == null || v <= 0) { toast('Completa Desde, Hasta y un Daño mayor que 0.'); return; }
+      const lo = Math.min(x, y), hi = Math.max(x, y);
+      deGuardar(a, ponerTramo(t, lo, hi, v)); toast(`Metros ${lo}–${hi}: ${v}.`);
+      $('tA').value = Math.min(200, hi + 1); $('tB').value = ''; $('tV').value = ''; $('tB').focus(); return;
+    }
+    case 'rAplicar': {
+      const x = metro(numCampo('rA')), y = metro(numCampo('rB')), va = numCampo('rVA'), vb = numCampo('rVB');
+      if ([x, y, va, vb].some(q => q == null) || va <= 0 || vb <= 0) { toast('Completa los dos extremos de la rampa.'); return; }
+      if (y <= x) { toast('"Hasta" tiene que ser mayor que "Desde".'); return; }
+      deGuardar(a, ponerRampa(t, x, va, y, vb)); toast(`Rampa de ${x} m (${va}) a ${y} m (${vb}).`); return;
+    }
+    case 'deSelFill': {
+      const v = numCampo('deSelVal'); if (!S.de.sel) { toast('Primero selecciona metros en la rejilla.'); return; }
+      if (v == null || v <= 0) { toast('Escribe un daño mayor que 0.'); $('deSelVal').focus(); return; }
+      deGuardar(a, ponerTramo(t, S.de.sel.a, S.de.sel.b, v)); $('deSelVal').value = ''; $('deGrid').focus(); return;
+    }
+    case 'deSelRamp': {
+      if (!S.de.sel || S.de.sel.b <= S.de.sel.a) { toast('Selecciona al menos dos metros en la rejilla.'); return; }
+      deRellenarCampos(a); $('rVA').focus(); toast('Revisa los dos extremos en "Rampa" y pulsa Aplicar rampa.'); return;
+    }
+    case 'deSelClear': {
+      if (!S.de.sel) return; deGuardar(a, reemplazarRango(t, S.de.sel.a, S.de.sel.b, [[S.de.sel.a, null]])); return;
+    }
+    case 'deVaciar': {
+      if (await confirmar('Vaciar zona', `¿Borrar todo el daño de ${esquema().zonas.find(z => z.id === S.de.zona)?.nombre}?`)) deGuardar(a, []); return;
+    }
+    case 'dePegar': {
+      $('deExtra').innerHTML = `<p class="note">Formato: <code>inicio-fin:daño</code> separados por coma. Para una rampa: <code>inicio-fin:dañoInicial&gt;dañoFinal</code>.<br>
+        Ejemplo: <code>0-74:80, 75-100:80&gt;100, 101-132:100, 133-175:100&gt;62, 176-200:62</code></p>
+        <textarea id="pegarTxt" rows="3"></textarea><div class="row" style="margin-top:6px"><button class="btn primary small" id="pegarOk">Reemplazar la zona</button><button class="btn small" id="extraNo">Cancelar</button></div>`;
+      $('pegarTxt').focus(); return;
+    }
+    case 'pegarOk': {
+      const r = parsearTramos($('pegarTxt').value);
+      if (!r) { toast('No reconocí ningún tramo. Usa el formato 0-30:49.26'); return; }
+      $('deExtra').innerHTML = ''; deGuardar(a, r); return;
+    }
+    case 'deCopiar': {
+      const otras = esquema().zonas.filter(z => z.id !== S.de.zona && deFuenteObj(a).dano?.[z.id]);
+      if (!otras.length) { toast('No hay otra zona con daño para copiar.'); return; }
+      $('deExtra').innerHTML = `<div class="row" style="margin-top:8px"><label>Copiar de <select id="copZona">${otras.map(z => `<option value="${esc(z.id)}">${esc(z.nombre)}</option>`).join('')}</select></label>
+        <label>× <input id="copFactor" inputmode="decimal" value="1" style="width:60px"></label><button class="btn primary small" id="copOk">Copiar</button><button class="btn small" id="extraNo">Cancelar</button></div>
+        <p class="note">Ejemplo: Cabeza = Pecho × 1.4. Las rampas se copian como rampas.</p>`; return;
+    }
+    case 'copOk': {
+      const f = numCampo('copFactor'); if (!f || f <= 0) { toast('Escribe un multiplicador mayor que 0.'); return; }
+      const src = deFuenteObj(a).dano[$('copZona').value] || [];
+      $('deExtra').innerHTML = ''; deGuardar(a, normalizarTramos(src.map(r => { const x = [r[0], r[1] == null ? null : r4(r[1] * f)]; if (r[2]) x.push(r[2]); return x; }))); return;
+    }
+    case 'extraNo': $('deExtra').innerHTML = ''; return;
+  }
+});
 /* ---------- Equipamientos ---------- */
 function tabEquip(a) {
   a.equipamientos = a.equipamientos || [];
@@ -382,9 +662,8 @@ function tabEquip(a) {
       <h3>Accesorios</h3><div class="grid">${esquema().ranuras.map(r => campo(r.nombre, inputTxt(`equipamientos.${i}.accesorios.${r.id}`, eq.accesorios?.[r.id]))).join('')}</div>
       <h3>Estadísticas propias</h3><p class="note">Déjalas vacías para usar las de la Base. Cuando esté listo el constructor, se calcularán solas a partir de los accesorios.</p>
       <div class="grid">${stats.map(s => campo(`${s.nombre}${s.unidad ? ' (' + s.unidad + ')' : ''}`, inputNum(`equipamientos.${i}.estadisticas.${s.id}`, eq.estadisticas?.[s.id], a.base?.[s.id] ?? ''))).join('')}</div>
-      <h3>Daño propio</h3>${eq.dano && Object.keys(eq.dano).length
-        ? `<div class="zones">${esquema().zonas.map(z => `<div><b>${esc(z.nombre)}</b>${tablaTramos(i + ':' + z.id, eq.dano[z.id], eq.estadisticas?.cadencia || a.base?.cadencia)}</div>`).join('')}</div>
-           <button class="btn small" data-eqdano="${i}" data-off="1" style="margin-top:8px">Usar el daño de la Base</button>`
+      <h3>Daño propio</h3>${eq.dano
+        ? `<p class="note">Este equipamiento tiene su propio daño.</p><div class="row"><button class="btn small primary" data-eqedit="${i}">Editar su daño</button><button class="btn small" data-eqdano="${i}" data-off="1">Usar el daño de la Base</button></div>`
         : `<p class="note">Usa el daño de la Base.</p><button class="btn small" data-eqdano="${i}">Darle daño propio (copia de la Base)</button>`}
     </div>`).join('');
   $('tabBody').innerHTML = (html || '<p class="note">Esta arma no tiene equipamientos.</p>') + `<button class="btn primary" id="eqAdd">+ Agregar equipamiento</button>`;
@@ -399,6 +678,7 @@ $('editor').addEventListener('click', async e => {
   if (el.id === 'eqAdd') { a.equipamientos.push({ nombre: `Equip. ${a.equipamientos.length + 1}`, accesorios: {} }); }
   else if (el.dataset.eqdel) { if (!await confirmar('Eliminar equipamiento', `¿Eliminar «${a.equipamientos[+el.dataset.eqdel].nombre}»?`)) return; a.equipamientos.splice(+el.dataset.eqdel, 1); }
   else if (el.dataset.equp) { const i = +el.dataset.equp; [a.equipamientos[i - 1], a.equipamientos[i]] = [a.equipamientos[i], a.equipamientos[i - 1]]; }
+  else if (el.dataset.eqedit != null) { S.tab = 'dano'; S.de.fuente = el.dataset.eqedit; S.de.sel = null; renderEditor(); return; }
   else if (el.dataset.eqdano) { const eq = a.equipamientos[+el.dataset.eqdano]; if (el.dataset.off) delete eq.dano; else eq.dano = clone(a.dano || {}); }
   else return;
   marcar(a.id); tabEquip(a); renderEditor();
@@ -465,9 +745,8 @@ function validar() {
     const n = a.nombre.trim().toLowerCase();
     if (!n) errs.push('Hay un arma sin nombre.');
     if (nombres.has(n)) errs.push(`El nombre «${a.nombre}» está repetido.`); nombres.add(n);
-    for (const [z, t] of Object.entries(a.dano || {})) {
-      if (t.length && t[0][0] !== 0) errs.push(`${a.nombre}: el daño de ${z} debe empezar en el metro 0.`);
-      if (t.some(r => typeof r[1] !== 'number' || r[1] <= 0)) errs.push(`${a.nombre}: hay un tramo de ${z} sin daño válido.`);
+    for (const d of [a.dano, ...(a.equipamientos || []).map(q => q.dano)]) for (const [z, t] of Object.entries(d || {})) {
+      if (t.some(r => r[1] != null && !(typeof r[1] === 'number' && r[1] > 0))) errs.push(`${a.nombre}: hay un tramo de ${z} con un daño que no es un número mayor que 0.`);
     }
   }
   return errs;

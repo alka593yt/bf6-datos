@@ -2158,7 +2158,18 @@ if(typeof metaOnData === 'function') metaOnData();
 /* Balas para matar: vida / daño, redondeado hacia arriba (24.84 -> 4.03 -> 5). */
 function calcBalas(vida, dano){ return dano > 0 ? Math.ceil(vida / dano - 1e-9) : null; }
 function calcTTK(cadencia, balas){ return (cadencia > 0 && balas) ? Math.round((60 / cadencia) * (balas - 1) * 1000) : null; }
-function expandirTramos(t){ var out = [], j = 0; for(var m = 0; m <= 200; m++){ while(j + 1 < t.length && t[j + 1][0] <= m) j++; out.push(t.length && t[0][0] <= m ? t[j][1] : null); } return out; }
+/* Tramos [[desde, daño], [desde, daño, "rampa"], ...]: un tramo "rampa" va en línea recta hasta el daño del tramo siguiente. */
+function expandirTramos(t){
+  var out = [], j = -1;
+  for(var m = 0; m <= 200; m++){
+    while(j + 1 < t.length && t[j + 1][0] <= m) j++;
+    if(j < 0){ out.push(null); continue; }
+    var r = t[j], n = t[j + 1], v = r[1];
+    if(r[2] === 'rampa' && n && v != null && n[1] != null) v = v + (n[1] - v) * (m - r[0]) / (n[0] - r[0]);
+    out.push(v == null ? null : Math.round((v + 1e-9) * 100) / 100);
+  }
+  return out;
+}
 var BF6_CLASES = ['base', 'clase1', 'clase2', 'clase3'];
 /* Nombres originales de la página: se mantienen como alias aunque cambies la etiqueta en el panel. */
 var BF6_ALIAS = { cadencia:'Cadencia', velBala:'Vel. de Bala', velApuntar:'Vel. al apuntar', velRecarga:'Vel. de recarga', cadera:'Disparo de cadera', precision:'Precisión', control:'Control', movilidad:'Movilidad', recoilVertical:'Recoil vertical', recoilHorizontal:'Recoil horizontal' };
