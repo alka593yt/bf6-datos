@@ -10456,6 +10456,24 @@
    "equipamientos": [],
    "revisar": true,
    "notas": "Valores que no correspondían a ningún accesorio; posible temporada anterior."
+  },
+  {
+   "id": "prueba-1",
+   "nombre": "PRUEBA 1",
+   "categoria": "Francotirador",
+   "base": {
+    "vida": 100,
+    "cadencia": 900
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      20
+     ]
+    ]
+   },
+   "equipamientos": []
   }
  ]
 }
