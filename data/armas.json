@@ -346,6 +346,10 @@
     "cabeza": [
      [
       0,
+      49.31
+     ],
+     [
+      21,
       36.47
      ],
      [
@@ -382,7 +386,8 @@
      ]
     ]
    },
-   "equipamientos": []
+   "equipamientos": [],
+   "notas": "Cabeza corregida: faltaba el tramo de 0 a 20 m (pecho 35.22 × 1.4 = 49.31)."
   },
   {
    "id": "nvo-228e",
@@ -4966,6 +4971,1401 @@
     ]
    },
    "equipamientos": []
+  },
+  {
+   "id": "svk-8-6",
+   "nombre": "SVK-8.6",
+   "categoria": "DMR",
+   "idAnalizador": "svk86",
+   "base": {
+    "vida": 100,
+    "cadencia": 150,
+    "velBala": 680,
+    "velApuntar": 367,
+    "velRecarga": 2967,
+    "cadera": 29,
+    "precision": 29,
+    "control": 8,
+    "movilidad": 36,
+    "recoilVertical": 3.01,
+    "recoilHorizontal": 20,
+    "danoCabeza": 100.05,
+    "danoPecho": 66.7,
+    "danoEstomago": 60.7,
+    "balasParaMatar": 2
+   },
+   "municion": {
+    "puntaHueca": 1.75
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      66.7
+     ],
+     [
+      9,
+      57.2
+     ],
+     [
+      21,
+      52.4
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      100.05
+     ],
+     [
+      9,
+      85.8
+     ],
+     [
+      21,
+      78.6
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      60.7
+     ],
+     [
+      9,
+      52.05
+     ],
+     [
+      21,
+      47.68
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "svdm",
+   "nombre": "SVDM",
+   "categoria": "DMR",
+   "idAnalizador": "svdm",
+   "base": {
+    "vida": 100,
+    "cadencia": 300,
+    "velBala": 760,
+    "velApuntar": 300,
+    "velRecarga": 2500,
+    "cadera": 34,
+    "precision": 55,
+    "control": 17,
+    "movilidad": 44,
+    "recoilVertical": 1.57,
+    "recoilHorizontal": 10,
+    "danoCabeza": 62.25,
+    "danoPecho": 41.5,
+    "danoEstomago": 37.77,
+    "balasParaMatar": 3
+   },
+   "municion": {
+    "puntaHueca": 1.75
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      41.5
+     ],
+     [
+      21,
+      37.6
+     ],
+     [
+      75,
+      34.4
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      62.25
+     ],
+     [
+      21,
+      56.4
+     ],
+     [
+      75,
+      51.6
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      37.77
+     ],
+     [
+      21,
+      34.22
+     ],
+     [
+      75,
+      31.3
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "grt-cps",
+   "nombre": "GRT-CPS",
+   "categoria": "DMR",
+   "idAnalizador": "grtcps",
+   "base": {
+    "vida": 100,
+    "cadencia": 360,
+    "velBala": 760,
+    "velApuntar": 250,
+    "velRecarga": 2750,
+    "cadera": 34,
+    "precision": 76,
+    "control": 26,
+    "movilidad": 52,
+    "recoilVertical": 1.06,
+    "recoilHorizontal": 8,
+    "danoCabeza": 39.4,
+    "danoPecho": 29.4,
+    "danoEstomago": 26.75,
+    "balasParaMatar": 4
+   },
+   "municion": {
+    "puntaHueca": 1.5,
+    "sintetico": 1.75
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      29.4
+     ],
+     [
+      21,
+      27.5
+     ],
+     [
+      75,
+      26.2
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      39.4
+     ],
+     [
+      21,
+      36.85
+     ],
+     [
+      75,
+      35.11
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      26.75
+     ],
+     [
+      21,
+      25.03
+     ],
+     [
+      75,
+      23.84
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "vssm",
+   "nombre": "VSSM",
+   "categoria": "DMR",
+   "idAnalizador": "vssm",
+   "base": {
+    "vida": 100,
+    "cadencia": 450,
+    "velBala": 321,
+    "velApuntar": 250,
+    "velRecarga": 2467,
+    "cadera": 47,
+    "precision": 78,
+    "control": 34,
+    "movilidad": 56,
+    "recoilVertical": 0.85,
+    "recoilHorizontal": 9.2,
+    "danoCabeza": 63.4,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      9,
+      27.48
+     ],
+     [
+      21,
+      21.56
+     ],
+     [
+      36,
+      20.67
+     ],
+     [
+      75,
+      17.13
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      63.4
+     ],
+     [
+      9,
+      49.46
+     ],
+     [
+      21,
+      38.81
+     ],
+     [
+      36,
+      37.21
+     ],
+     [
+      75,
+      30.83
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      9,
+      23.08
+     ],
+     [
+      21,
+      18.11
+     ],
+     [
+      36,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "m87a1",
+   "nombre": "M87A1",
+   "categoria": "Escopeta",
+   "idAnalizador": "m87a1",
+   "base": {
+    "vida": 100,
+    "cadencia": 94,
+    "velBala": 400,
+    "velApuntar": 250,
+    "velRecarga": 1334,
+    "cadera": 40,
+    "precision": 10,
+    "control": 7,
+    "movilidad": 52,
+    "recoilVertical": 3.61,
+    "recoilHorizontal": 12,
+    "danoCabeza": 134.4,
+    "danoPecho": 134.4,
+    "danoEstomago": 134.4,
+    "balasParaMatar": 1
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      134.4
+     ],
+     [
+      9,
+      115.2
+     ],
+     [
+      16,
+      89.6
+     ],
+     [
+      31,
+      60.8
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      134.4
+     ],
+     [
+      9,
+      115.2
+     ],
+     [
+      16,
+      89.6
+     ],
+     [
+      31,
+      60.8
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      134.4
+     ],
+     [
+      9,
+      115.2
+     ],
+     [
+      16,
+      89.6
+     ],
+     [
+      31,
+      60.8
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+  },
+  {
+   "id": "m1014",
+   "nombre": "M1014",
+   "categoria": "Escopeta",
+   "idAnalizador": "m1014",
+   "base": {
+    "vida": 100,
+    "cadencia": 200,
+    "velBala": 400,
+    "velApuntar": 250,
+    "velRecarga": 1784,
+    "cadera": 40,
+    "precision": 10,
+    "control": 10,
+    "movilidad": 52,
+    "recoilVertical": 2.41,
+    "recoilHorizontal": 15,
+    "danoCabeza": 115.2,
+    "danoPecho": 115.2,
+    "danoEstomago": 115.2,
+    "balasParaMatar": 1
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      115.2
+     ],
+     [
+      9,
+      80.0
+     ],
+     [
+      16,
+      49.6
+     ],
+     [
+      22,
+      36.8
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      115.2
+     ],
+     [
+      9,
+      80.0
+     ],
+     [
+      16,
+      49.6
+     ],
+     [
+      22,
+      36.8
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      115.2
+     ],
+     [
+      9,
+      80.0
+     ],
+     [
+      16,
+      49.6
+     ],
+     [
+      22,
+      36.8
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+  },
+  {
+   "id": "18-5ks-k",
+   "nombre": "18.5KS-K",
+   "categoria": "Escopeta",
+   "idAnalizador": "ks18k",
+   "base": {
+    "vida": 100,
+    "cadencia": 300,
+    "velBala": 400,
+    "velApuntar": 200,
+    "velRecarga": 2750,
+    "cadera": 42,
+    "precision": 14,
+    "control": 15,
+    "movilidad": 60,
+    "recoilVertical": 1.69,
+    "recoilHorizontal": 12,
+    "danoCabeza": 80.0,
+    "danoPecho": 80.0,
+    "danoEstomago": 80.0,
+    "balasParaMatar": 2
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      80.0
+     ],
+     [
+      16,
+      44.8
+     ],
+     [
+      22,
+      32.0
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      80.0
+     ],
+     [
+      16,
+      44.8
+     ],
+     [
+      22,
+      32.0
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      80.0
+     ],
+     [
+      16,
+      44.8
+     ],
+     [
+      22,
+      32.0
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+  },
+  {
+   "id": "db-12",
+   "nombre": "DB-12",
+   "categoria": "Escopeta",
+   "idAnalizador": "db12",
+   "base": {
+    "vida": 100,
+    "cadencia": 360,
+    "velBala": 400,
+    "velApuntar": 200,
+    "velRecarga": 2348,
+    "cadera": 39,
+    "precision": 6,
+    "control": 9,
+    "movilidad": 60,
+    "recoilVertical": 2.71,
+    "recoilHorizontal": 15,
+    "danoCabeza": 89.6,
+    "danoPecho": 89.6,
+    "danoEstomago": 89.6,
+    "balasParaMatar": 2
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      89.6
+     ],
+     [
+      16,
+      52.8
+     ],
+     [
+      22,
+      40.0
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      89.6
+     ],
+     [
+      16,
+      52.8
+     ],
+     [
+      22,
+      40.0
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      89.6
+     ],
+     [
+      16,
+      52.8
+     ],
+     [
+      22,
+      40.0
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+  },
+  {
+   "id": "p18",
+   "nombre": "P18",
+   "categoria": "Pistola",
+   "idAnalizador": "p18",
+   "base": {
+    "vida": 100,
+    "cadencia": 400,
+    "velBala": 350,
+    "velApuntar": 167,
+    "velRecarga": 1934,
+    "cadera": 54,
+    "precision": 49,
+    "control": 23,
+    "movilidad": 75,
+    "recoilVertical": 1.2,
+    "recoilHorizontal": 15,
+    "danoCabeza": 33.5,
+    "danoPecho": 25.0,
+    "danoEstomago": 25.0,
+    "balasParaMatar": 4
+   },
+   "municion": {
+    "puntaHueca": 1.5
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      25.0
+     ],
+     [
+      9,
+      20.0
+     ],
+     [
+      21,
+      16.7
+     ],
+     [
+      36,
+      14.3
+     ],
+     [
+      75,
+      12.5
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      33.5
+     ],
+     [
+      9,
+      26.8
+     ],
+     [
+      21,
+      22.38
+     ],
+     [
+      36,
+      19.16
+     ],
+     [
+      75,
+      16.75
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      25.0
+     ],
+     [
+      9,
+      20.0
+     ],
+     [
+      21,
+      16.7
+     ],
+     [
+      36,
+      14.3
+     ],
+     [
+      75,
+      12.5
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "es-5-7",
+   "nombre": "ES 5.7",
+   "categoria": "Pistola",
+   "idAnalizador": "es57",
+   "base": {
+    "vida": 100,
+    "cadencia": 450,
+    "velBala": 510,
+    "velApuntar": 133,
+    "velRecarga": 2017,
+    "cadera": 54,
+    "precision": 57,
+    "control": 28,
+    "movilidad": 81,
+    "recoilVertical": 1,
+    "recoilHorizontal": 15,
+    "danoCabeza": 26.8,
+    "danoPecho": 20.0,
+    "danoEstomago": 20.0,
+    "balasParaMatar": 5
+   },
+   "municion": {
+    "puntaHueca": 1.5
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      20.0
+     ],
+     [
+      9,
+      17.7
+     ],
+     [
+      21,
+      15.0
+     ],
+     [
+      36,
+      14.3
+     ],
+     [
+      75,
+      12.5
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      26.8
+     ],
+     [
+      9,
+      23.72
+     ],
+     [
+      21,
+      20.1
+     ],
+     [
+      36,
+      19.16
+     ],
+     [
+      75,
+      16.75
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      20.0
+     ],
+     [
+      9,
+      17.7
+     ],
+     [
+      21,
+      15.0
+     ],
+     [
+      36,
+      14.3
+     ],
+     [
+      75,
+      12.5
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "m45a1",
+   "nombre": "M45A1",
+   "categoria": "Pistola",
+   "idAnalizador": "m45a1",
+   "base": {
+    "vida": 100,
+    "cadencia": 327,
+    "velBala": 336,
+    "velApuntar": 167,
+    "velRecarga": 1867,
+    "cadera": 54,
+    "precision": 54,
+    "control": 15,
+    "movilidad": 75,
+    "recoilVertical": 1.67,
+    "recoilHorizontal": 12,
+    "danoCabeza": 44.76,
+    "danoPecho": 33.4,
+    "danoEstomago": 33.4,
+    "balasParaMatar": 3
+   },
+   "municion": {
+    "puntaHueca": 1.5
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      33.4
+     ],
+     [
+      9,
+      25.0
+     ],
+     [
+      21,
+      20.0
+     ],
+     [
+      36,
+      16.7
+     ],
+     [
+      54,
+      14.3
+     ],
+     [
+      75,
+      12.5
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      44.76
+     ],
+     [
+      9,
+      33.5
+     ],
+     [
+      21,
+      26.8
+     ],
+     [
+      36,
+      22.38
+     ],
+     [
+      54,
+      19.16
+     ],
+     [
+      75,
+      16.75
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      33.4
+     ],
+     [
+      9,
+      25.0
+     ],
+     [
+      21,
+      20.0
+     ],
+     [
+      36,
+      16.7
+     ],
+     [
+      54,
+      14.3
+     ],
+     [
+      75,
+      12.5
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "m44",
+   "nombre": "M44",
+   "categoria": "Pistola",
+   "idAnalizador": "m44",
+   "base": {
+    "vida": 100,
+    "cadencia": 163,
+    "velBala": 440,
+    "velApuntar": 200,
+    "velRecarga": 3400,
+    "cadera": 54,
+    "precision": 24,
+    "control": 5,
+    "movilidad": 65,
+    "recoilVertical": 6,
+    "recoilHorizontal": 12,
+    "danoCabeza": 100.05,
+    "danoPecho": 66.7,
+    "danoEstomago": 66.7,
+    "balasParaMatar": 2
+   },
+   "municion": {
+    "puntaHueca": 1.75
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      66.7
+     ],
+     [
+      9,
+      59.9
+     ],
+     [
+      21,
+      33.4
+     ],
+     [
+      75,
+      25.0
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      100.05
+     ],
+     [
+      9,
+      89.85
+     ],
+     [
+      21,
+      50.1
+     ],
+     [
+      75,
+      37.5
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      66.7
+     ],
+     [
+      9,
+      59.9
+     ],
+     [
+      21,
+      33.4
+     ],
+     [
+      75,
+      25.0
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "ggh-22",
+   "nombre": "GGH-22",
+   "categoria": "Pistola",
+   "idAnalizador": "ggh22",
+   "base": {
+    "vida": 100,
+    "cadencia": 360,
+    "velBala": 400,
+    "velApuntar": 167,
+    "velRecarga": 1934,
+    "cadera": 54,
+    "precision": 48,
+    "control": 18,
+    "movilidad": 75,
+    "recoilVertical": 1.5,
+    "recoilHorizontal": 12,
+    "danoCabeza": 33.5,
+    "danoPecho": 25.0,
+    "danoEstomago": 25.0,
+    "balasParaMatar": 4
+   },
+   "municion": {
+    "puntaHueca": 1.5
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      25.0
+     ],
+     [
+      9,
+      21.5
+     ],
+     [
+      21,
+      17.7
+     ],
+     [
+      36,
+      16.7
+     ],
+     [
+      75,
+      14.3
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      33.5
+     ],
+     [
+      9,
+      28.81
+     ],
+     [
+      21,
+      23.72
+     ],
+     [
+      36,
+      22.38
+     ],
+     [
+      75,
+      19.16
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      25.0
+     ],
+     [
+      9,
+      21.5
+     ],
+     [
+      21,
+      17.7
+     ],
+     [
+      36,
+      16.7
+     ],
+     [
+      75,
+      14.3
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "m357-trait",
+   "nombre": "M357 TRAIT",
+   "categoria": "Pistola",
+   "idAnalizador": "m357trait",
+   "base": {
+    "vida": 100,
+    "cadencia": 225,
+    "velBala": 410,
+    "velApuntar": 167,
+    "velRecarga": 3067,
+    "cadera": 54,
+    "precision": 27,
+    "control": 8,
+    "movilidad": 73,
+    "recoilVertical": 3,
+    "recoilHorizontal": 15,
+    "danoCabeza": 75.0,
+    "danoPecho": 50.0,
+    "danoEstomago": 50.0,
+    "balasParaMatar": 2
+   },
+   "municion": {
+    "puntaHueca": 1.75
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      50.0
+     ],
+     [
+      9,
+      37.5
+     ],
+     [
+      21,
+      27.3
+     ],
+     [
+      36,
+      25.0
+     ],
+     [
+      75,
+      20.0
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      75.0
+     ],
+     [
+      9,
+      56.25
+     ],
+     [
+      21,
+      40.95
+     ],
+     [
+      36,
+      37.5
+     ],
+     [
+      75,
+      30.0
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      50.0
+     ],
+     [
+      9,
+      37.5
+     ],
+     [
+      21,
+      27.3
+     ],
+     [
+      36,
+      25.0
+     ],
+     [
+      75,
+      20.0
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "vz-61",
+   "nombre": "VZ. 61",
+   "categoria": "Pistola",
+   "idAnalizador": "vz61",
+   "base": {
+    "vida": 100,
+    "cadencia": 818,
+    "velBala": 313,
+    "velApuntar": 167,
+    "velRecarga": 2134,
+    "cadera": 47,
+    "precision": 61,
+    "control": 57,
+    "movilidad": 69,
+    "recoilVertical": 0.51,
+    "recoilHorizontal": 18.4,
+    "danoCabeza": 23.98,
+    "danoPecho": 17.13,
+    "danoEstomago": 14.39,
+    "balasParaMatar": 6
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      17.13
+     ],
+     [
+      9,
+      15.07
+     ],
+     [
+      21,
+      13.09
+     ],
+     [
+      36,
+      12.76
+     ],
+     [
+      75,
+      11.32
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      23.98
+     ],
+     [
+      9,
+      21.1
+     ],
+     [
+      21,
+      18.33
+     ],
+     [
+      36,
+      17.86
+     ],
+     [
+      75,
+      15.85
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      14.39
+     ],
+     [
+      9,
+      12.66
+     ],
+     [
+      21,
+      11.0
+     ],
+     [
+      36,
+      10.72
+     ],
+     [
+      75,
+      9.51
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+  },
+  {
+   "id": "rspr",
+   "nombre": "RSPR",
+   "categoria": "Subfusil",
+   "idAnalizador": "rspr",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 453,
+    "velApuntar": 167,
+    "velRecarga": 2334,
+    "cadera": 47,
+    "precision": 26,
+    "control": 39,
+    "movilidad": 68,
+    "recoilVertical": 0.78,
+    "recoilHorizontal": 30,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      9,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      9,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      9,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   }
  ]
 }
