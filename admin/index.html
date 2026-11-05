@@ -528,7 +528,7 @@ async function cargar() {
   refrescarCabecera(); renderLista(); renderEditor();
 }
 async function entrar(token, recordar) {
-  TOKEN = token; $('loginErr').textContent = '';
+  TOKEN = token;
   try {
     await gh(`/repos/${REPO.owner}/${REPO.name}`);
     if (recordar) { try { localStorage.setItem(TOKEN_KEY, token); } catch (e) {} }
@@ -540,7 +540,11 @@ async function entrar(token, recordar) {
     $('loginErr').textContent = err.status === 401 ? 'La clave no es válida o caducó.' : err.status === 404 ? 'La clave no tiene acceso al repositorio bf6-datos.' : 'No se pudo conectar: ' + err.message;
   }
 }
-$('loginBtn').addEventListener('click', () => { const t = $('tokenInput').value.trim(); if (t) entrar(t, $('rememberToken').checked); });
+$('loginBtn').addEventListener('click', () => {
+  const t = $('tokenInput').value.trim();
+  if (!t) { $('loginErr').textContent = 'Pega tu clave de GitHub para entrar. Abajo explica cómo crearla.'; return; }
+  $('loginErr').textContent = 'Comprobando la clave...'; entrar(t, $('rememberToken').checked);
+});
 $('tokenInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
 $('logoutBtn').addEventListener('click', async () => {
   if ((S.dirty.size || S.deleted.size || S.schemaDirty) && !await confirmar('Salir', 'Tienes cambios sin guardar. ¿Salir igual?')) return;
