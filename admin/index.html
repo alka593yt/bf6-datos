@@ -99,6 +99,18 @@ h4{margin:0 0 8px;font-size:13px}
 .de-grid .c.off{visibility:hidden}
 .de-grid .c.sel{border-color:var(--accent);background:#3a2c10}
 .de-grid .fh{position:absolute;right:-3px;bottom:-3px;width:8px;height:8px;background:var(--accent);border:1px solid #111;cursor:crosshair}
+.acc-prog{margin:10px 0 12px;display:grid;gap:6px;max-width:420px}
+.acc-prog .bar{height:8px;background:var(--panel-2);border-radius:4px;overflow:hidden}
+.acc-prog .bar i{display:block;height:100%;background:var(--accent)}
+.acc-filtros{margin-bottom:6px}
+.acc-table td{padding:4px 6px}
+.acc-table .acc-en{color:var(--muted);white-space:nowrap}
+.acc-table .acc-es{width:100%;min-width:200px}
+.acc-table .acc-ok{white-space:nowrap;font-size:12.5px;color:var(--muted)}
+.acc-table .acc-ok label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.acc-table .acc-rev{width:auto;margin:0}
+.acc-table th:first-child{width:32%}
+.acc-table tr.acc-g td{color:var(--accent);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-bottom-color:var(--line-2)}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
 #modal .box{background:var(--panel);border:1px solid var(--line-2);border-radius:var(--radius);padding:18px;max-width:440px;width:100%}
 #modal h3{margin-top:0}
@@ -136,6 +148,7 @@ h4{margin:0 0 8px;font-size:13px}
     <h1>PANEL <span>BF6</span></h1>
     <span id="status"></span>
     <span class="grow"></span>
+    <button class="btn" id="accBtn">Accesorios</button>
     <button class="btn" id="schemaBtn">Campos</button>
     <button class="btn" id="reloadBtn">Recargar</button>
     <button class="btn primary" id="saveBtn" disabled>Guardar cambios</button>
@@ -161,7 +174,7 @@ h4{margin:0 0 8px;font-size:13px}
 <script>
 'use strict';
 /* ================= CONFIGURACIÓN ================= */
-const REPO = { owner: 'alka593yt', name: 'bf6-datos', branch: 'main', path: 'data/armas.json' };
+const REPO = { owner: 'alka593yt', name: 'bf6-datos', branch: 'main', path: 'data/armas.json', accesorios: 'data/accesorios.json' };
 const TOKEN_KEY = 'bf6admin_token';
 const VIDA_DEF = 100;
 
@@ -256,29 +269,33 @@ async function gh(path, opts = {}) {
   if (!r.ok) { const e = new Error((await r.json().catch(() => ({}))).message || ('HTTP ' + r.status)); e.status = r.status; throw e; }
   return r.status === 204 ? null : r.json();
 }
-async function leerArchivo() {
-  const r = await gh(`/repos/${REPO.owner}/${REPO.name}/contents/${REPO.path}?ref=${REPO.branch}&t=${Date.now()}`);
+async function leerArchivo(path = REPO.path) {
+  const r = await gh(`/repos/${REPO.owner}/${REPO.name}/contents/${path}?ref=${REPO.branch}&t=${Date.now()}`);
   // Archivos grandes (>1 MB) llegan sin contenido: se piden por el blob.
   const txt = r.content ? b64ToUtf8(r.content) : b64ToUtf8((await gh(`/repos/${REPO.owner}/${REPO.name}/git/blobs/${r.sha}`)).content);
   return { doc: JSON.parse(txt), sha: r.sha };
 }
-async function escribirArchivo(doc, sha, mensaje) {
-  return gh(`/repos/${REPO.owner}/${REPO.name}/contents/${REPO.path}`, { method: 'PUT', body: JSON.stringify({ message: mensaje, content: utf8ToB64(JSON.stringify(doc, null, 1) + '\n'), sha, branch: REPO.branch }) });
+async function escribirArchivo(doc, sha, mensaje, path = REPO.path) {
+  return gh(`/repos/${REPO.owner}/${REPO.name}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: mensaje, content: utf8ToB64(JSON.stringify(doc, null, 1) + '\n'), sha, branch: REPO.branch }) });
 }
+const purgar = path => fetch(`https://purge.jsdelivr.net/gh/${REPO.owner}/${REPO.name}@${REPO.branch}/${path}`, { mode: 'no-cors' }).catch(() => {});
 
 /* ================= ESTADO ================= */
-const S = { doc: null, sha: null, sel: null, tab: 'general', dirty: new Set(), schemaDirty: false, deleted: new Set(), nuevas: new Set(), vida: VIDA_DEF, view: 'arma' };
+const S = { doc: null, sha: null, sel: null, tab: 'general', dirty: new Set(), schemaDirty: false, deleted: new Set(), nuevas: new Set(), vida: VIDA_DEF, view: 'arma',
+  acc: null, accSha: null, accDirty: new Set(), accFiltro: { q: '', grupo: '', pendientes: false } };
+const cambiosArmas = () => S.dirty.size + S.deleted.size + (S.schemaDirty ? 1 : 0);
+const hayCambios = () => cambiosArmas() + S.accDirty.size > 0;
 const esquema = () => S.doc.esquema;
 const armas = () => S.doc.armas;
 const armaSel = () => armas().find(a => a.id === S.sel);
 function marcar(id) { if (id) S.dirty.add(id); refrescarCabecera(); renderLista(); }
 function refrescarCabecera() {
-  const n = S.dirty.size + S.deleted.size + (S.schemaDirty ? 1 : 0);
+  const n = cambiosArmas() + S.accDirty.size;
   $('saveBtn').disabled = n === 0;
   $('saveBtn').textContent = n ? `Guardar cambios (${n})` : 'Guardar cambios';
   $('status').textContent = `${armas().length} armas · actualizado ${S.doc.actualizado || '—'}`;
 }
-window.addEventListener('beforeunload', e => { if (S.doc && (S.dirty.size || S.deleted.size || S.schemaDirty)) { e.preventDefault(); e.returnValue = ''; } });
+window.addEventListener('beforeunload', e => { if (S.doc && hayCambios()) { e.preventDefault(); e.returnValue = ''; } });
 
 /* ================= LISTA ================= */
 function renderLista() {
@@ -306,6 +323,7 @@ function inputNum(path, v, ph = '') { return `<input data-path="${esc(path)}" da
 function renderEditor() {
   const ed = $('editor');
   if (S.view === 'campos') return renderCampos();
+  if (S.view === 'accesorios') return renderAccesorios();
   const a = armaSel();
   if (!a) { ed.innerHTML = '<div class="empty">Elige un arma de la lista o crea una nueva.</div>'; return; }
   const tabs = [['general', 'General'], ['stats', 'Estadísticas'], ['dano', 'Daño'], ['equip', `Equipamientos (${(a.equipamientos || []).length})`]];
@@ -738,6 +756,99 @@ $('editor').addEventListener('click', e => {
   S.schemaDirty = true; refrescarCabecera(); renderCampos();
 });
 
+
+/* ================= ACCESORIOS (nombres en español) ================= */
+const GRUPOS_ACC = [['mira', 'Mira'], ['accesorioOptico', 'Accesorio óptico'], ['boca', 'Boca'], ['canon', 'Cañón'], ['canonInferior', 'Cañón inferior'],
+  ['laser', 'Láser'], ['luz', 'Luz'], ['cargador', 'Cargador'], ['municion', 'Munición'], ['ergonomia', 'Ergonomía']];
+const NOMBRE_GRUPO = Object.fromEntries(GRUPOS_ACC);
+function accProgreso() {
+  const n = Object.values(S.acc.nombres), r = n.filter(x => x.revisado).length;
+  return { r, t: n.length, pct: n.length ? Math.round(r / n.length * 100) : 0 };
+}
+function renderAccesorios() {
+  const ed = $('editor');
+  if (!S.acc) { ed.innerHTML = '<div class="empty">No encontré data/accesorios.json en el repositorio.</div>'; return; }
+  const f = S.accFiltro, p = accProgreso();
+  ed.innerHTML = `<div class="row"><h2>Accesorios</h2><span class="grow"></span><button class="btn" id="accBack">Volver a las armas</button></div>
+    <p class="note">Escribe el nombre como aparece en el juego en español. Lo que escribas aquí es lo que verá la gente en tu página. Al editar un nombre se marca como revisado; si la propuesta ya está bien, marca la casilla.</p>
+    <div class="acc-prog"><div><b id="accProgTxt">${p.r} de ${p.t} revisados</b> <span class="muted">(${p.pct} %)</span></div><div class="bar"><i id="accProgBar" style="width:${p.pct}%"></i></div></div>
+    <div class="row acc-filtros">
+      <input id="accQ" type="search" placeholder="Buscar en inglés o español..." value="${esc(f.q)}" style="flex:1;min-width:180px" aria-label="Buscar accesorio">
+      <select id="accGrupo" aria-label="Ranura"><option value="">Todas las ranuras</option>${GRUPOS_ACC.map(([v, l]) => `<option value="${v}" ${f.grupo === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+      <label class="row muted"><input type="checkbox" id="accPend" ${f.pendientes ? 'checked' : ''}> Solo sin revisar</label>
+    </div>
+    <div id="accTabla"></div>`;
+  renderAccTabla();
+}
+function renderAccTabla() {
+  const f = S.accFiltro, q = slug(f.q);
+  const filas = Object.entries(S.acc.nombres).filter(([en, x]) => (!f.grupo || x.grupo === f.grupo) && (!f.pendientes || !x.revisado)
+    && (!q || slug(en).includes(q) || slug(x.es || '').includes(q)));
+  let html = '', grupo = null;
+  for (const [en, x] of filas) {
+    if (x.grupo !== grupo) { grupo = x.grupo; html += `<tr class="acc-g"><td colspan="3">${esc(NOMBRE_GRUPO[grupo] || grupo)}</td></tr>`; }
+    html += `<tr data-en="${esc(en)}"><td class="acc-en">${esc(en)}</td>
+      <td><input class="acc-es" data-en="${esc(en)}" value="${esc(x.es || '')}" aria-label="Nombre en español de ${esc(en)}"></td>
+      <td class="acc-ok"><label><input type="checkbox" class="acc-rev" data-en="${esc(en)}" ${x.revisado ? 'checked' : ''}> Revisado</label>${S.accDirty.has(en) ? ' <span class="tag dirty">sin guardar</span>' : ''}</td></tr>`;
+  }
+  $('accTabla').innerHTML = filas.length
+    ? `<div class="row" style="margin:8px 0"><span class="muted">${filas.length} accesorios</span><span class="grow"></span>
+        <button class="btn small" id="accMarcarTodos">Marcar estos ${filas.length} como revisados</button></div>
+       <div class="tablewrap"><table class="acc-table"><thead><tr><th>Inglés (juego)</th><th>Español (tu página)</th><th></th></tr></thead><tbody>${html}</tbody></table></div>`
+    : '<div class="empty">No hay accesorios con ese filtro.</div>';
+}
+function accMarcarFila(en) {
+  const tr = $('accTabla').querySelector(`tr[data-en="${CSS.escape(en)}"]`); if (!tr) return;
+  tr.querySelector('.acc-rev').checked = !!S.acc.nombres[en].revisado;
+  const td = tr.querySelector('.acc-ok'); if (!td.querySelector('.tag')) td.insertAdjacentHTML('beforeend', ' <span class="tag dirty">sin guardar</span>');
+  const p = accProgreso(); $('accProgTxt').textContent = `${p.r} de ${p.t} revisados`; $('accProgBar').style.width = p.pct + '%';
+  refrescarCabecera();
+}
+$('accBtn').addEventListener('click', () => { S.view = 'accesorios'; renderEditor(); });
+$('editor').addEventListener('input', e => {
+  if (S.view !== 'accesorios') return;
+  const el = e.target;
+  if (el.id === 'accQ') { S.accFiltro.q = el.value; renderAccTabla(); return; }
+  if (el.classList.contains('acc-es')) {
+    const en = el.dataset.en; S.acc.nombres[en].es = el.value.trim(); S.acc.nombres[en].revisado = true; S.accDirty.add(en); accMarcarFila(en);
+  }
+});
+$('editor').addEventListener('change', e => {
+  if (S.view !== 'accesorios') return;
+  const el = e.target;
+  if (el.id === 'accGrupo') { S.accFiltro.grupo = el.value; renderAccTabla(); }
+  else if (el.id === 'accPend') { S.accFiltro.pendientes = el.checked; renderAccTabla(); }
+  else if (el.classList.contains('acc-rev')) { const en = el.dataset.en; S.acc.nombres[en].revisado = el.checked; S.accDirty.add(en); accMarcarFila(en); }
+});
+$('editor').addEventListener('keydown', e => {
+  if (S.view !== 'accesorios' || e.key !== 'Enter' || !e.target.classList.contains('acc-es')) return;
+  e.preventDefault();
+  const todos = [...$('accTabla').querySelectorAll('.acc-es')], i = todos.indexOf(e.target);
+  if (todos[i + 1]) { todos[i + 1].focus(); todos[i + 1].select(); }
+});
+$('editor').addEventListener('click', async e => {
+  if (S.view !== 'accesorios') return;
+  if (e.target.id === 'accBack') { S.view = 'arma'; renderEditor(); return; }
+  if (e.target.id === 'accMarcarTodos') {
+    const ens = [...$('accTabla').querySelectorAll('tr[data-en]')].map(tr => tr.dataset.en);
+    if (!await confirmar('Marcar como revisados', `¿Dar por buenos los ${ens.length} nombres que se ven ahora?`)) return;
+    ens.forEach(en => { S.acc.nombres[en].revisado = true; S.accDirty.add(en); });
+    refrescarCabecera(); renderAccesorios();
+  }
+});
+async function guardarAccesorios() {
+  const msg = `Panel: nombres de accesorios (${S.accDirty.size})`;
+  let r;
+  try { r = await escribirArchivo(S.acc, S.accSha, msg, REPO.accesorios); }
+  catch (err) {
+    if (err.status !== 409) throw err;
+    const remoto = await leerArchivo(REPO.accesorios);   // otro guardado se adelantó: aplica mis cambios encima
+    for (const en of S.accDirty) remoto.doc.nombres[en] = S.acc.nombres[en];
+    S.acc = remoto.doc; r = await escribirArchivo(S.acc, remoto.sha, msg, REPO.accesorios);
+  }
+  S.accSha = r.content.sha; S.accDirty.clear(); purgar(REPO.accesorios);
+}
+
 /* ================= VALIDACIÓN Y GUARDADO ================= */
 function validar() {
   const errs = [], nombres = new Set();
@@ -774,9 +885,11 @@ function fusionar(remoto) {
 $('saveBtn').addEventListener('click', async () => {
   const errs = validar(); if (errs.length) { toast(errs[0], 5000); return; }
   const btn = $('saveBtn'); btn.disabled = true; btn.textContent = 'Guardando...';
-  S.doc.actualizado = new Date().toISOString().slice(0, 10);
-  const msg = mensajeCommit();
   try {
+    if (S.accDirty.size) await guardarAccesorios();
+    if (!cambiosArmas()) { refrescarCabecera(); renderEditor(); toast('Guardado. Tu página lo mostrará en unos minutos.'); return; }
+    S.doc.actualizado = new Date().toISOString().slice(0, 10);
+    const msg = mensajeCommit();
     let r;
     try { r = await escribirArchivo(S.doc, S.sha, msg); }
     catch (err) {
@@ -787,7 +900,7 @@ $('saveBtn').addEventListener('click', async () => {
     }
     S.sha = r.content.sha; S.dirty.clear(); S.deleted.clear(); S.nuevas.clear(); S.schemaDirty = false;
     // Pide a jsDelivr que olvide la copia vieja, para que la página pública vea el cambio pronto.
-    fetch(`https://purge.jsdelivr.net/gh/${REPO.owner}/${REPO.name}@${REPO.branch}/${REPO.path}`, { mode: 'no-cors' }).catch(() => {});
+    purgar(REPO.path);
     refrescarCabecera(); renderLista(); renderEditor();
     toast('Guardado. Tu página lo mostrará en unos minutos.');
   } catch (err) {
@@ -796,15 +909,16 @@ $('saveBtn').addEventListener('click', async () => {
   }
 });
 $('reloadBtn').addEventListener('click', async () => {
-  if ((S.dirty.size || S.deleted.size || S.schemaDirty) && !await confirmar('Recargar', 'Perderás los cambios sin guardar. ¿Continuar?')) return;
+  if (hayCambios() && !await confirmar('Recargar', 'Perderás los cambios sin guardar. ¿Continuar?')) return;
   await cargar();
 });
 
 /* ================= ARRANQUE ================= */
 async function cargar() {
   $('status').textContent = 'Cargando...';
-  const { doc, sha } = await leerArchivo();
-  Object.assign(S, { doc, sha, dirty: new Set(), deleted: new Set(), nuevas: new Set(), schemaDirty: false });
+  const [{ doc, sha }, acc] = await Promise.all([leerArchivo(), leerArchivo(REPO.accesorios).catch(err => { if (err.status === 404) return null; throw err; })]);
+  Object.assign(S, { doc, sha, dirty: new Set(), deleted: new Set(), nuevas: new Set(), schemaDirty: false,
+    acc: acc ? acc.doc : null, accSha: acc ? acc.sha : null, accDirty: new Set() });
   if (!armas().some(a => a.id === S.sel)) S.sel = null;
   refrescarCabecera(); renderLista(); renderEditor();
 }
@@ -828,7 +942,7 @@ $('loginBtn').addEventListener('click', () => {
 });
 $('tokenInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
 $('logoutBtn').addEventListener('click', async () => {
-  if ((S.dirty.size || S.deleted.size || S.schemaDirty) && !await confirmar('Salir', 'Tienes cambios sin guardar. ¿Salir igual?')) return;
+  if (hayCambios() && !await confirmar('Salir', 'Tienes cambios sin guardar. ¿Salir igual?')) return;
   try { localStorage.removeItem(TOKEN_KEY); } catch (e) {} location.reload();
 });
 (function () { let t = null; try { t = localStorage.getItem(TOKEN_KEY); } catch (e) {} if (t) entrar(t, true); })();
