@@ -2236,9 +2236,10 @@ function bf6Filas(doc){
         for(var m = 0; m <= 200; m++){
           if(d[m] == null) continue;
           var balas = calcBalas(vida, d[m]);
-          row[pf.DANO[z] + m] = d[m];
-          row[pf.BALAS[z] + m] = balas;
-          var ttk = calcTTK(cad, balas); if(ttk != null) row[pf.TTK[z] + m] = ttk;
+          /* Como texto, igual que llegaban del CSV: la página trata "0" (muerte de un disparo) como dato válido. */
+          row[pf.DANO[z] + m] = String(d[m]);
+          row[pf.BALAS[z] + m] = String(balas);
+          var ttk = calcTTK(cad, balas); if(ttk != null) row[pf.TTK[z] + m] = String(ttk);
         }
       });
     });
