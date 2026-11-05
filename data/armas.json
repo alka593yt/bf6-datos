@@ -232,6 +232,14 @@
   ],
   "ranuras": [
    {
+    "id": "mira",
+    "nombre": "Mira"
+   },
+   {
+    "id": "accesorioOptico",
+    "nombre": "Accesorio óptico"
+   },
+   {
     "id": "boca",
     "nombre": "Boca"
    },
@@ -244,6 +252,18 @@
     "nombre": "Cañón inferior"
    },
    {
+    "id": "laser",
+    "nombre": "Láser"
+   },
+   {
+    "id": "luz",
+    "nombre": "Luz"
+   },
+   {
+    "id": "riel",
+    "nombre": "Láser / Luz"
+   },
+   {
     "id": "cargador",
     "nombre": "Cargador"
    },
@@ -254,26 +274,6 @@
    {
     "id": "ergonomia",
     "nombre": "Ergonomía"
-   },
-   {
-    "id": "mira",
-    "nombre": "Mira"
-   },
-   {
-    "id": "accesorioOptico",
-    "nombre": "Accesorio óptico"
-   },
-   {
-    "id": "accesorioSuperior",
-    "nombre": "Accesorio superior"
-   },
-   {
-    "id": "accesorioDerecho",
-    "nombre": "Accesorio derecho"
-   },
-   {
-    "id": "accesorioIzquierdo",
-    "nombre": "Accesorio izquierdo"
    }
   ],
   "otros": [

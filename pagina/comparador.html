@@ -1005,6 +1005,13 @@ window.__csvCached = null;
 try { window.__csvCached = localStorage.getItem(window.CSV_CACHE_KEY); } catch(e){}
 function bf6Fetch(url){ return fetch(url, { cache: 'no-cache' }).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }); }
 window.__csvPromise = bf6Fetch(URL_JSON).catch(function(){ return bf6Fetch(URL_JSON_RESPALDO); });
+/* Nombres de los accesorios en español (se editan en el panel, sección Accesorios). */
+var URL_ACC = "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/data/accesorios.json";
+window.__bf6Acc = null;
+try { window.__bf6Acc = JSON.parse(localStorage.getItem('bf6_acc_cache_v1') || 'null'); } catch(e){}
+window.__accPromise = bf6Fetch(URL_ACC).catch(function(){ return bf6Fetch(URL_ACC.replace('https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/', 'https://raw.githubusercontent.com/alka593yt/bf6-datos/main/')); })
+  .then(function(t){ try { localStorage.setItem('bf6_acc_cache_v1', t); } catch(e){} window.__bf6Acc = JSON.parse(t); return window.__bf6Acc; })
+  .catch(function(){ return window.__bf6Acc; });
 window.__csvPromise.catch(function(){});
 })();
 </script>
@@ -1060,9 +1067,9 @@ clase3: { horizontal:'A116', vertical:'A115' }
 const LOWER_IS_BETTER = new Set(['Vel. al apuntar','Vel. de recarga','Recoil vertical','Recoil horizontal']);
 const STATS_GROUPS = [ {id:'ataque',title:'Ataque',stats:['Cadencia','Vel. de Bala']}, {id:'manejo',title:'Manejo',stats:['Vel. al apuntar','Vel. de recarga','Disparo de cadera','Movilidad']}, {id:'punteria',title:'Punter\u00eda',stats:['Precisi\u00f3n','Control','Recoil vertical','Recoil horizontal']} ];
 const ATTACH_CONFIG = {
-clase1:{title:'A54',slots:[['A55','Boca'],['A56','Ca\u00f1\u00f3n'],['A57','Ca\u00f1\u00f3n inferior'],['A58','Cargador'],['A59','Munici\u00f3n'],['A60','Ergonom\u00eda'],['A61','Mira'],['A62','Accesorio \u00f3ptico'],['A63','Accesorio superior'],['A64','Accesorio derecho'],['A65','Accesorio izquierdo']]},
-clase2:{title:'A90',slots:[['A91','Boca'],['A92','Ca\u00f1\u00f3n'],['A93','Ca\u00f1\u00f3n inferior'],['A94','Cargador'],['A95','Munici\u00f3n'],['A96','Ergonom\u00eda'],['A97','Mira'],['A98','Accesorio \u00f3ptico'],['A99','Accesorio superior'],['A100','Accesorio derecho'],['A101','Accesorio izquierdo']]},
-clase3:{title:'A126',slots:[['A127','Boca'],['A128','Ca\u00f1\u00f3n'],['A129','Ca\u00f1\u00f3n inferior'],['A130','Cargador'],['A131','Munici\u00f3n'],['A132','Ergonom\u00eda'],['A133','Mira'],['A134','Accesorio \u00f3ptico'],['A135','Accesorio superior'],['A136','Accesorio derecho'],['A137','Accesorio izquierdo']]}
+clase1:{title:'A54',slots:[['A55','Boca'],['A56','Ca\u00f1\u00f3n'],['A57','Ca\u00f1\u00f3n inferior'],['A58','Cargador'],['A59','Munici\u00f3n'],['A60','Ergonom\u00eda'],['A61','Mira'],['A62','Accesorio \u00f3ptico'],['A63','L\u00e1ser'],['A64','Luz'],['A65','Modo de disparo']]},
+clase2:{title:'A90',slots:[['A91','Boca'],['A92','Ca\u00f1\u00f3n'],['A93','Ca\u00f1\u00f3n inferior'],['A94','Cargador'],['A95','Munici\u00f3n'],['A96','Ergonom\u00eda'],['A97','Mira'],['A98','Accesorio \u00f3ptico'],['A99','L\u00e1ser'],['A100','Luz'],['A101','Modo de disparo']]},
+clase3:{title:'A126',slots:[['A127','Boca'],['A128','Ca\u00f1\u00f3n'],['A129','Ca\u00f1\u00f3n inferior'],['A130','Cargador'],['A131','Munici\u00f3n'],['A132','Ergonom\u00eda'],['A133','Mira'],['A134','Accesorio \u00f3ptico'],['A135','L\u00e1ser'],['A136','Luz'],['A137','Modo de disparo']]}
 };
 const colorMap = {};
 const colorPaletteBase = ["#FF0000","#00E5FF","#FFEA00","#FF00FF","#00FF00","#FF5722","#00BCD4","#FFD600","#9C27B0","#4CAF50","#FF4081","#448AFF","#CDDC39","#FF9800","#E91E63","#3F51B5","#8BC34A","#FFC107","#009688","#FF1744","#673AB7","#76FF03","#F50057","#1DE9B6","#D500F9","#FF6D00","#2979FF","#C6FF00","#00E676","#FF3D00","#7C4DFF","#00BFA5","#FFAB40","#AA00FF","#26A69A","#FF5252","#40C4FF","#64DD17","#FF6E40","#B388FF"];
@@ -2178,7 +2185,27 @@ var BF6_COD_STATS = { vida:1, cadencia:2, velBala:3, velApuntar:4, velRecarga:5,
 var BF6_COD_MUN = { puntaHueca:17, sintetico:18 };
 var BF6_COD_OTROS = { imagen:25, meta:26, alcance:27, parche:28, youtube:29 };
 var BF6_BLOQUES = [ { stats:1 }, { stats:30, nombre:54 }, { stats:66, nombre:90 }, { stats:102, nombre:126 } ];
-var BF6_RANURAS = ['boca','canon','canonInferior','cargador','municion','ergonomia','mira','accesorioOptico','accesorioSuperior','accesorioDerecho','accesorioIzquierdo'];
+/* Orden de las columnas de accesorios de cada equipamiento (A55..A65, A91..A101, A127..A137). */
+var BF6_RANURAS = ['boca','canon','canonInferior','cargador','municion','ergonomia','mira','accesorioOptico','laser','luz','modo'];
+var BF6_MODOS = { auto:'Autom\u00e1tico', burst:'R\u00e1faga', single:'Semiautom\u00e1tico' };
+var BF6_RIEL = { grip:'canonInferior', laser:'laser', light:'luz' };
+function bf6NombreAcc(v){
+  if(v == null) return '';
+  if(typeof v !== 'object') return String(v);
+  if(!v.id || v.id === 'none') return '';
+  var t = window.__bf6Acc && window.__bf6Acc.nombres && window.__bf6Acc.nombres[v.en];
+  return (t && t.es) || v.en || v.id;
+}
+function bf6Accesorios(eq){
+  var out = {}, acc = eq.accesorios || {};
+  Object.keys(acc).forEach(function(r){
+    var v = acc[r];
+    if(r === 'riel' && v && typeof v === 'object' && v.id){ var tipo = String(v.id).split(':')[0]; r = BF6_RIEL[tipo] || 'laser'; }
+    var n = bf6NombreAcc(v); if(n) out[r] = n;
+  });
+  if(eq.modo) out.modo = BF6_MODOS[eq.modo] || eq.modo;
+  return out;
+}
 var BF6_ESQUEMA = null;
 
 function bf6AplicarEsquema(esq){
@@ -2217,7 +2244,7 @@ function bf6Filas(doc){
     var bloques = [{ nombre: null, stats: base, mun: a.municion || {}, dano: a.dano || {}, acc: {} }];
     (a.equipamientos || []).slice(0, 3).forEach(function(eq){
       var st = {}; ids.forEach(function(id){ var v = (eq.estadisticas && eq.estadisticas[id] != null) ? eq.estadisticas[id] : base[id]; if(v != null) st[id] = v; });
-      bloques.push({ nombre: eq.nombre || 'Equipamiento', stats: st, mun: Object.assign({}, a.municion || {}, eq.municion || {}), dano: (eq.dano && Object.keys(eq.dano).length) ? eq.dano : (a.dano || {}), acc: eq.accesorios || {} });
+      bloques.push({ nombre: eq.nombre || 'Equipamiento', stats: st, mun: Object.assign({}, a.municion || {}, eq.municion || {}), dano: (eq.dano && Object.keys(eq.dano).length) ? Object.assign({}, a.dano || {}, eq.dano) : (a.dano || {}), acc: bf6Accesorios(eq) });
     });
     bloques.forEach(function(b, k){
       var cod = BF6_BLOQUES[k], cl = BF6_CLASES[k];
@@ -2253,6 +2280,7 @@ lastCSVMp = csv;
 var doc;
 try { doc = JSON.parse(csv); } catch(e) { lastCSVMp = ''; console.error('armas.json no es v\u00e1lido:', e); return; }
 bf6AplicarEsquema(doc.esquema || {});
+window.__bf6AccUsado = window.__bf6Acc;
 applyData(bf6Filas(doc));
 }
 function loadDataMP(retries){
@@ -2276,7 +2304,10 @@ if(!res.ok) throw new Error('HTTP ' + res.status);
 return res.text();
 });
 p.then(function(csv){
+return (window.__accPromise || Promise.resolve()).then(function(){ return csv; }, function(){ return csv; });
+}).then(function(csv){
 try { localStorage.setItem(window.CSV_CACHE_KEY, csv); } catch(e){}
+if(csv === lastCSVMp && window.__bf6AccUsado !== window.__bf6Acc){ lastCSVMp = ''; }
 parseCSV(csv);
 }).catch(function(err){
 console.error('Error cargando datos:', err);

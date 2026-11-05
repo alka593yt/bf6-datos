@@ -111,6 +111,10 @@ h4{margin:0 0 8px;font-size:13px}
 .acc-table .acc-rev{width:auto;margin:0}
 .acc-table th:first-child{width:32%}
 .acc-table tr.acc-g td{color:var(--accent);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:14px;border-bottom-color:var(--line-2)}
+.eq-stats td.num{text-align:right;font-variant-numeric:tabular-nums}
+.eq-stats .pos{color:var(--ok)} .eq-stats .neg{color:var(--danger)}
+.eq-stats td input{width:80px}
+.aviso{border:1px solid var(--warn);color:var(--warn);border-radius:6px;padding:10px;margin:8px 0;font-size:13px}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
 #modal .box{background:var(--panel);border:1px solid var(--line-2);border-radius:var(--radius);padding:18px;max-width:440px;width:100%}
 #modal h3{margin-top:0}
@@ -247,7 +251,7 @@ function parsearTramos(txt) {
 /* ================= UTILIDADES ================= */
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const clone = o => JSON.parse(JSON.stringify(o));
+const clone = o => JSON.parse(JSON.stringify(o, (k, v) => k.startsWith('_') ? undefined : v));
 const slug = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const camel = s => slug(s).replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
 function num(v) { const s = String(v ?? '').trim().replace(',', '.'); if (s === '') return null; const n = Number(s); return Number.isFinite(n) ? n : s; }
@@ -276,7 +280,8 @@ async function leerArchivo(path = REPO.path) {
   return { doc: JSON.parse(txt), sha: r.sha };
 }
 async function escribirArchivo(doc, sha, mensaje, path = REPO.path) {
-  return gh(`/repos/${REPO.owner}/${REPO.name}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: mensaje, content: utf8ToB64(JSON.stringify(doc, null, 1) + '\n'), sha, branch: REPO.branch }) });
+  const txt = JSON.stringify(doc, (k, v) => k.startsWith('_') ? undefined : v, 1) + '\n';   // las claves que empiezan con _ son temporales
+  return gh(`/repos/${REPO.owner}/${REPO.name}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: mensaje, content: utf8ToB64(txt), sha, branch: REPO.branch }) });
 }
 const purgar = path => fetch(`https://purge.jsdelivr.net/gh/${REPO.owner}/${REPO.name}@${REPO.branch}/${path}`, { mode: 'no-cors' }).catch(() => {});
 
@@ -408,6 +413,7 @@ function deCadencia(a) { return S.de.fuente === 'base' ? (a.cadenciaTTK || a.bas
 const deTramos = a => deFuenteObj(a).dano?.[S.de.zona] || [];
 function deGuardar(a, t) {
   const tgt = deFuenteObj(a); tgt.dano = tgt.dano || {};
+  if (tgt !== a) tgt.danoPropio = true;
   if (!t || !t.some(r => r[1] != null)) delete tgt.dano[S.de.zona]; else tgt.dano[S.de.zona] = t;
   marcar(a.id); renderDanoVista(a);
 }
@@ -671,32 +677,179 @@ $('editor').addEventListener('click', async e => {
   }
 });
 /* ---------- Equipamientos ---------- */
-function tabEquip(a) {
-  a.equipamientos = a.equipamientos || [];
-  const stats = esquema().estadisticas.filter(s => s.visible);
-  const html = a.equipamientos.map((eq, i) => `<div class="card">
+/* Con el motor del constructor: los accesorios se eligen de listas y las estadísticas se calculan solas.
+   Formato guardado: eq.accesorios = { ranura: { id, en } }, eq.modo, eq.estadisticas (finales), eq.manual (valores forzados),
+   eq.puntos, eq.dano (solo si algún accesorio cambia el daño, o si se editó a mano: eq.danoPropio). */
+let MOTOR = null, motorPromesa = null, motorError = null;
+function cargarMotor() {
+  if (!motorPromesa) motorPromesa = import(new URL('../motor/bf6-motor.js', location.href).href)
+    .then(async m => { await m.cargar(); MOTOR = m; return m; })
+    .catch(err => { motorError = err; console.error(err); return null; });
+  return motorPromesa;
+}
+const STATS_MOTOR = ['cadencia', 'velBala', 'velApuntar', 'velRecarga', 'cadera', 'precision', 'control', 'movilidad', 'recoilVertical', 'recoilHorizontal'];
+const MODO_ARMA = { semi: 'single', rafaga: 'burst', auto: 'auto' };
+const nombreEs = en => (en && S.acc?.nombres?.[en]?.es) || en || '';
+const motorTiene = a => MOTOR && a.idAnalizador && MOTOR.existe(a.idAnalizador);
+function selDe(a, eq) {
+  const sel = MOTOR.seleccionPorDefecto(a.idAnalizador);
+  for (const [r, v] of Object.entries(eq.accesorios || {})) if (v && typeof v === 'object' && v.id) sel[r] = v.id;
+  if (eq.modo) sel.modo = eq.modo;
+  return sel;
+}
+// Tramos a partir de 201 valores, detectando rampas (igual que la conversión de la base de datos).
+function rampaDesde(v, i) {
+  const x = v[i]; if (x == null || i + 3 > 200 || v[i + 1] == null || v[i + 1] === x) return null;
+  const sube = v[i + 1] > x; let fin = i + 1;
+  while (fin + 1 <= 200 && v[fin + 1] != null && (sube ? v[fin + 1] > v[fin] : v[fin + 1] < v[fin])) fin++;
+  let best = null;
+  for (let k = i + 3; k <= fin; k++) { let ok = true; for (let m = i; m <= k && ok; m++) ok = Math.abs(r2(x + (v[k] - x) * (m - i) / (k - i)) - v[m]) < 0.006; if (ok) best = k; }
+  return best;
+}
+function comprimirTramos(v) {
+  const out = []; let i = 0;
+  while (i <= 200) {
+    const x = v[i], k = rampaDesde(v, i);
+    if (k) { out.push([i, x, 'rampa']); i = k; continue; }
+    let j = i; while (j + 1 <= 200 && v[j + 1] === x) j++;
+    const last = out[out.length - 1]; if (!last || last[1] !== x || last.length > 2) out.push([i, x]);
+    i = (j > i && j < 200 && rampaDesde(v, j)) ? j : j + 1;
+  }
+  return out;
+}
+const escalarTramos = (t, f) => (t || []).map(r => { const x = [r[0], r[1] == null ? null : r4(r[1] * f)]; if (r[2]) x.push(r[2]); return x; });
+
+/** Recalcula un equipamiento con el motor y guarda el resultado en él. */
+function recalcularEquip(a, eq) {
+  const r = MOTOR.calcular(a.idAnalizador, selDe(a, eq));
+  const ops = Object.fromEntries(MOTOR.ranuras(a.idAnalizador, r.seleccion).map(x => [x.id, x]));
+  eq.accesorios = {};
+  for (const [rid, v] of Object.entries(r.seleccion)) {
+    if (rid === 'modo' || !v || v === 'none' || !ops[rid]) continue;
+    const o = ops[rid].opciones.find(x => x.valor === v); if (o) eq.accesorios[rid] = { id: v, en: o.en };
+  }
+  if (MOTOR.modos(a.idAnalizador, r.seleccion).length) eq.modo = r.modo; else delete eq.modo;
+  const auto = {}; STATS_MOTOR.forEach(k => { if (r.stats[k] != null) auto[k] = r.stats[k]; });
+  eq.estadisticas = { ...auto, ...(eq.manual || {}) };
+  eq.puntos = r.puntos;
+  if (!eq.danoPropio) {
+    const f = r.factores, base = a.dano || {};
+    if (r.cambiaCurva) eq.dano = { pecho: comprimirTramos(r.dano.pecho), cabeza: comprimirTramos(r.dano.cabeza), estomago: comprimirTramos(r.dano.estomago) };
+    else if (Math.abs(f.cabeza - 1) > 1e-6 || Math.abs(f.estomago - 1) > 1e-6)
+      eq.dano = { ...clone(base), ...(base.cabeza ? { cabeza: escalarTramos(base.cabeza, f.cabeza) } : {}), ...(base.estomago ? { estomago: escalarTramos(base.estomago, f.estomago) } : {}) };
+    else delete eq.dano;
+  }
+  eq._calc = r;   // solo para mostrar; no se guarda
+  return r;
+}
+function textoDano(a, eq) {
+  if (eq.danoPropio) return { txt: 'Daño editado a mano.', manual: true };
+  const r = eq._calc; if (!r) return { txt: eq.dano ? 'Tiene daño propio.' : 'Usa el daño de la Base.' };
+  if (r.cambiaCurva) return { txt: 'Este equipamiento usa otra bala: el daño se calculó con el motor.' };
+  const f = r.factores, partes = [];
+  if (Math.abs(f.cabeza - 1) > 1e-6) partes.push(`cabeza ×${r2(f.cabeza)}`);
+  if (Math.abs(f.estomago - 1) > 1e-6) partes.push(`estómago ×${r2(f.estomago)}`);
+  return { txt: partes.length ? `La munición cambia el daño (${partes.join(', ')}). Se calculó a partir del daño de la Base.` : 'Usa el daño de la Base (ningún accesorio cambia el daño).' };
+}
+function etiquetaOpcion(o, r) {
+  const n = o.valor === 'none' ? 'Ninguno' : (o.tipo && r.compartida ? `${o.tipo} · ` : '') + nombreEs(o.en);
+  return n + (o.puntos ? ` · ${o.puntos} pts` : '') + (o.porDefecto ? ' (de fábrica)' : '') + (o.disponible === false ? ' — requiere otra mira' : '');
+}
+function htmlEquipMotor(a, eq, i) {
+  // Solo calcula para mostrar: el equipamiento se modifica únicamente cuando cambias algo.
+  const r = eq._calc || (eq._calc = MOTOR.calcular(a.idAnalizador, selDe(a, eq)));
+  const antiguo = eq.puntos == null && eq.estadisticas && Object.keys(eq.estadisticas).length;
+  const ranuras = MOTOR.ranuras(a.idAnalizador, r.seleccion), modos = MOTOR.modos(a.idAnalizador, r.seleccion);
+  const selects = ranuras.map(rn => campo(rn.nombre, `<select data-eqacc="${i}" data-ranura="${rn.id}">${rn.opciones.map(o =>
+    `<option value="${esc(o.valor)}" ${o.valor === rn.valor ? 'selected' : ''} ${o.disponible === false && o.valor !== rn.valor ? 'disabled' : ''}>${esc(etiquetaOpcion(o, rn))}</option>`).join('')}</select>`)).join('')
+    + (modos.length ? campo('Modo de disparo', `<select data-eqacc="${i}" data-ranura="modo">${modos.map(m => `<option value="${m.valor}" ${m.valor === r.modo ? 'selected' : ''}>${m.nombre}</option>`).join('')}</select>`) : '');
+  const def = esquema().estadisticas;
+  const filas = STATS_MOTOR.map(k => {
+    const st = def.find(s => s.id === k) || { nombre: k, unidad: '' }, b = a.base?.[k], v = r.stats[k], man = eq.manual?.[k];
+    const fin = man ?? v, d = (typeof fin === 'number' && typeof b === 'number') ? r4(fin - b) : null;
+    const mejor = d && st.mejor ? ((st.mejor === 'mayor') === (d > 0)) : null;
+    return `<tr><td>${esc(st.nombre)}${st.unidad ? ` <span class="muted">(${esc(st.unidad)})</span>` : ''}</td><td class="num">${b ?? '—'}</td>
+      <td class="num"><b>${v ?? '—'}</b></td><td class="num ${mejor == null ? 'muted' : mejor ? 'pos' : 'neg'}">${d ? (d > 0 ? '+' : '') + r2(d) : '±0'}</td>
+      <td><input data-eqman="${i}" data-stat="${k}" inputmode="decimal" value="${man ?? ''}" placeholder="auto" style="width:80px" aria-label="Valor manual de ${esc(st.nombre)}"></td></tr>`;
+  }).join('');
+  const td = textoDano(a, eq);
+  return `<div class="card">
       <div class="row"><div class="field" style="flex:1"><label>Nombre que verán en la página</label>${inputTxt(`equipamientos.${i}.nombre`, eq.nombre)}</div>
         <button class="btn small" data-equp="${i}" ${i === 0 ? 'disabled' : ''}>↑</button><button class="btn small danger" data-eqdel="${i}">Eliminar</button></div>
-      <h3>Accesorios</h3><div class="grid">${esquema().ranuras.map(r => campo(r.nombre, inputTxt(`equipamientos.${i}.accesorios.${r.id}`, eq.accesorios?.[r.id]))).join('')}</div>
-      <h3>Estadísticas propias</h3><p class="note">Déjalas vacías para usar las de la Base. Cuando esté listo el constructor, se calcularán solas a partir de los accesorios.</p>
-      <div class="grid">${stats.map(s => campo(`${s.nombre}${s.unidad ? ' (' + s.unidad + ')' : ''}`, inputNum(`equipamientos.${i}.estadisticas.${s.id}`, eq.estadisticas?.[s.id], a.base?.[s.id] ?? ''))).join('')}</div>
-      <h3>Daño propio</h3>${eq.dano
-        ? `<p class="note">Este equipamiento tiene su propio daño.</p><div class="row"><button class="btn small primary" data-eqedit="${i}">Editar su daño</button><button class="btn small" data-eqdano="${i}" data-off="1">Usar el daño de la Base</button></div>`
-        : `<p class="note">Usa el daño de la Base.</p><button class="btn small" data-eqdano="${i}">Darle daño propio (copia de la Base)</button>`}
-    </div>`).join('');
-  $('tabBody').innerHTML = (html || '<p class="note">Esta arma no tiene equipamientos.</p>') + `<button class="btn primary" id="eqAdd">+ Agregar equipamiento</button>`;
+      ${antiguo ? `<div class="aviso">Este equipamiento se cargó a mano antes del cálculo automático. Sus valores guardados no se tocan hasta que elijas:
+        <div class="row" style="margin-top:6px"><button class="btn small primary" data-eqconv="${i}">Usar los valores calculados</button>
+        <button class="btn small" data-eqkeep="${i}">Conservar mis valores como manuales</button></div></div>` : ''}
+      <div class="row" style="margin-top:6px"><h3 style="margin:0">Accesorios</h3><span class="grow"></span><span class="tag">${r.puntos} pts</span>
+        <button class="btn small" data-eqreset="${i}">Volver a fábrica</button></div>
+      <div class="grid" style="margin-top:8px">${selects}</div>
+      <h3>Estadísticas</h3>
+      <div class="tablewrap"><table class="eq-stats"><thead><tr><th>Estadística</th><th>Base</th><th>Calculado</th><th>Diferencia</th><th>Manual</th></tr></thead><tbody>${filas}</tbody></table></div>
+      <p class="note">Se calculan solas con el motor. Escribe un valor en "Manual" solo si el juego muestra otra cosa; vacío = automático.</p>
+      <h3>Daño</h3><p class="note">${esc(td.txt)}</p>
+      <div class="row">${eq.dano ? `<button class="btn small" data-eqedit="${i}">${td.manual ? 'Editar su daño' : 'Ver su daño'}</button>` : ''}
+        ${td.manual ? `<button class="btn small" data-eqauto="${i}">Volver al daño automático</button>` : `<button class="btn small" data-eqpropio="${i}">Editar el daño a mano</button>`}</div>
+    </div>`;
 }
+function htmlEquipManual(a, eq, i) {
+  const stats = esquema().estadisticas.filter(s => s.visible);
+  return `<div class="card">
+      <div class="row"><div class="field" style="flex:1"><label>Nombre que verán en la página</label>${inputTxt(`equipamientos.${i}.nombre`, eq.nombre)}</div>
+        <button class="btn small" data-equp="${i}" ${i === 0 ? 'disabled' : ''}>↑</button><button class="btn small danger" data-eqdel="${i}">Eliminar</button></div>
+      <h3>Estadísticas propias</h3><p class="note">Déjalas vacías para usar las de la Base.</p>
+      <div class="grid">${stats.map(s => campo(`${s.nombre}${s.unidad ? ' (' + s.unidad + ')' : ''}`, inputNum(`equipamientos.${i}.estadisticas.${s.id}`, eq.estadisticas?.[s.id], a.base?.[s.id] ?? ''))).join('')}</div>
+      <h3>Daño</h3>${eq.dano
+        ? `<p class="note">Tiene su propio daño.</p><div class="row"><button class="btn small primary" data-eqedit="${i}">Editar su daño</button><button class="btn small" data-eqdano="${i}" data-off="1">Usar el daño de la Base</button></div>`
+        : `<p class="note">Usa el daño de la Base.</p><button class="btn small" data-eqdano="${i}">Darle daño propio (copia de la Base)</button>`}
+    </div>`;
+}
+function tabEquip(a) {
+  a.equipamientos = a.equipamientos || [];
+  if (!MOTOR && !motorError) { $('tabBody').innerHTML = '<div class="empty">Cargando el motor de cálculo…</div>'; cargarMotor().then(() => { if (S.tab === 'equip' && armaSel() === a) tabEquip(a); }); return; }
+  const conMotor = motorTiene(a);
+  let aviso = '';
+  if (motorError) aviso = '<p class="note" style="color:var(--danger)">No se pudo cargar el motor de cálculo. Las estadísticas se escriben a mano.</p>';
+  else if (!conMotor) aviso = `<p class="note">Esta arma ${a.idAnalizador ? `("${esc(a.idAnalizador)}")` : ''} no está en el motor: revisa el "ID del analizador" en General. Mientras tanto, las estadísticas se escriben a mano.</p>`;
+  const html = a.equipamientos.map((eq, i) => conMotor ? htmlEquipMotor(a, eq, i) : htmlEquipManual(a, eq, i)).join('');
+  $('tabBody').innerHTML = aviso + (html || '<p class="note">Esta arma no tiene equipamientos.</p>') + `<button class="btn primary" id="eqAdd">+ Agregar equipamiento</button>`;
+}
+function eqCambio(a) { a.equipamientos.forEach(eq => delete eq._calc); marcar(a.id); tabEquip(a); }
 $('editor').addEventListener('change', e => {
-  // Equipamientos: el editor genérico ya guardó el valor; limpia objetos vacíos.
-  const a = S.view === 'arma' && armaSel(); if (!a || !e.target.dataset.path?.startsWith('equipamientos.')) return;
-  for (const eq of a.equipamientos) for (const k of ['accesorios', 'estadisticas']) if (eq[k] && !Object.keys(eq[k]).length && k !== 'accesorios') delete eq[k];
+  const el = e.target, a = S.view === 'arma' && armaSel(); if (!a || S.tab !== 'equip') return;
+  if (el.dataset.eqacc != null) {
+    const eq = a.equipamientos[+el.dataset.eqacc], rid = el.dataset.ranura;
+    if (rid === 'modo') eq.modo = el.value;
+    else { eq.accesorios = eq.accesorios || {}; if (el.value === 'none') eq.accesorios[rid] = { id: 'none' }; else eq.accesorios[rid] = { id: el.value }; }
+    recalcularEquip(a, eq); marcar(a.id); tabEquip(a); return;
+  }
+  if (el.dataset.eqman != null) {
+    const eq = a.equipamientos[+el.dataset.eqman], v = num(el.value);
+    eq.manual = eq.manual || {};
+    if (typeof v === 'number') eq.manual[el.dataset.stat] = v; else delete eq.manual[el.dataset.stat];
+    if (!Object.keys(eq.manual).length) delete eq.manual;
+    recalcularEquip(a, eq); marcar(a.id); tabEquip(a); return;
+  }
+  if (el.dataset.path?.startsWith('equipamientos.')) for (const eq of a.equipamientos) if (eq.estadisticas && !Object.keys(eq.estadisticas).length) delete eq.estadisticas;
 });
 $('editor').addEventListener('click', async e => {
-  const el = e.target; const a = S.view === 'arma' && armaSel(); if (!a) return;
-  if (el.id === 'eqAdd') { a.equipamientos.push({ nombre: `Equip. ${a.equipamientos.length + 1}`, accesorios: {} }); }
+  const el = e.target; const a = S.view === 'arma' && armaSel(); if (!a || S.tab !== 'equip') return;
+  const conMotor = motorTiene(a);
+  if (el.id === 'eqAdd') {
+    const eq = { nombre: `Equip. ${a.equipamientos.length + 1}`, accesorios: {} };
+    if (conMotor && a.modoDisparo) eq.modo = MODO_ARMA[a.modoDisparo];
+    a.equipamientos.push(eq); if (conMotor) recalcularEquip(a, eq);
+  }
   else if (el.dataset.eqdel) { if (!await confirmar('Eliminar equipamiento', `¿Eliminar «${a.equipamientos[+el.dataset.eqdel].nombre}»?`)) return; a.equipamientos.splice(+el.dataset.eqdel, 1); }
   else if (el.dataset.equp) { const i = +el.dataset.equp; [a.equipamientos[i - 1], a.equipamientos[i]] = [a.equipamientos[i], a.equipamientos[i - 1]]; }
+  else if (el.dataset.eqreset) { const eq = a.equipamientos[+el.dataset.eqreset]; eq.accesorios = {}; delete eq.modo; if (a.modoDisparo) eq.modo = MODO_ARMA[a.modoDisparo]; recalcularEquip(a, eq); }
   else if (el.dataset.eqedit != null) { S.tab = 'dano'; S.de.fuente = el.dataset.eqedit; S.de.sel = null; renderEditor(); return; }
+  else if (el.dataset.eqpropio != null) { const eq = a.equipamientos[+el.dataset.eqpropio]; if (!eq.dano) eq.dano = clone(a.dano || {}); eq.danoPropio = true; S.tab = 'dano'; S.de.fuente = el.dataset.eqpropio; S.de.sel = null; marcar(a.id); renderEditor(); return; }
+  else if (el.dataset.eqconv != null) { const eq = a.equipamientos[+el.dataset.eqconv]; delete eq.manual; recalcularEquip(a, eq); }
+  else if (el.dataset.eqkeep != null) {
+    const eq = a.equipamientos[+el.dataset.eqkeep], calc = MOTOR.calcular(a.idAnalizador, selDe(a, eq)).stats, man = {};
+    STATS_MOTOR.forEach(k => { const v = eq.estadisticas?.[k]; if (typeof v === 'number' && v !== calc[k]) man[k] = v; });
+    if (Object.keys(man).length) eq.manual = man; recalcularEquip(a, eq);
+  }
+  else if (el.dataset.eqauto != null) { const eq = a.equipamientos[+el.dataset.eqauto]; delete eq.danoPropio; recalcularEquip(a, eq); }
   else if (el.dataset.eqdano) { const eq = a.equipamientos[+el.dataset.eqdano]; if (el.dataset.off) delete eq.dano; else eq.dano = clone(a.dano || {}); }
   else return;
   marcar(a.id); tabEquip(a); renderEditor();
@@ -929,6 +1082,7 @@ async function entrar(token, recordar) {
     if (recordar) { try { localStorage.setItem(TOKEN_KEY, token); } catch (e) {} }
     $('login').style.display = 'none'; $('app').style.display = 'flex';
     await cargar();
+    cargarMotor();
   } catch (err) {
     TOKEN = null; try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
     $('login').style.display = 'block'; $('app').style.display = 'none';
