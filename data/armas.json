@@ -1,0 +1,10461 @@
+{
+ "formato": 1,
+ "actualizado": "2026-11-04",
+ "fuente": "Migrado desde la hoja datosbf6. Correcciones según BF6 Weapon Analyzer (Temporada 5, v2.1.1.0).",
+ "esquema": {
+  "estadisticas": [
+   {
+    "id": "vida",
+    "nombre": "Vida",
+    "unidad": "PV",
+    "grupo": null,
+    "mejor": null,
+    "visible": false
+   },
+   {
+    "id": "cadencia",
+    "nombre": "Cadencia",
+    "unidad": "RPM",
+    "grupo": "ataque",
+    "mejor": "mayor",
+    "visible": true
+   },
+   {
+    "id": "velBala",
+    "nombre": "Vel. de Bala",
+    "unidad": "m/s",
+    "grupo": "ataque",
+    "mejor": "mayor",
+    "visible": true
+   },
+   {
+    "id": "velApuntar",
+    "nombre": "Vel. al apuntar",
+    "unidad": "ms",
+    "grupo": "manejo",
+    "mejor": "menor",
+    "visible": true
+   },
+   {
+    "id": "velRecarga",
+    "nombre": "Vel. de recarga",
+    "unidad": "ms",
+    "grupo": "manejo",
+    "mejor": "menor",
+    "visible": true
+   },
+   {
+    "id": "cadera",
+    "nombre": "Disparo de cadera",
+    "unidad": "",
+    "grupo": "manejo",
+    "mejor": "mayor",
+    "visible": true
+   },
+   {
+    "id": "precision",
+    "nombre": "Precisión",
+    "unidad": "",
+    "grupo": "punteria",
+    "mejor": "mayor",
+    "visible": true
+   },
+   {
+    "id": "control",
+    "nombre": "Control",
+    "unidad": "",
+    "grupo": "punteria",
+    "mejor": "mayor",
+    "visible": true
+   },
+   {
+    "id": "movilidad",
+    "nombre": "Movilidad",
+    "unidad": "",
+    "grupo": "manejo",
+    "mejor": "mayor",
+    "visible": true
+   },
+   {
+    "id": "danoCabeza",
+    "nombre": "Daño cabeza",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false
+   },
+   {
+    "id": "danoPecho",
+    "nombre": "Daño pecho",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false
+   },
+   {
+    "id": "danoEstomago",
+    "nombre": "Daño estómago",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false
+   },
+   {
+    "id": "balasParaMatar",
+    "nombre": "Balas para matar",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false
+   },
+   {
+    "id": "recoilVertical",
+    "nombre": "Recoil vertical",
+    "unidad": "°",
+    "grupo": "punteria",
+    "mejor": "menor",
+    "visible": true
+   },
+   {
+    "id": "recoilHorizontal",
+    "nombre": "Recoil horizontal",
+    "unidad": "°",
+    "grupo": "punteria",
+    "mejor": "menor",
+    "visible": true
+   },
+   {
+    "id": "recoil3",
+    "nombre": "Recoil 3",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false
+   },
+   {
+    "id": "extra2",
+    "nombre": "Dato extra 2",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false,
+    "tipo": "texto"
+   },
+   {
+    "id": "extra3",
+    "nombre": "Dato extra 3",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false,
+    "tipo": "texto"
+   },
+   {
+    "id": "extra4",
+    "nombre": "Dato extra 4",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false,
+    "tipo": "texto"
+   },
+   {
+    "id": "extra5",
+    "nombre": "Dato extra 5",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false,
+    "tipo": "texto"
+   },
+   {
+    "id": "extra6",
+    "nombre": "Dato extra 6",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false,
+    "tipo": "texto"
+   },
+   {
+    "id": "extra7",
+    "nombre": "Dato extra 7",
+    "unidad": "",
+    "grupo": null,
+    "mejor": null,
+    "visible": false,
+    "tipo": "texto"
+   }
+  ],
+  "grupos": [
+   {
+    "id": "ataque",
+    "nombre": "Ataque"
+   },
+   {
+    "id": "manejo",
+    "nombre": "Manejo"
+   },
+   {
+    "id": "punteria",
+    "nombre": "Puntería"
+   }
+  ],
+  "zonas": [
+   {
+    "id": "cabeza",
+    "nombre": "Cabeza",
+    "color": "#FFA500"
+   },
+   {
+    "id": "pecho",
+    "nombre": "Pecho",
+    "color": "#ffffff"
+   },
+   {
+    "id": "estomago",
+    "nombre": "Estómago",
+    "color": "#e91e63"
+   }
+  ],
+  "municiones": [
+   {
+    "id": "puntaHueca",
+    "nombre": "Punta Hueca",
+    "color": "#33AFFF"
+   },
+   {
+    "id": "sintetico",
+    "nombre": "Sintético",
+    "color": "#2ecc71"
+   }
+  ],
+  "ranuras": [
+   {
+    "id": "boca",
+    "nombre": "Boca"
+   },
+   {
+    "id": "canon",
+    "nombre": "Cañón"
+   },
+   {
+    "id": "canonInferior",
+    "nombre": "Cañón inferior"
+   },
+   {
+    "id": "cargador",
+    "nombre": "Cargador"
+   },
+   {
+    "id": "municion",
+    "nombre": "Munición"
+   },
+   {
+    "id": "ergonomia",
+    "nombre": "Ergonomía"
+   },
+   {
+    "id": "mira",
+    "nombre": "Mira"
+   },
+   {
+    "id": "accesorioOptico",
+    "nombre": "Accesorio óptico"
+   },
+   {
+    "id": "accesorioSuperior",
+    "nombre": "Accesorio superior"
+   },
+   {
+    "id": "accesorioDerecho",
+    "nombre": "Accesorio derecho"
+   },
+   {
+    "id": "accesorioIzquierdo",
+    "nombre": "Accesorio izquierdo"
+   }
+  ],
+  "otros": [
+   {
+    "id": "imagen",
+    "nombre": "Imagen (enlace)"
+   },
+   {
+    "id": "meta",
+    "nombre": "Meta",
+    "opciones": [
+     "Meta absoluto",
+     "Competidor",
+     "Viable",
+     "Regular"
+    ]
+   },
+   {
+    "id": "alcance",
+    "nombre": "Alcance",
+    "opciones": [
+     "Corto alcance",
+     "Corto-medio alcance",
+     "Largo alcance"
+    ]
+   },
+   {
+    "id": "parche",
+    "nombre": "Parche",
+    "opciones": [
+     "Buff",
+     "Nerf"
+    ]
+   },
+   {
+    "id": "youtube",
+    "nombre": "Link YouTube"
+   }
+  ],
+  "distanciaMax": 200
+ },
+ "armas": [
+  {
+   "id": "tr-7",
+   "nombre": "TR-7",
+   "categoria": "Asalto",
+   "idAnalizador": "tr7",
+   "imagen": "https://i.imgur.com/RgM2Tgo.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 604,
+    "velApuntar": 250,
+    "velRecarga": 2400,
+    "cadera": 40,
+    "precision": 17,
+    "control": 26,
+    "movilidad": 52,
+    "danoCabeza": 49.26,
+    "danoPecho": 35.16,
+    "danoEstomago": 29.67,
+    "balasParaMatar": 3,
+    "recoilVertical": 1.16,
+    "recoilHorizontal": 40.8
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      75,
+      28.94
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      21,
+      26
+     ],
+     [
+      75,
+      20.69
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      21,
+      21.88
+     ],
+     [
+      75,
+      17.36
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "nvo-228e",
+   "nombre": "NVO-228E",
+   "categoria": "Asalto",
+   "idAnalizador": "nvo228e",
+   "imagen": "https://i.imgur.com/7M8HSw8.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 654,
+    "velBala": 626,
+    "velApuntar": 250,
+    "velRecarga": 2500,
+    "cadera": 40,
+    "precision": 25,
+    "control": 41,
+    "movilidad": 52,
+    "danoCabeza": 49.26,
+    "danoPecho": 35.16,
+    "danoEstomago": 29.67,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.73,
+    "recoilHorizontal": 28.9
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.26
+     ],
+     [
+      9,
+      38.46
+     ],
+     [
+      21,
+      30.22
+     ],
+     [
+      36,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.16
+     ],
+     [
+      9,
+      27.47
+     ],
+     [
+      21,
+      21.61
+     ],
+     [
+      36,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.67
+     ],
+     [
+      9,
+      23.07
+     ],
+     [
+      21,
+      18.13
+     ],
+     [
+      36,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "vcr-2",
+   "nombre": "VCR-2",
+   "categoria": "Asalto",
+   "idAnalizador": "vcr2",
+   "imagen": "https://i.imgur.com/pvjcjVn.png",
+   "alcance": "Corto-medio alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 900,
+    "velBala": 660,
+    "velApuntar": 250,
+    "velRecarga": 2434,
+    "cadera": 40,
+    "precision": 19,
+    "control": 40,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 27.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.82,
+    "recoilHorizontal": 50.3
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "notas": "Base anotada con el cañón Short."
+  },
+  {
+   "id": "m433",
+   "nombre": "M433",
+   "categoria": "Asalto",
+   "idAnalizador": "m433",
+   "imagen": "https://i.imgur.com/E81cJv6.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 830,
+    "velBala": 630,
+    "velApuntar": 250,
+    "velRecarga": 2384,
+    "cadera": 40,
+    "precision": 20,
+    "control": 40,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 21.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.79,
+    "recoilHorizontal": 41.4
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      76,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "ak4d",
+   "nombre": "AK4D",
+   "categoria": "Asalto",
+   "idAnalizador": "ak4d",
+   "imagen": "https://i.imgur.com/gG69ftJ.png",
+   "meta": "Viable",
+   "alcance": "Corto-medio alcance",
+   "parche": "Nerf",
+   "base": {
+    "vida": 100,
+    "cadencia": 514,
+    "velBala": 680,
+    "velApuntar": 250,
+    "velRecarga": 2467,
+    "cadera": 40,
+    "precision": 25,
+    "control": 34,
+    "movilidad": 52,
+    "danoCabeza": 49.26,
+    "danoPecho": 35.16,
+    "danoEstomago": 29.67,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.85,
+    "recoilHorizontal": 20,
+    "extra2": "manejo mal"
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.26
+     ],
+     [
+      21,
+      36.44
+     ],
+     [
+      75,
+      28.93
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.16
+     ],
+     [
+      21,
+      26
+     ],
+     [
+      75,
+      20.69
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.67
+     ],
+     [
+      21,
+      21.79
+     ],
+     [
+      75,
+      17.4
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m16a4-semi",
+   "nombre": "M16A4 SEMI",
+   "categoria": "Asalto",
+   "idAnalizador": "m16a4",
+   "modoDisparo": "semi",
+   "imagen": "https://i.imgur.com/wUQLmZ1.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 400,
+    "velBala": 680,
+    "velApuntar": 250,
+    "velRecarga": 2200,
+    "cadera": 40,
+    "precision": 27,
+    "control": 41,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 21.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.73,
+    "recoilHorizontal": 29.2
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "En semiautomático la cadencia es 400; 771 es la de la ráfaga. Cambia el TTK."
+  },
+  {
+   "id": "m16a4-auto",
+   "nombre": "M16A4 AUTO",
+   "categoria": "Asalto",
+   "idAnalizador": "m16a4",
+   "modoDisparo": "rafaga",
+   "imagen": "https://i.imgur.com/wUQLmZ1.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 771,
+    "velBala": 680,
+    "velApuntar": 250,
+    "velRecarga": 2200,
+    "cadera": 40,
+    "precision": 27,
+    "control": 41,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 21.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.73,
+    "recoilHorizontal": 29.2
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Modo ráfaga (en el juego no tiene automático)."
+  },
+  {
+   "id": "b36a4",
+   "nombre": "B36A4",
+   "categoria": "Asalto",
+   "idAnalizador": "b36a4",
+   "imagen": "https://i.imgur.com/dY9RwBI.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 740,
+    "velApuntar": 250,
+    "velRecarga": 2384,
+    "cadera": 40,
+    "precision": 27,
+    "control": 42,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 21.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.73,
+    "recoilHorizontal": 28
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "kord-6p67",
+   "nombre": "KORD 6P67",
+   "categoria": "Asalto",
+   "idAnalizador": "kord6p67",
+   "imagen": "https://i.imgur.com/HxuiFI5.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 900,
+    "velBala": 724,
+    "velApuntar": 250,
+    "velRecarga": 2450,
+    "cadera": 40,
+    "precision": 33,
+    "control": 55,
+    "movilidad": 52,
+    "danoCabeza": 28.93,
+    "danoPecho": 20.69,
+    "danoEstomago": 17.4,
+    "balasParaMatar": 5,
+    "recoilVertical": 0.54,
+    "recoilHorizontal": 28.9
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      28.93
+     ],
+     [
+      21,
+      24
+     ],
+     [
+      75,
+      20.51
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      20.69
+     ],
+     [
+      21,
+      17.21
+     ],
+     [
+      75,
+      14.65
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      17.4
+     ],
+     [
+      21,
+      14.47
+     ],
+     [
+      75,
+      12.27
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "ef88",
+   "nombre": "EF88",
+   "categoria": "Asalto",
+   "idAnalizador": "ef88",
+   "imagen": "https://i.imgur.com/vW4znmh.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 675,
+    "velBala": 724,
+    "velApuntar": 250,
+    "velRecarga": 2400,
+    "cadera": 40,
+    "precision": 28,
+    "control": 41,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 21.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.72,
+    "recoilHorizontal": 26.1
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "l85a3",
+   "nombre": "L85A3",
+   "categoria": "Asalto",
+   "idAnalizador": "l85a3",
+   "imagen": "https://i.imgur.com/s6TYrTn.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 635,
+    "velBala": 778,
+    "velApuntar": 250,
+    "velRecarga": 2767,
+    "cadera": 40,
+    "precision": 32,
+    "control": 44,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 27.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.67,
+    "recoilHorizontal": 22.8
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "sor-556-mk2",
+   "nombre": "SOR-556 MK2",
+   "categoria": "Asalto",
+   "idAnalizador": "sor556",
+   "imagen": "https://i.imgur.com/4F1NBSv.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 568,
+    "velBala": 768,
+    "velApuntar": 250,
+    "velRecarga": 2384,
+    "cadera": 40,
+    "precision": 45,
+    "control": 47,
+    "movilidad": 52,
+    "danoCabeza": 36.44,
+    "danoPecho": 26,
+    "danoEstomago": 21.79,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.62,
+    "recoilHorizontal": 12.7
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.44
+     ],
+     [
+      21,
+      28.93
+     ],
+     [
+      75,
+      24
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26
+     ],
+     [
+      21,
+      20.69
+     ],
+     [
+      75,
+      17.21
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.79
+     ],
+     [
+      21,
+      17.4
+     ],
+     [
+      75,
+      14.47
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "interdictor",
+   "nombre": "INTERDICTOR",
+   "categoria": "Francotirador",
+   "idAnalizador": "interdictor",
+   "base": {
+    "vida": 100,
+    "cadencia": 31,
+    "velBala": 732,
+    "velApuntar": 433,
+    "velRecarga": 3500,
+    "cadera": 29,
+    "precision": 100,
+    "control": 11,
+    "movilidad": 31,
+    "danoCabeza": 140,
+    "danoPecho": 80,
+    "danoEstomago": 80,
+    "balasParaMatar": 2,
+    "recoilVertical": 2.2,
+    "recoilHorizontal": 10
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      140
+     ],
+     [
+      101,
+      141.737
+     ],
+     [
+      102,
+      143.474
+     ],
+     [
+      103,
+      145.211
+     ],
+     [
+      104,
+      146.948
+     ],
+     [
+      105,
+      148.685
+     ],
+     [
+      106,
+      150.422
+     ],
+     [
+      107,
+      152.159
+     ],
+     [
+      108,
+      153.896
+     ],
+     [
+      109,
+      155.633
+     ],
+     [
+      110,
+      157.37
+     ],
+     [
+      111,
+      158.97
+     ],
+     [
+      112,
+      160.58
+     ],
+     [
+      113,
+      162.18
+     ],
+     [
+      114,
+      163.78
+     ],
+     [
+      115,
+      165.38
+     ],
+     [
+      116,
+      166.99
+     ],
+     [
+      117,
+      168.59
+     ],
+     [
+      118,
+      170.19
+     ],
+     [
+      119,
+      171.79
+     ],
+     [
+      120,
+      173.4
+     ],
+     [
+      121,
+      175
+     ],
+     [
+      161,
+      173.25
+     ],
+     [
+      162,
+      171.5
+     ],
+     [
+      163,
+      169.75
+     ],
+     [
+      164,
+      168
+     ],
+     [
+      165,
+      166.25
+     ],
+     [
+      166,
+      164.5
+     ],
+     [
+      167,
+      162.75
+     ],
+     [
+      168,
+      161
+     ],
+     [
+      169,
+      159.25
+     ],
+     [
+      170,
+      157.5
+     ],
+     [
+      171,
+      155.75
+     ],
+     [
+      172,
+      154
+     ],
+     [
+      173,
+      152.25
+     ],
+     [
+      174,
+      150.5
+     ],
+     [
+      175,
+      148.75
+     ],
+     [
+      176,
+      147
+     ],
+     [
+      177,
+      145.25
+     ],
+     [
+      178,
+      143.5
+     ],
+     [
+      179,
+      141.75
+     ],
+     [
+      180,
+      140
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      80
+     ],
+     [
+      101,
+      80.95
+     ],
+     [
+      102,
+      81.9
+     ],
+     [
+      103,
+      82.86
+     ],
+     [
+      104,
+      83.81
+     ],
+     [
+      105,
+      84.76
+     ],
+     [
+      106,
+      85.71
+     ],
+     [
+      107,
+      86.67
+     ],
+     [
+      108,
+      87.62
+     ],
+     [
+      109,
+      88.57
+     ],
+     [
+      110,
+      89.52
+     ],
+     [
+      111,
+      90.48
+     ],
+     [
+      112,
+      91.43
+     ],
+     [
+      113,
+      92.38
+     ],
+     [
+      114,
+      93.33
+     ],
+     [
+      115,
+      94.29
+     ],
+     [
+      116,
+      95.24
+     ],
+     [
+      117,
+      96.19
+     ],
+     [
+      118,
+      97.14
+     ],
+     [
+      119,
+      98.1
+     ],
+     [
+      120,
+      99.05
+     ],
+     [
+      121,
+      100
+     ],
+     [
+      161,
+      99.2
+     ],
+     [
+      162,
+      98.4
+     ],
+     [
+      163,
+      97.6
+     ],
+     [
+      164,
+      96.8
+     ],
+     [
+      165,
+      96
+     ],
+     [
+      166,
+      95.2
+     ],
+     [
+      167,
+      94.4
+     ],
+     [
+      168,
+      93.6
+     ],
+     [
+      169,
+      92.8
+     ],
+     [
+      170,
+      92
+     ],
+     [
+      171,
+      91.2
+     ],
+     [
+      172,
+      90.4
+     ],
+     [
+      173,
+      89.6
+     ],
+     [
+      174,
+      88.8
+     ],
+     [
+      175,
+      88
+     ],
+     [
+      176,
+      87.2
+     ],
+     [
+      177,
+      86.4
+     ],
+     [
+      178,
+      85.6
+     ],
+     [
+      179,
+      84.8
+     ],
+     [
+      180,
+      84
+     ],
+     [
+      181,
+      83.2
+     ],
+     [
+      182,
+      82.4
+     ],
+     [
+      183,
+      81.6
+     ],
+     [
+      184,
+      80.8
+     ],
+     [
+      185,
+      80
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      80
+     ],
+     [
+      101,
+      81
+     ],
+     [
+      102,
+      82
+     ],
+     [
+      103,
+      83
+     ],
+     [
+      104,
+      84
+     ],
+     [
+      105,
+      85
+     ],
+     [
+      106,
+      86
+     ],
+     [
+      107,
+      87
+     ],
+     [
+      108,
+      88
+     ],
+     [
+      109,
+      89
+     ],
+     [
+      110,
+      90
+     ],
+     [
+      111,
+      91
+     ],
+     [
+      112,
+      92
+     ],
+     [
+      113,
+      93
+     ],
+     [
+      114,
+      94
+     ],
+     [
+      115,
+      95
+     ],
+     [
+      116,
+      96
+     ],
+     [
+      117,
+      97
+     ],
+     [
+      118,
+      98
+     ],
+     [
+      119,
+      99
+     ],
+     [
+      120,
+      100
+     ],
+     [
+      161,
+      99
+     ],
+     [
+      162,
+      98
+     ],
+     [
+      163,
+      97
+     ],
+     [
+      164,
+      96
+     ],
+     [
+      165,
+      95
+     ],
+     [
+      166,
+      94
+     ],
+     [
+      167,
+      93
+     ],
+     [
+      168,
+      92
+     ],
+     [
+      169,
+      91
+     ],
+     [
+      170,
+      90
+     ],
+     [
+      171,
+      89
+     ],
+     [
+      172,
+      88
+     ],
+     [
+      173,
+      87
+     ],
+     [
+      174,
+      86
+     ],
+     [
+      175,
+      85
+     ],
+     [
+      176,
+      84
+     ],
+     [
+      177,
+      83
+     ],
+     [
+      178,
+      82
+     ],
+     [
+      179,
+      81
+     ],
+     [
+      180,
+      80
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Mezclaba valores de los cañones Extended y Light."
+  },
+  {
+   "id": "m4a1",
+   "nombre": "M4A1",
+   "categoria": "Carabina",
+   "idAnalizador": "m4a1",
+   "imagen": "https://i.imgur.com/eHjkZdx.png",
+   "alcance": "Corto-medio alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 900,
+    "velBala": 590,
+    "velApuntar": 200,
+    "velRecarga": 2200,
+    "cadera": 47,
+    "precision": 25,
+    "control": 36,
+    "movilidad": 60,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.85,
+    "recoilHorizontal": 30.7
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      30.18
+     ],
+     [
+      21,
+      24.84
+     ],
+     [
+      36,
+      24
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      21.56
+     ],
+     [
+      21,
+      17.74
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      18.11
+     ],
+     [
+      21,
+      17.74
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m277",
+   "nombre": "M277",
+   "categoria": "Carabina",
+   "idAnalizador": "m277",
+   "imagen": "https://i.imgur.com/k23cq36.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 592,
+    "velApuntar": 200,
+    "velRecarga": 2384,
+    "cadera": 47,
+    "precision": 21,
+    "control": 32,
+    "movilidad": 60,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.95,
+    "recoilHorizontal": 34.4
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      75,
+      28.94
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      75,
+      20.67
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      75,
+      17.36
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "ak-205",
+   "nombre": "AK-205",
+   "categoria": "Carabina",
+   "idAnalizador": "ak205",
+   "imagen": "https://i.imgur.com/IBM8d1F.png",
+   "meta": "Regular",
+   "parche": "Buff",
+   "youtube": "hola",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 708,
+    "velApuntar": 200,
+    "velRecarga": 2484,
+    "cadera": 47,
+    "precision": 88,
+    "control": 57,
+    "movilidad": 60,
+    "danoCabeza": 28.94,
+    "danoPecho": 20.67,
+    "danoEstomago": 17.36,
+    "balasParaMatar": 5,
+    "recoilVertical": 0.51,
+    "recoilHorizontal": 7.4,
+    "extra2": "Daño 25 CABEZA PECHO 80",
+    "extra3": "retroceso"
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      28.94
+     ],
+     [
+      9,
+      24.84
+     ],
+     [
+      21,
+      21.1
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      20.67
+     ],
+     [
+      9,
+      17.74
+     ],
+     [
+      21,
+      15.07
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      17.36
+     ],
+     [
+      9,
+      14.9
+     ],
+     [
+      21,
+      12.66
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": [
+    {
+     "nombre": "REDSEC",
+     "accesorios": {},
+     "estadisticas": {
+      "vida": 100,
+      "cadencia": 720,
+      "velBala": 708,
+      "velApuntar": 200,
+      "velRecarga": 2484,
+      "cadera": 47,
+      "precision": 88,
+      "control": 57,
+      "movilidad": 60,
+      "danoCabeza": 28.94,
+      "danoPecho": 20.67,
+      "danoEstomago": 17.36,
+      "balasParaMatar": 5,
+      "recoilVertical": 0.51,
+      "recoilHorizontal": 7.4
+     },
+     "municion": {
+      "puntaHueca": 1.57,
+      "sintetico": 1.8
+     },
+     "dano": {
+      "cabeza": [
+       [
+        0,
+        28.94
+       ],
+       [
+        9,
+        24.84
+       ],
+       [
+        21,
+        21.1
+       ],
+       [
+        36,
+        20.47
+       ],
+       [
+        75,
+        17.86
+       ]
+      ],
+      "pecho": [
+       [
+        0,
+        20.67
+       ],
+       [
+        9,
+        17.74
+       ],
+       [
+        21,
+        15.07
+       ],
+       [
+        36,
+        14.62
+       ],
+       [
+        75,
+        12.76
+       ]
+      ],
+      "estomago": [
+       [
+        0,
+        17.36
+       ],
+       [
+        9,
+        14.9
+       ],
+       [
+        21,
+        12.66
+       ],
+       [
+        36,
+        12.28
+       ],
+       [
+        75,
+        10.72
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "m417-a2",
+   "nombre": "M417 A2",
+   "categoria": "Carabina",
+   "idAnalizador": "m417a2",
+   "imagen": "https://i.imgur.com/cAgFmQ4.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 654,
+    "velBala": 560,
+    "velApuntar": 200,
+    "velRecarga": 2467,
+    "cadera": 47,
+    "precision": 27,
+    "control": 31,
+    "movilidad": 60,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.94,
+    "recoilHorizontal": 15.4
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      9,
+      38.47
+     ],
+     [
+      21,
+      30.18
+     ],
+     [
+      36,
+      28.94
+     ],
+     [
+      75,
+      23.98
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      9,
+      27.48
+     ],
+     [
+      21,
+      21.56
+     ],
+     [
+      36,
+      20.67
+     ],
+     [
+      75,
+      17.13
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      9,
+      23.08
+     ],
+     [
+      21,
+      18.11
+     ],
+     [
+      36,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "grt-bc",
+   "nombre": "GRT-BC",
+   "categoria": "Carabina",
+   "idAnalizador": "grtbc",
+   "imagen": "https://i.imgur.com/7Tf9hqS.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 830,
+    "velBala": 563,
+    "velApuntar": 200,
+    "velRecarga": 2500,
+    "cadera": 47,
+    "precision": 26,
+    "control": 37,
+    "movilidad": 60,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.81,
+    "recoilHorizontal": 26.1
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      30.18
+     ],
+     [
+      21,
+      24.84
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      21.56
+     ],
+     [
+      21,
+      17.74
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      18.11
+     ],
+     [
+      21,
+      14.9
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "qbz-192",
+   "nombre": "QBZ-192",
+   "categoria": "Carabina",
+   "idAnalizador": "qbz192",
+   "imagen": "https://i.imgur.com/MIQiFnQ.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 771,
+    "velBala": 608,
+    "velApuntar": 200,
+    "velRecarga": 2567,
+    "cadera": 47,
+    "precision": 32,
+    "control": 38,
+    "movilidad": 60,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.77,
+    "recoilHorizontal": 19.9
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      30.18
+     ],
+     [
+      21,
+      24.84
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      21.56
+     ],
+     [
+      21,
+      17.74
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      18.11
+     ],
+     [
+      21,
+      14.9
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "sg-553r",
+   "nombre": "SG 553R",
+   "categoria": "Carabina",
+   "idAnalizador": "sg553r",
+   "imagen": "https://i.imgur.com/fMXns3N.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 483,
+    "velApuntar": 200,
+    "velRecarga": 2500,
+    "cadera": 47,
+    "precision": 23,
+    "control": 37,
+    "movilidad": 60,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.83,
+    "recoilHorizontal": 35.8
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      9,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      9,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      9,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "sor-300sc",
+   "nombre": "SOR-300SC",
+   "categoria": "Carabina",
+   "idAnalizador": "sor300sc",
+   "imagen": "https://i.imgur.com/1BlYO98.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 600,
+    "velBala": 528,
+    "velApuntar": 200,
+    "velRecarga": 2250,
+    "cadera": 47,
+    "precision": 40,
+    "control": 40,
+    "movilidad": 60,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.74,
+    "recoilHorizontal": 15.8
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      9,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      9,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      9,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "brod-3",
+   "nombre": "BROD 3",
+   "categoria": "Carabina",
+   "idAnalizador": "brod3",
+   "imagen": "https://i.imgur.com/93G4klJ.png",
+   "meta": "Competidor",
+   "alcance": "Corto-medio alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 830,
+    "velBala": 563,
+    "velApuntar": 200,
+    "velRecarga": 2217,
+    "cadera": 47,
+    "precision": 27,
+    "control": 35,
+    "movilidad": 60,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.84,
+    "recoilHorizontal": 24.3
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      30.18
+     ],
+     [
+      21,
+      24.84
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      21.56
+     ],
+     [
+      21,
+      17.74
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      18.11
+     ],
+     [
+      21,
+      14.9
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "sgx",
+   "nombre": "SGX",
+   "categoria": "Subfusil",
+   "idAnalizador": "sgx",
+   "imagen": "https://i.imgur.com/X31vXni.png",
+   "alcance": "Corto alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 830,
+    "velBala": 378,
+    "velApuntar": 167,
+    "velRecarga": 2517,
+    "cadera": 47,
+    "precision": 30,
+    "control": 51,
+    "movilidad": 68,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.6,
+    "recoilHorizontal": 31.7
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      28.94
+     ],
+     [
+      21,
+      23.98
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      20.67
+     ],
+     [
+      21,
+      17.13
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      17.36
+     ],
+     [
+      21,
+      14.39
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "pw5a3",
+   "nombre": "PW5A3",
+   "categoria": "Subfusil",
+   "idAnalizador": "pw5a3",
+   "imagen": "https://i.imgur.com/9bXCMGq.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 771,
+    "velBala": 408,
+    "velApuntar": 167,
+    "velRecarga": 2517,
+    "cadera": 47,
+    "precision": 35,
+    "control": 53,
+    "movilidad": 68,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.56,
+    "recoilHorizontal": 28.3
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      28.94
+     ],
+     [
+      21,
+      23.98
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      20.67
+     ],
+     [
+      21,
+      17.13
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      17.36
+     ],
+     [
+      21,
+      14.39
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "pw7a2",
+   "nombre": "PW7A2",
+   "categoria": "Subfusil",
+   "idAnalizador": "pw7a2",
+   "imagen": "https://i.imgur.com/sJ1rCF8.png",
+   "meta": "Regular",
+   "alcance": "Corto alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 947,
+    "velBala": 576,
+    "velApuntar": 167,
+    "velRecarga": 2184,
+    "cadera": 47,
+    "precision": 38,
+    "control": 58,
+    "movilidad": 68,
+    "danoCabeza": 23.98,
+    "danoPecho": 17.13,
+    "danoEstomago": 14.39,
+    "balasParaMatar": 6,
+    "recoilVertical": 0.51,
+    "recoilHorizontal": 27.8
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      23.98
+     ],
+     [
+      21,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      17.13
+     ],
+     [
+      21,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      14.39
+     ],
+     [
+      21,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "umg-40",
+   "nombre": "UMG-40",
+   "categoria": "Subfusil",
+   "idAnalizador": "umg40",
+   "imagen": "https://i.imgur.com/vNHuEqT.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 635,
+    "velBala": 467,
+    "velApuntar": 167,
+    "velRecarga": 2517,
+    "cadera": 47,
+    "precision": 53,
+    "control": 49,
+    "movilidad": 68,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.6,
+    "recoilHorizontal": 13
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      30.18
+     ],
+     [
+      21,
+      24.84
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      21.56
+     ],
+     [
+      21,
+      17.74
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      18.11
+     ],
+     [
+      21,
+      14.9
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "usg-90",
+   "nombre": "USG-90",
+   "categoria": "Subfusil",
+   "idAnalizador": "usg90",
+   "imagen": "https://i.imgur.com/ug3J15Y.png",
+   "alcance": "Corto-medio alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 900,
+    "velBala": 543,
+    "velApuntar": 167,
+    "velRecarga": 3000,
+    "cadera": 47,
+    "precision": 35,
+    "control": 56,
+    "movilidad": 68,
+    "danoCabeza": 28.94,
+    "danoPecho": 20.67,
+    "danoEstomago": 17.36,
+    "balasParaMatar": 5,
+    "recoilVertical": 0.55,
+    "recoilHorizontal": 35.5
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      28.94
+     ],
+     [
+      9,
+      24.84
+     ],
+     [
+      21,
+      21.1
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      20.67
+     ],
+     [
+      9,
+      17.74
+     ],
+     [
+      21,
+      15.07
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      17.36
+     ],
+     [
+      9,
+      14.9
+     ],
+     [
+      21,
+      12.66
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "notas": "Base anotada con el cañón Heavy Extended."
+  },
+  {
+   "id": "kv9",
+   "nombre": "KV9",
+   "categoria": "Subfusil",
+   "idAnalizador": "kv9",
+   "imagen": "https://i.imgur.com/cnogiGN.png",
+   "alcance": "Corto alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 1080,
+    "velBala": 362,
+    "velApuntar": 167,
+    "velRecarga": 2384,
+    "cadera": 47,
+    "precision": 23,
+    "control": 60,
+    "movilidad": 68,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.54,
+    "recoilHorizontal": 50
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      28.94
+     ],
+     [
+      21,
+      23.98
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      20.67
+     ],
+     [
+      21,
+      17.13
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      17.36
+     ],
+     [
+      21,
+      14.39
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "scw-10",
+   "nombre": "SCW-10",
+   "categoria": "Subfusil",
+   "idAnalizador": "scw10",
+   "imagen": "https://i.imgur.com/MEnk3e4.png",
+   "alcance": "Corto alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 800,
+    "velBala": 398,
+    "velApuntar": 167,
+    "velRecarga": 2600,
+    "cadera": 47,
+    "precision": 23,
+    "control": 43,
+    "movilidad": 68,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.71,
+    "recoilHorizontal": 33.5
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      9,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      36,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      9,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      36,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      9,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      36,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "sl9",
+   "nombre": "SL9",
+   "categoria": "Subfusil",
+   "idAnalizador": "sl9",
+   "imagen": "https://i.imgur.com/7SEHzyq.png",
+   "alcance": "Corto alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 675,
+    "velBala": 486,
+    "velApuntar": 167,
+    "velRecarga": 2650,
+    "cadera": 47,
+    "precision": 61,
+    "control": 55,
+    "movilidad": 68,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.52,
+    "recoilHorizontal": 13
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      28.94
+     ],
+     [
+      21,
+      23.98
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      20.67
+     ],
+     [
+      21,
+      17.13
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      17.36
+     ],
+     [
+      21,
+      14.39
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "cz3a1",
+   "nombre": "CZ3A1",
+   "categoria": "Subfusil",
+   "idAnalizador": "cz3a1",
+   "imagen": "https://i.imgur.com/a2jnKIL.png",
+   "alcance": "Corto alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 981,
+    "velBala": 336,
+    "velApuntar": 167,
+    "velRecarga": 2217,
+    "cadera": 47,
+    "precision": 21,
+    "control": 48,
+    "movilidad": 68,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.68,
+    "recoilHorizontal": 50.8
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      28.94
+     ],
+     [
+      21,
+      23.98
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      20.67
+     ],
+     [
+      21,
+      17.13
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      17.36
+     ],
+     [
+      21,
+      14.39
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "pp-19",
+   "nombre": "PP-19",
+   "categoria": "Subfusil",
+   "idAnalizador": "pp19",
+   "imagen": "https://i.imgur.com/eD4rySy.png",
+   "alcance": "Corto alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 444,
+    "velApuntar": 167,
+    "velRecarga": 2467,
+    "cadera": 47,
+    "precision": 50,
+    "control": 54,
+    "movilidad": 68,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.54,
+    "recoilHorizontal": 18
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      9,
+      28.94
+     ],
+     [
+      21,
+      23.98
+     ],
+     [
+      36,
+      20.47
+     ],
+     [
+      75,
+      17.86
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      9,
+      20.67
+     ],
+     [
+      21,
+      17.13
+     ],
+     [
+      36,
+      14.62
+     ],
+     [
+      75,
+      12.76
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      9,
+      17.36
+     ],
+     [
+      21,
+      14.39
+     ],
+     [
+      36,
+      12.28
+     ],
+     [
+      75,
+      10.72
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "l110",
+   "nombre": "L110",
+   "categoria": "Ametralladora",
+   "idAnalizador": "l110",
+   "imagen": "https://i.imgur.com/yVimron.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 740,
+    "velApuntar": 433,
+    "velRecarga": 6500,
+    "cadera": 29,
+    "precision": 34,
+    "control": 53,
+    "movilidad": 30,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.57,
+    "recoilHorizontal": 31
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      75,
+      23.98
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      75,
+      17.13
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "drs-iar",
+   "nombre": "DRS-IAR",
+   "categoria": "Ametralladora",
+   "idAnalizador": "drsiar",
+   "imagen": "https://i.imgur.com/kbeE4Vr.png",
+   "meta": "Meta absoluto",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 771,
+    "velBala": 680,
+    "velApuntar": 300,
+    "velRecarga": 2467,
+    "cadera": 34,
+    "precision": 24,
+    "control": 43,
+    "movilidad": 44,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.71,
+    "recoilHorizontal": 29.3
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      75,
+      23.98
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      75,
+      17.36
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m-60",
+   "nombre": "M/60",
+   "categoria": "Ametralladora",
+   "idAnalizador": "m60",
+   "imagen": "https://i.imgur.com/bBLxgAG.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 514,
+    "velBala": 680,
+    "velApuntar": 433,
+    "velRecarga": 7350,
+    "cadera": 29,
+    "precision": 27,
+    "control": 41,
+    "movilidad": 30,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.74,
+    "recoilHorizontal": 29.9
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      21,
+      36.47
+     ],
+     [
+      75,
+      28.94
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      21,
+      26.05
+     ],
+     [
+      75,
+      20.67
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      21,
+      21.88
+     ],
+     [
+      75,
+      17.36
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Valores que no correspondían a ningún accesorio."
+  },
+  {
+   "id": "rpkm",
+   "nombre": "RPKM",
+   "categoria": "Ametralladora",
+   "idAnalizador": "rpkm",
+   "imagen": "https://i.imgur.com/UwjG1Za.png",
+   "alcance": "Corto-medio alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 553,
+    "velBala": 630,
+    "velApuntar": 300,
+    "velRecarga": 2800,
+    "cadera": 34,
+    "precision": 35,
+    "control": 45,
+    "movilidad": 44,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.66,
+    "recoilHorizontal": 17.5
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      9,
+      38.47
+     ],
+     [
+      21,
+      30.18
+     ],
+     [
+      36,
+      28.94
+     ],
+     [
+      75,
+      23.98
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      9,
+      27.48
+     ],
+     [
+      21,
+      21.56
+     ],
+     [
+      36,
+      20.67
+     ],
+     [
+      75,
+      17.13
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      9,
+      23.08
+     ],
+     [
+      21,
+      18.11
+     ],
+     [
+      36,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m123k",
+   "nombre": "M123K",
+   "categoria": "Ametralladora",
+   "idAnalizador": "m123k",
+   "imagen": "https://i.imgur.com/oEgUO6s.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 830,
+    "velBala": 630,
+    "velApuntar": 433,
+    "velRecarga": 6650,
+    "cadera": 29,
+    "precision": 24,
+    "control": 53,
+    "movilidad": 30,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.61,
+    "recoilHorizontal": 47.7
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      75,
+      23.98
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      75,
+      17.13
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m250",
+   "nombre": "M250",
+   "categoria": "Ametralladora",
+   "idAnalizador": "m250",
+   "imagen": "https://i.imgur.com/qcbyrEN.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 675,
+    "velBala": 724,
+    "velApuntar": 433,
+    "velRecarga": 5750,
+    "cadera": 29,
+    "precision": 26,
+    "control": 43,
+    "movilidad": 30,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.73,
+    "recoilHorizontal": 35.9
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "kts100-mk8",
+   "nombre": "KTS100 MK8",
+   "categoria": "Ametralladora",
+   "idAnalizador": "kts100",
+   "imagen": "https://i.imgur.com/dOPZgL7.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 514,
+    "velBala": 808,
+    "velApuntar": 367,
+    "velRecarga": 3250,
+    "cadera": 34,
+    "precision": 75,
+    "control": 55,
+    "movilidad": 40,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.52,
+    "recoilHorizontal": 9.5
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      75,
+      23.98
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      75,
+      17.13
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m240l",
+   "nombre": "M240L",
+   "categoria": "Ametralladora",
+   "idAnalizador": "m240l",
+   "imagen": "https://i.imgur.com/iFW2Z6e.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 600,
+    "velBala": 590,
+    "velApuntar": 433,
+    "velRecarga": 4250,
+    "cadera": 29,
+    "precision": 24,
+    "control": 38,
+    "movilidad": 30,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.81,
+    "recoilHorizontal": 34.5
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      21,
+      36.47
+     ],
+     [
+      75,
+      28.94
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      21,
+      26.05
+     ],
+     [
+      75,
+      20.67
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      21,
+      21.88
+     ],
+     [
+      75,
+      17.36
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m121-a2",
+   "nombre": "M121 A2",
+   "categoria": "Ametralladora",
+   "idAnalizador": "m121a2",
+   "imagen": "https://i.imgur.com/CDKNpLU.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 654,
+    "velBala": 560,
+    "velApuntar": 433,
+    "velRecarga": 6267,
+    "cadera": 29,
+    "precision": 23,
+    "control": 38,
+    "movilidad": 30,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.81,
+    "recoilHorizontal": 31.8
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      21,
+      36.47
+     ],
+     [
+      75,
+      28.94
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      21,
+      26.05
+     ],
+     [
+      75,
+      20.67
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      21,
+      21.88
+     ],
+     [
+      75,
+      17.36
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "rpk-74m",
+   "nombre": "RPK-74M",
+   "categoria": "Ametralladora",
+   "idAnalizador": "rpk74m",
+   "imagen": "https://i.imgur.com/b3fdJWG.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 685,
+    "velBala": 808,
+    "velApuntar": 300,
+    "velRecarga": 2784,
+    "cadera": 34,
+    "precision": 55,
+    "control": 60,
+    "movilidad": 44,
+    "danoCabeza": 28.94,
+    "danoPecho": 20.67,
+    "danoEstomago": 17.36,
+    "balasParaMatar": 5,
+    "recoilVertical": 0.48,
+    "recoilHorizontal": 16.1
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      28.94
+     ],
+     [
+      21,
+      23.98
+     ],
+     [
+      75,
+      20.47
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      20.67
+     ],
+     [
+      21,
+      17.13
+     ],
+     [
+      75,
+      14.62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      17.36
+     ],
+     [
+      21,
+      14.39
+     ],
+     [
+      75,
+      12.28
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "m39-emr",
+   "nombre": "M39 EMR",
+   "categoria": "DMR",
+   "idAnalizador": "m39emr",
+   "imagen": "https://i.imgur.com/npe66C9.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 257,
+    "velBala": 760,
+    "velApuntar": 300,
+    "velRecarga": 2534,
+    "cadera": 34,
+    "precision": 65,
+    "control": 15,
+    "movilidad": 44,
+    "danoCabeza": 62.25,
+    "danoPecho": 41.5,
+    "danoEstomago": 37.76,
+    "balasParaMatar": 3,
+    "recoilVertical": 1.75,
+    "recoilHorizontal": 8
+   },
+   "municion": {
+    "puntaHueca": 1.5,
+    "sintetico": 1.75
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      62.25
+     ],
+     [
+      21,
+      56.4
+     ],
+     [
+      75,
+      51.6
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      41.5
+     ],
+     [
+      21,
+      37.6
+     ],
+     [
+      75,
+      34.4
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      37.76
+     ],
+     [
+      21,
+      34.22
+     ],
+     [
+      75,
+      31.3
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "lmr27",
+   "nombre": "LMR27",
+   "categoria": "DMR",
+   "idAnalizador": "lmr27",
+   "imagen": "https://i.imgur.com/Z5gWPUY.png",
+   "base": {
+    "vida": 100,
+    "cadencia": 450,
+    "velBala": 800,
+    "velApuntar": 250,
+    "velRecarga": 3034,
+    "cadera": 40,
+    "precision": 66,
+    "control": 31,
+    "movilidad": 52,
+    "danoCabeza": 39.4,
+    "danoPecho": 29.4,
+    "danoEstomago": 26.75,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.92,
+    "recoilHorizontal": 11
+   },
+   "municion": {
+    "puntaHueca": 1.5,
+    "sintetico": 1.75
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      39.4
+     ],
+     [
+      21,
+      36.85
+     ],
+     [
+      75,
+      35.11
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      29.4
+     ],
+     [
+      21,
+      27.5
+     ],
+     [
+      75,
+      26.2
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      26.75
+     ],
+     [
+      21,
+      25.02
+     ],
+     [
+      75,
+      23.84
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "elr-40",
+   "nombre": "ELR-40",
+   "categoria": "Francotirador",
+   "idAnalizador": "elr40",
+   "base": {
+    "vida": 100,
+    "cadencia": 36,
+    "velBala": 788,
+    "velApuntar": 367,
+    "velRecarga": 2400,
+    "cadera": 34,
+    "precision": 100,
+    "control": 15,
+    "movilidad": 38,
+    "danoCabeza": 140,
+    "danoPecho": 80,
+    "danoEstomago": 53.6,
+    "balasParaMatar": 2,
+    "recoilVertical": 1.67,
+    "recoilHorizontal": 6
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      140
+     ],
+     [
+      121,
+      141.17
+     ],
+     [
+      122,
+      142.33
+     ],
+     [
+      123,
+      143.5
+     ],
+     [
+      124,
+      144.67
+     ],
+     [
+      125,
+      145.83
+     ],
+     [
+      126,
+      147
+     ],
+     [
+      127,
+      148.17
+     ],
+     [
+      128,
+      149.33
+     ],
+     [
+      129,
+      150.5
+     ],
+     [
+      130,
+      151.67
+     ],
+     [
+      131,
+      152.83
+     ],
+     [
+      132,
+      154
+     ],
+     [
+      133,
+      155.17
+     ],
+     [
+      134,
+      156.33
+     ],
+     [
+      135,
+      157.5
+     ],
+     [
+      136,
+      158.67
+     ],
+     [
+      137,
+      159.83
+     ],
+     [
+      138,
+      161
+     ],
+     [
+      139,
+      162.17
+     ],
+     [
+      140,
+      163.33
+     ],
+     [
+      141,
+      164.5
+     ],
+     [
+      142,
+      165.67
+     ],
+     [
+      143,
+      166.83
+     ],
+     [
+      144,
+      168
+     ],
+     [
+      145,
+      169.17
+     ],
+     [
+      146,
+      170.33
+     ],
+     [
+      147,
+      171.5
+     ],
+     [
+      148,
+      172.67
+     ],
+     [
+      149,
+      173.83
+     ],
+     [
+      150,
+      175
+     ],
+     [
+      181,
+      172.75
+     ],
+     [
+      182,
+      170.5
+     ],
+     [
+      183,
+      168.25
+     ],
+     [
+      184,
+      166
+     ],
+     [
+      185,
+      163.75
+     ],
+     [
+      186,
+      161.5
+     ],
+     [
+      187,
+      159.25
+     ],
+     [
+      188,
+      157
+     ],
+     [
+      189,
+      154.75
+     ],
+     [
+      190,
+      152.5
+     ],
+     [
+      191,
+      150.25
+     ],
+     [
+      192,
+      148
+     ],
+     [
+      193,
+      145.75
+     ],
+     [
+      194,
+      143.5
+     ],
+     [
+      195,
+      141.25
+     ],
+     [
+      196,
+      139
+     ],
+     [
+      197,
+      136.75
+     ],
+     [
+      198,
+      134.5
+     ],
+     [
+      199,
+      132.25
+     ],
+     [
+      200,
+      130
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      80
+     ],
+     [
+      121,
+      80.67
+     ],
+     [
+      122,
+      81.33
+     ],
+     [
+      123,
+      82
+     ],
+     [
+      124,
+      82.67
+     ],
+     [
+      125,
+      83.33
+     ],
+     [
+      126,
+      84
+     ],
+     [
+      127,
+      84.67
+     ],
+     [
+      128,
+      85.33
+     ],
+     [
+      129,
+      86
+     ],
+     [
+      130,
+      86.67
+     ],
+     [
+      131,
+      87.33
+     ],
+     [
+      132,
+      88
+     ],
+     [
+      133,
+      88.67
+     ],
+     [
+      134,
+      89.33
+     ],
+     [
+      135,
+      90
+     ],
+     [
+      136,
+      90.67
+     ],
+     [
+      137,
+      91.33
+     ],
+     [
+      138,
+      92
+     ],
+     [
+      139,
+      92.67
+     ],
+     [
+      140,
+      93.33
+     ],
+     [
+      141,
+      94
+     ],
+     [
+      142,
+      94.67
+     ],
+     [
+      143,
+      95.33
+     ],
+     [
+      144,
+      96
+     ],
+     [
+      145,
+      96.67
+     ],
+     [
+      146,
+      97.33
+     ],
+     [
+      147,
+      98
+     ],
+     [
+      148,
+      98.67
+     ],
+     [
+      149,
+      99.33
+     ],
+     [
+      150,
+      100
+     ],
+     [
+      181,
+      98.711
+     ],
+     [
+      182,
+      97.422
+     ],
+     [
+      183,
+      96.133
+     ],
+     [
+      184,
+      94.844
+     ],
+     [
+      185,
+      93.555
+     ],
+     [
+      186,
+      92.266
+     ],
+     [
+      187,
+      90.977
+     ],
+     [
+      188,
+      89.688
+     ],
+     [
+      189,
+      88.399
+     ],
+     [
+      190,
+      87.11
+     ],
+     [
+      191,
+      85.821
+     ],
+     [
+      192,
+      84.532
+     ],
+     [
+      193,
+      83.243
+     ],
+     [
+      194,
+      81.954
+     ],
+     [
+      195,
+      80.665
+     ],
+     [
+      196,
+      79.376
+     ],
+     [
+      197,
+      78.087
+     ],
+     [
+      198,
+      76.798
+     ],
+     [
+      199,
+      75.509
+     ],
+     [
+      200,
+      74.22
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      53.6
+     ],
+     [
+      121,
+      54.06
+     ],
+     [
+      122,
+      54.52
+     ],
+     [
+      123,
+      54.97
+     ],
+     [
+      124,
+      55.43
+     ],
+     [
+      125,
+      55.89
+     ],
+     [
+      126,
+      56.35
+     ],
+     [
+      127,
+      56.8
+     ],
+     [
+      128,
+      57.26
+     ],
+     [
+      129,
+      57.72
+     ],
+     [
+      130,
+      58.18
+     ],
+     [
+      131,
+      58.63
+     ],
+     [
+      132,
+      59.09
+     ],
+     [
+      133,
+      59.55
+     ],
+     [
+      134,
+      60.01
+     ],
+     [
+      135,
+      60.46
+     ],
+     [
+      136,
+      60.92
+     ],
+     [
+      137,
+      61.38
+     ],
+     [
+      138,
+      61.84
+     ],
+     [
+      139,
+      62.29
+     ],
+     [
+      140,
+      62.75
+     ],
+     [
+      141,
+      63.21
+     ],
+     [
+      142,
+      63.67
+     ],
+     [
+      143,
+      64.12
+     ],
+     [
+      144,
+      64.58
+     ],
+     [
+      145,
+      65.04
+     ],
+     [
+      146,
+      65.5
+     ],
+     [
+      147,
+      65.95
+     ],
+     [
+      148,
+      66.41
+     ],
+     [
+      149,
+      66.87
+     ],
+     [
+      150,
+      67
+     ],
+     [
+      181,
+      66.148
+     ],
+     [
+      182,
+      65.296
+     ],
+     [
+      183,
+      64.444
+     ],
+     [
+      184,
+      63.592
+     ],
+     [
+      185,
+      62.74
+     ],
+     [
+      186,
+      61.888
+     ],
+     [
+      187,
+      61.036
+     ],
+     [
+      188,
+      60.184
+     ],
+     [
+      189,
+      59.332
+     ],
+     [
+      190,
+      58.48
+     ],
+     [
+      191,
+      57.628
+     ],
+     [
+      192,
+      56.776
+     ],
+     [
+      193,
+      55.924
+     ],
+     [
+      194,
+      55.072
+     ],
+     [
+      195,
+      54.22
+     ],
+     [
+      196,
+      53.368
+     ],
+     [
+      197,
+      52.516
+     ],
+     [
+      198,
+      51.664
+     ],
+     [
+      199,
+      50.812
+     ],
+     [
+      200,
+      49.96
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "notas": "Base anotada con el cañón Light."
+  },
+  {
+   "id": "elr-40-disparo-unico",
+   "nombre": "ELR-40 DISPARO UNICO",
+   "categoria": "Francotirador",
+   "idAnalizador": "elr40",
+   "base": {
+    "vida": 100,
+    "cadencia": 36,
+    "velBala": 788,
+    "velApuntar": 300,
+    "velRecarga": 3166,
+    "cadera": 34,
+    "precision": 100,
+    "control": 15,
+    "movilidad": 52,
+    "danoCabeza": 120,
+    "danoPecho": 90,
+    "danoEstomago": 76,
+    "balasParaMatar": 2,
+    "recoilVertical": 1.7,
+    "recoilHorizontal": 6
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      120
+     ],
+     [
+      24,
+      122.22
+     ],
+     [
+      25,
+      124.44
+     ],
+     [
+      26,
+      126.67
+     ],
+     [
+      27,
+      128.89
+     ],
+     [
+      28,
+      131.11
+     ],
+     [
+      29,
+      133.33
+     ],
+     [
+      30,
+      135.56
+     ],
+     [
+      31,
+      137.78
+     ],
+     [
+      32,
+      140
+     ],
+     [
+      33,
+      142.22
+     ],
+     [
+      34,
+      144.44
+     ],
+     [
+      35,
+      146.67
+     ],
+     [
+      36,
+      148.89
+     ],
+     [
+      37,
+      151.11
+     ],
+     [
+      38,
+      153.33
+     ],
+     [
+      39,
+      155.56
+     ],
+     [
+      40,
+      157.78
+     ],
+     [
+      41,
+      160
+     ],
+     [
+      68,
+      159.26
+     ],
+     [
+      69,
+      158.53
+     ],
+     [
+      70,
+      157.79
+     ],
+     [
+      71,
+      157.06
+     ],
+     [
+      72,
+      156.32
+     ],
+     [
+      73,
+      155.58
+     ],
+     [
+      74,
+      154.85
+     ],
+     [
+      75,
+      154.11
+     ],
+     [
+      76,
+      153.38
+     ],
+     [
+      77,
+      152.64
+     ],
+     [
+      78,
+      151.9
+     ],
+     [
+      79,
+      151.17
+     ],
+     [
+      80,
+      150.43
+     ],
+     [
+      81,
+      149.69
+     ],
+     [
+      82,
+      148.96
+     ],
+     [
+      83,
+      148.22
+     ],
+     [
+      84,
+      147.49
+     ],
+     [
+      85,
+      146.75
+     ],
+     [
+      86,
+      146.01
+     ],
+     [
+      87,
+      145.28
+     ],
+     [
+      88,
+      144.54
+     ],
+     [
+      89,
+      143.81
+     ],
+     [
+      90,
+      143.07
+     ],
+     [
+      91,
+      142.33
+     ],
+     [
+      92,
+      141.6
+     ],
+     [
+      93,
+      140.86
+     ],
+     [
+      94,
+      140.13
+     ],
+     [
+      95,
+      139.39
+     ],
+     [
+      96,
+      138.65
+     ],
+     [
+      97,
+      137.92
+     ],
+     [
+      98,
+      137.18
+     ],
+     [
+      99,
+      136.44
+     ],
+     [
+      100,
+      135.71
+     ],
+     [
+      101,
+      134.97
+     ],
+     [
+      102,
+      134.24
+     ],
+     [
+      103,
+      133.5
+     ],
+     [
+      104,
+      132.76
+     ],
+     [
+      105,
+      132.03
+     ],
+     [
+      106,
+      131.29
+     ],
+     [
+      107,
+      130.56
+     ],
+     [
+      108,
+      129.82
+     ],
+     [
+      109,
+      129.08
+     ],
+     [
+      110,
+      128.35
+     ],
+     [
+      111,
+      127.61
+     ],
+     [
+      112,
+      126.88
+     ],
+     [
+      113,
+      126.14
+     ],
+     [
+      114,
+      125.4
+     ],
+     [
+      115,
+      124.67
+     ],
+     [
+      116,
+      123.93
+     ],
+     [
+      117,
+      123.19
+     ],
+     [
+      118,
+      122.46
+     ],
+     [
+      119,
+      121.72
+     ],
+     [
+      120,
+      120.99
+     ],
+     [
+      121,
+      120.25
+     ],
+     [
+      122,
+      119.51
+     ],
+     [
+      123,
+      118.78
+     ],
+     [
+      124,
+      118.04
+     ],
+     [
+      125,
+      117.31
+     ],
+     [
+      126,
+      116.57
+     ],
+     [
+      127,
+      115.83
+     ],
+     [
+      128,
+      115.1
+     ],
+     [
+      129,
+      114.36
+     ],
+     [
+      130,
+      113.63
+     ],
+     [
+      131,
+      112.89
+     ],
+     [
+      132,
+      112.15
+     ],
+     [
+      133,
+      111.42
+     ],
+     [
+      134,
+      110.68
+     ],
+     [
+      135,
+      109.94
+     ],
+     [
+      136,
+      109.21
+     ],
+     [
+      137,
+      108.47
+     ],
+     [
+      138,
+      107.74
+     ],
+     [
+      139,
+      107
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      90
+     ],
+     [
+      25,
+      91.67
+     ],
+     [
+      26,
+      93.33
+     ],
+     [
+      27,
+      95
+     ],
+     [
+      28,
+      96.67
+     ],
+     [
+      29,
+      98.33
+     ],
+     [
+      30,
+      100
+     ],
+     [
+      31,
+      101.67
+     ],
+     [
+      32,
+      103.33
+     ],
+     [
+      33,
+      105
+     ],
+     [
+      34,
+      106.67
+     ],
+     [
+      35,
+      108.33
+     ],
+     [
+      36,
+      110
+     ],
+     [
+      37,
+      111.67
+     ],
+     [
+      38,
+      113.33
+     ],
+     [
+      39,
+      115
+     ],
+     [
+      40,
+      116.67
+     ],
+     [
+      41,
+      118.33
+     ],
+     [
+      42,
+      120
+     ],
+     [
+      69,
+      118.33
+     ],
+     [
+      70,
+      116.67
+     ],
+     [
+      71,
+      115
+     ],
+     [
+      72,
+      113.33
+     ],
+     [
+      73,
+      111.67
+     ],
+     [
+      74,
+      110
+     ],
+     [
+      75,
+      108.33
+     ],
+     [
+      76,
+      106.67
+     ],
+     [
+      77,
+      105
+     ],
+     [
+      78,
+      103.33
+     ],
+     [
+      79,
+      101.67
+     ],
+     [
+      80,
+      100
+     ],
+     [
+      81,
+      99.67
+     ],
+     [
+      82,
+      99.33
+     ],
+     [
+      83,
+      99
+     ],
+     [
+      84,
+      98.67
+     ],
+     [
+      85,
+      98.33
+     ],
+     [
+      86,
+      98
+     ],
+     [
+      87,
+      97.67
+     ],
+     [
+      88,
+      97.33
+     ],
+     [
+      89,
+      97
+     ],
+     [
+      90,
+      96.67
+     ],
+     [
+      91,
+      96.33
+     ],
+     [
+      92,
+      96
+     ],
+     [
+      93,
+      95.67
+     ],
+     [
+      94,
+      95.33
+     ],
+     [
+      95,
+      95
+     ],
+     [
+      96,
+      94.67
+     ],
+     [
+      97,
+      94.33
+     ],
+     [
+      98,
+      94
+     ],
+     [
+      99,
+      93.67
+     ],
+     [
+      100,
+      93.33
+     ],
+     [
+      101,
+      93
+     ],
+     [
+      102,
+      92.67
+     ],
+     [
+      103,
+      92.33
+     ],
+     [
+      104,
+      92
+     ],
+     [
+      105,
+      91.67
+     ],
+     [
+      106,
+      91.33
+     ],
+     [
+      107,
+      91
+     ],
+     [
+      108,
+      90.67
+     ],
+     [
+      109,
+      90.33
+     ],
+     [
+      110,
+      90
+     ],
+     [
+      111,
+      89.67
+     ],
+     [
+      112,
+      89.33
+     ],
+     [
+      113,
+      89
+     ],
+     [
+      114,
+      88.67
+     ],
+     [
+      115,
+      88.33
+     ],
+     [
+      116,
+      88
+     ],
+     [
+      117,
+      87.67
+     ],
+     [
+      118,
+      87.33
+     ],
+     [
+      119,
+      87
+     ],
+     [
+      120,
+      86.67
+     ],
+     [
+      121,
+      86.33
+     ],
+     [
+      122,
+      86
+     ],
+     [
+      123,
+      85.67
+     ],
+     [
+      124,
+      85.33
+     ],
+     [
+      125,
+      85
+     ],
+     [
+      126,
+      84.67
+     ],
+     [
+      127,
+      84.33
+     ],
+     [
+      128,
+      84
+     ],
+     [
+      129,
+      83.67
+     ],
+     [
+      130,
+      83.33
+     ],
+     [
+      131,
+      83
+     ],
+     [
+      132,
+      82.67
+     ],
+     [
+      133,
+      82.33
+     ],
+     [
+      134,
+      82
+     ],
+     [
+      135,
+      81.67
+     ],
+     [
+      136,
+      81.33
+     ],
+     [
+      137,
+      81
+     ],
+     [
+      138,
+      80.67
+     ],
+     [
+      139,
+      80.33
+     ],
+     [
+      140,
+      80
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      76
+     ],
+     [
+      25,
+      77.33
+     ],
+     [
+      26,
+      78.67
+     ],
+     [
+      27,
+      80
+     ],
+     [
+      28,
+      81.33
+     ],
+     [
+      29,
+      82.67
+     ],
+     [
+      30,
+      84
+     ],
+     [
+      31,
+      85.33
+     ],
+     [
+      32,
+      86.67
+     ],
+     [
+      33,
+      88
+     ],
+     [
+      34,
+      89.33
+     ],
+     [
+      35,
+      90.67
+     ],
+     [
+      36,
+      92
+     ],
+     [
+      37,
+      93.33
+     ],
+     [
+      38,
+      94.67
+     ],
+     [
+      39,
+      96
+     ],
+     [
+      40,
+      97.33
+     ],
+     [
+      41,
+      98.67
+     ],
+     [
+      42,
+      100
+     ],
+     [
+      69,
+      98.72
+     ],
+     [
+      70,
+      97.45
+     ],
+     [
+      71,
+      96.17
+     ],
+     [
+      72,
+      94.89
+     ],
+     [
+      73,
+      93.61
+     ],
+     [
+      74,
+      92.34
+     ],
+     [
+      75,
+      91.06
+     ],
+     [
+      76,
+      89.78
+     ],
+     [
+      77,
+      88.5
+     ],
+     [
+      78,
+      87.23
+     ],
+     [
+      79,
+      85.95
+     ],
+     [
+      80,
+      84.67
+     ],
+     [
+      81,
+      84.35
+     ],
+     [
+      82,
+      84.04
+     ],
+     [
+      83,
+      83.72
+     ],
+     [
+      84,
+      83.4
+     ],
+     [
+      85,
+      83.08
+     ],
+     [
+      86,
+      82.77
+     ],
+     [
+      87,
+      82.45
+     ],
+     [
+      88,
+      82.13
+     ],
+     [
+      89,
+      81.81
+     ],
+     [
+      90,
+      81.5
+     ],
+     [
+      91,
+      81.18
+     ],
+     [
+      92,
+      80.86
+     ],
+     [
+      93,
+      80.54
+     ],
+     [
+      94,
+      80.23
+     ],
+     [
+      95,
+      79.91
+     ],
+     [
+      96,
+      79.59
+     ],
+     [
+      97,
+      79.27
+     ],
+     [
+      98,
+      78.96
+     ],
+     [
+      99,
+      78.64
+     ],
+     [
+      100,
+      78.32
+     ],
+     [
+      101,
+      78.05
+     ],
+     [
+      102,
+      77.77
+     ],
+     [
+      103,
+      77.5
+     ],
+     [
+      104,
+      77.23
+     ],
+     [
+      105,
+      76.95
+     ],
+     [
+      106,
+      76.68
+     ],
+     [
+      107,
+      76.41
+     ],
+     [
+      108,
+      76.13
+     ],
+     [
+      109,
+      75.86
+     ],
+     [
+      110,
+      75.59
+     ],
+     [
+      111,
+      75.31
+     ],
+     [
+      112,
+      75.04
+     ],
+     [
+      113,
+      74.76
+     ],
+     [
+      114,
+      74.49
+     ],
+     [
+      115,
+      74.22
+     ],
+     [
+      116,
+      73.94
+     ],
+     [
+      117,
+      73.67
+     ],
+     [
+      118,
+      73.4
+     ],
+     [
+      119,
+      73.12
+     ],
+     [
+      120,
+      72.85
+     ],
+     [
+      121,
+      72.56
+     ],
+     [
+      122,
+      72.27
+     ],
+     [
+      123,
+      71.97
+     ],
+     [
+      124,
+      71.68
+     ],
+     [
+      125,
+      71.39
+     ],
+     [
+      126,
+      71.1
+     ],
+     [
+      127,
+      70.8
+     ],
+     [
+      128,
+      70.51
+     ],
+     [
+      129,
+      70.22
+     ],
+     [
+      130,
+      69.93
+     ],
+     [
+      131,
+      69.63
+     ],
+     [
+      132,
+      69.34
+     ],
+     [
+      133,
+      69.05
+     ],
+     [
+      134,
+      68.76
+     ],
+     [
+      135,
+      68.46
+     ],
+     [
+      136,
+      68.17
+     ],
+     [
+      137,
+      67.88
+     ],
+     [
+      138,
+      67.59
+     ],
+     [
+      139,
+      67.29
+     ],
+     [
+      140,
+      67
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "notas": "Es la ELR-40 con el cargador Single Shot y el cañón Light. Sus valores coinciden con el analizador para esa configuración."
+  },
+  {
+   "id": "mini-scout",
+   "nombre": "MINI SCOUT",
+   "categoria": "Francotirador",
+   "idAnalizador": "miniscout",
+   "base": {
+    "vida": 100,
+    "cadencia": 47,
+    "velBala": 760,
+    "velApuntar": 250,
+    "velRecarga": 2334,
+    "cadera": 40,
+    "precision": 100,
+    "control": 28,
+    "movilidad": 56,
+    "danoCabeza": 108,
+    "danoPecho": 62,
+    "danoEstomago": 41.54,
+    "balasParaMatar": 2,
+    "recoilVertical": 1,
+    "recoilHorizontal": 5
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      108
+     ],
+     [
+      25,
+      107.87
+     ],
+     [
+      26,
+      107.75
+     ],
+     [
+      27,
+      107.62
+     ],
+     [
+      28,
+      107.49
+     ],
+     [
+      29,
+      107.36
+     ],
+     [
+      30,
+      107.24
+     ],
+     [
+      31,
+      107.11
+     ],
+     [
+      32,
+      106.98
+     ],
+     [
+      33,
+      106.85
+     ],
+     [
+      34,
+      106.73
+     ],
+     [
+      35,
+      106.6
+     ],
+     [
+      36,
+      106.47
+     ],
+     [
+      37,
+      106.34
+     ],
+     [
+      38,
+      106.22
+     ],
+     [
+      39,
+      106.09
+     ],
+     [
+      40,
+      105.96
+     ],
+     [
+      41,
+      105.83
+     ],
+     [
+      42,
+      105.71
+     ],
+     [
+      43,
+      105.58
+     ],
+     [
+      44,
+      105.45
+     ],
+     [
+      45,
+      105.32
+     ],
+     [
+      46,
+      105.2
+     ],
+     [
+      47,
+      105.07
+     ],
+     [
+      48,
+      104.94
+     ],
+     [
+      49,
+      104.81
+     ],
+     [
+      50,
+      104.69
+     ],
+     [
+      51,
+      104.56
+     ],
+     [
+      52,
+      104.43
+     ],
+     [
+      53,
+      104.3
+     ],
+     [
+      54,
+      104.18
+     ],
+     [
+      55,
+      104.05
+     ],
+     [
+      56,
+      103.92
+     ],
+     [
+      57,
+      103.79
+     ],
+     [
+      58,
+      103.67
+     ],
+     [
+      59,
+      103.54
+     ],
+     [
+      60,
+      103.41
+     ],
+     [
+      61,
+      103.28
+     ],
+     [
+      62,
+      103.16
+     ],
+     [
+      63,
+      103.03
+     ],
+     [
+      64,
+      102.9
+     ],
+     [
+      65,
+      102.77
+     ],
+     [
+      66,
+      102.65
+     ],
+     [
+      67,
+      102.52
+     ],
+     [
+      68,
+      102.39
+     ],
+     [
+      69,
+      102.26
+     ],
+     [
+      70,
+      102.14
+     ],
+     [
+      71,
+      102.01
+     ],
+     [
+      72,
+      101.88
+     ],
+     [
+      73,
+      101.75
+     ],
+     [
+      74,
+      101.63
+     ],
+     [
+      75,
+      101.5
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      62
+     ],
+     [
+      21,
+      61.93
+     ],
+     [
+      22,
+      61.85
+     ],
+     [
+      23,
+      61.78
+     ],
+     [
+      24,
+      61.71
+     ],
+     [
+      25,
+      61.64
+     ],
+     [
+      26,
+      61.56
+     ],
+     [
+      27,
+      61.49
+     ],
+     [
+      28,
+      61.42
+     ],
+     [
+      29,
+      61.35
+     ],
+     [
+      30,
+      61.27
+     ],
+     [
+      31,
+      61.2
+     ],
+     [
+      32,
+      61.13
+     ],
+     [
+      33,
+      61.05
+     ],
+     [
+      34,
+      60.98
+     ],
+     [
+      35,
+      60.91
+     ],
+     [
+      36,
+      60.84
+     ],
+     [
+      37,
+      60.76
+     ],
+     [
+      38,
+      60.69
+     ],
+     [
+      39,
+      60.62
+     ],
+     [
+      40,
+      60.55
+     ],
+     [
+      41,
+      60.47
+     ],
+     [
+      42,
+      60.4
+     ],
+     [
+      43,
+      60.33
+     ],
+     [
+      44,
+      60.25
+     ],
+     [
+      45,
+      60.18
+     ],
+     [
+      46,
+      60.11
+     ],
+     [
+      47,
+      60.04
+     ],
+     [
+      48,
+      59.96
+     ],
+     [
+      49,
+      59.89
+     ],
+     [
+      50,
+      59.82
+     ],
+     [
+      51,
+      59.75
+     ],
+     [
+      52,
+      59.67
+     ],
+     [
+      53,
+      59.6
+     ],
+     [
+      54,
+      59.53
+     ],
+     [
+      55,
+      59.45
+     ],
+     [
+      56,
+      59.38
+     ],
+     [
+      57,
+      59.31
+     ],
+     [
+      58,
+      59.24
+     ],
+     [
+      59,
+      59.16
+     ],
+     [
+      60,
+      59.09
+     ],
+     [
+      61,
+      59.02
+     ],
+     [
+      62,
+      58.95
+     ],
+     [
+      63,
+      58.87
+     ],
+     [
+      64,
+      58.8
+     ],
+     [
+      65,
+      58.73
+     ],
+     [
+      66,
+      58.65
+     ],
+     [
+      67,
+      58.58
+     ],
+     [
+      68,
+      58.51
+     ],
+     [
+      69,
+      58.44
+     ],
+     [
+      70,
+      58.36
+     ],
+     [
+      71,
+      58.29
+     ],
+     [
+      72,
+      58.22
+     ],
+     [
+      73,
+      58.15
+     ],
+     [
+      74,
+      58.07
+     ],
+     [
+      75,
+      58
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      41.54
+     ],
+     [
+      21,
+      41.53
+     ],
+     [
+      22,
+      41.51
+     ],
+     [
+      23,
+      41.5
+     ],
+     [
+      24,
+      41.48
+     ],
+     [
+      25,
+      41.47
+     ],
+     [
+      26,
+      41.45
+     ],
+     [
+      27,
+      41.44
+     ],
+     [
+      28,
+      41.42
+     ],
+     [
+      29,
+      41.41
+     ],
+     [
+      30,
+      41.39
+     ],
+     [
+      31,
+      41.38
+     ],
+     [
+      32,
+      41.36
+     ],
+     [
+      33,
+      41.35
+     ],
+     [
+      34,
+      41.33
+     ],
+     [
+      35,
+      41.32
+     ],
+     [
+      36,
+      41.3
+     ],
+     [
+      37,
+      41.29
+     ],
+     [
+      38,
+      41.27
+     ],
+     [
+      39,
+      41.26
+     ],
+     [
+      40,
+      41.24
+     ],
+     [
+      41,
+      41.23
+     ],
+     [
+      42,
+      41.21
+     ],
+     [
+      43,
+      41.2
+     ],
+     [
+      44,
+      41.18
+     ],
+     [
+      45,
+      41.17
+     ],
+     [
+      46,
+      41.15
+     ],
+     [
+      47,
+      41.14
+     ],
+     [
+      48,
+      41.12
+     ],
+     [
+      49,
+      41.11
+     ],
+     [
+      50,
+      41.09
+     ],
+     [
+      51,
+      41.08
+     ],
+     [
+      52,
+      41.06
+     ],
+     [
+      53,
+      41.05
+     ],
+     [
+      54,
+      41.03
+     ],
+     [
+      55,
+      41.02
+     ],
+     [
+      56,
+      41
+     ],
+     [
+      57,
+      40.99
+     ],
+     [
+      58,
+      40.97
+     ],
+     [
+      59,
+      40.96
+     ],
+     [
+      60,
+      40.94
+     ],
+     [
+      61,
+      40.93
+     ],
+     [
+      62,
+      40.91
+     ],
+     [
+      63,
+      40.9
+     ],
+     [
+      64,
+      40.88
+     ],
+     [
+      65,
+      40.87
+     ],
+     [
+      66,
+      40.86
+     ],
+     [
+      67,
+      40.84
+     ],
+     [
+      68,
+      40.83
+     ],
+     [
+      69,
+      40.81
+     ],
+     [
+      70,
+      40.8
+     ],
+     [
+      71,
+      40.78
+     ],
+     [
+      72,
+      40.77
+     ],
+     [
+      73,
+      40.75
+     ],
+     [
+      74,
+      40.74
+     ],
+     [
+      75,
+      40.72
+     ],
+     [
+      76,
+      40.71
+     ],
+     [
+      77,
+      40.69
+     ],
+     [
+      78,
+      40.68
+     ],
+     [
+      79,
+      40.66
+     ],
+     [
+      80,
+      40.65
+     ],
+     [
+      81,
+      40.63
+     ],
+     [
+      82,
+      40.62
+     ],
+     [
+      83,
+      40.6
+     ],
+     [
+      84,
+      40.59
+     ],
+     [
+      85,
+      40.57
+     ],
+     [
+      86,
+      40.56
+     ],
+     [
+      87,
+      40.54
+     ],
+     [
+      88,
+      40.53
+     ],
+     [
+      89,
+      40.51
+     ],
+     [
+      90,
+      40.5
+     ],
+     [
+      91,
+      40.48
+     ],
+     [
+      92,
+      40.47
+     ],
+     [
+      93,
+      40.45
+     ],
+     [
+      94,
+      40.44
+     ],
+     [
+      95,
+      40.42
+     ],
+     [
+      96,
+      40.41
+     ],
+     [
+      97,
+      40.39
+     ],
+     [
+      98,
+      40.38
+     ],
+     [
+      99,
+      40.36
+     ],
+     [
+      100,
+      40.35
+     ],
+     [
+      101,
+      40.33
+     ],
+     [
+      102,
+      40.32
+     ],
+     [
+      103,
+      40.3
+     ],
+     [
+      104,
+      40.29
+     ],
+     [
+      105,
+      40.27
+     ],
+     [
+      106,
+      40.26
+     ],
+     [
+      107,
+      40.24
+     ],
+     [
+      108,
+      40.23
+     ],
+     [
+      109,
+      40.21
+     ],
+     [
+      110,
+      40.2
+     ],
+     [
+      111,
+      40.19
+     ],
+     [
+      112,
+      40.17
+     ],
+     [
+      113,
+      40.16
+     ],
+     [
+      114,
+      40.14
+     ],
+     [
+      115,
+      40.13
+     ],
+     [
+      116,
+      40.11
+     ],
+     [
+      117,
+      40.1
+     ],
+     [
+      118,
+      40.08
+     ],
+     [
+      119,
+      40.07
+     ],
+     [
+      120,
+      40.05
+     ],
+     [
+      121,
+      40.04
+     ],
+     [
+      122,
+      40.02
+     ],
+     [
+      123,
+      40.01
+     ],
+     [
+      124,
+      39.99
+     ],
+     [
+      125,
+      39.98
+     ],
+     [
+      126,
+      39.96
+     ],
+     [
+      127,
+      39.95
+     ],
+     [
+      128,
+      39.93
+     ],
+     [
+      129,
+      39.92
+     ],
+     [
+      130,
+      39.9
+     ],
+     [
+      131,
+      39.89
+     ],
+     [
+      132,
+      39.87
+     ],
+     [
+      133,
+      39.86
+     ],
+     [
+      134,
+      39.84
+     ],
+     [
+      135,
+      39.83
+     ],
+     [
+      136,
+      39.81
+     ],
+     [
+      137,
+      39.8
+     ],
+     [
+      138,
+      39.78
+     ],
+     [
+      139,
+      39.77
+     ],
+     [
+      140,
+      39.75
+     ],
+     [
+      141,
+      39.74
+     ],
+     [
+      142,
+      39.72
+     ],
+     [
+      143,
+      39.71
+     ],
+     [
+      144,
+      39.69
+     ],
+     [
+      145,
+      39.68
+     ],
+     [
+      146,
+      39.66
+     ],
+     [
+      147,
+      39.65
+     ],
+     [
+      148,
+      39.63
+     ],
+     [
+      149,
+      39.62
+     ],
+     [
+      150,
+      39.6
+     ],
+     [
+      151,
+      39.59
+     ],
+     [
+      152,
+      39.57
+     ],
+     [
+      153,
+      39.56
+     ],
+     [
+      154,
+      39.54
+     ],
+     [
+      155,
+      39.53
+     ],
+     [
+      156,
+      39.52
+     ],
+     [
+      157,
+      39.5
+     ],
+     [
+      158,
+      39.49
+     ],
+     [
+      159,
+      39.47
+     ],
+     [
+      160,
+      39.46
+     ],
+     [
+      161,
+      39.44
+     ],
+     [
+      162,
+      39.43
+     ],
+     [
+      163,
+      39.41
+     ],
+     [
+      164,
+      39.4
+     ],
+     [
+      165,
+      39.38
+     ],
+     [
+      166,
+      39.37
+     ],
+     [
+      167,
+      39.35
+     ],
+     [
+      168,
+      39.34
+     ],
+     [
+      169,
+      39.32
+     ],
+     [
+      170,
+      39.31
+     ],
+     [
+      171,
+      39.29
+     ],
+     [
+      172,
+      39.28
+     ],
+     [
+      173,
+      39.26
+     ],
+     [
+      174,
+      39.25
+     ],
+     [
+      175,
+      39.23
+     ],
+     [
+      176,
+      39.22
+     ],
+     [
+      177,
+      39.2
+     ],
+     [
+      178,
+      39.19
+     ],
+     [
+      179,
+      39.17
+     ],
+     [
+      180,
+      39.16
+     ],
+     [
+      181,
+      39.14
+     ],
+     [
+      182,
+      39.13
+     ],
+     [
+      183,
+      39.11
+     ],
+     [
+      184,
+      39.1
+     ],
+     [
+      185,
+      39.08
+     ],
+     [
+      186,
+      39.07
+     ],
+     [
+      187,
+      39.05
+     ],
+     [
+      188,
+      39.04
+     ],
+     [
+      189,
+      39.02
+     ],
+     [
+      190,
+      39.01
+     ],
+     [
+      191,
+      38.99
+     ],
+     [
+      192,
+      38.98
+     ],
+     [
+      193,
+      38.96
+     ],
+     [
+      194,
+      38.95
+     ],
+     [
+      195,
+      38.93
+     ],
+     [
+      196,
+      38.92
+     ],
+     [
+      197,
+      38.9
+     ],
+     [
+      198,
+      38.89
+     ],
+     [
+      199,
+      38.87
+     ],
+     [
+      200,
+      38.86
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "cadenciaTTK": 51,
+   "revisar": true,
+   "notas": "Sus tablas de TTK usan 51 RPM y no 47. Se conserva con \"cadenciaTTK\"; revisar en el juego."
+  },
+  {
+   "id": "m2010-esr",
+   "nombre": "M2010 ESR",
+   "categoria": "Francotirador",
+   "idAnalizador": "m2010esr",
+   "base": {
+    "vida": 100,
+    "cadencia": 43,
+    "velBala": 760,
+    "velApuntar": 300,
+    "velRecarga": 3234,
+    "cadera": 34,
+    "precision": 100,
+    "control": 17,
+    "movilidad": 46,
+    "danoCabeza": 140,
+    "danoPecho": 80,
+    "danoEstomago": 54,
+    "balasParaMatar": 2,
+    "recoilVertical": 1.5,
+    "recoilHorizontal": 10
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      140
+     ],
+     [
+      55,
+      141.67
+     ],
+     [
+      56,
+      143.33
+     ],
+     [
+      57,
+      145
+     ],
+     [
+      58,
+      146.67
+     ],
+     [
+      59,
+      148.33
+     ],
+     [
+      60,
+      150
+     ],
+     [
+      61,
+      151.67
+     ],
+     [
+      62,
+      153.33
+     ],
+     [
+      63,
+      155
+     ],
+     [
+      64,
+      156.67
+     ],
+     [
+      65,
+      158.33
+     ],
+     [
+      66,
+      160
+     ],
+     [
+      67,
+      161.67
+     ],
+     [
+      68,
+      163.33
+     ],
+     [
+      69,
+      165
+     ],
+     [
+      70,
+      166.67
+     ],
+     [
+      71,
+      168.33
+     ],
+     [
+      72,
+      170
+     ],
+     [
+      73,
+      171.67
+     ],
+     [
+      74,
+      173.33
+     ],
+     [
+      75,
+      175
+     ],
+     [
+      101,
+      173.1
+     ],
+     [
+      102,
+      171.2
+     ],
+     [
+      103,
+      169.3
+     ],
+     [
+      104,
+      167.4
+     ],
+     [
+      105,
+      165.5
+     ],
+     [
+      106,
+      163.6
+     ],
+     [
+      107,
+      161.7
+     ],
+     [
+      108,
+      159.8
+     ],
+     [
+      109,
+      157.9
+     ],
+     [
+      110,
+      156
+     ],
+     [
+      111,
+      154.1
+     ],
+     [
+      112,
+      152.2
+     ],
+     [
+      113,
+      150.3
+     ],
+     [
+      114,
+      148.4
+     ],
+     [
+      115,
+      146.5
+     ],
+     [
+      116,
+      144.6
+     ],
+     [
+      117,
+      142.7
+     ],
+     [
+      118,
+      140.8
+     ],
+     [
+      119,
+      138.9
+     ],
+     [
+      120,
+      137
+     ],
+     [
+      121,
+      135.1
+     ],
+     [
+      122,
+      133.2
+     ],
+     [
+      123,
+      131.3
+     ],
+     [
+      124,
+      129.4
+     ],
+     [
+      125,
+      127.5
+     ],
+     [
+      126,
+      125.6
+     ],
+     [
+      127,
+      123.7
+     ],
+     [
+      128,
+      121.8
+     ],
+     [
+      129,
+      119.9
+     ],
+     [
+      130,
+      118
+     ],
+     [
+      131,
+      116.1
+     ],
+     [
+      132,
+      114.2
+     ],
+     [
+      133,
+      112.3
+     ],
+     [
+      134,
+      110.4
+     ],
+     [
+      135,
+      108.5
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      80
+     ],
+     [
+      56,
+      81
+     ],
+     [
+      57,
+      82
+     ],
+     [
+      58,
+      83
+     ],
+     [
+      59,
+      84
+     ],
+     [
+      60,
+      85
+     ],
+     [
+      61,
+      86
+     ],
+     [
+      62,
+      87
+     ],
+     [
+      63,
+      88
+     ],
+     [
+      64,
+      89
+     ],
+     [
+      65,
+      90
+     ],
+     [
+      66,
+      91
+     ],
+     [
+      67,
+      92
+     ],
+     [
+      68,
+      93
+     ],
+     [
+      69,
+      94
+     ],
+     [
+      70,
+      95
+     ],
+     [
+      71,
+      96
+     ],
+     [
+      72,
+      97
+     ],
+     [
+      73,
+      98
+     ],
+     [
+      74,
+      99
+     ],
+     [
+      75,
+      100
+     ],
+     [
+      101,
+      98.85
+     ],
+     [
+      102,
+      97.7
+     ],
+     [
+      103,
+      96.55
+     ],
+     [
+      104,
+      95.39
+     ],
+     [
+      105,
+      94.24
+     ],
+     [
+      106,
+      93.09
+     ],
+     [
+      107,
+      91.94
+     ],
+     [
+      108,
+      90.79
+     ],
+     [
+      109,
+      89.64
+     ],
+     [
+      110,
+      88.48
+     ],
+     [
+      111,
+      87.33
+     ],
+     [
+      112,
+      86.18
+     ],
+     [
+      113,
+      85.03
+     ],
+     [
+      114,
+      83.88
+     ],
+     [
+      115,
+      82.73
+     ],
+     [
+      116,
+      81.58
+     ],
+     [
+      117,
+      80.42
+     ],
+     [
+      118,
+      79.27
+     ],
+     [
+      119,
+      78.12
+     ],
+     [
+      120,
+      76.97
+     ],
+     [
+      121,
+      75.82
+     ],
+     [
+      122,
+      74.67
+     ],
+     [
+      123,
+      73.52
+     ],
+     [
+      124,
+      72.36
+     ],
+     [
+      125,
+      71.21
+     ],
+     [
+      126,
+      70.06
+     ],
+     [
+      127,
+      68.91
+     ],
+     [
+      128,
+      67.76
+     ],
+     [
+      129,
+      66.61
+     ],
+     [
+      130,
+      65.45
+     ],
+     [
+      131,
+      64.3
+     ],
+     [
+      132,
+      63.15
+     ],
+     [
+      133,
+      62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      54
+     ],
+     [
+      56,
+      54.65
+     ],
+     [
+      57,
+      55.3
+     ],
+     [
+      58,
+      55.95
+     ],
+     [
+      59,
+      56.6
+     ],
+     [
+      60,
+      57.25
+     ],
+     [
+      61,
+      57.9
+     ],
+     [
+      62,
+      58.55
+     ],
+     [
+      63,
+      59.2
+     ],
+     [
+      64,
+      59.85
+     ],
+     [
+      65,
+      60.5
+     ],
+     [
+      66,
+      61.15
+     ],
+     [
+      67,
+      61.8
+     ],
+     [
+      68,
+      62.45
+     ],
+     [
+      69,
+      63.1
+     ],
+     [
+      70,
+      63.75
+     ],
+     [
+      71,
+      64.4
+     ],
+     [
+      72,
+      65.05
+     ],
+     [
+      73,
+      65.7
+     ],
+     [
+      74,
+      66.35
+     ],
+     [
+      75,
+      67
+     ],
+     [
+      101,
+      66.22
+     ],
+     [
+      102,
+      65.44
+     ],
+     [
+      103,
+      64.66
+     ],
+     [
+      104,
+      63.88
+     ],
+     [
+      105,
+      63.09
+     ],
+     [
+      106,
+      62.31
+     ],
+     [
+      107,
+      61.53
+     ],
+     [
+      108,
+      60.75
+     ],
+     [
+      109,
+      59.97
+     ],
+     [
+      110,
+      59.19
+     ],
+     [
+      111,
+      58.41
+     ],
+     [
+      112,
+      57.63
+     ],
+     [
+      113,
+      56.84
+     ],
+     [
+      114,
+      56.06
+     ],
+     [
+      115,
+      55.28
+     ],
+     [
+      116,
+      54.5
+     ],
+     [
+      117,
+      53.72
+     ],
+     [
+      118,
+      52.94
+     ],
+     [
+      119,
+      52.16
+     ],
+     [
+      120,
+      51.38
+     ],
+     [
+      121,
+      50.59
+     ],
+     [
+      122,
+      49.81
+     ],
+     [
+      123,
+      49.03
+     ],
+     [
+      124,
+      48.25
+     ],
+     [
+      125,
+      47.47
+     ],
+     [
+      126,
+      46.69
+     ],
+     [
+      127,
+      45.91
+     ],
+     [
+      128,
+      45.13
+     ],
+     [
+      129,
+      44.34
+     ],
+     [
+      130,
+      43.56
+     ],
+     [
+      131,
+      42.78
+     ],
+     [
+      132,
+      42
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "sv-98",
+   "nombre": "SV-98",
+   "categoria": "Francotirador",
+   "idAnalizador": "sv98",
+   "base": {
+    "vida": 100,
+    "cadencia": 38,
+    "velBala": 680,
+    "velApuntar": 300,
+    "velRecarga": 2984,
+    "cadera": 34,
+    "precision": 100,
+    "control": 22,
+    "movilidad": 46,
+    "danoCabeza": 140,
+    "danoPecho": 80,
+    "danoEstomago": 53.6,
+    "balasParaMatar": 2,
+    "recoilVertical": 1.3,
+    "recoilHorizontal": 10
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      140
+     ],
+     [
+      36,
+      141.75
+     ],
+     [
+      37,
+      143.5
+     ],
+     [
+      38,
+      145.25
+     ],
+     [
+      39,
+      147
+     ],
+     [
+      40,
+      148.75
+     ],
+     [
+      41,
+      150.5
+     ],
+     [
+      42,
+      152.25
+     ],
+     [
+      43,
+      154
+     ],
+     [
+      44,
+      155.75
+     ],
+     [
+      45,
+      157.5
+     ],
+     [
+      46,
+      159.25
+     ],
+     [
+      47,
+      161
+     ],
+     [
+      48,
+      162.75
+     ],
+     [
+      49,
+      164.5
+     ],
+     [
+      50,
+      166.25
+     ],
+     [
+      51,
+      168
+     ],
+     [
+      52,
+      169.75
+     ],
+     [
+      53,
+      171.5
+     ],
+     [
+      54,
+      173.25
+     ],
+     [
+      55,
+      175
+     ],
+     [
+      76,
+      172.34
+     ],
+     [
+      77,
+      169.68
+     ],
+     [
+      78,
+      167.02
+     ],
+     [
+      79,
+      164.36
+     ],
+     [
+      80,
+      161.7
+     ],
+     [
+      81,
+      159.04
+     ],
+     [
+      82,
+      156.38
+     ],
+     [
+      83,
+      153.72
+     ],
+     [
+      84,
+      151.06
+     ],
+     [
+      85,
+      148.4
+     ],
+     [
+      86,
+      145.74
+     ],
+     [
+      87,
+      143.08
+     ],
+     [
+      88,
+      140.42
+     ],
+     [
+      89,
+      137.76
+     ],
+     [
+      90,
+      135.1
+     ],
+     [
+      91,
+      132.44
+     ],
+     [
+      92,
+      129.78
+     ],
+     [
+      93,
+      127.12
+     ],
+     [
+      94,
+      124.46
+     ],
+     [
+      95,
+      121.8
+     ],
+     [
+      96,
+      119.14
+     ],
+     [
+      97,
+      116.48
+     ],
+     [
+      98,
+      113.82
+     ],
+     [
+      99,
+      111.16
+     ],
+     [
+      100,
+      108.5
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      80
+     ],
+     [
+      36,
+      80.95
+     ],
+     [
+      37,
+      81.9
+     ],
+     [
+      38,
+      82.86
+     ],
+     [
+      39,
+      83.81
+     ],
+     [
+      40,
+      84.76
+     ],
+     [
+      41,
+      85.71
+     ],
+     [
+      42,
+      86.67
+     ],
+     [
+      43,
+      87.62
+     ],
+     [
+      44,
+      88.57
+     ],
+     [
+      45,
+      89.52
+     ],
+     [
+      46,
+      90.48
+     ],
+     [
+      47,
+      91.43
+     ],
+     [
+      48,
+      92.38
+     ],
+     [
+      49,
+      93.33
+     ],
+     [
+      50,
+      94.29
+     ],
+     [
+      51,
+      95.24
+     ],
+     [
+      52,
+      96.19
+     ],
+     [
+      53,
+      97.14
+     ],
+     [
+      54,
+      98.1
+     ],
+     [
+      55,
+      99.05
+     ],
+     [
+      56,
+      100
+     ],
+     [
+      76,
+      98.48
+     ],
+     [
+      77,
+      96.96
+     ],
+     [
+      78,
+      95.44
+     ],
+     [
+      79,
+      93.92
+     ],
+     [
+      80,
+      92.4
+     ],
+     [
+      81,
+      90.88
+     ],
+     [
+      82,
+      89.36
+     ],
+     [
+      83,
+      87.84
+     ],
+     [
+      84,
+      86.32
+     ],
+     [
+      85,
+      84.8
+     ],
+     [
+      86,
+      83.28
+     ],
+     [
+      87,
+      81.76
+     ],
+     [
+      88,
+      80.24
+     ],
+     [
+      89,
+      78.72
+     ],
+     [
+      90,
+      77.2
+     ],
+     [
+      91,
+      75.68
+     ],
+     [
+      92,
+      74.16
+     ],
+     [
+      93,
+      72.64
+     ],
+     [
+      94,
+      71.12
+     ],
+     [
+      95,
+      69.6
+     ],
+     [
+      96,
+      68.08
+     ],
+     [
+      97,
+      66.56
+     ],
+     [
+      98,
+      65.04
+     ],
+     [
+      99,
+      63.52
+     ],
+     [
+      100,
+      62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      53.6
+     ],
+     [
+      36,
+      54.27
+     ],
+     [
+      37,
+      54.94
+     ],
+     [
+      38,
+      55.61
+     ],
+     [
+      39,
+      56.28
+     ],
+     [
+      40,
+      56.95
+     ],
+     [
+      41,
+      57.62
+     ],
+     [
+      42,
+      58.29
+     ],
+     [
+      43,
+      58.96
+     ],
+     [
+      44,
+      59.63
+     ],
+     [
+      45,
+      60.3
+     ],
+     [
+      46,
+      60.97
+     ],
+     [
+      47,
+      61.64
+     ],
+     [
+      48,
+      62.31
+     ],
+     [
+      49,
+      62.98
+     ],
+     [
+      50,
+      63.65
+     ],
+     [
+      51,
+      64.32
+     ],
+     [
+      52,
+      64.99
+     ],
+     [
+      53,
+      65.66
+     ],
+     [
+      54,
+      66.33
+     ],
+     [
+      55,
+      67
+     ],
+     [
+      76,
+      65.98
+     ],
+     [
+      77,
+      64.96
+     ],
+     [
+      78,
+      63.94
+     ],
+     [
+      79,
+      62.93
+     ],
+     [
+      80,
+      61.91
+     ],
+     [
+      81,
+      60.89
+     ],
+     [
+      82,
+      59.87
+     ],
+     [
+      83,
+      58.85
+     ],
+     [
+      84,
+      57.83
+     ],
+     [
+      85,
+      56.82
+     ],
+     [
+      86,
+      55.8
+     ],
+     [
+      87,
+      54.78
+     ],
+     [
+      88,
+      53.76
+     ],
+     [
+      89,
+      52.74
+     ],
+     [
+      90,
+      51.72
+     ],
+     [
+      91,
+      50.71
+     ],
+     [
+      92,
+      49.69
+     ],
+     [
+      93,
+      48.67
+     ],
+     [
+      94,
+      47.65
+     ],
+     [
+      95,
+      46.63
+     ],
+     [
+      96,
+      45.61
+     ],
+     [
+      97,
+      44.6
+     ],
+     [
+      98,
+      43.58
+     ],
+     [
+      99,
+      42.56
+     ],
+     [
+      100,
+      41.54
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "psr",
+   "nombre": "PSR",
+   "categoria": "Francotirador",
+   "idAnalizador": "psr",
+   "base": {
+    "vida": 100,
+    "cadencia": 38,
+    "velBala": 680,
+    "velApuntar": 367,
+    "velRecarga": 3350,
+    "cadera": 29,
+    "precision": 100,
+    "control": 14,
+    "movilidad": 38,
+    "danoCabeza": 140,
+    "danoPecho": 80,
+    "danoEstomago": 53.6,
+    "balasParaMatar": 2,
+    "recoilVertical": 1.8,
+    "recoilHorizontal": 12
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      140
+     ],
+     [
+      76,
+      142.33
+     ],
+     [
+      77,
+      144.67
+     ],
+     [
+      78,
+      147
+     ],
+     [
+      79,
+      149.33
+     ],
+     [
+      80,
+      151.67
+     ],
+     [
+      81,
+      154
+     ],
+     [
+      82,
+      156.33
+     ],
+     [
+      83,
+      158.67
+     ],
+     [
+      84,
+      161
+     ],
+     [
+      85,
+      163.33
+     ],
+     [
+      86,
+      165.67
+     ],
+     [
+      87,
+      168
+     ],
+     [
+      88,
+      170.33
+     ],
+     [
+      89,
+      172.67
+     ],
+     [
+      90,
+      175
+     ],
+     [
+      121,
+      173.34
+     ],
+     [
+      122,
+      171.68
+     ],
+     [
+      123,
+      170.01
+     ],
+     [
+      124,
+      168.35
+     ],
+     [
+      125,
+      166.69
+     ],
+     [
+      126,
+      165.03
+     ],
+     [
+      127,
+      163.36
+     ],
+     [
+      128,
+      161.7
+     ],
+     [
+      129,
+      160.04
+     ],
+     [
+      130,
+      158.38
+     ],
+     [
+      131,
+      156.71
+     ],
+     [
+      132,
+      155.05
+     ],
+     [
+      133,
+      153.39
+     ],
+     [
+      134,
+      151.72
+     ],
+     [
+      135,
+      150.06
+     ],
+     [
+      136,
+      148.4
+     ],
+     [
+      137,
+      146.74
+     ],
+     [
+      138,
+      145.07
+     ],
+     [
+      139,
+      143.41
+     ],
+     [
+      140,
+      141.75
+     ],
+     [
+      141,
+      140.09
+     ],
+     [
+      142,
+      138.43
+     ],
+     [
+      143,
+      136.76
+     ],
+     [
+      144,
+      135.1
+     ],
+     [
+      145,
+      133.44
+     ],
+     [
+      146,
+      131.78
+     ],
+     [
+      147,
+      130.11
+     ],
+     [
+      148,
+      128.45
+     ],
+     [
+      149,
+      126.79
+     ],
+     [
+      150,
+      125.13
+     ],
+     [
+      151,
+      123.46
+     ],
+     [
+      152,
+      121.8
+     ],
+     [
+      153,
+      120.14
+     ],
+     [
+      154,
+      118.47
+     ],
+     [
+      155,
+      116.81
+     ],
+     [
+      156,
+      115.15
+     ],
+     [
+      157,
+      113.49
+     ],
+     [
+      158,
+      111.83
+     ],
+     [
+      159,
+      110.16
+     ],
+     [
+      160,
+      108.5
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      80
+     ],
+     [
+      76,
+      81.33
+     ],
+     [
+      77,
+      82.67
+     ],
+     [
+      78,
+      84
+     ],
+     [
+      79,
+      85.33
+     ],
+     [
+      80,
+      86.67
+     ],
+     [
+      81,
+      88
+     ],
+     [
+      82,
+      89.33
+     ],
+     [
+      83,
+      90.67
+     ],
+     [
+      84,
+      92
+     ],
+     [
+      85,
+      93.33
+     ],
+     [
+      86,
+      94.67
+     ],
+     [
+      87,
+      96
+     ],
+     [
+      88,
+      97.33
+     ],
+     [
+      89,
+      98.67
+     ],
+     [
+      90,
+      100
+     ],
+     [
+      121,
+      99.05
+     ],
+     [
+      122,
+      98.1
+     ],
+     [
+      123,
+      97.15
+     ],
+     [
+      124,
+      96.2
+     ],
+     [
+      125,
+      95.25
+     ],
+     [
+      126,
+      94.3
+     ],
+     [
+      127,
+      93.35
+     ],
+     [
+      128,
+      92.4
+     ],
+     [
+      129,
+      91.45
+     ],
+     [
+      130,
+      90.5
+     ],
+     [
+      131,
+      89.55
+     ],
+     [
+      132,
+      88.6
+     ],
+     [
+      133,
+      87.65
+     ],
+     [
+      134,
+      86.7
+     ],
+     [
+      135,
+      85.75
+     ],
+     [
+      136,
+      84.8
+     ],
+     [
+      137,
+      83.85
+     ],
+     [
+      138,
+      82.9
+     ],
+     [
+      139,
+      81.95
+     ],
+     [
+      140,
+      81
+     ],
+     [
+      141,
+      80.05
+     ],
+     [
+      142,
+      79.1
+     ],
+     [
+      143,
+      78.15
+     ],
+     [
+      144,
+      77.2
+     ],
+     [
+      145,
+      76.25
+     ],
+     [
+      146,
+      75.3
+     ],
+     [
+      147,
+      74.35
+     ],
+     [
+      148,
+      73.4
+     ],
+     [
+      149,
+      72.45
+     ],
+     [
+      150,
+      71.5
+     ],
+     [
+      151,
+      70.55
+     ],
+     [
+      152,
+      69.6
+     ],
+     [
+      153,
+      68.65
+     ],
+     [
+      154,
+      67.7
+     ],
+     [
+      155,
+      66.75
+     ],
+     [
+      156,
+      65.8
+     ],
+     [
+      157,
+      64.85
+     ],
+     [
+      158,
+      63.9
+     ],
+     [
+      159,
+      62.95
+     ],
+     [
+      160,
+      62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      53.6
+     ],
+     [
+      76,
+      54.49
+     ],
+     [
+      77,
+      55.39
+     ],
+     [
+      78,
+      56.28
+     ],
+     [
+      79,
+      57.17
+     ],
+     [
+      80,
+      58.07
+     ],
+     [
+      81,
+      58.96
+     ],
+     [
+      82,
+      59.85
+     ],
+     [
+      83,
+      60.75
+     ],
+     [
+      84,
+      61.64
+     ],
+     [
+      85,
+      62.53
+     ],
+     [
+      86,
+      63.43
+     ],
+     [
+      87,
+      64.32
+     ],
+     [
+      88,
+      65.21
+     ],
+     [
+      89,
+      66.11
+     ],
+     [
+      90,
+      67
+     ],
+     [
+      121,
+      66.36
+     ],
+     [
+      122,
+      65.73
+     ],
+     [
+      123,
+      65.09
+     ],
+     [
+      124,
+      64.45
+     ],
+     [
+      125,
+      63.82
+     ],
+     [
+      126,
+      63.18
+     ],
+     [
+      127,
+      62.54
+     ],
+     [
+      128,
+      61.91
+     ],
+     [
+      129,
+      61.27
+     ],
+     [
+      130,
+      60.63
+     ],
+     [
+      131,
+      60
+     ],
+     [
+      132,
+      59.36
+     ],
+     [
+      133,
+      58.73
+     ],
+     [
+      134,
+      58.09
+     ],
+     [
+      135,
+      57.45
+     ],
+     [
+      136,
+      56.82
+     ],
+     [
+      137,
+      56.18
+     ],
+     [
+      138,
+      55.54
+     ],
+     [
+      139,
+      54.91
+     ],
+     [
+      140,
+      54.27
+     ],
+     [
+      141,
+      53.63
+     ],
+     [
+      142,
+      53
+     ],
+     [
+      143,
+      52.36
+     ],
+     [
+      144,
+      51.72
+     ],
+     [
+      145,
+      51.09
+     ],
+     [
+      146,
+      50.45
+     ],
+     [
+      147,
+      49.81
+     ],
+     [
+      148,
+      49.18
+     ],
+     [
+      149,
+      48.54
+     ],
+     [
+      150,
+      47.91
+     ],
+     [
+      151,
+      47.27
+     ],
+     [
+      152,
+      46.63
+     ],
+     [
+      153,
+      46
+     ],
+     [
+      154,
+      45.36
+     ],
+     [
+      155,
+      44.72
+     ],
+     [
+      156,
+      44.09
+     ],
+     [
+      157,
+      43.45
+     ],
+     [
+      158,
+      42.81
+     ],
+     [
+      159,
+      42.18
+     ],
+     [
+      160,
+      41.54
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "l115",
+   "nombre": "L115",
+   "categoria": "Francotirador",
+   "idAnalizador": "l115",
+   "base": {
+    "vida": 100,
+    "cadencia": 46,
+    "velBala": 742,
+    "velApuntar": 367,
+    "velRecarga": 2750,
+    "cadera": 34,
+    "precision": 100,
+    "control": 12,
+    "movilidad": 46,
+    "danoCabeza": 140,
+    "danoPecho": 80,
+    "danoEstomago": 53.6,
+    "balasParaMatar": 2,
+    "recoilVertical": 2,
+    "recoilHorizontal": 4
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      140
+     ],
+     [
+      76,
+      141.4
+     ],
+     [
+      77,
+      142.8
+     ],
+     [
+      78,
+      144.2
+     ],
+     [
+      79,
+      145.6
+     ],
+     [
+      80,
+      147
+     ],
+     [
+      81,
+      148.4
+     ],
+     [
+      82,
+      149.8
+     ],
+     [
+      83,
+      151.2
+     ],
+     [
+      84,
+      152.6
+     ],
+     [
+      85,
+      154
+     ],
+     [
+      86,
+      155.4
+     ],
+     [
+      87,
+      156.8
+     ],
+     [
+      88,
+      158.2
+     ],
+     [
+      89,
+      159.6
+     ],
+     [
+      90,
+      161
+     ],
+     [
+      91,
+      162.4
+     ],
+     [
+      92,
+      163.8
+     ],
+     [
+      93,
+      165.2
+     ],
+     [
+      94,
+      166.6
+     ],
+     [
+      95,
+      168
+     ],
+     [
+      96,
+      169.4
+     ],
+     [
+      97,
+      170.8
+     ],
+     [
+      98,
+      172.2
+     ],
+     [
+      99,
+      173.6
+     ],
+     [
+      100,
+      175
+     ],
+     [
+      134,
+      173.42
+     ],
+     [
+      135,
+      171.83
+     ],
+     [
+      136,
+      170.25
+     ],
+     [
+      137,
+      168.67
+     ],
+     [
+      138,
+      167.08
+     ],
+     [
+      139,
+      165.5
+     ],
+     [
+      140,
+      163.92
+     ],
+     [
+      141,
+      162.33
+     ],
+     [
+      142,
+      160.75
+     ],
+     [
+      143,
+      159.17
+     ],
+     [
+      144,
+      157.58
+     ],
+     [
+      145,
+      156
+     ],
+     [
+      146,
+      154.42
+     ],
+     [
+      147,
+      152.83
+     ],
+     [
+      148,
+      151.25
+     ],
+     [
+      149,
+      149.67
+     ],
+     [
+      150,
+      148.08
+     ],
+     [
+      151,
+      146.5
+     ],
+     [
+      152,
+      144.92
+     ],
+     [
+      153,
+      143.33
+     ],
+     [
+      154,
+      141.75
+     ],
+     [
+      155,
+      140.17
+     ],
+     [
+      156,
+      138.58
+     ],
+     [
+      157,
+      137
+     ],
+     [
+      158,
+      135.42
+     ],
+     [
+      159,
+      133.83
+     ],
+     [
+      160,
+      132.25
+     ],
+     [
+      161,
+      130.67
+     ],
+     [
+      162,
+      129.08
+     ],
+     [
+      163,
+      127.5
+     ],
+     [
+      164,
+      125.92
+     ],
+     [
+      165,
+      124.33
+     ],
+     [
+      166,
+      122.75
+     ],
+     [
+      167,
+      121.17
+     ],
+     [
+      168,
+      119.58
+     ],
+     [
+      169,
+      118
+     ],
+     [
+      170,
+      116.42
+     ],
+     [
+      171,
+      114.83
+     ],
+     [
+      172,
+      113.25
+     ],
+     [
+      173,
+      111.67
+     ],
+     [
+      174,
+      110.08
+     ],
+     [
+      175,
+      108.5
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      80
+     ],
+     [
+      76,
+      80.8
+     ],
+     [
+      77,
+      81.6
+     ],
+     [
+      78,
+      82.4
+     ],
+     [
+      79,
+      83.2
+     ],
+     [
+      80,
+      84
+     ],
+     [
+      81,
+      84.8
+     ],
+     [
+      82,
+      85.6
+     ],
+     [
+      83,
+      86.4
+     ],
+     [
+      84,
+      87.2
+     ],
+     [
+      85,
+      88
+     ],
+     [
+      86,
+      88.8
+     ],
+     [
+      87,
+      89.6
+     ],
+     [
+      88,
+      90.4
+     ],
+     [
+      89,
+      91.2
+     ],
+     [
+      90,
+      92
+     ],
+     [
+      91,
+      92.8
+     ],
+     [
+      92,
+      93.6
+     ],
+     [
+      93,
+      94.4
+     ],
+     [
+      94,
+      95.2
+     ],
+     [
+      95,
+      96
+     ],
+     [
+      96,
+      96.8
+     ],
+     [
+      97,
+      97.6
+     ],
+     [
+      98,
+      98.4
+     ],
+     [
+      99,
+      99.2
+     ],
+     [
+      100,
+      100
+     ],
+     [
+      134,
+      99.1
+     ],
+     [
+      135,
+      98.19
+     ],
+     [
+      136,
+      97.29
+     ],
+     [
+      137,
+      96.38
+     ],
+     [
+      138,
+      95.48
+     ],
+     [
+      139,
+      94.57
+     ],
+     [
+      140,
+      93.67
+     ],
+     [
+      141,
+      92.76
+     ],
+     [
+      142,
+      91.86
+     ],
+     [
+      143,
+      90.95
+     ],
+     [
+      144,
+      90.05
+     ],
+     [
+      145,
+      89.14
+     ],
+     [
+      146,
+      88.24
+     ],
+     [
+      147,
+      87.33
+     ],
+     [
+      148,
+      86.43
+     ],
+     [
+      149,
+      85.52
+     ],
+     [
+      150,
+      84.62
+     ],
+     [
+      151,
+      83.71
+     ],
+     [
+      152,
+      82.81
+     ],
+     [
+      153,
+      81.9
+     ],
+     [
+      154,
+      81
+     ],
+     [
+      155,
+      80.1
+     ],
+     [
+      156,
+      79.19
+     ],
+     [
+      157,
+      78.29
+     ],
+     [
+      158,
+      77.38
+     ],
+     [
+      159,
+      76.48
+     ],
+     [
+      160,
+      75.57
+     ],
+     [
+      161,
+      74.67
+     ],
+     [
+      162,
+      73.76
+     ],
+     [
+      163,
+      72.86
+     ],
+     [
+      164,
+      71.95
+     ],
+     [
+      165,
+      71.05
+     ],
+     [
+      166,
+      70.14
+     ],
+     [
+      167,
+      69.24
+     ],
+     [
+      168,
+      68.33
+     ],
+     [
+      169,
+      67.43
+     ],
+     [
+      170,
+      66.52
+     ],
+     [
+      171,
+      65.62
+     ],
+     [
+      172,
+      64.71
+     ],
+     [
+      173,
+      63.81
+     ],
+     [
+      174,
+      62.9
+     ],
+     [
+      175,
+      62
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      53.6
+     ],
+     [
+      76,
+      54.14
+     ],
+     [
+      77,
+      54.67
+     ],
+     [
+      78,
+      55.21
+     ],
+     [
+      79,
+      55.74
+     ],
+     [
+      80,
+      56.28
+     ],
+     [
+      81,
+      56.82
+     ],
+     [
+      82,
+      57.35
+     ],
+     [
+      83,
+      57.89
+     ],
+     [
+      84,
+      58.42
+     ],
+     [
+      85,
+      58.96
+     ],
+     [
+      86,
+      59.5
+     ],
+     [
+      87,
+      60.03
+     ],
+     [
+      88,
+      60.57
+     ],
+     [
+      89,
+      61.1
+     ],
+     [
+      90,
+      61.64
+     ],
+     [
+      91,
+      62.18
+     ],
+     [
+      92,
+      62.71
+     ],
+     [
+      93,
+      63.25
+     ],
+     [
+      94,
+      63.78
+     ],
+     [
+      95,
+      64.32
+     ],
+     [
+      96,
+      64.86
+     ],
+     [
+      97,
+      65.39
+     ],
+     [
+      98,
+      65.93
+     ],
+     [
+      99,
+      66.46
+     ],
+     [
+      100,
+      67
+     ],
+     [
+      134,
+      66.4
+     ],
+     [
+      135,
+      65.8
+     ],
+     [
+      136,
+      65.2
+     ],
+     [
+      137,
+      64.59
+     ],
+     [
+      138,
+      63.99
+     ],
+     [
+      139,
+      63.39
+     ],
+     [
+      140,
+      62.79
+     ],
+     [
+      141,
+      62.19
+     ],
+     [
+      142,
+      61.59
+     ],
+     [
+      143,
+      60.99
+     ],
+     [
+      144,
+      60.38
+     ],
+     [
+      145,
+      59.78
+     ],
+     [
+      146,
+      59.18
+     ],
+     [
+      147,
+      58.58
+     ],
+     [
+      148,
+      57.98
+     ],
+     [
+      149,
+      57.38
+     ],
+     [
+      150,
+      56.78
+     ],
+     [
+      151,
+      56.17
+     ],
+     [
+      152,
+      55.57
+     ],
+     [
+      153,
+      54.97
+     ],
+     [
+      154,
+      54.37
+     ],
+     [
+      155,
+      53.77
+     ],
+     [
+      156,
+      53.17
+     ],
+     [
+      157,
+      52.57
+     ],
+     [
+      158,
+      51.96
+     ],
+     [
+      159,
+      51.36
+     ],
+     [
+      160,
+      50.76
+     ],
+     [
+      161,
+      50.16
+     ],
+     [
+      162,
+      49.56
+     ],
+     [
+      163,
+      48.96
+     ],
+     [
+      164,
+      48.36
+     ],
+     [
+      165,
+      47.75
+     ],
+     [
+      166,
+      47.15
+     ],
+     [
+      167,
+      46.55
+     ],
+     [
+      168,
+      45.95
+     ],
+     [
+      169,
+      45.35
+     ],
+     [
+      170,
+      44.75
+     ],
+     [
+      171,
+      44.15
+     ],
+     [
+      172,
+      43.54
+     ],
+     [
+      173,
+      42.94
+     ],
+     [
+      174,
+      42.34
+     ],
+     [
+      175,
+      41.74
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
+   "id": "mk-24",
+   "nombre": "MK 24",
+   "categoria": "Asalto",
+   "idAnalizador": "mk24",
+   "alcance": "Corto-medio alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 635,
+    "velBala": 696,
+    "velApuntar": 250,
+    "velRecarga": 2534,
+    "cadera": 40,
+    "precision": 24,
+    "control": 38,
+    "movilidad": 52,
+    "danoCabeza": 40.9,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.8,
+    "recoilHorizontal": 27.6
+   },
+   "municion": {
+    "puntaHueca": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      40.9
+     ],
+     [
+      75,
+      32.45
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      75,
+      20.67
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      75,
+      17.36
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "notas": "Base anotada con el cañón Short."
+  },
+  {
+   "id": "z84m",
+   "nombre": "Z84M",
+   "categoria": "Ametralladora",
+   "idAnalizador": "z84m",
+   "base": {
+    "vida": 100,
+    "cadencia": 720,
+    "velBala": 604,
+    "velApuntar": 433,
+    "velRecarga": 7600,
+    "cadera": 29,
+    "precision": 17,
+    "control": 35,
+    "movilidad": 30,
+    "danoCabeza": 49.31,
+    "danoPecho": 35.22,
+    "danoEstomago": 29.58,
+    "balasParaMatar": 3,
+    "recoilVertical": 0.96,
+    "recoilHorizontal": 56.7
+   },
+   "municion": {
+    "puntaHueca": 1.57
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      49.31
+     ],
+     [
+      21,
+      36.47
+     ],
+     [
+      75,
+      28.94
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      35.22
+     ],
+     [
+      21,
+      26.05
+     ],
+     [
+      75,
+      20.67
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      29.58
+     ],
+     [
+      21,
+      21.88
+     ],
+     [
+      75,
+      17.36
+     ]
+    ]
+   },
+   "equipamientos": [],
+   "revisar": true,
+   "notas": "Valores que no correspondían a ningún accesorio; posible temporada anterior."
+  }
+ ]
+}
