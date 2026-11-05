@@ -1,0 +1,931 @@
+{
+ "formato": 1,
+ "nombres": {
+  "Anti-Glare Coating": {
+   "grupo": "accesorioOptico",
+   "es": "Recubrimiento antirreflejos",
+   "revisado": false
+  },
+  "Canted Iron Sights": {
+   "grupo": "accesorioOptico",
+   "es": "Miras de hierro inclinadas",
+   "revisado": false
+  },
+  "Secondary Optic": {
+   "grupo": "accesorioOptico",
+   "es": "Mira secundaria",
+   "revisado": false
+  },
+  "Compensated Brake": {
+   "grupo": "boca",
+   "es": "Freno compensado",
+   "revisado": false
+  },
+  "Compensator": {
+   "grupo": "boca",
+   "es": "Compensador",
+   "revisado": false
+  },
+  "CQB Suppressor": {
+   "grupo": "boca",
+   "es": "Supresor CQB",
+   "revisado": false
+  },
+  "Double-Port Brake": {
+   "grupo": "boca",
+   "es": "Freno de doble puerto",
+   "revisado": false
+  },
+  "Flash Comp": {
+   "grupo": "boca",
+   "es": "Compensador apagallamas",
+   "revisado": false
+  },
+  "Flash Hider": {
+   "grupo": "boca",
+   "es": "Apagallamas",
+   "revisado": false
+  },
+  "Hybrid Suppressor K": {
+   "grupo": "boca",
+   "es": "Supresor híbrido K",
+   "revisado": false
+  },
+  "Hybrid Suppressor L": {
+   "grupo": "boca",
+   "es": "Supresor híbrido L",
+   "revisado": false
+  },
+  "Hybrid Suppressor S": {
+   "grupo": "boca",
+   "es": "Supresor híbrido S",
+   "revisado": false
+  },
+  "Lightened Suppressor": {
+   "grupo": "boca",
+   "es": "Supresor aligerado",
+   "revisado": false
+  },
+  "Linear Comp": {
+   "grupo": "boca",
+   "es": "Compensador lineal",
+   "revisado": false
+  },
+  "Long Suppressor": {
+   "grupo": "boca",
+   "es": "Supresor largo",
+   "revisado": false
+  },
+  "Multi-Port Brake": {
+   "grupo": "boca",
+   "es": "Freno multipuerto",
+   "revisado": false
+  },
+  "Single-Port Brake": {
+   "grupo": "boca",
+   "es": "Freno de un puerto",
+   "revisado": false
+  },
+  "Slant Brake": {
+   "grupo": "boca",
+   "es": "Freno inclinado",
+   "revisado": false
+  },
+  "Standard Suppressor": {
+   "grupo": "boca",
+   "es": "Supresor estándar",
+   "revisado": false
+  },
+  "Thread Protector": {
+   "grupo": "boca",
+   "es": "Protector de rosca",
+   "revisado": false
+  },
+  "Triple-Port Brake": {
+   "grupo": "boca",
+   "es": "Freno de triple puerto",
+   "revisado": false
+  },
+  "Basic": {
+   "grupo": "canon",
+   "es": "Básico",
+   "revisado": false
+  },
+  "Cryogenic": {
+   "grupo": "canon",
+   "es": "Criogénico",
+   "revisado": false
+  },
+  "Extended": {
+   "grupo": "canon",
+   "es": "Extendido",
+   "revisado": false
+  },
+  "Extended Light": {
+   "grupo": "canon",
+   "es": "Ligero extendido",
+   "revisado": false
+  },
+  "Heavy": {
+   "grupo": "canon",
+   "es": "Pesado",
+   "revisado": false
+  },
+  "Heavy Extended": {
+   "grupo": "canon",
+   "es": "Pesado extendido",
+   "revisado": false
+  },
+  "Light": {
+   "grupo": "canon",
+   "es": "Ligero",
+   "revisado": false
+  },
+  "Short": {
+   "grupo": "canon",
+   "es": "Corto",
+   "revisado": false
+  },
+  "Short Light": {
+   "grupo": "canon",
+   "es": "Ligero corto",
+   "revisado": false
+  },
+  "Suppressed": {
+   "grupo": "canon",
+   "es": "Con supresor",
+   "revisado": false
+  },
+  "6H64 Vertical": {
+   "grupo": "canonInferior",
+   "es": "Vertical 6H64",
+   "revisado": false
+  },
+  "Actuated Module": {
+   "grupo": "canonInferior",
+   "es": "Módulo accionado",
+   "revisado": false
+  },
+  "Adjustable Angled": {
+   "grupo": "canonInferior",
+   "es": "Angular ajustable",
+   "revisado": false
+  },
+  "Alloy Vertical": {
+   "grupo": "canonInferior",
+   "es": "Vertical de aleación",
+   "revisado": false
+  },
+  "Bipod": {
+   "grupo": "canonInferior",
+   "es": "Bípode",
+   "revisado": false
+  },
+  "Canted Stubby": {
+   "grupo": "canonInferior",
+   "es": "Corta inclinada",
+   "revisado": false
+  },
+  "Canted Vertical": {
+   "grupo": "canonInferior",
+   "es": "Vertical inclinada",
+   "revisado": false
+  },
+  "Classic Grip Pod": {
+   "grupo": "canonInferior",
+   "es": "Empuñadura bípode clásica",
+   "revisado": false
+  },
+  "Classic Vertical": {
+   "grupo": "canonInferior",
+   "es": "Vertical clásica",
+   "revisado": false
+  },
+  "Compact Handstop": {
+   "grupo": "canonInferior",
+   "es": "Tope de mano compacto",
+   "revisado": false
+  },
+  "Factory Angled": {
+   "grupo": "canonInferior",
+   "es": "Angular de fábrica",
+   "revisado": false
+  },
+  "Folding Stubby": {
+   "grupo": "canonInferior",
+   "es": "Corta plegable",
+   "revisado": false
+  },
+  "Folding Vertical": {
+   "grupo": "canonInferior",
+   "es": "Vertical plegable",
+   "revisado": false
+  },
+  "Full Angled": {
+   "grupo": "canonInferior",
+   "es": "Angular completa",
+   "revisado": false
+  },
+  "Low-Profile Stubby": {
+   "grupo": "canonInferior",
+   "es": "Corta de perfil bajo",
+   "revisado": false
+  },
+  "PTT Grip Pod": {
+   "grupo": "canonInferior",
+   "es": "Empuñadura bípode PTT",
+   "revisado": false
+  },
+  "QD Grip Pod": {
+   "grupo": "canonInferior",
+   "es": "Empuñadura bípode QD",
+   "revisado": false
+  },
+  "Ribbed Stubby": {
+   "grupo": "canonInferior",
+   "es": "Corta estriada",
+   "revisado": false
+  },
+  "Ribbed Vertical": {
+   "grupo": "canonInferior",
+   "es": "Vertical estriada",
+   "revisado": false
+  },
+  "Slim Angled": {
+   "grupo": "canonInferior",
+   "es": "Angular delgada",
+   "revisado": false
+  },
+  "Slim Handstop": {
+   "grupo": "canonInferior",
+   "es": "Tope de mano delgado",
+   "revisado": false
+  },
+  "Stippled Stubby": {
+   "grupo": "canonInferior",
+   "es": "Corta texturizada",
+   "revisado": false
+  },
+  "Underslung Mount": {
+   "grupo": "canonInferior",
+   "es": "Montura inferior",
+   "revisado": false
+  },
+  "10 Fast": {
+   "grupo": "cargador",
+   "es": "10 rápido",
+   "revisado": false
+  },
+  "10 Rnd": {
+   "grupo": "cargador",
+   "es": "10 balas",
+   "revisado": false
+  },
+  "100 Agil": {
+   "grupo": "cargador",
+   "es": "100 ágil",
+   "revisado": false
+  },
+  "100 Fast": {
+   "grupo": "cargador",
+   "es": "100 rápido",
+   "revisado": false
+  },
+  "100 Rnd": {
+   "grupo": "cargador",
+   "es": "100 balas",
+   "revisado": false
+  },
+  "11 Rnd": {
+   "grupo": "cargador",
+   "es": "11 balas",
+   "revisado": false
+  },
+  "14 Rnd": {
+   "grupo": "cargador",
+   "es": "14 balas",
+   "revisado": false
+  },
+  "15 Fast": {
+   "grupo": "cargador",
+   "es": "15 rápido",
+   "revisado": false
+  },
+  "15 Rnd": {
+   "grupo": "cargador",
+   "es": "15 balas",
+   "revisado": false
+  },
+  "17 Fast": {
+   "grupo": "cargador",
+   "es": "17 rápido",
+   "revisado": false
+  },
+  "17 Rnd": {
+   "grupo": "cargador",
+   "es": "17 balas",
+   "revisado": false
+  },
+  "20 Fast": {
+   "grupo": "cargador",
+   "es": "20 rápido",
+   "revisado": false
+  },
+  "20 Rnd": {
+   "grupo": "cargador",
+   "es": "20 balas",
+   "revisado": false
+  },
+  "200 Rnd": {
+   "grupo": "cargador",
+   "es": "200 balas",
+   "revisado": false
+  },
+  "21 Rnd": {
+   "grupo": "cargador",
+   "es": "21 balas",
+   "revisado": false
+  },
+  "22 Rnd": {
+   "grupo": "cargador",
+   "es": "22 balas",
+   "revisado": false
+  },
+  "23 Rnd": {
+   "grupo": "cargador",
+   "es": "23 balas",
+   "revisado": false
+  },
+  "25 Fast": {
+   "grupo": "cargador",
+   "es": "25 rápido",
+   "revisado": false
+  },
+  "25 Rnd": {
+   "grupo": "cargador",
+   "es": "25 balas",
+   "revisado": false
+  },
+  "27 Rnd": {
+   "grupo": "cargador",
+   "es": "27 balas",
+   "revisado": false
+  },
+  "28 Rnd": {
+   "grupo": "cargador",
+   "es": "28 balas",
+   "revisado": false
+  },
+  "3 Rnd": {
+   "grupo": "cargador",
+   "es": "3 balas",
+   "revisado": false
+  },
+  "30 Fast": {
+   "grupo": "cargador",
+   "es": "30 rápido",
+   "revisado": false
+  },
+  "30 Rnd": {
+   "grupo": "cargador",
+   "es": "30 balas",
+   "revisado": false
+  },
+  "35 Fast": {
+   "grupo": "cargador",
+   "es": "35 rápido",
+   "revisado": false
+  },
+  "35 Rnd": {
+   "grupo": "cargador",
+   "es": "35 balas",
+   "revisado": false
+  },
+  "36 Rnd": {
+   "grupo": "cargador",
+   "es": "36 balas",
+   "revisado": false
+  },
+  "4 Fast": {
+   "grupo": "cargador",
+   "es": "4 rápido",
+   "revisado": false
+  },
+  "4 Rnd": {
+   "grupo": "cargador",
+   "es": "4 balas",
+   "revisado": false
+  },
+  "40 Fast": {
+   "grupo": "cargador",
+   "es": "40 rápido",
+   "revisado": false
+  },
+  "40 Rnd": {
+   "grupo": "cargador",
+   "es": "40 balas",
+   "revisado": false
+  },
+  "41 Rnd": {
+   "grupo": "cargador",
+   "es": "41 balas",
+   "revisado": false
+  },
+  "42 Fast": {
+   "grupo": "cargador",
+   "es": "42 rápido",
+   "revisado": false
+  },
+  "42 Rnd": {
+   "grupo": "cargador",
+   "es": "42 balas",
+   "revisado": false
+  },
+  "45 Fast": {
+   "grupo": "cargador",
+   "es": "45 rápido",
+   "revisado": false
+  },
+  "45 Rnd": {
+   "grupo": "cargador",
+   "es": "45 balas",
+   "revisado": false
+  },
+  "5 Fast": {
+   "grupo": "cargador",
+   "es": "5 rápido",
+   "revisado": false
+  },
+  "5 Rnd": {
+   "grupo": "cargador",
+   "es": "5 balas",
+   "revisado": false
+  },
+  "50 Fast": {
+   "grupo": "cargador",
+   "es": "50 rápido",
+   "revisado": false
+  },
+  "50 Rnd": {
+   "grupo": "cargador",
+   "es": "50 balas",
+   "revisado": false
+  },
+  "53 Rnd": {
+   "grupo": "cargador",
+   "es": "53 balas",
+   "revisado": false
+  },
+  "6 Rnd": {
+   "grupo": "cargador",
+   "es": "6 balas",
+   "revisado": false
+  },
+  "60 Fast": {
+   "grupo": "cargador",
+   "es": "60 rápido",
+   "revisado": false
+  },
+  "60 Rnd": {
+   "grupo": "cargador",
+   "es": "60 balas",
+   "revisado": false
+  },
+  "7 Fast": {
+   "grupo": "cargador",
+   "es": "7 rápido",
+   "revisado": false
+  },
+  "7 Rnd": {
+   "grupo": "cargador",
+   "es": "7 balas",
+   "revisado": false
+  },
+  "75 Rnd": {
+   "grupo": "cargador",
+   "es": "75 balas",
+   "revisado": false
+  },
+  "8 Fast": {
+   "grupo": "cargador",
+   "es": "8 rápido",
+   "revisado": false
+  },
+  "8 Rnd": {
+   "grupo": "cargador",
+   "es": "8 balas",
+   "revisado": false
+  },
+  "95 Rnd": {
+   "grupo": "cargador",
+   "es": "95 balas",
+   "revisado": false
+  },
+  "Single Shot": {
+   "grupo": "cargador",
+   "es": "Disparo único",
+   "revisado": false
+  },
+  "A3 Receiver": {
+   "grupo": "ergonomia",
+   "es": "Receptor A3",
+   "revisado": false
+  },
+  "Aftermarket Buffer": {
+   "grupo": "ergonomia",
+   "es": "Amortiguador mejorado",
+   "revisado": false
+  },
+  "Burst Mode": {
+   "grupo": "ergonomia",
+   "es": "Modo ráfaga",
+   "revisado": false
+  },
+  "Burst Training": {
+   "grupo": "ergonomia",
+   "es": "Entrenamiento de ráfaga",
+   "revisado": false
+  },
+  "DLC Bolt": {
+   "grupo": "ergonomia",
+   "es": "Cerrojo DLC",
+   "revisado": false
+  },
+  "Folding Stock": {
+   "grupo": "ergonomia",
+   "es": "Culata plegable",
+   "revisado": false
+  },
+  "Gunslinger": {
+   "grupo": "ergonomia",
+   "es": "Pistolero",
+   "revisado": false
+  },
+  "Improved Mag Catch": {
+   "grupo": "ergonomia",
+   "es": "Retén de cargador mejorado",
+   "revisado": false
+  },
+  "Magwell Flare": {
+   "grupo": "ergonomia",
+   "es": "Brocal ensanchado",
+   "revisado": false
+  },
+  "Match Trigger": {
+   "grupo": "ergonomia",
+   "es": "Gatillo de competición",
+   "revisado": false
+  },
+  "Rail Cover": {
+   "grupo": "ergonomia",
+   "es": "Cubierta de riel",
+   "revisado": false
+  },
+  "Speed Holster": {
+   "grupo": "ergonomia",
+   "es": "Funda rápida",
+   "revisado": false
+  },
+  "120 MW Blue": {
+   "grupo": "laser",
+   "es": "Azul 120 MW",
+   "revisado": false
+  },
+  "5 MW Green": {
+   "grupo": "laser",
+   "es": "Verde 5 MW",
+   "revisado": false
+  },
+  "5 MW Red": {
+   "grupo": "laser",
+   "es": "Rojo 5 MW",
+   "revisado": false
+  },
+  "50 MW Blue": {
+   "grupo": "laser",
+   "es": "Azul 50 MW",
+   "revisado": false
+  },
+  "50 MW Green": {
+   "grupo": "laser",
+   "es": "Verde 50 MW",
+   "revisado": false
+  },
+  "50 MW Violet": {
+   "grupo": "laser",
+   "es": "Violeta 50 MW",
+   "revisado": false
+  },
+  "Combo Green": {
+   "grupo": "laser",
+   "es": "Combo verde",
+   "revisado": false
+  },
+  "Combo Red": {
+   "grupo": "laser",
+   "es": "Combo rojo",
+   "revisado": false
+  },
+  "Flashlight": {
+   "grupo": "luz",
+   "es": "Linterna",
+   "revisado": false
+  },
+  "Range Finder": {
+   "grupo": "luz",
+   "es": "Telémetro",
+   "revisado": false
+  },
+  "Taclight - Aimed": {
+   "grupo": "luz",
+   "es": "Luz táctica (apuntando)",
+   "revisado": false
+  },
+  "Taclight - Hipfire": {
+   "grupo": "luz",
+   "es": "Luz táctica (cadera)",
+   "revisado": false
+  },
+  "1P86 LPVO 1.5-4.5x": {
+   "grupo": "mira",
+   "es": "1P86 LPVO 1.5-4.5x",
+   "revisado": false
+  },
+  "1p87 1.50x": {
+   "grupo": "mira",
+   "es": "1p87 1.50x",
+   "revisado": false
+  },
+  "1p88 Variable 3-10x": {
+   "grupo": "mira",
+   "es": "1p88 Variable 3-10x",
+   "revisado": false
+  },
+  "2Pro 1.25x": {
+   "grupo": "mira",
+   "es": "2Pro 1.25x",
+   "revisado": false
+  },
+  "3VZR 1.75x": {
+   "grupo": "mira",
+   "es": "3VZR 1.75x",
+   "revisado": false
+  },
+  "A-P2 1.75x": {
+   "grupo": "mira",
+   "es": "A-P2 1.75x",
+   "revisado": false
+  },
+  "Baker 3.00x": {
+   "grupo": "mira",
+   "es": "Baker 3.00x",
+   "revisado": false
+  },
+  "BF-2M 2.50x": {
+   "grupo": "mira",
+   "es": "BF-2M 2.50x",
+   "revisado": false
+  },
+  "CCO 2.00x": {
+   "grupo": "mira",
+   "es": "CCO 2.00x",
+   "revisado": false
+  },
+  "CQ RDS 1.25x": {
+   "grupo": "mira",
+   "es": "CQ RDS 1.25x",
+   "revisado": false
+  },
+  "DVO LPVO 1-6x": {
+   "grupo": "mira",
+   "es": "DVO LPVO 1-6x",
+   "revisado": false
+  },
+  "GRIM 1.50x": {
+   "grupo": "mira",
+   "es": "GRIM 1.50x",
+   "revisado": false
+  },
+  "Iron Sights": {
+   "grupo": "mira",
+   "es": "Miras de hierro",
+   "revisado": false
+  },
+  "LDS 4.50x": {
+   "grupo": "mira",
+   "es": "LDS 4.50x",
+   "revisado": false
+  },
+  "LERT 8.00x": {
+   "grupo": "mira",
+   "es": "LERT 8.00x",
+   "revisado": false
+  },
+  "Mars-F LPVO 1-5x": {
+   "grupo": "mira",
+   "es": "Mars-F LPVO 1-5x",
+   "revisado": false
+  },
+  "MC-CO LPVO 1-6x": {
+   "grupo": "mira",
+   "es": "MC-CO LPVO 1-6x",
+   "revisado": false
+  },
+  "MGO 3.50x": {
+   "grupo": "mira",
+   "es": "MGO 3.50x",
+   "revisado": false
+  },
+  "Mini Flex 1.00x": {
+   "grupo": "mira",
+   "es": "Mini Flex 1.00x",
+   "revisado": false
+  },
+  "NFX 8.00x": {
+   "grupo": "mira",
+   "es": "NFX 8.00x",
+   "revisado": false
+  },
+  "NGFC LPVO 1-5x": {
+   "grupo": "mira",
+   "es": "NGFC LPVO 1-5x",
+   "revisado": false
+  },
+  "Osa-7 1.00x": {
+   "grupo": "mira",
+   "es": "Osa-7 1.00x",
+   "revisado": false
+  },
+  "PAS-35 3.00x": {
+   "grupo": "mira",
+   "es": "PAS-35 3.00x",
+   "revisado": false
+  },
+  "PVQ-31 4.00x": {
+   "grupo": "mira",
+   "es": "PVQ-31 4.00x",
+   "revisado": false
+  },
+  "QMK 3.00x": {
+   "grupo": "mira",
+   "es": "QMK 3.00x",
+   "revisado": false
+  },
+  "R-MR 1.00x": {
+   "grupo": "mira",
+   "es": "R-MR 1.00x",
+   "revisado": false
+  },
+  "R-VPS 10.00x": {
+   "grupo": "mira",
+   "es": "R-VPS 10.00x",
+   "revisado": false
+  },
+  "R4T 2.00x": {
+   "grupo": "mira",
+   "es": "R4T 2.00x",
+   "revisado": false
+  },
+  "RO-M 1.75x": {
+   "grupo": "mira",
+   "es": "RO-M 1.75x",
+   "revisado": false
+  },
+  "RO-S 1.25x": {
+   "grupo": "mira",
+   "es": "RO-S 1.25x",
+   "revisado": false
+  },
+  "ROX 1.50x": {
+   "grupo": "mira",
+   "es": "ROX 1.50x",
+   "revisado": false
+  },
+  "S-VPS 6.00x": {
+   "grupo": "mira",
+   "es": "S-VPS 6.00x",
+   "revisado": false
+  },
+  "SDO 3.50x": {
+   "grupo": "mira",
+   "es": "SDO 3.50x",
+   "revisado": false
+  },
+  "SF-G2 5.00x": {
+   "grupo": "mira",
+   "es": "SF-G2 5.00x",
+   "revisado": false
+  },
+  "SM Rifle Variable 2-8x": {
+   "grupo": "mira",
+   "es": "SM Rifle Variable 2-8x",
+   "revisado": false
+  },
+  "SSDS 6.00x": {
+   "grupo": "mira",
+   "es": "SSDS 6.00x",
+   "revisado": false
+  },
+  "ST Prism 5.00x": {
+   "grupo": "mira",
+   "es": "ST Prism 5.00x",
+   "revisado": false
+  },
+  "SU-123 1.50x": {
+   "grupo": "mira",
+   "es": "SU-123 1.50x",
+   "revisado": false
+  },
+  "SU-230 LPVO 1-4x": {
+   "grupo": "mira",
+   "es": "SU-230 LPVO 1-4x",
+   "revisado": false
+  },
+  "TH-RDS 1.00x": {
+   "grupo": "mira",
+   "es": "TH-RDS 1.00x",
+   "revisado": false
+  },
+  "TS-HD 6.00x": {
+   "grupo": "mira",
+   "es": "TS-HD 6.00x",
+   "revisado": false
+  },
+  "#00 BUCK": {
+   "grupo": "municion",
+   "es": "Perdigón #00",
+   "revisado": false
+  },
+  "#01 BUCK": {
+   "grupo": "municion",
+   "es": "Perdigón #01",
+   "revisado": false
+  },
+  "Flechette": {
+   "grupo": "municion",
+   "es": "Dardos",
+   "revisado": false
+  },
+  "Frangible": {
+   "grupo": "municion",
+   "es": "Fragmentable",
+   "revisado": false
+  },
+  "Hollow Point": {
+   "grupo": "municion",
+   "es": "Punta hueca",
+   "revisado": false
+  },
+  "Lightweight": {
+   "grupo": "municion",
+   "es": "Ligera",
+   "revisado": false
+  },
+  "Long-Range": {
+   "grupo": "municion",
+   "es": "Largo alcance",
+   "revisado": false
+  },
+  "Penetration": {
+   "grupo": "municion",
+   "es": "Perforante",
+   "revisado": false
+  },
+  "Range Pen": {
+   "grupo": "municion",
+   "es": "Perforante de largo alcance",
+   "revisado": false
+  },
+  "Slugs": {
+   "grupo": "municion",
+   "es": "Balas sólidas",
+   "revisado": false
+  },
+  "Standard": {
+   "grupo": "municion",
+   "es": "Estándar",
+   "revisado": false
+  },
+  "Sub HP": {
+   "grupo": "municion",
+   "es": "Subsónica punta hueca",
+   "revisado": false
+  },
+  "Sub Pen": {
+   "grupo": "municion",
+   "es": "Subsónica perforante",
+   "revisado": false
+  },
+  "Subsonic": {
+   "grupo": "municion",
+   "es": "Subsónica",
+   "revisado": false
+  },
+  "Synthetic": {
+   "grupo": "municion",
+   "es": "Sintética",
+   "revisado": false
+  }
+ },
+ "versionJuego": "2.1.1.0"
+}

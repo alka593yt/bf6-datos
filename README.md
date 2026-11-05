@@ -8,6 +8,9 @@ Base de datos de armas de Battlefield 6 para el comparador de [alka593.com](http
 |---|---|
 | `data/armas.json` | Todas las armas: estadísticas, daño por tramos, equipamientos y el esquema de campos. |
 | `admin/index.html` | Panel privado para editar `data/armas.json`. Pide una clave de GitHub para guardar. |
+| `data/accesorios.json` | Nombres de los accesorios en español (se editan desde el panel). |
+| `motor/` | Motor del constructor, basado en BF6 Weapon Analyzer de Raymdl (con su permiso). Ver `motor/LEEME.md`. |
+| `scripts/actualizar_motor.py` | Actualiza el motor y los datos del juego a una temporada nueva. |
 
 ## Cómo se usa
 
