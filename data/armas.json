@@ -3482,6 +3482,80 @@
    "equipamientos": []
   },
   {
+   "id": "kts100-mk8",
+   "nombre": "KTS100 MK8",
+   "categoria": "Ametralladora",
+   "idAnalizador": "kts100",
+   "imagen": "https://i.imgur.com/dOPZgL7.png",
+   "alcance": "Largo alcance",
+   "base": {
+    "vida": 100,
+    "cadencia": 514,
+    "velBala": 808,
+    "velApuntar": 367,
+    "velRecarga": 3250,
+    "cadera": 34,
+    "precision": 75,
+    "control": 55,
+    "movilidad": 40,
+    "danoCabeza": 36.47,
+    "danoPecho": 26.05,
+    "danoEstomago": 21.88,
+    "balasParaMatar": 4,
+    "recoilVertical": 0.52,
+    "recoilHorizontal": 9.5
+   },
+   "municion": {
+    "puntaHueca": 1.57,
+    "sintetico": 1.8
+   },
+   "dano": {
+    "cabeza": [
+     [
+      0,
+      36.47
+     ],
+     [
+      21,
+      28.94
+     ],
+     [
+      75,
+      23.98
+     ]
+    ],
+    "pecho": [
+     [
+      0,
+      26.05
+     ],
+     [
+      21,
+      20.67
+     ],
+     [
+      75,
+      17.13
+     ]
+    ],
+    "estomago": [
+     [
+      0,
+      21.88
+     ],
+     [
+      21,
+      17.36
+     ],
+     [
+      75,
+      14.39
+     ]
+    ]
+   },
+   "equipamientos": []
+  },
+  {
    "id": "m240l",
    "nombre": "M240L",
    "categoria": "Ametralladora",
