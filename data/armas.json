@@ -708,83 +708,10 @@
    "equipamientos": []
   },
   {
-   "id": "m16a4-semi",
-   "nombre": "M16A4 SEMI",
+   "id": "m16a4",
+   "nombre": "M16A4",
    "categoria": "Asalto",
    "idAnalizador": "m16a4",
-   "modoDisparo": "semi",
-   "imagen": "https://i.imgur.com/wUQLmZ1.png",
-   "base": {
-    "vida": 100,
-    "cadencia": 400,
-    "velBala": 680,
-    "velApuntar": 250,
-    "velRecarga": 2200,
-    "cadera": 40,
-    "precision": 27,
-    "control": 41,
-    "movilidad": 52,
-    "danoCabeza": 36.44,
-    "danoPecho": 26,
-    "danoEstomago": 21.79,
-    "balasParaMatar": 4,
-    "recoilVertical": 0.73,
-    "recoilHorizontal": 29.2
-   },
-   "dano": {
-    "cabeza": [
-     [
-      0,
-      36.44
-     ],
-     [
-      21,
-      28.93
-     ],
-     [
-      75,
-      24
-     ]
-    ],
-    "pecho": [
-     [
-      0,
-      26
-     ],
-     [
-      21,
-      20.69
-     ],
-     [
-      75,
-      17.21
-     ]
-    ],
-    "estomago": [
-     [
-      0,
-      21.79
-     ],
-     [
-      21,
-      17.4
-     ],
-     [
-      75,
-      14.47
-     ]
-    ]
-   },
-   "equipamientos": [],
-   "revisar": true,
-   "notas": "En semiautomático la cadencia es 400; 771 es la de la ráfaga. Cambia el TTK."
-  },
-  {
-   "id": "m16a4-auto",
-   "nombre": "M16A4 AUTO",
-   "categoria": "Asalto",
-   "idAnalizador": "m16a4",
-   "modoDisparo": "rafaga",
    "imagen": "https://i.imgur.com/wUQLmZ1.png",
    "base": {
     "vida": 100,
@@ -851,8 +778,7 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
-   "notas": "Modo ráfaga (en el juego no tiene automático)."
+   "notas": "Unifica las antiguas \"M16A4 SEMI\" y \"M16A4 AUTO\". De fábrica dispara en ráfaga; el modo semiautomático y el automático (Receptor A3) se eligen como accesorios."
   },
   {
    "id": "b36a4",
@@ -4024,125 +3950,6 @@
    },
    "equipamientos": [],
    "notas": "Base anotada con el cañón Light."
-  },
-  {
-   "id": "elr-40-disparo-unico",
-   "nombre": "ELR-40 DISPARO UNICO",
-   "categoria": "Francotirador",
-   "idAnalizador": "elr40",
-   "base": {
-    "vida": 100,
-    "cadencia": 36,
-    "velBala": 788,
-    "velApuntar": 300,
-    "velRecarga": 3166,
-    "cadera": 34,
-    "precision": 100,
-    "control": 15,
-    "movilidad": 52,
-    "danoCabeza": 120,
-    "danoPecho": 90,
-    "danoEstomago": 76,
-    "balasParaMatar": 2,
-    "recoilVertical": 1.7,
-    "recoilHorizontal": 6
-   },
-   "dano": {
-    "cabeza": [
-     [
-      0,
-      120
-     ],
-     [
-      23,
-      120,
-      "rampa"
-     ],
-     [
-      41,
-      160
-     ],
-     [
-      67,
-      160,
-      "rampa"
-     ],
-     [
-      139,
-      107
-     ]
-    ],
-    "pecho": [
-     [
-      0,
-      90
-     ],
-     [
-      24,
-      90,
-      "rampa"
-     ],
-     [
-      42,
-      120
-     ],
-     [
-      68,
-      120,
-      "rampa"
-     ],
-     [
-      80,
-      100,
-      "rampa"
-     ],
-     [
-      140,
-      80
-     ]
-    ],
-    "estomago": [
-     [
-      0,
-      76
-     ],
-     [
-      24,
-      76,
-      "rampa"
-     ],
-     [
-      42,
-      100
-     ],
-     [
-      68,
-      100,
-      "rampa"
-     ],
-     [
-      80,
-      84.67,
-      "rampa"
-     ],
-     [
-      100,
-      78.32,
-      "rampa"
-     ],
-     [
-      120,
-      72.85,
-      "rampa"
-     ],
-     [
-      140,
-      67
-     ]
-    ]
-   },
-   "equipamientos": [],
-   "notas": "Es la ELR-40 con el cargador Single Shot y el cañón Light. Sus valores coinciden con el analizador para esa configuración."
   },
   {
    "id": "mini-scout",
