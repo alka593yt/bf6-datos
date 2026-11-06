@@ -3212,6 +3212,8 @@ function cargarMotor(){
     .catch(function(e){ errorMotor = e; console.error('Constructor: no se pudo cargar el motor', e); return null; });
   return cargando;
 }
+/* Puntos de accesorios cambiados a mano en el panel para esta arma (pestaña Puntos). */
+function aj(a){ return (a && a.puntosAccesorios) || null; }
 function tieneMotor(a){ return !!(M && a && a.idAnalizador && M.existe(a.idAnalizador)); }
 
 /* ---------- Armas en la comparación ---------- */
@@ -3223,9 +3225,9 @@ function selDeEquip(a, eq){
 }
 function calcular(b){
   if(!tieneMotor(b.arma)){ b.res = null; return; }
-  b.res = M.calcular(b.arma.idAnalizador, b.sel);
+  b.res = M.calcular(b.arma.idAnalizador, b.sel, aj(b.arma));
   b.sel = b.res.seleccion;
-  if(!b.fab) b.fab = M.calcular(b.arma.idAnalizador, M.seleccionPorDefecto(b.arma.idAnalizador));
+  if(!b.fab) b.fab = M.calcular(b.arma.idAnalizador, M.seleccionPorDefecto(b.arma.idAnalizador), aj(b.arma));
 }
 function agregar(fila){
   if(builds.length >= MAX){ avisar('Puedes comparar hasta ' + MAX + ' armas a la vez.'); return; }
@@ -3257,7 +3259,7 @@ function danoZonas(b){
 }
 function cambios(b){
   if(!b.res || !b.fab) return [];
-  var out = [], s = b.res.seleccion, f = b.fab.seleccion, rs = M.ranuras(b.arma.idAnalizador, s);
+  var out = [], s = b.res.seleccion, f = b.fab.seleccion, rs = M.ranuras(b.arma.idAnalizador, s, aj(b.arma));
   rs.forEach(function(r){ if(s[r.id] !== f[r.id]){ var o = r.opciones.find(function(x){ return x.valor === s[r.id]; }); out.push(o && o.valor !== 'none' ? nombreEs(o.en) : 'Sin ' + r.nombre.toLowerCase()); } });
   if(s.modo !== f.modo) out.push(M.MODOS[s.modo] || s.modo);
   return out;
@@ -3306,7 +3308,7 @@ function editorHtml(b){
   var modos = M.modos(a.idAnalizador, b.sel);
   if(modos.length) h += '<label class="ctor-sel">Modo <select id="ctorModo">' + modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === b.res.modo ? ' selected' : '') + '>' + m.nombre + '</option>'; }).join('') + '</select></label>';
   h += '<span class="ctor-pts grande' + (b.res.puntos > (M.LIMITE_PUNTOS || 100) ? ' excede' : '') + '">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Fábrica</button></div></div>';
-  var rs = M.ranuras(a.idAnalizador, b.sel), f = b.fab.seleccion;
+  var rs = M.ranuras(a.idAnalizador, b.sel, aj(a)), f = b.fab.seleccion;
   var tarjetas = rs.map(function(r){
     var o = r.opciones.find(function(x){ return x.valor === r.valor; }) || {};
     var nombre = r.valor === 'none' ? 'Ninguno' : nombreEs(o.en);
@@ -3330,7 +3332,7 @@ function editorHtml(b){
 }
 function efectos(b, rid, valor){
   var s = Object.assign({}, b.sel); s[rid] = valor;
-  var r = M.calcular(b.arma.idAnalizador, s), base = b.res, out = [];
+  var r = M.calcular(b.arma.idAnalizador, s, aj(b.arma)), base = b.res, out = [];
   ['cadera', 'precision', 'control', 'movilidad', 'velApuntar', 'velBala', 'velRecarga', 'recoilVertical', 'recoilHorizontal', 'cargador', 'cadencia'].forEach(function(k){
     var a = base.stats[k], v = r.stats[k];
     if(typeof a !== 'number' || typeof v !== 'number' || Math.abs(v - a) < 0.005) return;
@@ -3506,7 +3508,7 @@ window.bf6Ctor = {
   abrir: function(){ render(); },
   agregar: agregar,
   /* Si cambian los datos (nueva versión de armas.json), vuelve a enlazar las armas. */
-  refrescar: function(){ builds.forEach(function(b){ var a = (doc().armas || []).find(function(x){ return x.id === b.arma.id; }); if(a) b.arma = a; }); if($('mainConstructor') && $('mainConstructor').classList.contains('active')) render(); }
+  refrescar: function(){ builds.forEach(function(b){ var a = (doc().armas || []).find(function(x){ return x.id === b.arma.id; }); if(a){ b.arma = a; b.fab = null; calcular(b); } }); if($('mainConstructor') && $('mainConstructor').classList.contains('active')) render(); }
 };
 })();
 </script>

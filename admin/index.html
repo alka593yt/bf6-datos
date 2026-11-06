@@ -331,13 +331,14 @@ function renderEditor() {
   if (S.view === 'accesorios') return renderAccesorios();
   const a = armaSel();
   if (!a) { ed.innerHTML = '<div class="empty">Elige un arma de la lista o crea una nueva.</div>'; return; }
-  const tabs = [['general', 'General'], ['stats', 'Estadísticas'], ['dano', 'Daño'], ['equip', `Equipamientos (${(a.equipamientos || []).length})`]];
+  const nAj = Object.values(a.puntosAccesorios || {}).reduce((n, x) => n + Object.keys(x).length, 0);
+  const tabs = [['general', 'General'], ['stats', 'Estadísticas'], ['dano', 'Daño'], ['equip', `Equipamientos (${(a.equipamientos || []).length})`], ['puntos', nAj ? `Puntos (${nAj} cambiado${nAj === 1 ? "" : "s"})` : 'Puntos']];
   ed.innerHTML = `<div class="row"><h2>${esc(a.nombre)}</h2>${a.revisar ? '<span class="tag warn">revisar</span>' : ''}<span class="grow"></span>
       <button class="btn small" id="dupBtn">Duplicar</button><button class="btn small danger" id="delBtn">Eliminar</button></div>
     ${a.notas ? `<p class="note">${esc(a.notas)}</p>` : ''}
     <div class="tabs">${tabs.map(([k, l]) => `<button data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>
     <div id="tabBody"></div>`;
-  ({ general: tabGeneral, stats: tabStats, dano: tabDano, equip: tabEquip })[S.tab](a);
+  ({ general: tabGeneral, stats: tabStats, dano: tabDano, equip: tabEquip, puntos: tabPuntos })[S.tab](a);
 }
 $('editor').addEventListener('click', async e => {
   const t = e.target.closest('[data-tab]'); if (t) { S.tab = t.dataset.tab; renderEditor(); return; }
@@ -721,8 +722,8 @@ const escalarTramos = (t, f) => (t || []).map(r => { const x = [r[0], r[1] == nu
 
 /** Recalcula un equipamiento con el motor y guarda el resultado en él. */
 function recalcularEquip(a, eq) {
-  const r = MOTOR.calcular(a.idAnalizador, selDe(a, eq));
-  const ops = Object.fromEntries(MOTOR.ranuras(a.idAnalizador, r.seleccion).map(x => [x.id, x]));
+  const r = MOTOR.calcular(a.idAnalizador, selDe(a, eq), a.puntosAccesorios);
+  const ops = Object.fromEntries(MOTOR.ranuras(a.idAnalizador, r.seleccion, a.puntosAccesorios).map(x => [x.id, x]));
   eq.accesorios = {};
   for (const [rid, v] of Object.entries(r.seleccion)) {
     if (rid === 'modo' || !v || v === 'none' || !ops[rid]) continue;
@@ -759,9 +760,9 @@ function etiquetaOpcion(o, r, excede) {
 }
 function htmlEquipMotor(a, eq, i) {
   // Solo calcula para mostrar: el equipamiento se modifica únicamente cuando cambias algo.
-  const r = eq._calc || (eq._calc = MOTOR.calcular(a.idAnalizador, selDe(a, eq)));
+  const r = eq._calc || (eq._calc = MOTOR.calcular(a.idAnalizador, selDe(a, eq), a.puntosAccesorios));
   const antiguo = eq.puntos == null && eq.estadisticas && Object.keys(eq.estadisticas).length;
-  const ranuras = MOTOR.ranuras(a.idAnalizador, r.seleccion), modos = MOTOR.modos(a.idAnalizador, r.seleccion);
+  const ranuras = MOTOR.ranuras(a.idAnalizador, r.seleccion, a.puntosAccesorios), modos = MOTOR.modos(a.idAnalizador, r.seleccion);
   const selects = ranuras.map(rn => {
     const act = rn.opciones.find(o => o.valor === rn.valor) || { puntos: 0 };
     return campo(rn.nombre, `<select data-eqacc="${i}" data-ranura="${rn.id}">${rn.opciones.map(o => {
@@ -852,7 +853,7 @@ $('editor').addEventListener('click', async e => {
   else if (el.dataset.eqpropio != null) { const eq = a.equipamientos[+el.dataset.eqpropio]; if (!eq.dano) eq.dano = clone(a.dano || {}); eq.danoPropio = true; S.tab = 'dano'; S.de.fuente = el.dataset.eqpropio; S.de.sel = null; marcar(a.id); renderEditor(); return; }
   else if (el.dataset.eqconv != null) { const eq = a.equipamientos[+el.dataset.eqconv]; delete eq.manual; recalcularEquip(a, eq); }
   else if (el.dataset.eqkeep != null) {
-    const eq = a.equipamientos[+el.dataset.eqkeep], calc = MOTOR.calcular(a.idAnalizador, selDe(a, eq)).stats, man = {};
+    const eq = a.equipamientos[+el.dataset.eqkeep], calc = MOTOR.calcular(a.idAnalizador, selDe(a, eq), a.puntosAccesorios).stats, man = {};
     STATS_MOTOR.forEach(k => { const v = eq.estadisticas?.[k]; if (typeof v === 'number' && v !== calc[k]) man[k] = v; });
     if (Object.keys(man).length) eq.manual = man; recalcularEquip(a, eq);
   }
@@ -860,6 +861,55 @@ $('editor').addEventListener('click', async e => {
   else if (el.dataset.eqdano) { const eq = a.equipamientos[+el.dataset.eqdano]; if (el.dataset.off) delete eq.dano; else eq.dano = clone(a.dano || {}); }
   else return;
   marcar(a.id); tabEquip(a); renderEditor();
+});
+
+/* ---------- Puntos de accesorios (ajustes por arma) ----------
+   a.puntosAccesorios = { ranura: { valor: puntos } }. Solo guarda los que cambiaste; lo demás usa los puntos del juego. */
+function tabPuntos(a) {
+  if (!MOTOR && !motorError) { $('tabBody').innerHTML = '<div class="empty">Cargando el motor de cálculo…</div>'; cargarMotor().then(() => { if (S.tab === 'puntos' && armaSel() === a) tabPuntos(a); }); return; }
+  if (!motorTiene(a)) { $('tabBody').innerHTML = '<p class="note">Esta arma no está en el motor (revisa el "ID del analizador" en General), así que no tiene lista de accesorios.</p>'; return; }
+  const aj = a.puntosAccesorios || {}, f = S.ptsFiltro || '';
+  const rs = MOTOR.ranuras(a.idAnalizador, MOTOR.seleccionPorDefecto(a.idAnalizador));
+  let filas = '', n = 0;
+  for (const r of rs) {
+    const ops = r.opciones.filter(o => o.valor !== 'none' && (!f || slug(nombreEs(o.en) + ' ' + o.en).includes(slug(f))));
+    if (!ops.length) continue;
+    filas += `<tr class="acc-g"><td colspan="4">${esc(r.nombre)}</td></tr>`;
+    for (const o of ops) {
+      const v = aj[r.id]?.[o.valor], cambiado = Number.isFinite(v); if (cambiado) n++;
+      filas += `<tr><td>${esc((r.compartida && o.tipo ? o.tipo + ' · ' : '') + nombreEs(o.en))}${o.porDefecto ? ' <span class="muted">(de fábrica)</span>' : ''}</td>
+        <td class="num">${o.puntos}</td>
+        <td><input class="pts-in" data-pr="${esc(r.id)}" data-pv="${esc(o.valor)}" inputmode="numeric" value="${cambiado ? v : ''}" placeholder="${o.puntos}" style="width:70px" aria-label="Puntos de ${esc(nombreEs(o.en))}"></td>
+        <td>${cambiado ? `<span class="tag dirty">${v > o.puntos ? '+' : ''}${v - o.puntos}</span> <button class="btn small" data-ptsdel="${esc(r.id)}|${esc(o.valor)}">Restaurar</button>` : ''}${cambiado && v === o.puntos ? ' <span class="muted">igual al del juego: puedes restaurarlo</span>' : ''}</td></tr>`;
+    }
+  }
+  $('tabBody').innerHTML = `<p class="note">Cambia solo los accesorios cuyo precio cambió en el juego. Vacío = puntos del juego. Se aplican al constructor (y a su límite de ${LIMITE()} puntos) y a los equipamientos de esta arma.</p>
+    <div class="row" style="margin-bottom:8px"><input id="ptsQ" type="search" placeholder="Buscar accesorio..." value="${esc(f)}" style="flex:1;max-width:320px" aria-label="Buscar accesorio">
+      <span class="muted">${n ? `${n} accesorio${n === 1 ? '' : 's'} con puntos cambiados` : 'Todos con los puntos del juego'}</span></div>
+    <div class="tablewrap"><table class="acc-table eq-stats"><thead><tr><th>Accesorio</th><th>Juego</th><th>Tu valor</th><th></th></tr></thead><tbody>${filas}</tbody></table></div>`;
+}
+function ptsCambio(a, ranura, valor, v) {
+  a.puntosAccesorios = a.puntosAccesorios || {};
+  const m = a.puntosAccesorios[ranura] = a.puntosAccesorios[ranura] || {};
+  if (Number.isFinite(v)) m[valor] = v; else delete m[valor];
+  if (!Object.keys(m).length) delete a.puntosAccesorios[ranura];
+  if (!Object.keys(a.puntosAccesorios).length) delete a.puntosAccesorios;
+  for (const eq of a.equipamientos || []) { delete eq._calc; if (eq.puntos != null) recalcularEquip(a, eq); }   // los equipamientos guardan sus puntos
+  marcar(a.id); renderEditor();
+}
+$('editor').addEventListener('change', e => {
+  const el = e.target, a = S.view === 'arma' && armaSel(); if (!a || S.tab !== 'puntos' || !el.classList.contains('pts-in')) return;
+  const v = num(el.value);
+  if (el.value.trim() !== '' && !(typeof v === 'number' && v >= 0 && Number.isInteger(v))) { toast('Escribe un número entero de puntos (o déjalo vacío para usar el del juego).'); el.value = ''; return; }
+  ptsCambio(a, el.dataset.pr, el.dataset.pv, typeof v === 'number' ? v : null);
+});
+$('editor').addEventListener('input', e => {
+  if (e.target.id !== 'ptsQ') return; S.ptsFiltro = e.target.value;
+  const pos = e.target.selectionStart; tabPuntos(armaSel()); const q = $('ptsQ'); q.focus(); q.setSelectionRange(pos, pos);
+});
+$('editor').addEventListener('click', e => {
+  const el = e.target, a = S.view === 'arma' && armaSel(); if (!a || S.tab !== 'puntos' || !el.dataset.ptsdel) return;
+  const [r, v] = el.dataset.ptsdel.split('|'); ptsCambio(a, r, v, null);
 });
 
 /* ================= NUEVA ARMA ================= */

@@ -143,8 +143,18 @@ function descripcion(wid, tipo, id) {
 /**
  * Las ranuras del arma con sus opciones, para armar las listas desplegables.
  * Cada opción: { valor, en (nombre en inglés), puntos, porDefecto, disponible, motivo, descripcion, tipo }
+ * `ajustes` (opcional) cambia los puntos de algunos accesorios: { ranura: { valor: puntos } }.
+ * Las opciones ajustadas guardan también `puntosJuego` (el valor original).
  */
-export function ranuras(id, sel = {}) {
+export function ranuras(id, sel = {}, ajustes = null) {
+  const out = ranurasJuego(id, sel);
+  if (ajustes) for (const r of out) for (const o of r.opciones) {
+    const v = ajustes[r.id]?.[o.valor];
+    if (Number.isFinite(v)) { o.puntosJuego = o.puntos; o.puntos = v; }
+  }
+  return out;
+}
+function ranurasJuego(id, sel) {
   const w = arma(id); const atts = aAtts(w, sel); const actual = deAtts(w, atts); const def = deAtts(w, aAtts(w, {}));
   const out = [];
   const riel = ranuraRiel(w.id);
@@ -200,7 +210,7 @@ function curva(build) {
  *  - cambiaCurva: la selección usa otra bala (otro daño base), no solo otros multiplicadores.
  *  - factores: cuánto cambian los multiplicadores de cabeza y estómago respecto a fábrica.
  */
-export function calcular(id, sel = {}) {
+export function calcular(id, sel = {}, ajustes = null) {
   const w = arma(id); avisos.length = 0;
   const atts = aAtts(w, sel);
   const b = applyAttachments(w, atts);
@@ -225,8 +235,14 @@ export function calcular(id, sel = {}) {
   const hs = b._hsMult, limb = b._limbMult;
   const dano = { pecho, cabeza: pecho.map(v => r2(v * hs)), estomago: pecho.map(v => r2(v * limb)) };
   const cambiaCurva = JSON.stringify(b.dmg) !== JSON.stringify(fab.dmg) || (b.pellets || 1) !== (fab.pellets || 1);
+  const seleccion = deAtts(w, atts);
+  let puntos = Loadout.computeAttPts(atts, w, DATA);
+  if (ajustes) for (const r of ranuras(id, seleccion, ajustes)) {
+    const o = r.opciones.find(x => x.valor === seleccion[r.id]);
+    if (o && o.puntosJuego != null) puntos += o.puntos - o.puntosJuego;
+  }
   return {
-    seleccion: deAtts(w, atts), modo: selectedFireMode(w, atts), puntos: Loadout.computeAttPts(atts, w, DATA),
+    seleccion, modo: selectedFireMode(w, atts), puntos,
     stats, dano, multiplicadores: { cabeza: hs, estomago: limb },
     factores: { cabeza: hs / fab._hsMult, estomago: limb / fab._limbMult }, cambiaCurva,
     avisos: [...new Set(avisos)],
