@@ -3428,7 +3428,8 @@ function graficoHtml(){
     + (vista.zona === 'cabeza' && municiones ? '<div class="ctor-municion"><span>A la cabeza, también con:</span>'
       + '<label><input type="checkbox" id="ctorPH"' + (vista.ph ? ' checked' : '') + '> <i class="ctor-trazo rayado"></i> Punta hueca</label>'
       + '<label><input type="checkbox" id="ctorSin"' + (vista.sin ? ' checked' : '') + '> <i class="ctor-trazo punteado"></i> Sintético</label></div>' : '')
-    + '<div class="chart-container ctor-chart"><canvas id="ctorCanvas" role="img" aria-label="Gráfico del constructor"></canvas></div>';
+    + '<div class="chart-container ctor-chart"><canvas id="ctor' + vista.modo + '" role="img" aria-label="Gráfico del constructor"></canvas></div>'
+    + '<div class="chart-legend-mobile" id="ctorLeyenda"></div>';
 }
 
 /* ---------- Gráfico ---------- */
@@ -3441,8 +3442,35 @@ function serie(b, dano){
     return { x: m, y: vista.modo === 'Balas' ? balas : (cad ? Math.round(60 / cad * (balas - 1) * 1000) : null) };
   });
 }
+/* Igual que la pestaña TTK: línea vertical bajo el cursor, la tarjeta "Clasificado a X m" (showHoverTooltip)
+   y las leyendas con botones (mismo estilo que renderMobileLegend). El id del canvas (ctorTTK, ctorBalas, ctorDano)
+   le dice a showHoverTooltip qué unidades usar y en qué orden clasificar. */
+var ctorHover = { id: 'ctorHover',
+  afterEvent: function(ch, args){
+    var e = args.event;
+    if(e.type === 'mouseout' || !args.inChartArea){ if(ch.$hx != null){ ch.$hx = null; ch.draw(); } if(ch.$tt) ch.$tt.style.display = 'none'; return; }
+    if(['mousemove', 'touchmove', 'touchstart', 'click'].indexOf(e.type) < 0) return;
+    ch.$hx = e.x; showHoverTooltip(ch, e); ch.draw();
+  },
+  afterDraw: function(ch){
+    if(ch.$hx == null) return;
+    var xs = ch.scales.x, ys = ch.scales.y, v = Math.max(xs.min, Math.min(xs.max, Math.round(xs.getValueForPixel(ch.$hx)))), x = xs.getPixelForValue(v), c = ch.ctx;
+    c.save(); c.beginPath(); c.moveTo(x, ys.top); c.lineTo(x, ys.bottom); c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,0.5)'; c.stroke(); c.restore();
+  } };
+function leyenda(){
+  var cont = $('ctorLeyenda'); if(!cont || !chart) return;
+  cont.innerHTML = ''; cont.style.display = '';
+  chart.data.datasets.forEach(function(ds, i){
+    var chip = document.createElement('div'); chip.className = 'legend-chip';
+    var bg = (Array.isArray(ds.borderDash) && ds.borderDash.length) ? 'repeating-linear-gradient(90deg,' + ds.borderColor + ' 0 4px,transparent 4px 7px)' : ds.borderColor;
+    chip.innerHTML = '<span class="lc-line" style="background:' + bg + '"></span><span class="lc-text" title="' + esc(ds.label) + '">' + esc(ds.label) + '</span>';
+    if(!chart.isDatasetVisible(i)) chip.classList.add('dimmed');
+    chip.onclick = function(){ var v = chart.isDatasetVisible(i); chart.setDatasetVisibility(i, !v); chart.update(); chip.classList.toggle('dimmed', v); };
+    cont.appendChild(chip);
+  });
+}
 function dibujarGrafico(){
-  var cv = $('ctorCanvas'); if(!cv || typeof Chart === 'undefined') return;
+  var cv = document.querySelector('#ctorRoot .ctor-chart canvas'); if(!cv || typeof Chart === 'undefined') return;
   var sets = [];
   builds.forEach(function(b){
     var z = danoZonas(b), d = z[vista.zona];
@@ -3454,17 +3482,14 @@ function dibujarGrafico(){
       sets.push({ label: b.arma.nombre + ' · ' + t[1], data: serie(b, z.pecho.map(function(v){ return v == null ? null : r2(v * mun[t[0]]); })), borderColor: b.color, backgroundColor: b.color, borderDash: t[3], borderWidth: 2 });
     });
   });
-  var unidad = vista.modo === 'TTK' ? ' ms' : vista.modo === 'Balas' ? ' balas' : '';
   if(chart){ chart.destroy(); chart = null; }
-  chart = new Chart(cv.getContext('2d'), { type: 'line', data: { datasets: sets }, options: {
+  chart = new Chart(cv.getContext('2d'), { type: 'line', data: { datasets: sets }, plugins: [ctorHover], options: {
     responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
     elements: { point: { radius: 0 }, line: { borderWidth: 2 } }, interaction: { mode: 'index', intersect: false },
-    plugins: { legend: { display: true, position: 'bottom', labels: { color: 'white', usePointStyle: true, pointStyle: 'line' } },
-      tooltip: { mode: 'index', intersect: false, backgroundColor: '#222', titleColor: '#fff', bodyColor: '#fff', borderColor: '#555', borderWidth: 1,
-        callbacks: { title: function(t){ return t.length ? 'Rango: ' + t[0].parsed.x + ' metros' : ''; },
-          label: function(c){ return c.dataset.label + ': ' + (c.parsed.y == null ? '—' : (vista.modo === 'Dano' ? r2(c.parsed.y) : Math.round(c.parsed.y)) + unidad); } } } },
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
     scales: { x: { type: 'linear', min: 0, max: 200, ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: 'Distancia (m)', color: 'white' } },
       y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: vista.modo === 'TTK' ? 'Tiempo (ms)' : vista.modo === 'Balas' ? 'Balas' : 'Daño', color: 'white' } } } } });
+  leyenda();
 }
 
 /* ---------- Líneas del editor ---------- */
