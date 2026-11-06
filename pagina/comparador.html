@@ -870,6 +870,87 @@ html { scrollbar-gutter: stable; }
 .mw .mw-name{padding:4px 10px}
 .mw .mw-name .hitbox-btn-text{font-size:.62rem}
 }
+/* ===== CONSTRUCTOR ===== */
+.ctor-lista{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.ctor-lista>*,.ctor-editor,.ctor-opciones{box-sizing:border-box;min-width:0}
+.ctor-fila{display:flex;align-items:center;gap:10px;background:var(--bg-tertiary);border:1px solid var(--border-chip);border-left:3px solid var(--c);border-radius:6px;padding:6px 8px;cursor:pointer}
+.ctor-fila.activa{border-color:var(--c);background:var(--bg-input)}
+.ctor-punto{width:10px;height:10px;border-radius:50%;background:var(--c);flex-shrink:0}
+.ctor-mini{width:48px;height:20px;flex-shrink:0;object-fit:contain;display:flex;align-items:center}
+.ctor-mini svg{width:100%;height:100%}
+.ctor-fila-txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.ctor-fila-txt b{font-size:.75rem;font-weight:800;text-transform:uppercase}
+.ctor-fila-txt span{font-size:.68rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctor-pts{font-size:.68rem;font-weight:800;color:var(--accent);white-space:nowrap}
+.ctor-pts.grande{font-size:.8rem;border:1px solid var(--border-medium);border-radius:var(--radius-sm);padding:5px 9px}
+.ctor-editando{font-size:.6rem;font-weight:800;color:var(--c);letter-spacing:.5px}
+.ctor-ico{background:transparent;border:none;color:var(--text-muted);cursor:pointer;width:28px;height:28px;border-radius:50%}
+.ctor-ico:hover{background:rgba(255,255,255,.08);color:var(--text-primary)}
+.ctor-aviso{display:none;margin-top:8px;font-size:.75rem;color:var(--danger)}
+.ctor-nota{font-size:.75rem;color:var(--text-muted);margin:6px 0}
+.ctor-error{color:var(--danger)}
+.ctor-vacio{padding:40px;text-align:center;color:var(--text-muted)}
+.ctor-sel{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;color:var(--text-secondary);font-weight:700}
+.ctor-sel select,.ctor-sel input{background:var(--bg-input);color:var(--text-primary);border:1px solid var(--border-medium);border-radius:var(--radius-sm);padding:5px 8px;font-family:inherit}
+.ctor-editor{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"laser mira mira optico" "boca img img ergo" "luz img img ." "canon inferior cargador municion";gap:10px 14px;background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:14px;margin-bottom:8px}
+.ctor-img{grid-area:img;display:flex;align-items:center;justify-content:center;min-height:170px;position:relative;z-index:1}
+.ctor-arma{width:100%;max-height:170px;object-fit:contain;display:flex;align-items:center;justify-content:center;color:var(--text-faint)}
+div.ctor-arma svg{width:90%;height:140px}
+.ctor-lineas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.ctor-lineas line{stroke:#555;stroke-width:1}.ctor-lineas circle{fill:#555}
+.ctor-lineas line.on{stroke:var(--c);stroke-width:1.5}.ctor-lineas circle.on{fill:var(--c)}
+.ctor-ranura{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-chip);border-radius:8px;padding:6px 10px;cursor:pointer;font-family:inherit;min-width:0;align-self:center}
+.ctor-ranura span{font-size:.6rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px}
+.ctor-ranura b{font-size:.78rem;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctor-ranura.vacia b{color:var(--text-dim);font-weight:400}
+.ctor-ranura:hover{border-color:var(--text-faint);background:var(--bg-input)}
+.ctor-ranura.cambiada{border-color:var(--c);box-shadow:inset 3px 0 0 var(--c)}
+.ctor-ranura.abierta{border-color:var(--accent);background:var(--bg-input)}
+.ctor-opciones{background:var(--bg-secondary);border:1px solid var(--border-medium);border-radius:var(--radius-md);padding:8px;margin-bottom:8px;max-height:420px;overflow:auto}
+.ctor-op-head{display:flex;align-items:center;gap:10px;padding:2px 4px 8px}
+.ctor-op-head b{font-size:.85rem;text-transform:uppercase}
+.ctor-op-head .ctor-nota{flex:1;margin:0}
+.ctor-op{display:grid;grid-template-columns:minmax(0,1.3fr) 56px minmax(0,2fr);gap:8px;align-items:center;width:100%;text-align:left;background:transparent;color:var(--text-primary);border:none;border-bottom:1px solid var(--border-light);padding:7px 6px;cursor:pointer;font-family:inherit;font-size:.78rem}
+.ctor-op:hover{background:rgba(255,165,0,.06)}
+.ctor-op.sel{background:rgba(255,165,0,.12);box-shadow:inset 3px 0 0 var(--accent)}
+.ctor-op:disabled{opacity:.45;cursor:default}
+.ctor-op em{font-style:normal;font-size:.62rem;color:var(--text-muted);margin-left:4px}
+.ctor-op-pts{color:var(--accent);font-weight:700;font-size:.7rem}
+.ctor-op-ef{display:flex;flex-wrap:wrap;gap:4px}
+.ctor-ef{font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--bg-input);color:var(--text-secondary)}
+.ctor-ef.pos{color:var(--success-bright)}.ctor-ef.neg{color:var(--danger)}
+.ctor-barras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.ctor-barra-g{background:var(--bg-card);border:1px solid #2e2e2e;border-radius:6px;padding:8px 10px}
+.ctor-barra-t{font-size:.72rem;font-weight:800;text-transform:uppercase;margin-bottom:6px}
+.ctor-barra{display:grid;grid-template-columns:90px minmax(0,1fr) 64px;gap:8px;align-items:center;margin-top:4px}
+.ctor-barra-n{font-size:.65rem;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctor-barra .stat-bar{height:12px}
+.ctor-fill{height:100%;opacity:.85}
+.ctor-barra-v{font-size:.75rem;font-weight:800;text-align:right;white-space:nowrap}
+.ctor-barra-v i,.ctor-tabla i{font-style:normal;font-size:.65rem}
+.pos{color:var(--success-bright)}.neg{color:var(--danger)}
+.ctor-tabla-wrap{overflow-x:auto;margin-bottom:14px}
+.ctor-tabla td,.ctor-tabla th{white-space:nowrap}
+.ctor-tabla td:first-child,.ctor-tabla th:first-child{text-align:left}
+.ctor-u{color:var(--text-muted);font-size:.65rem}
+.ctor-municion{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:.75rem;color:var(--text-secondary);margin:-4px 0 8px}
+.ctor-municion label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.ctor-trazo{display:inline-block;width:22px;border-top:2px solid var(--text-secondary)}
+.ctor-trazo.rayado{border-top-style:dashed}.ctor-trazo.punteado{border-top-style:dotted}
+.ctor-chart{height:380px;min-height:380px}
+.ctor-acciones{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0}
+.ctor-credito{font-size:.65rem;color:var(--text-dim);margin-top:16px}
+.ctor-credito a{color:var(--text-muted)}
+@media (max-width:720px){
+.ctor-editor{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"img img" "mira optico" "boca canon" "inferior laser" "luz cargador" "municion ergo"}
+.ctor-lineas{display:none}
+.ctor-barras{grid-template-columns:1fr}
+.ctor-op{grid-template-columns:minmax(0,1fr) 50px;}
+.ctor-op-ef{grid-column:1 / -1}
+.ctor-barra{grid-template-columns:70px minmax(0,1fr) 58px}
+.ctor-editando,.ctor-mini{display:none}
+.ctor-fila{gap:6px}
+}
 </style>
 </head>
 <body>
@@ -883,6 +964,7 @@ html { scrollbar-gutter: stable; }
 <button type="button" role="tab" aria-selected="false" aria-controls="mainStats" class="main-tab-btn" data-action="openMainTab" data-a0="mainStats"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> ESTADÍSTICAS</button>
 <button type="button" role="tab" aria-selected="false" aria-controls="mainRecoil" class="main-tab-btn" data-action="openMainTab" data-a0="mainRecoil"><i class="fa-solid fa-arrow-up-short-wide" aria-hidden="true"></i> RETROCESO</button>
 <button type="button" role="tab" aria-selected="false" aria-controls="mainMeta" class="main-tab-btn" data-action="openMainTab" data-a0="mainMeta"><i class="fa-solid fa-ranking-star" aria-hidden="true"></i> META</button>
+<button type="button" role="tab" aria-selected="false" aria-controls="mainConstructor" class="main-tab-btn" data-action="openMainTab" data-a0="mainConstructor"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> CONSTRUCTOR</button>
 </div>
 </div>
 <div class="main-container">
@@ -934,6 +1016,9 @@ html { scrollbar-gutter: stable; }
 </div>
 <div id="mainMeta" class="main-tab-content" role="tabpanel">
 <div class="meta-wrap" id="metaRoot"></div>
+</div>
+<div id="mainConstructor" class="main-tab-content" role="tabpanel">
+<div id="ctorRoot"></div>
 </div>
 <div id="mainRecoil" class="main-tab-content" role="tabpanel">
 <div class="selection-panel">
@@ -1455,6 +1540,7 @@ if(tabId === 'mainTTK'){
 }
 if(tabId === 'mainRecoil'){ renderRecoilCones(); }
 if(tabId === 'mainMeta' && typeof metaOpen === 'function'){ metaOpen(); }
+if(tabId === 'mainConstructor' && window.bf6Ctor){ window.bf6Ctor.abrir(); }
 }, 50);
 }
 function updatePinButtonState(ck){ const btn = DOM_CACHE[ck]?.pinBtn || document.getElementById('pinIndicator'+ck); if(!btn) return; const isPinned = pinnedState[ck] !== null; btn.classList.toggle('pinned', isPinned); btn.innerHTML = isPinned ? '<i class="fa-solid fa-thumbtack" aria-hidden="true"></i> FIJADO' : '<i class="fa-solid fa-thumbtack" aria-hidden="true"></i> FIJAR'; if(!isMobile()){ btn.classList.toggle('visible', isPinned); } else { btn.classList.add('visible'); } }
@@ -2279,9 +2365,11 @@ lastCSVMp = csv;
 ++parseSeq;
 var doc;
 try { doc = JSON.parse(csv); } catch(e) { lastCSVMp = ''; console.error('armas.json no es v\u00e1lido:', e); return; }
+window.__bf6Doc = doc;
 bf6AplicarEsquema(doc.esquema || {});
 window.__bf6AccUsado = window.__bf6Acc;
 applyData(bf6Filas(doc));
+if(window.bf6Ctor) window.bf6Ctor.refrescar();
 }
 function loadDataMP(retries){
 if(retries === undefined) retries = CONFIG.DATA.MAX_RETRIES;
@@ -2373,7 +2461,7 @@ awmObserver.observe(sentinel);
 /* Agregar / quitar todas las armas de la categoría activa (no disponible en TODAS) */
 function renderAwmBulk(){
 const bar = document.getElementById('awmBulk'); if(!bar) return;
-if(awmActiveCategory === 'all' || !awmFilteredWeapons.length){ bar.style.display = 'none'; bar.innerHTML = ''; return; }
+if(awmTarget === 'constructor' || awmActiveCategory === 'all' || !awmFilteredWeapons.length){ bar.style.display = 'none'; bar.innerHTML = ''; return; }
 const selectedNames = new Set(getSelArr(awmTarget).map(i => i.weapon[HEADERS.ARMA]));
 const total = awmFilteredWeapons.length;
 const missing = awmFilteredWeapons.filter(w => !selectedNames.has(w[HEADERS.ARMA])).length;
@@ -2633,7 +2721,7 @@ on('click','.awm-cat-btn',function(){awmActiveCategory=this.dataset.cat;renderAw
 on('input','#awmSearch',function(){ debouncedSearch(); });
 on('click','.awm-bulk-add',function(){ awmBulkApply(true); });
 on('click','.awm-bulk-remove',function(){ awmBulkApply(false); });
-on('click','.awm-add-btn',function(){const name=this.dataset.name;const weapon=allDataMP.find(w=>w[HEADERS.ARMA]===name);if(!weapon)return;if(awmTarget==='stats'){if(!selectedStatsWeapons.some(i=>i.weapon[HEADERS.ARMA]===name&&i.clase==='base')){selectedStatsWeapons.push({id:++statsIdCounter,weapon,clase:'base'});}updateStatsSection();}else if(awmTarget==='recoil'){if(!selectedRecoilWeapons.some(i=>i.weapon[HEADERS.ARMA]===name&&i.clase==='base')){selectedRecoilWeapons.push({id:++recoilIdCounter,weapon,clase:'base'});}renderRecoilChips();}else{addWeaponToSelectionMP(weapon);updateSelectionAndChartsMP();}renderAwmList();});
+on('click','.awm-add-btn',function(){const name=this.dataset.name;const weapon=allDataMP.find(w=>w[HEADERS.ARMA]===name);if(!weapon)return;if(awmTarget==='constructor'){closeAddWeaponModal();if(window.bf6Ctor)window.bf6Ctor.agregar(weapon);return;}if(awmTarget==='stats'){if(!selectedStatsWeapons.some(i=>i.weapon[HEADERS.ARMA]===name&&i.clase==='base')){selectedStatsWeapons.push({id:++statsIdCounter,weapon,clase:'base'});}updateStatsSection();}else if(awmTarget==='recoil'){if(!selectedRecoilWeapons.some(i=>i.weapon[HEADERS.ARMA]===name&&i.clase==='base')){selectedRecoilWeapons.push({id:++recoilIdCounter,weapon,clase:'base'});}renderRecoilChips();}else{addWeaponToSelectionMP(weapon);updateSelectionAndChartsMP();}renderAwmList();});
 on('click','.awm-remove-btn',function(){const name=this.dataset.name;if(awmTarget==='stats'){selectedStatsWeapons=selectedStatsWeapons.filter(i=>i.weapon[HEADERS.ARMA]!==name);updateStatsSection();}else if(awmTarget==='recoil'){selectedRecoilWeapons=selectedRecoilWeapons.filter(i=>i.weapon[HEADERS.ARMA]!==name);renderRecoilChips();}else{selectedWeaponsMP=selectedWeaponsMP.filter(i=>i.weapon[HEADERS.ARMA]!==name);updateSelectionAndChartsMP();}renderAwmList();});
 document.getElementById('addWeaponModal').addEventListener('click',function(e){if(e.target===this)closeAddWeaponModal();});
 on('keydown',function(e){if(e.key==='Escape'){closeAddWeaponModal();closeStatsClassModal();closeConfirmModal();}});
@@ -2685,6 +2773,7 @@ updateSelectionAndChartsMP();
 setTimeout(()=>{ const chart=getChartByKey(tabId==='ttk'?'TTK':(tabId==='balas'?'Balas':'Dano')); if(chart) chart.resize(); },50);
 }
 function getSelArr(src){
+if(src==='constructor') return [];
 if(src==='stats') return selectedStatsWeapons;
 if(src==='recoil') return selectedRecoilWeapons;
 return selectedWeaponsMP;
@@ -3079,6 +3168,335 @@ root.addEventListener('focusout',function(e){ if(e.target&&e.target.id==='metaTo
 var tab=document.getElementById('mainMeta'); if(tab&&tab.classList.contains('active')) window.metaOpen();
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+<script>
+/* ===================== PESTAÑA CONSTRUCTOR ===================== */
+(function(){
+'use strict';
+var MOTOR_URL = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/bf6-motor.js';
+var MAX = 4;
+var M = null, cargando = null, errorMotor = null;
+var builds = [], activo = 0, abierta = null, uid = 0;
+var vista = { modo: 'TTK', zona: 'pecho', vida: 100, ph: true, sin: true };
+var chart = null, ro = null;
+
+/* Dónde va cada ranura alrededor de la imagen (área de la cuadrícula) y a qué punto de la imagen apunta su línea (% ancho, % alto). */
+var LUGAR = {
+  laser: { area: 'laser', x: 22, y: 30 }, riel: { area: 'laser', x: 24, y: 38 },
+  mira: { area: 'mira', x: 56, y: 12 }, accesorioOptico: { area: 'optico', x: 66, y: 14 },
+  boca: { area: 'boca', x: 3, y: 42 }, luz: { area: 'luz', x: 28, y: 58 },
+  ergonomia: { area: 'ergo', x: 88, y: 42 }, canon: { area: 'canon', x: 22, y: 46 },
+  canonInferior: { area: 'inferior', x: 32, y: 62 }, cargador: { area: 'cargador', x: 50, y: 82 }, municion: { area: 'municion', x: 56, y: 66 }
+};
+var CORTO = { cadera: 'Cadera', precision: 'Precisión', control: 'Control', movilidad: 'Movilidad', velApuntar: 'Apuntar', velBala: 'Vel. bala',
+  velRecarga: 'Recarga', recoilVertical: 'Ret. V', recoilHorizontal: 'Ret. H', cargador: 'Balas', cadencia: 'Cadencia' };
+var MENOR_MEJOR = { velApuntar: 1, velRecarga: 1, recoilVertical: 1, recoilHorizontal: 1 };
+var BARRAS = [['cadera', 'Disparo de cadera'], ['precision', 'Precisión'], ['control', 'Control'], ['movilidad', 'Movilidad']];
+var TABLA = [['cadencia', 'Cadencia', 'RPM'], ['velBala', 'Vel. de bala', 'm/s'], ['velApuntar', 'Vel. al apuntar', 'ms'], ['velRecarga', 'Vel. de recarga', 'ms'],
+  ['recoilVertical', 'Recoil vertical', '°'], ['recoilHorizontal', 'Recoil horizontal', '°'], ['cargador', 'Cargador', 'balas']];
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return escapeHtml(s == null ? '' : s); }
+function doc(){ return window.__bf6Doc || { armas: [], esquema: {} }; }
+function nombreEs(en){ var t = window.__bf6Acc && window.__bf6Acc.nombres && window.__bf6Acc.nombres[en]; return (t && t.es) || en || ''; }
+/* Colores de las armas del constructor: los primeros de la paleta del comparador, con buen contraste sobre fondo oscuro. */
+var COLORES = ['#FF3B3B', '#00E5FF', '#FFEA00', '#FF00FF'];
+function colorDe(i){ return COLORES[i]; }
+function r2(v){ return Math.round(v * 100) / 100; }
+
+function cargarMotor(){
+  if(!cargando) cargando = import(MOTOR_URL).then(function(m){ return m.cargar().then(function(){ M = m; return m; }); })
+    .catch(function(e){ errorMotor = e; console.error('Constructor: no se pudo cargar el motor', e); return null; });
+  return cargando;
+}
+function tieneMotor(a){ return !!(M && a && a.idAnalizador && M.existe(a.idAnalizador)); }
+
+/* ---------- Armas en la comparación ---------- */
+function selDeEquip(a, eq){
+  var s = M.seleccionPorDefecto(a.idAnalizador);
+  Object.keys((eq && eq.accesorios) || {}).forEach(function(r){ var v = eq.accesorios[r]; if(v && typeof v === 'object' && v.id) s[r] = v.id; });
+  if(eq && eq.modo) s.modo = eq.modo;
+  return s;
+}
+function calcular(b){
+  if(!tieneMotor(b.arma)){ b.res = null; return; }
+  b.res = M.calcular(b.arma.idAnalizador, b.sel);
+  b.sel = b.res.seleccion;
+  if(!b.fab) b.fab = M.calcular(b.arma.idAnalizador, M.seleccionPorDefecto(b.arma.idAnalizador));
+}
+function agregar(fila){
+  if(builds.length >= MAX){ avisar('Puedes comparar hasta ' + MAX + ' armas a la vez.'); return; }
+  var a = (doc().armas || []).find(function(x){ return x.nombre === fila[HEADERS.ARMA]; });
+  if(!a) return;
+  var libres = [0, 1, 2, 3].filter(function(i){ return !builds.some(function(b){ return b.color === colorDe(i); }); });
+  var b = { uid: ++uid, arma: a, fila: fila, color: colorDe(libres[0]), partir: 'base', sel: tieneMotor(a) ? M.seleccionPorDefecto(a.idAnalizador) : {} };
+  calcular(b); builds.push(b); activo = builds.length - 1; abierta = null; render();
+}
+function quitar(i){ builds.splice(i, 1); if(activo >= builds.length) activo = Math.max(0, builds.length - 1); abierta = null; render(); }
+function avisar(t){ var el = $('ctorAviso'); if(!el) return; el.textContent = t; el.style.display = 'block'; clearTimeout(avisar.t); avisar.t = setTimeout(function(){ el.style.display = 'none'; }, 3500); }
+
+/* ---------- Datos que muestra cada build ---------- */
+function stats(b){ return b.res ? b.res.stats : (b.arma.base || {}); }
+function statsFab(b){ return b.fab ? b.fab.stats : (b.arma.base || {}); }
+function danoZonas(b){
+  var a = b.arma, z = {};
+  ['cabeza', 'pecho', 'estomago'].forEach(function(k){ z[k] = a.dano && a.dano[k] ? expandirTramos(a.dano[k]) : null; });
+  var eq = b.partir !== 'base' && a.equipamientos && a.equipamientos[+b.partir];
+  if(eq && eq.danoPropio && eq.dano && b.res && JSON.stringify(selDeEquip(a, eq)) === JSON.stringify(b.sel))
+    Object.keys(eq.dano).forEach(function(k){ z[k] = expandirTramos(eq.dano[k]); });
+  else if(b.res && b.res.cambiaCurva) { z.cabeza = b.res.dano.cabeza; z.pecho = b.res.dano.pecho; z.estomago = b.res.dano.estomago; }
+  else if(b.res){
+    var f = b.res.factores;
+    if(z.cabeza && Math.abs(f.cabeza - 1) > 1e-6) z.cabeza = z.cabeza.map(function(v){ return v == null ? null : r2(v * f.cabeza); });
+    if(z.estomago && Math.abs(f.estomago - 1) > 1e-6) z.estomago = z.estomago.map(function(v){ return v == null ? null : r2(v * f.estomago); });
+  }
+  return z;
+}
+function cambios(b){
+  if(!b.res || !b.fab) return [];
+  var out = [], s = b.res.seleccion, f = b.fab.seleccion, rs = M.ranuras(b.arma.idAnalizador, s);
+  rs.forEach(function(r){ if(s[r.id] !== f[r.id]){ var o = r.opciones.find(function(x){ return x.valor === s[r.id]; }); out.push(o && o.valor !== 'none' ? nombreEs(o.en) : 'Sin ' + r.nombre.toLowerCase()); } });
+  if(s.modo !== f.modo) out.push(M.MODOS[s.modo] || s.modo);
+  return out;
+}
+
+/* ---------- Render ---------- */
+function render(){
+  var root = $('ctorRoot'); if(!root) return;
+  if(!M && !errorMotor){ root.innerHTML = '<div class="ctor-vacio"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando el constructor...</div>'; cargarMotor().then(render); return; }
+  var html = '<div class="selection-panel"><div class="selection-header"><div class="selection-header-left"><span class="selection-title">ARMAS EN LA COMPARACIÓN</span>'
+    + '<span class="selection-counter">' + builds.length + ' de ' + MAX + '</span></div><div class="selection-header-right">'
+    + (builds.length ? '<span class="clear-all-link" id="ctorLimpiar"><i class="fa-regular fa-trash-can" aria-hidden="true"></i> BORRAR TODO</span>' : '')
+    + '<button type="button" class="add-weapon-trigger" id="ctorAgregar"' + (builds.length >= MAX ? ' disabled' : '') + '><i class="fa-solid fa-plus" aria-hidden="true"></i> AGREGAR ARMA</button></div></div>'
+    + '<div class="ctor-lista">' + (builds.length ? builds.map(filaResumen).join('') : '<span class="weapons-empty-hint">Agrega un arma para empezar a armarla.</span>') + '</div>'
+    + '<div id="ctorAviso" class="ctor-aviso" role="status"></div></div>';
+  if(errorMotor) html += '<div class="ctor-nota ctor-error">No se pudo cargar el cálculo de accesorios. Recarga la página para intentarlo de nuevo.</div>';
+  if(builds.length){
+    html += editorHtml(builds[activo]);
+    html += '<div class="chart-top-bar"><div class="chart-title">Atributos del juego</div></div><div class="ctor-barras">' + barrasHtml() + '</div>';
+    html += '<div class="chart-top-bar"><div class="chart-title">Estadísticas</div></div>' + tablaHtml();
+    html += graficoHtml();
+    html += '<div class="ctor-acciones"><button type="button" class="add-weapon-trigger" id="ctorEnviar"><i class="fa-solid fa-right-left" aria-hidden="true"></i> ENVIAR AL COMPARADOR</button>'
+      + '<span class="ctor-nota">Agrega estas builds a las pestañas TTK, Estadísticas y Retroceso.</span></div>';
+  }
+  html += '<div class="ctor-credito">Cálculo de accesorios basado en <a href="https://raymdl.github.io/BF6-Weapon-Analyzer/" target="_blank" rel="noopener">BF6 Weapon Analyzer</a> de Raymdl, usado con su permiso.</div>';
+  root.innerHTML = html;
+  if(builds.length){ dibujarLineas(); dibujarGrafico(); }
+}
+function filaResumen(b, i){
+  var c = cambios(b), act = i === activo;
+  return '<div class="ctor-fila' + (act ? ' activa' : '') + '" data-i="' + i + '" style="--c:' + b.color + '">'
+    + '<span class="ctor-punto"></span>' + weaponImageHtml(b.fila, 'ctor-mini') + '<div class="ctor-fila-txt"><b>' + esc(b.arma.nombre) + '</b><span>'
+    + esc(c.length ? c.join(' · ') : (b.res ? 'De fábrica' : 'Sin datos de accesorios')) + '</span></div>'
+    + (b.res ? '<span class="ctor-pts">' + b.res.puntos + ' pts</span>' : '')
+    + (act ? '<span class="ctor-editando">EDITANDO</span>' : '<button type="button" class="ctor-ico" data-editar="' + i + '" aria-label="Editar"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>')
+    + '<button type="button" class="ctor-ico" data-quitar="' + i + '" aria-label="Quitar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>';
+}
+function editorHtml(b){
+  var a = b.arma;
+  var h = '<div class="chart-top-bar"><div class="chart-title">Editor · ' + esc(a.nombre) + '</div><div class="chart-top-actions">';
+  if(!b.res){
+    return h + '</div></div><div class="ctor-nota">Esta arma todavía no tiene datos de accesorios. Se compara con sus estadísticas base.</div>';
+  }
+  var eqs = (a.equipamientos || []).map(function(e, k){ return '<option value="' + k + '"' + (b.partir === String(k) ? ' selected' : '') + '>' + esc(e.nombre) + '</option>'; }).join('');
+  if(eqs) h += '<label class="ctor-sel">Partir de <select id="ctorPartir"><option value="base">Base</option>' + eqs + '</select></label>';
+  var modos = M.modos(a.idAnalizador, b.sel);
+  if(modos.length) h += '<label class="ctor-sel">Modo <select id="ctorModo">' + modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === b.res.modo ? ' selected' : '') + '>' + m.nombre + '</option>'; }).join('') + '</select></label>';
+  h += '<span class="ctor-pts grande">' + b.res.puntos + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Fábrica</button></div></div>';
+  var rs = M.ranuras(a.idAnalizador, b.sel), f = b.fab.seleccion;
+  var tarjetas = rs.map(function(r){
+    var o = r.opciones.find(function(x){ return x.valor === r.valor; }) || {};
+    var nombre = r.valor === 'none' ? 'Ninguno' : nombreEs(o.en);
+    var cls = 'ctor-ranura' + (r.valor !== f[r.id] ? ' cambiada' : '') + (r.valor === 'none' ? ' vacia' : '') + (abierta === r.id ? ' abierta' : '');
+    return '<button type="button" class="' + cls + '" data-ranura="' + r.id + '" style="grid-area:' + LUGAR[r.id].area + '"><span>' + esc(r.nombre) + '</span><b>' + esc(nombre) + '</b></button>';
+  }).join('');
+  h += '<div class="ctor-editor" id="ctorEditor" style="--c:' + b.color + '"><svg class="ctor-lineas" id="ctorLineas" aria-hidden="true"></svg>'
+    + '<div class="ctor-img" id="ctorImg">' + weaponImageHtml(b.fila, 'ctor-arma') + '</div>' + tarjetas + '</div>';
+  if(abierta) h += opcionesHtml(b, rs.find(function(r){ return r.id === abierta; }));
+  var faltan = [];
+  if(!rs.some(function(r){ return r.id === 'accesorioOptico'; })) faltan.push('Accesorio óptico');
+  if(!rs.some(function(r){ return r.id === 'canonInferior' || r.id === 'riel' && r.nombre.indexOf('Cañón') === 0; })) faltan.push('Cañón inferior');
+  if(!rs.some(function(r){ return r.id === 'ergonomia'; })) faltan.push('Ergonomía');
+  if(!rs.some(function(r){ return r.id === 'boca'; })) faltan.push('Boca');
+  var riel = rs.find(function(r){ return r.id === 'riel'; });
+  var nota = [];
+  if(faltan.length) nota.push('Esta arma no tiene ' + faltan.join(', ').replace(/, ([^,]*)$/, ' ni $1') + '.');
+  if(riel) nota.push(riel.nombre + ' comparten una sola ranura.');
+  if(nota.length) h += '<div class="ctor-nota">' + nota.join(' ') + '</div>';
+  return h;
+}
+function efectos(b, rid, valor){
+  var s = Object.assign({}, b.sel); s[rid] = valor;
+  var r = M.calcular(b.arma.idAnalizador, s), base = b.res, out = [];
+  ['cadera', 'precision', 'control', 'movilidad', 'velApuntar', 'velBala', 'velRecarga', 'recoilVertical', 'recoilHorizontal', 'cargador', 'cadencia'].forEach(function(k){
+    var a = base.stats[k], v = r.stats[k];
+    if(typeof a !== 'number' || typeof v !== 'number' || Math.abs(v - a) < 0.005) return;
+    var d = r2(v - a), mejor = MENOR_MEJOR[k] ? d < 0 : d > 0;
+    out.push('<span class="ctor-ef ' + (mejor ? 'pos' : 'neg') + '">' + CORTO[k] + ' ' + (d > 0 ? '+' : '') + d + '</span>');
+  });
+  if(Math.abs(r.factores.cabeza - base.factores.cabeza) > 1e-6) out.push('<span class="ctor-ef ' + (r.factores.cabeza > base.factores.cabeza ? 'pos' : 'neg') + '">Daño cabeza ×' + r2(r.factores.cabeza / base.factores.cabeza) + '</span>');
+  if(r.cambiaCurva !== base.cambiaCurva) out.push('<span class="ctor-ef">Otra bala</span>');
+  return out.slice(0, 6).join('');
+}
+function opcionesHtml(b, r){
+  if(!r) return '';
+  var filas = r.opciones.map(function(o){
+    var sel = o.valor === r.valor, nombre = o.valor === 'none' ? 'Ninguno' : (r.compartida && o.tipo ? o.tipo + ' · ' : '') + nombreEs(o.en);
+    return '<button type="button" class="ctor-op' + (sel ? ' sel' : '') + '" data-op="' + esc(o.valor) + '"' + (o.disponible === false ? ' disabled' : '') + '>'
+      + '<span class="ctor-op-n">' + esc(nombre) + (o.porDefecto ? ' <em>de fábrica</em>' : '') + (o.disponible === false ? ' <em>requiere otra mira</em>' : '') + '</span>'
+      + '<span class="ctor-op-pts">' + (o.puntos ? o.puntos + ' pts' : '') + '</span><span class="ctor-op-ef">' + (sel || o.disponible === false ? '' : efectos(b, r.id, o.valor)) + '</span></button>';
+  }).join('');
+  return '<div class="ctor-opciones"><div class="ctor-op-head"><b>' + esc(r.nombre) + '</b><span class="ctor-nota">Lo que cambia cada accesorio frente a lo que tienes ahora</span>'
+    + '<button type="button" class="ctor-ico" id="ctorCerrarOp" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>' + filas + '</div>';
+}
+function barrasHtml(){
+  return BARRAS.map(function(p){
+    var k = p[0];
+    return '<div class="ctor-barra-g"><div class="ctor-barra-t">' + p[1] + '</div>' + builds.map(function(b){
+      var v = stats(b)[k], f = statsFab(b)[k], d = (typeof v === 'number' && typeof f === 'number') ? v - f : 0;
+      return '<div class="ctor-barra"><span class="ctor-barra-n" style="color:' + b.color + '">' + esc(b.arma.nombre) + '</span>'
+        + '<div class="stat-bar"><div class="ctor-fill" style="width:' + (typeof v === 'number' ? Math.max(2, Math.min(100, v)) : 0) + '%;background:' + b.color + '"></div></div>'
+        + '<span class="ctor-barra-v">' + (v == null ? '—' : v) + (d ? ' <i class="' + (d > 0 ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '') + d + '</i>' : '') + '</span></div>';
+    }).join('') + '</div>';
+  }).join('');
+}
+function tablaHtml(){
+  var h = '<div class="ctor-tabla-wrap"><table class="data-table ctor-tabla"><thead><tr><th>Estadística</th>' + builds.map(function(b){ return '<th style="color:' + b.color + '">' + esc(b.arma.nombre) + '</th>'; }).join('') + '</tr></thead><tbody>';
+  TABLA.forEach(function(t){
+    var vals = builds.map(function(b){ return stats(b)[t[0]]; }), nums = vals.filter(function(v){ return typeof v === 'number'; });
+    var mejor = nums.length > 1 ? (MENOR_MEJOR[t[0]] ? Math.min.apply(null, nums) : Math.max.apply(null, nums)) : null;
+    h += '<tr><td>' + t[1] + ' <span class="ctor-u">' + t[2] + '</span></td>' + vals.map(function(v, i){
+      var f = statsFab(builds[i])[t[0]], d = typeof v === 'number' && typeof f === 'number' ? r2(v - f) : 0;
+      return '<td class="' + (v === mejor ? 'cell-best' : '') + '">' + (v == null ? '—' : v) + (d ? ' <i class="' + ((MENOR_MEJOR[t[0]] ? d < 0 : d > 0) ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '') + d + '</i>' : '') + '</td>';
+    }).join('') + '</tr>';
+  });
+  return h + '</tbody></table></div>';
+}
+function graficoHtml(){
+  var seg = function(grupo, op, act, txt){ return '<button type="button" class="seg-btn' + (act ? ' active' : '') + '" data-' + grupo + '="' + op + '">' + txt + '</button>'; };
+  var municiones = builds.some(function(b){ return b.arma.municion && (b.arma.municion.puntaHueca || b.arma.municion.sintetico); });
+  return '<div class="chart-top-bar"><div class="chart-title">Gráfico de ' + (vista.modo === 'Dano' ? 'daño' : vista.modo === 'Balas' ? 'balas' : 'TTK') + '</div><div class="chart-top-actions">'
+    + '<div class="seg-group">' + seg('gmodo', 'TTK', vista.modo === 'TTK', 'TTK') + seg('gmodo', 'Balas', vista.modo === 'Balas', 'Balas') + seg('gmodo', 'Dano', vista.modo === 'Dano', 'Daño') + '</div>'
+    + '<div class="seg-group">' + seg('gzona', 'cabeza', vista.zona === 'cabeza', 'Cabeza') + seg('gzona', 'pecho', vista.zona === 'pecho', 'Pecho') + seg('gzona', 'estomago', vista.zona === 'estomago', 'Estómago') + '</div>'
+    + '<label class="ctor-sel">Vida <input type="number" id="ctorVida" min="1" max="999" value="' + vista.vida + '" style="width:64px"></label></div></div>'
+    + (vista.zona === 'cabeza' && municiones ? '<div class="ctor-municion"><span>A la cabeza, también con:</span>'
+      + '<label><input type="checkbox" id="ctorPH"' + (vista.ph ? ' checked' : '') + '> <i class="ctor-trazo rayado"></i> Punta hueca</label>'
+      + '<label><input type="checkbox" id="ctorSin"' + (vista.sin ? ' checked' : '') + '> <i class="ctor-trazo punteado"></i> Sintético</label></div>' : '')
+    + '<div class="chart-container ctor-chart"><canvas id="ctorCanvas" role="img" aria-label="Gráfico del constructor"></canvas></div>';
+}
+
+/* ---------- Gráfico ---------- */
+function serie(b, dano){
+  var cad = stats(b).cadencia || (b.arma.base && b.arma.base.cadencia), vida = vista.vida;
+  return dano.map(function(d, m){
+    if(d == null) return { x: m, y: null };
+    if(vista.modo === 'Dano') return { x: m, y: d };
+    var balas = Math.ceil(vida / d - 1e-9);
+    return { x: m, y: vista.modo === 'Balas' ? balas : (cad ? Math.round(60 / cad * (balas - 1) * 1000) : null) };
+  });
+}
+function dibujarGrafico(){
+  var cv = $('ctorCanvas'); if(!cv || typeof Chart === 'undefined') return;
+  var sets = [];
+  builds.forEach(function(b){
+    var z = danoZonas(b), d = z[vista.zona];
+    if(d) sets.push({ label: b.arma.nombre, data: serie(b, d), borderColor: b.color, backgroundColor: b.color, borderWidth: 2.5 });
+    if(vista.zona !== 'cabeza' || !z.pecho) return;
+    var mun = b.arma.municion || {}, actual = b.res ? b.res.seleccion.municion : null;
+    [['puntaHueca', 'Punta hueca', vista.ph, [7, 4], 'hollow_pt'], ['sintetico', 'Sintético', vista.sin, [2, 4], 'synthetic']].forEach(function(t){
+      if(!t[2] || !mun[t[0]] || actual === t[4]) return;
+      sets.push({ label: b.arma.nombre + ' · ' + t[1], data: serie(b, z.pecho.map(function(v){ return v == null ? null : r2(v * mun[t[0]]); })), borderColor: b.color, backgroundColor: b.color, borderDash: t[3], borderWidth: 2 });
+    });
+  });
+  var unidad = vista.modo === 'TTK' ? ' ms' : vista.modo === 'Balas' ? ' balas' : '';
+  if(chart){ chart.destroy(); chart = null; }
+  chart = new Chart(cv.getContext('2d'), { type: 'line', data: { datasets: sets }, options: {
+    responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
+    elements: { point: { radius: 0 }, line: { borderWidth: 2 } }, interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { display: true, position: 'bottom', labels: { color: 'white', usePointStyle: true, pointStyle: 'line' } },
+      tooltip: { mode: 'index', intersect: false, backgroundColor: '#222', titleColor: '#fff', bodyColor: '#fff', borderColor: '#555', borderWidth: 1,
+        callbacks: { title: function(t){ return t.length ? 'Rango: ' + t[0].parsed.x + ' metros' : ''; },
+          label: function(c){ return c.dataset.label + ': ' + (c.parsed.y == null ? '—' : (vista.modo === 'Dano' ? r2(c.parsed.y) : Math.round(c.parsed.y)) + unidad); } } } },
+    scales: { x: { type: 'linear', min: 0, max: 200, ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: 'Distancia (m)', color: 'white' } },
+      y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: vista.modo === 'TTK' ? 'Tiempo (ms)' : vista.modo === 'Balas' ? 'Balas' : 'Daño', color: 'white' } } } } });
+}
+
+/* ---------- Líneas del editor ---------- */
+function dibujarLineas(){
+  var ed = $('ctorEditor'), svg = $('ctorLineas'), img = $('ctorImg'); if(!ed || !svg || !img) return;
+  if(getComputedStyle(svg).display === 'none'){ svg.innerHTML = ''; return; }
+  var arma = img.querySelector('img, svg') || img;   /* la propia imagen, no su recuadro */
+  var eb = ed.getBoundingClientRect(), ib = arma.getBoundingClientRect();
+  svg.setAttribute('viewBox', '0 0 ' + eb.width + ' ' + eb.height);
+  var h = '';
+  ed.querySelectorAll('.ctor-ranura').forEach(function(t){
+    var l = LUGAR[t.dataset.ranura]; if(!l) return;
+    var tb = t.getBoundingClientRect();
+    var px = ib.left - eb.left + ib.width * l.x / 100, py = ib.top - eb.top + ib.height * l.y / 100;
+    var cx = Math.max(tb.left, Math.min(px + eb.left, tb.right)) - eb.left, cy = Math.max(tb.top, Math.min(py + eb.top, tb.bottom)) - eb.top;
+    var cambiada = t.classList.contains('cambiada');
+    h += '<line x1="' + cx + '" y1="' + cy + '" x2="' + px + '" y2="' + py + '" class="' + (cambiada ? 'on' : '') + '"/><circle cx="' + px + '" cy="' + py + '" r="3" class="' + (cambiada ? 'on' : '') + '"/>';
+  });
+  svg.innerHTML = h;
+}
+window.addEventListener('resize', function(){ if($('ctorEditor')) dibujarLineas(); });
+
+/* ---------- Enviar al comparador ---------- */
+function aTramos(arr){ var out = [], last; (arr || []).forEach(function(v, m){ if(m === 0 || v !== last) out.push([m, v]); last = v; }); return out.filter(function(r){ return r[1] != null; }); }
+function enviar(){
+  var n = 0;
+  builds.forEach(function(b, i){
+    var a = b.arma, z = danoZonas(b), c = cambios(b);
+    var etiqueta = c.length ? 'Constructor ' + (i + 1) : 'Base';
+    var fake = { nombre: a.nombre + ' · ' + etiqueta + ' #' + b.uid, categoria: a.categoria, imagen: a.imagen, municion: a.municion,
+      base: Object.assign({}, a.base || {}, b.res ? b.res.stats : {}), dano: {}, equipamientos: [] };
+    ['cabeza', 'pecho', 'estomago'].forEach(function(k){ if(z[k]) fake.dano[k] = aTramos(z[k]); });
+    var fila = bf6Filas({ esquema: doc().esquema, armas: [fake] })[0];
+    fila[HEADERS.ARMA] = a.nombre + (c.length ? ' (' + c.join(', ') + ')' : '');
+    selectedWeaponsMP.push({ id: ++graphIdCounter, weapon: fila, clase: 'base' });
+    selectedStatsWeapons.push({ id: ++statsIdCounter, weapon: fila, clase: 'base' });
+    selectedRecoilWeapons.push({ id: ++recoilIdCounter, weapon: fila, clase: 'base' });
+    n++;
+  });
+  if(!n) return;
+  updateSelectionAndChartsMP(); updateStatsSection(); renderRecoilChips(); openMainTab('mainTTK');
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener('click', function(e){
+  var root = $('ctorRoot'); if(!root || !root.contains(e.target)) return;
+  var t = e.target.closest('button, .ctor-fila'); if(!t) return;
+  var b = builds[activo];
+  if(t.id === 'ctorAgregar'){ openAddWeaponModal('constructor'); return; }
+  if(t.id === 'ctorLimpiar'){ builds = []; activo = 0; abierta = null; render(); return; }
+  if(t.id === 'ctorEnviar'){ enviar(); return; }
+  if(t.id === 'ctorFabrica' && b){ b.sel = M.seleccionPorDefecto(b.arma.idAnalizador); b.partir = 'base'; abierta = null; calcular(b); render(); return; }
+  if(t.id === 'ctorCerrarOp'){ abierta = null; render(); return; }
+  if(t.dataset.quitar != null){ quitar(+t.dataset.quitar); return; }
+  if(t.dataset.editar != null){ activo = +t.dataset.editar; abierta = null; render(); return; }
+  if(t.dataset.ranura){ abierta = abierta === t.dataset.ranura ? null : t.dataset.ranura; render(); return; }
+  if(t.dataset.op != null && b && abierta){ b.sel[abierta] = t.dataset.op; calcular(b); render(); return; }
+  if(t.dataset.gmodo){ vista.modo = t.dataset.gmodo; render(); return; }
+  if(t.dataset.gzona){ vista.zona = t.dataset.gzona; render(); return; }
+  if(t.classList.contains('ctor-fila') && t.dataset.i != null && +t.dataset.i !== activo){ activo = +t.dataset.i; abierta = null; render(); }
+});
+document.addEventListener('change', function(e){
+  var root = $('ctorRoot'); if(!root || !root.contains(e.target)) return;
+  var b = builds[activo], id = e.target.id;
+  if(id === 'ctorModo' && b){ b.sel.modo = e.target.value; calcular(b); render(); }
+  else if(id === 'ctorPartir' && b){ b.partir = e.target.value; b.sel = b.partir === 'base' ? M.seleccionPorDefecto(b.arma.idAnalizador) : selDeEquip(b.arma, b.arma.equipamientos[+b.partir]); abierta = null; calcular(b); render(); }
+  else if(id === 'ctorVida'){ vista.vida = Math.max(1, Math.min(999, parseFloat(e.target.value) || 100)); render(); }
+  else if(id === 'ctorPH'){ vista.ph = e.target.checked; render(); }
+  else if(id === 'ctorSin'){ vista.sin = e.target.checked; render(); }
+});
+
+window.bf6Ctor = {
+  abrir: function(){ render(); },
+  agregar: agregar,
+  /* Si cambian los datos (nueva versión de armas.json), vuelve a enlazar las armas. */
+  refrescar: function(){ builds.forEach(function(b){ var a = (doc().armas || []).find(function(x){ return x.id === b.arma.id; }); if(a) b.arma = a; }); if($('mainConstructor') && $('mainConstructor').classList.contains('active')) render(); }
+};
 })();
 </script>
 </body>
