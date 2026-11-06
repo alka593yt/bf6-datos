@@ -873,8 +873,8 @@ html { scrollbar-gutter: stable; }
 /* ===== CONSTRUCTOR ===== */
 .ctor-lista{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
 .ctor-lista>*,.ctor-editor,.ctor-opciones{box-sizing:border-box;min-width:0}
-.ctor-fila{display:flex;align-items:center;gap:10px;background:var(--bg-tertiary);border:1px solid var(--border-chip);border-left:3px solid var(--c);border-radius:6px;padding:6px 8px;cursor:pointer}
-.ctor-fila.activa{border-color:var(--c);background:var(--bg-input)}
+.ctor-fila{display:flex;align-items:center;gap:10px;background:var(--bg-tertiary);border:1px solid var(--border-chip);border-radius:6px;padding:6px 8px;cursor:pointer}
+.ctor-fila.activa{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent);background:var(--bg-input)}
 .ctor-punto{width:10px;height:10px;border-radius:50%;background:var(--c);flex-shrink:0}
 .ctor-mini{width:48px;height:20px;flex-shrink:0;object-fit:contain;display:flex;align-items:center}
 .ctor-mini svg{width:100%;height:100%}
@@ -883,7 +883,12 @@ html { scrollbar-gutter: stable; }
 .ctor-fila-txt span{font-size:.68rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ctor-pts{font-size:.68rem;font-weight:800;color:var(--accent);white-space:nowrap}
 .ctor-pts.grande{font-size:.8rem;border:1px solid var(--border-medium);border-radius:var(--radius-sm);padding:5px 9px}
-.ctor-editando{font-size:.6rem;font-weight:800;color:var(--c);letter-spacing:.5px}
+.ctor-editando{font-size:.6rem;font-weight:800;color:var(--accent);letter-spacing:.5px}
+.ctor-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.ctor-editor{--c:var(--accent)}
+.ctor-atrib{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px;margin-bottom:14px}
+.ctor-atrib .stats-all-stat{margin:0}
+.ctor-atrib .stat-clase .pos,.ctor-atrib .stat-clase .neg{font-weight:800}
 .ctor-ico{background:transparent;border:none;color:var(--text-muted);cursor:pointer;width:28px;height:28px;border-radius:50%}
 .ctor-ico:hover{background:rgba(255,255,255,.08);color:var(--text-primary)}
 .ctor-aviso{display:none;margin-top:8px;font-size:.75rem;color:var(--danger)}
@@ -944,6 +949,14 @@ div.ctor-arma svg{width:90%;height:140px}
 .ctor-credito{font-size:.65rem;color:var(--text-dim);margin-top:16px}
 .ctor-credito a{color:var(--text-muted)}
 @media (max-width:720px){
+.ctor-cab{gap:6px;margin-bottom:8px}
+.ctor-cab .chart-title{font-size:.9rem}
+.ctor-herr{gap:6px;flex-wrap:nowrap}
+.ctor-herr .ctor-txt{display:none}
+.ctor-herr .ctor-sel select{padding:3px 4px;font-size:.7rem;max-width:120px}
+.ctor-herr .ctor-pts.grande{font-size:.66rem;padding:3px 6px;white-space:nowrap}
+.ctor-herr .adv-btn{padding:5px 8px;font-size:.7rem}
+.ctor-atrib{grid-template-columns:1fr}
 .ctor-editor{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"img img" "mira optico" "boca canon" "inferior laser" "luz cargador" "municion ergo"}
 .ctor-lineas{display:none}
 .ctor-barras{grid-template-columns:1fr}
@@ -3278,7 +3291,7 @@ function render(){
   if(errorMotor) html += '<div class="ctor-nota ctor-error">No se pudo cargar el cálculo de accesorios. Recarga la página para intentarlo de nuevo.</div>';
   if(builds.length){
     html += editorHtml(builds[activo]);
-    html += '<div class="chart-top-bar"><div class="chart-title">Atributos del juego</div></div><div class="ctor-barras">' + barrasHtml() + '</div>';
+    html += '<div class="chart-top-bar"><div class="chart-title">Atributos del juego</div></div>' + barrasHtml();
     html += '<div class="chart-top-bar"><div class="chart-title">Estadísticas</div></div>' + tablaHtml();
     html += graficoHtml();
     html += '<div class="ctor-acciones"><button type="button" class="add-weapon-trigger" id="ctorEnviar"><i class="fa-solid fa-right-left" aria-hidden="true"></i> ENVIAR AL COMPARADOR</button>'
@@ -3299,15 +3312,15 @@ function filaResumen(b, i){
 }
 function editorHtml(b){
   var a = b.arma;
-  var h = '<div class="chart-top-bar"><div class="chart-title">Editor · ' + esc(a.nombre) + '</div><div class="chart-top-actions">';
+  var h = '<div class="chart-top-bar ctor-cab"><div class="chart-title">Editor · ' + esc(a.nombre) + '</div><div class="chart-top-actions ctor-herr">';
   if(!b.res){
     return h + '</div></div><div class="ctor-nota">Esta arma todavía no tiene datos de accesorios. Se compara con sus estadísticas base.</div>';
   }
   var eqs = (a.equipamientos || []).map(function(e, k){ return '<option value="' + k + '"' + (b.partir === String(k) ? ' selected' : '') + '>' + esc(e.nombre) + '</option>'; }).join('');
-  if(eqs) h += '<label class="ctor-sel">Partir de <select id="ctorPartir"><option value="base">Base</option>' + eqs + '</select></label>';
+  if(eqs) h += '<label class="ctor-sel"><span class="ctor-txt">Partir de</span> <select id="ctorPartir" aria-label="Partir de"><option value="base">Base</option>' + eqs + '</select></label>';
   var modos = M.modos(a.idAnalizador, b.sel);
-  if(modos.length) h += '<label class="ctor-sel">Modo <select id="ctorModo">' + modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === b.res.modo ? ' selected' : '') + '>' + m.nombre + '</option>'; }).join('') + '</select></label>';
-  h += '<span class="ctor-pts grande' + (b.res.puntos > (M.LIMITE_PUNTOS || 100) ? ' excede' : '') + '">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Fábrica</button></div></div>';
+  if(modos.length) h += '<label class="ctor-sel"><span class="ctor-txt">Modo</span> <select id="ctorModo" aria-label="Modo de disparo">' + modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === b.res.modo ? ' selected' : '') + '>' + m.nombre + '</option>'; }).join('') + '</select></label>';
+  h += '<span class="ctor-pts grande' + (b.res.puntos > (M.LIMITE_PUNTOS || 100) ? ' excede' : '') + '">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica" title="Volver a la configuración de fábrica" aria-label="Volver a fábrica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span class="ctor-txt"> Fábrica</span></button></div></div>';
   var rs = M.ranuras(a.idAnalizador, b.sel, aj(a)), f = b.fab.seleccion;
   var tarjetas = rs.map(function(r){
     var o = r.opciones.find(function(x){ return x.valor === r.valor; }) || {};
@@ -3315,7 +3328,7 @@ function editorHtml(b){
     var cls = 'ctor-ranura' + (r.valor !== f[r.id] ? ' cambiada' : '') + (r.valor === 'none' ? ' vacia' : '') + (abierta === r.id ? ' abierta' : '');
     return '<button type="button" class="' + cls + '" data-ranura="' + r.id + '" style="grid-area:' + LUGAR[r.id].area + '"><span>' + esc(r.nombre) + '</span><b>' + esc(nombre) + '</b></button>';
   }).join('');
-  h += '<div class="ctor-editor" id="ctorEditor" style="--c:' + b.color + '"><svg class="ctor-lineas" id="ctorLineas" aria-hidden="true"></svg>'
+  h += '<div class="ctor-editor" id="ctorEditor"><svg class="ctor-lineas" id="ctorLineas" aria-hidden="true"></svg>'
     + '<div class="ctor-img" id="ctorImg">' + weaponImageHtml(b.fila, 'ctor-arma') + '</div>' + tarjetas + '</div>';
   if(abierta) h += opcionesHtml(b, rs.find(function(r){ return r.id === abierta; }));
   var faltan = [];
@@ -3363,16 +3376,35 @@ function opcionesHtml(b, r){
   return '<div class="ctor-opciones"><div class="ctor-op-head"><b>' + esc(r.nombre) + '</b><span class="ctor-nota">Lo que cambia cada accesorio frente a lo que tienes ahora</span>'
     + '<button type="button" class="ctor-ico" id="ctorCerrarOp" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>' + filas + '</div>';
 }
+/* Igual que la pestaña Estadísticas: orden de mejor a peor, barra en escala verde (mejor) a rojo (peor) y diferencia contra el mejor. */
 function barrasHtml(){
-  return BARRAS.map(function(p){
+  return '<div class="stats-all ctor-atrib">' + BARRAS.map(function(p){
     var k = p[0];
-    return '<div class="ctor-barra-g"><div class="ctor-barra-t">' + p[1] + '</div>' + builds.map(function(b){
-      var v = stats(b)[k], f = statsFab(b)[k], d = (typeof v === 'number' && typeof f === 'number') ? v - f : 0;
-      return '<div class="ctor-barra"><span class="ctor-barra-n" style="color:' + b.color + '">' + esc(b.arma.nombre) + '</span>'
-        + '<div class="stat-bar"><div class="ctor-fill" style="width:' + (typeof v === 'number' ? Math.max(2, Math.min(100, v)) : 0) + '%;background:' + b.color + '"></div></div>'
-        + '<span class="ctor-barra-v">' + (v == null ? '—' : v) + (d ? ' <i class="' + (d > 0 ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '') + d + '</i>' : '') + '</span></div>';
-    }).join('') + '</div>';
-  }).join('');
+    var es = builds.map(function(b, idx){ var v = stats(b)[k]; return { b: b, idx: idx, num: typeof v === 'number' ? v : null }; });
+    var nums = es.filter(function(e){ return e.num !== null; }).map(function(e){ return e.num; });
+    var best = nums.length ? Math.max.apply(null, nums) : null, worst = nums.length ? Math.min.apply(null, nums) : null, multi = nums.length > 1;
+    es.forEach(function(e){ e.rank = e.num === null ? null : 1 + nums.filter(function(n){ return n > e.num; }).length; });
+    es.sort(function(a, c){ if(a.num === null) return 1; if(c.num === null) return -1; return (c.num - a.num) || (a.idx - c.idx); });
+    var filas = es.map(function(e){
+      var level = 'neutral', fill = '', hue = null;
+      if(e.num !== null){ if(nums.length === 1) level = 'best'; else if(best === worst) level = 'neutral'; else if(e.num === best) level = 'best'; else if(e.num === worst) level = 'worst'; }
+      if(e.num !== null && multi && best !== worst){ hue = Math.round((e.num - worst) / (best - worst) * 120); fill = 'background:linear-gradient(90deg,hsla(' + hue + ',75%,45%,0.15),hsl(' + hue + ',80%,48%));'; }
+      var delta = '';
+      if(e.num !== null && multi){
+        if(e.num === best) delta = '<span class="stat-delta-tag best" title="El mejor valor de la selección">MEJOR</span>';
+        else { var pct = best ? Math.abs((e.num - best) / best * 100) : 0, r = pct < 10 ? pct.toFixed(1) : String(Math.round(pct));
+          delta = '<span class="stat-delta-tag" style="' + (hue !== null ? 'color:hsl(' + hue + ',75%,60%);' : '') + '" title="Diferencia contra el mejor valor">' + (Number(r) === 0 ? '≈0%' : '−' + r + '%') + '</span>'; }
+      }
+      var f = statsFab(e.b)[k], d = (e.num !== null && typeof f === 'number') ? e.num - f : 0;
+      var sub = d ? '<span class="' + (d > 0 ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '') + d + '</span> vs fábrica' : 'De fábrica';
+      return '<div class="stat-row">' + (multi && e.rank !== null ? '<div class="stat-rank' + (e.rank === 1 ? ' first' : '') + '">#' + e.rank + '</div>' : '<div class="stat-rank"></div>')
+        + weaponImageHtml(e.b.fila, 'stat-img', 'align-self:center; flex-shrink:0;')
+        + '<div class="stat-name"><b><i class="ctor-dot" style="background:' + e.b.color + '"></i>' + esc(e.b.arma.nombre) + '</b><span class="stat-clase">' + sub + '</span></div>'
+        + '<div class="stat-bar">' + (e.num !== null ? '<div class="stat-fill ' + level + '" style="width:' + Math.max(12, Math.min(100, e.num)) + '%;' + fill + '">' + e.num + '</div>' : '<div class="stat-fill neutral" style="width:32px;">—</div>') + '</div>'
+        + '<div class="stat-delta">' + delta + '</div></div>';
+    }).join('');
+    return '<section class="stats-all-stat"><div class="stats-all-stat-head"><span class="stats-all-stat-name">' + p[1] + '</span><span class="stats-all-dir" title="Más es mejor">↑</span></div><div class="stats-all-rows">' + filas + '</div></section>';
+  }).join('') + '</div>';
 }
 function tablaHtml(){
   var h = '<div class="ctor-tabla-wrap"><table class="data-table ctor-tabla"><thead><tr><th>Estadística</th>' + builds.map(function(b){ return '<th style="color:' + b.color + '">' + esc(b.arma.nombre) + '</th>'; }).join('') + '</tr></thead><tbody>';
