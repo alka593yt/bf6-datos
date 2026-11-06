@@ -751,17 +751,24 @@ function textoDano(a, eq) {
   if (Math.abs(f.estomago - 1) > 1e-6) partes.push(`estómago ×${r2(f.estomago)}`);
   return { txt: partes.length ? `La munición cambia el daño (${partes.join(', ')}). Se calculó a partir del daño de la Base.` : 'Usa el daño de la Base (ningún accesorio cambia el daño).' };
 }
-function etiquetaOpcion(o, r) {
+const LIMITE = () => (MOTOR && MOTOR.LIMITE_PUNTOS) || 100;
+function etiquetaOpcion(o, r, excede) {
   const n = o.valor === 'none' ? 'Ninguno' : (o.tipo && r.compartida ? `${o.tipo} · ` : '') + nombreEs(o.en);
-  return n + (o.puntos ? ` · ${o.puntos} pts` : '') + (o.porDefecto ? ' (de fábrica)' : '') + (o.disponible === false ? ' — requiere otra mira' : '');
+  const req = o.requiere ? ` — elige antes una ${o.requiere.ranura.toLowerCase()} compatible (${o.requiere.opciones.slice(0, 2).map(nombreEs).join(', ')}${o.requiere.opciones.length > 2 ? '…' : ''})` : '';
+  return n + (o.puntos ? ` · ${o.puntos} pts` : '') + (o.porDefecto ? ' (de fábrica)' : '') + (o.disponible === false ? (req || ' — no disponible') : excede ? ` — supera ${LIMITE()} pts` : '');
 }
 function htmlEquipMotor(a, eq, i) {
   // Solo calcula para mostrar: el equipamiento se modifica únicamente cuando cambias algo.
   const r = eq._calc || (eq._calc = MOTOR.calcular(a.idAnalizador, selDe(a, eq)));
   const antiguo = eq.puntos == null && eq.estadisticas && Object.keys(eq.estadisticas).length;
   const ranuras = MOTOR.ranuras(a.idAnalizador, r.seleccion), modos = MOTOR.modos(a.idAnalizador, r.seleccion);
-  const selects = ranuras.map(rn => campo(rn.nombre, `<select data-eqacc="${i}" data-ranura="${rn.id}">${rn.opciones.map(o =>
-    `<option value="${esc(o.valor)}" ${o.valor === rn.valor ? 'selected' : ''} ${o.disponible === false && o.valor !== rn.valor ? 'disabled' : ''}>${esc(etiquetaOpcion(o, rn))}</option>`).join('')}</select>`)).join('')
+  const selects = ranuras.map(rn => {
+    const act = rn.opciones.find(o => o.valor === rn.valor) || { puntos: 0 };
+    return campo(rn.nombre, `<select data-eqacc="${i}" data-ranura="${rn.id}">${rn.opciones.map(o => {
+      const excede = o.valor !== rn.valor && r.puntos - (act.puntos || 0) + (o.puntos || 0) > LIMITE();
+      return `<option value="${esc(o.valor)}" ${o.valor === rn.valor ? 'selected' : ''} ${(o.disponible === false || excede) && o.valor !== rn.valor ? 'disabled' : ''}>${esc(etiquetaOpcion(o, rn, excede))}</option>`;
+    }).join('')}</select>`);
+  }).join('')
     + (modos.length ? campo('Modo de disparo', `<select data-eqacc="${i}" data-ranura="modo">${modos.map(m => `<option value="${m.valor}" ${m.valor === r.modo ? 'selected' : ''}>${m.nombre}</option>`).join('')}</select>`) : '');
   const def = esquema().estadisticas;
   const filas = STATS_MOTOR.map(k => {
@@ -779,7 +786,7 @@ function htmlEquipMotor(a, eq, i) {
       ${antiguo ? `<div class="aviso">Este equipamiento se cargó a mano antes del cálculo automático. Sus valores guardados no se tocan hasta que elijas:
         <div class="row" style="margin-top:6px"><button class="btn small primary" data-eqconv="${i}">Usar los valores calculados</button>
         <button class="btn small" data-eqkeep="${i}">Conservar mis valores como manuales</button></div></div>` : ''}
-      <div class="row" style="margin-top:6px"><h3 style="margin:0">Accesorios</h3><span class="grow"></span><span class="tag">${r.puntos} pts</span>
+      <div class="row" style="margin-top:6px"><h3 style="margin:0">Accesorios</h3><span class="grow"></span><span class="tag${r.puntos > LIMITE() ? ' warn' : ''}">${r.puntos} / ${LIMITE()} pts</span>
         <button class="btn small" data-eqreset="${i}">Volver a fábrica</button></div>
       <div class="grid" style="margin-top:8px">${selects}</div>
       <h3>Estadísticas</h3>

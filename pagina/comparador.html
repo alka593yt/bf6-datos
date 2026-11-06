@@ -915,6 +915,8 @@ div.ctor-arma svg{width:90%;height:140px}
 .ctor-op.sel{background:rgba(255,165,0,.12);box-shadow:inset 3px 0 0 var(--accent)}
 .ctor-op:disabled{opacity:.45;cursor:default}
 .ctor-op em{font-style:normal;font-size:.62rem;color:var(--text-muted);margin-left:4px}
+.ctor-op em.bloq{color:var(--danger)}
+.ctor-pts.excede{color:var(--danger);border-color:var(--danger)}
 .ctor-op-pts{color:var(--accent);font-weight:700;font-size:.7rem}
 .ctor-op-ef{display:flex;flex-wrap:wrap;gap:4px}
 .ctor-ef{font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--bg-input);color:var(--text-secondary)}
@@ -3303,7 +3305,7 @@ function editorHtml(b){
   if(eqs) h += '<label class="ctor-sel">Partir de <select id="ctorPartir"><option value="base">Base</option>' + eqs + '</select></label>';
   var modos = M.modos(a.idAnalizador, b.sel);
   if(modos.length) h += '<label class="ctor-sel">Modo <select id="ctorModo">' + modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === b.res.modo ? ' selected' : '') + '>' + m.nombre + '</option>'; }).join('') + '</select></label>';
-  h += '<span class="ctor-pts grande">' + b.res.puntos + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Fábrica</button></div></div>';
+  h += '<span class="ctor-pts grande' + (b.res.puntos > (M.LIMITE_PUNTOS || 100) ? ' excede' : '') + '">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Fábrica</button></div></div>';
   var rs = M.ranuras(a.idAnalizador, b.sel), f = b.fab.seleccion;
   var tarjetas = rs.map(function(r){
     var o = r.opciones.find(function(x){ return x.valor === r.valor; }) || {};
@@ -3339,13 +3341,22 @@ function efectos(b, rid, valor){
   if(r.cambiaCurva !== base.cambiaCurva) out.push('<span class="ctor-ef">Otra bala</span>');
   return out.slice(0, 6).join('');
 }
+function requiereTxt(req){
+  if(!req) return 'no disponible';
+  var n = req.opciones.map(nombreEs);
+  return 'elige antes una ' + req.ranura.toLowerCase() + ' compatible: ' + n.slice(0, 3).join(', ') + (n.length > 3 ? '… (' + n.length + ' en total)' : '');
+}
 function opcionesHtml(b, r){
   if(!r) return '';
+  var limite = M.LIMITE_PUNTOS || 100, actual = r.opciones.find(function(x){ return x.valor === r.valor; }) || { puntos: 0 };
   var filas = r.opciones.map(function(o){
     var sel = o.valor === r.valor, nombre = o.valor === 'none' ? 'Ninguno' : (r.compartida && o.tipo ? o.tipo + ' · ' : '') + nombreEs(o.en);
-    return '<button type="button" class="ctor-op' + (sel ? ' sel' : '') + '" data-op="' + esc(o.valor) + '"' + (o.disponible === false ? ' disabled' : '') + '>'
-      + '<span class="ctor-op-n">' + esc(nombre) + (o.porDefecto ? ' <em>de fábrica</em>' : '') + (o.disponible === false ? ' <em>requiere otra mira</em>' : '') + '</span>'
-      + '<span class="ctor-op-pts">' + (o.puntos ? o.puntos + ' pts' : '') + '</span><span class="ctor-op-ef">' + (sel || o.disponible === false ? '' : efectos(b, r.id, o.valor)) + '</span></button>';
+    var total = b.res.puntos - (actual.puntos || 0) + (o.puntos || 0), excede = !sel && total > limite, bloq = o.disponible === false || excede;
+    var ef = sel || bloq ? '' : (efectos(b, r.id, o.valor) || '<span class="ctor-ef">Sin cambios en estadísticas</span>');
+    return '<button type="button" class="ctor-op' + (sel ? ' sel' : '') + '" data-op="' + esc(o.valor) + '"' + (bloq ? ' disabled' : '') + '>'
+      + '<span class="ctor-op-n">' + esc(nombre) + (o.porDefecto ? ' <em>de fábrica</em>' : '')
+      + (o.disponible === false ? ' <em class="bloq">' + esc(requiereTxt(o.requiere)) + '</em>' : excede ? ' <em class="bloq">supera ' + limite + ' pts (' + total + ')</em>' : '') + '</span>'
+      + '<span class="ctor-op-pts">' + (o.puntos ? o.puntos + ' pts' : '') + '</span><span class="ctor-op-ef">' + ef + '</span></button>';
   }).join('');
   return '<div class="ctor-opciones"><div class="ctor-op-head"><b>' + esc(r.nombre) + '</b><span class="ctor-nota">Lo que cambia cada accesorio frente a lo que tienes ahora</span>'
     + '<button type="button" class="ctor-ico" id="ctorCerrarOp" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>' + filas + '</div>';

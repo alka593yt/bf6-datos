@@ -35,6 +35,8 @@ export const RANURAS = [
 const POR_TIPO = Object.fromEntries(RANURAS.map(r => [r.tipo, r]));
 const NOMBRE_TIPO = { grip: 'Cañón inferior', laser: 'Láser', light: 'Luz' };
 export const MODOS = { auto: 'Automático', burst: 'Ráfaga', single: 'Semiautomático' };
+/** Límite de puntos de un equipamiento en el juego. */
+export const LIMITE_PUNTOS = 100;
 
 let D = null;          // datos del juego
 let DATA = null;       // catálogos en el formato del analizador
@@ -117,6 +119,22 @@ function puntosDe(w, tipo, opcion) {
   if (tipo === 'mag') return opcion.pts ?? 0;
   return Loadout.getAttPts(opcion, w);
 }
+const NOMBRE_RANURA = Object.fromEntries(RANURAS.map(r => [r.tipo, r.nombre]));
+function nombreDe(w, tipo, id) {
+  if (tipo === 'mag') return DATA.WEAPON_MAG[w.id]?.mags?.[id]?.name ?? id;
+  if (tipo === 'ammo') return DATA.AMMO.find(a => a.id === id)?.name ?? id;
+  const cat = { sight: 'SIGHTS', muzzle: 'MUZZLES', barrel: 'BARRELS', grip: 'GRIPS', laser: 'LASERS', light: 'LIGHTS', ergo: 'ERGOS', accessory: 'ACCESSORIES' }[tipo];
+  return nombreAtt((DATA[cat] || []).find(a => a.id === id), w.id) || id;
+}
+/** Qué hace falta para poder elegir un accesorio bloqueado: { ranura, opciones: [nombres en inglés] }. */
+function requisito(w, tipo, id) {
+  const rule = (DATA.WEAPON_ATTS[w.id]?.dependencies || []).find(r => r.slot === tipo && r.attachment === id);
+  if (!rule) return undefined;
+  const porRanura = {};
+  for (const x of rule.requiresAny) (porRanura[x.slot] ??= []).push(nombreDe(w, x.slot, x.attachment));
+  const [slot, nombres] = Object.entries(porRanura)[0];
+  return { ranura: NOMBRE_RANURA[slot] || slot, opciones: nombres };
+}
 function descripcion(wid, tipo, id) {
   const s = D.tooltips?.byWeapon?.[wid]?.[tipo]?.[id];
   return s ? D.tooltips.descriptions[s] : undefined;
@@ -133,9 +151,11 @@ export function ranuras(id, sel = {}) {
   for (const r of RANURAS) {
     if (riel && riel.accepts.includes(r.tipo)) {
       if (r.tipo !== riel.accepts[0]) continue;     // la ranura compartida aparece una sola vez
-      const ops = Loadout.availableAttachments(w, 'rail', DATA).filter(o => o.id !== 'none').map(o => ({
-        valor: `${o.type}:${o.id}`, en: nombreAtt(o, w.id), puntos: Loadout.getAttPts(o, w), tipo: NOMBRE_TIPO[o.type],
-        disponible: Loadout.attachmentCompatible(w, o.type, o.id, atts, DATA), descripcion: descripcion(w.id, o.type, o.id) }));
+      const ops = Loadout.availableAttachments(w, 'rail', DATA).filter(o => o.id !== 'none').map(o => {
+        const disponible = Loadout.attachmentCompatible(w, o.type, o.id, atts, DATA);
+        return { valor: `${o.type}:${o.id}`, en: nombreAtt(o, w.id), puntos: Loadout.getAttPts(o, w), tipo: NOMBRE_TIPO[o.type],
+          disponible, requiere: disponible ? undefined : requisito(w, o.type, o.id), descripcion: descripcion(w.id, o.type, o.id) };
+      });
       out.push({ id: 'riel', nombre: riel.accepts.map(t => NOMBRE_TIPO[t]).join(' / '), compartida: true, valor: actual.riel, porDefecto: 'none',
         opciones: [{ valor: 'none', en: 'None', puntos: 0, disponible: true }, ...ops] });
       continue;
@@ -146,8 +166,10 @@ export function ranuras(id, sel = {}) {
     const lista = Loadout.availableAttachments(w, r.tipo, DATA).filter(o => !o.legacy);
     const ops = lista.filter(o => o.id !== 'none').map(o => {
       const disponible = Loadout.attachmentCompatible(w, r.tipo, o.id, atts, DATA);
+      const req = disponible ? undefined : requisito(w, r.tipo, o.id);
       return { valor: o.id, en: r.tipo === 'mag' ? o.name : nombreAtt(o, w.id), puntos: puntosDe(w, r.tipo, o), porDefecto: def[r.id] === o.id,
-        disponible, motivo: disponible ? undefined : 'Requiere otra mira', descripcion: descripcion(w.id, r.tipo, o.id) };
+        disponible, requiere: req, motivo: req ? `Requiere ${req.ranura.toLowerCase()}: ${req.opciones.slice(0, 3).join(', ')}${req.opciones.length > 3 ? '…' : ''}` : undefined,
+        descripcion: descripcion(w.id, r.tipo, o.id) };
     });
     if (!ops.length) continue;
     const obligatoria = ['sight', 'barrel', 'mag', 'ammo'].includes(r.tipo);
