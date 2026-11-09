@@ -886,9 +886,6 @@ html { scrollbar-gutter: stable; }
 .ctor-editando{font-size:.6rem;font-weight:800;color:var(--accent);letter-spacing:.5px}
 .ctor-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
 .ctor-editor{--c:var(--accent)}
-.ctor-atrib{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px;margin-bottom:14px}
-.ctor-atrib .stats-all-stat{margin:0}
-.ctor-atrib .stat-clase .pos,.ctor-atrib .stat-clase .neg{font-weight:800}
 .ctor-ico{background:transparent;border:none;color:var(--text-muted);cursor:pointer;width:28px;height:28px;border-radius:50%}
 .ctor-ico:hover{background:rgba(255,255,255,.08);color:var(--text-primary)}
 .ctor-aviso{display:none;margin-top:8px;font-size:.75rem;color:var(--danger)}
@@ -926,25 +923,7 @@ div.ctor-arma svg{width:90%;height:140px}
 .ctor-op-ef{display:flex;flex-wrap:wrap;gap:4px}
 .ctor-ef{font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--bg-input);color:var(--text-secondary)}
 .ctor-ef.pos{color:var(--success-bright)}.ctor-ef.neg{color:var(--danger)}
-.ctor-barras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
-.ctor-barra-g{background:var(--bg-card);border:1px solid #2e2e2e;border-radius:6px;padding:8px 10px}
-.ctor-barra-t{font-size:.72rem;font-weight:800;text-transform:uppercase;margin-bottom:6px}
-.ctor-barra{display:grid;grid-template-columns:90px minmax(0,1fr) 64px;gap:8px;align-items:center;margin-top:4px}
-.ctor-barra-n{font-size:.65rem;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ctor-barra .stat-bar{height:12px}
-.ctor-fill{height:100%;opacity:.85}
-.ctor-barra-v{font-size:.75rem;font-weight:800;text-align:right;white-space:nowrap}
-.ctor-barra-v i,.ctor-tabla i{font-style:normal;font-size:.65rem}
 .pos{color:var(--success-bright)}.neg{color:var(--danger)}
-.ctor-tabla-wrap{overflow-x:auto;margin-bottom:14px}
-.ctor-tabla td,.ctor-tabla th{white-space:nowrap}
-.ctor-tabla td:first-child,.ctor-tabla th:first-child{text-align:left}
-.ctor-u{color:var(--text-muted);font-size:.65rem}
-.ctor-municion{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:.75rem;color:var(--text-secondary);margin:-4px 0 8px}
-.ctor-municion label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.ctor-trazo{display:inline-block;width:22px;border-top:2px solid var(--text-secondary)}
-.ctor-trazo.rayado{border-top-style:dashed}.ctor-trazo.punteado{border-top-style:dotted}
-.ctor-chart{height:380px;min-height:380px}
 .ctor-acciones{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0}
 .ctor-credito{font-size:.65rem;color:var(--text-dim);margin-top:16px}
 .ctor-credito a{color:var(--text-muted)}
@@ -956,22 +935,99 @@ div.ctor-arma svg{width:90%;height:140px}
 .ctor-herr .ctor-sel select{padding:3px 4px;font-size:.7rem;max-width:120px}
 .ctor-herr .ctor-pts.grande{font-size:.66rem;padding:3px 6px;white-space:nowrap}
 .ctor-herr .adv-btn{padding:5px 8px;font-size:.7rem}
-.ctor-atrib{grid-template-columns:1fr}
 .ctor-editor{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"img img" "mira optico" "boca canon" "inferior laser" "luz cargador" "municion ergo"}
 .ctor-lineas{display:none}
-.ctor-barras{grid-template-columns:1fr}
 .ctor-op{grid-template-columns:minmax(0,1fr) 50px;}
 .ctor-op-ef{grid-column:1 / -1}
-.ctor-barra{grid-template-columns:70px minmax(0,1fr) 58px}
 .ctor-editando,.ctor-mini{display:none}
 .ctor-fila{gap:6px}
 }
+.hj-wrap{overflow-x:auto;margin-bottom:14px;border:1px solid var(--border-light);border-radius:var(--radius-md);scrollbar-width:thin}
+.hj{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:.8rem}
+.hj th,.hj td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:left;background:var(--bg-card);box-sizing:border-box;vertical-align:middle}
+.hj tbody tr:last-child th,.hj tbody tr:last-child td{border-bottom:none}
+.hj .hj-st{width:170px;position:sticky;left:0;z-index:2;background:var(--bg-secondary);color:var(--text-secondary);font-weight:700;font-size:.72rem;border-right:1px solid var(--border)}
+.hj .hj-st em{font-style:normal;font-weight:600;font-size:.62rem;color:var(--text-muted)}
+.hj .hj-arma{vertical-align:top;font-weight:400}
+.hj .hj-arma.act{box-shadow:inset 0 2px 0 var(--accent)}
+.hj .hj-arma b{display:block;font-size:.8rem;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-primary)}
+.hj-pts{display:block;font-size:.64rem;color:var(--accent);font-weight:700;margin-top:1px}
+.hj-res{display:block;font-size:.64rem;color:var(--text-muted);font-weight:600;line-height:1.25;margin-top:2px}
+.hj .hj-g-row th{background:var(--bg-tertiary);padding:4px 10px;color:var(--accent);font-size:.62rem;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.hj-g-row span{position:sticky;left:10px}
+.hj-v{display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hj-v b{font-weight:800;color:#e8e8e8}
+.hj-v b.hj-best{color:var(--accent)}
+.hj-v span{font-size:.7rem;font-weight:800}
+.hj-bar{position:relative;height:7px;margin-top:4px;background:#2b2b2b;border-radius:3px;overflow:hidden}
+.hj-bar i{position:absolute;top:0;bottom:0;left:0;display:block}
+.hj-b{background:var(--accent)}.hj-g{background:var(--success-bright)}.hj-r{background:var(--danger-bright)}
+@media (max-width:768px){
+.main-container:has(#mainConstructor.active){padding:10px 8px 14px}
+#mainConstructor .selection-panel{padding:5px 6px;margin-bottom:8px}
+.hj{table-layout:auto;font-size:.68rem}
+.hj th,.hj td{padding:4px 6px}
+.hj td,.hj .hj-arma{min-width:92px}
+.hj .hj-st{width:66px;min-width:66px;max-width:66px;font-size:.6rem;padding:4px 5px;line-height:1.15}
+.hj .hj-st em{display:block;font-size:.52rem}
+.hj .hj-arma b{font-size:.66rem;max-width:118px}
+.hj-pts,.hj-res{font-size:.54rem}
+.hj .hj-g-row th{padding:2px 6px;font-size:.54rem}
+.hj-g-row span{left:6px}
+.hj-v{gap:4px}.hj-v span{font-size:.58rem}
+.hj-bar{height:5px;margin-top:2px}
+.ctor-lista{gap:4px}
+.ctor-fila{padding:3px 5px}
+.ctor-fila-txt b{font-size:.66rem}.ctor-fila-txt span{font-size:.56rem}
+.ctor-pts{font-size:.58rem}
+.ctor-ico{width:24px;height:24px;font-size:.72rem}
+.ctor-cab{margin:4px 0 6px}
+.ctor-editor{padding:6px;gap:5px;margin-bottom:6px}
+.ctor-img{min-height:88px}
+.ctor-arma{max-height:88px}
+div.ctor-arma svg{height:80px}
+.ctor-ranura{padding:3px 6px;border-radius:6px}
+.ctor-ranura span{font-size:.5rem}
+.ctor-ranura b{font-size:.66rem}
+.ctor-opciones{padding:5px;max-height:300px}
+.ctor-op-head{padding:0 2px 4px;gap:6px}
+.ctor-op-head b{font-size:.72rem}.ctor-op-head .ctor-nota{font-size:.58rem}
+.ctor-op{padding:5px 3px;gap:3px 6px;font-size:.68rem}
+.ctor-op em{font-size:.54rem}.ctor-op-pts{font-size:.6rem;text-align:right}
+.ctor-ef{font-size:.54rem;padding:1px 4px}
+.ctor-nota{font-size:.62rem;margin:3px 0}
+#mainConstructor .chart-top-bar{margin:6px 0;gap:4px}
+#mainConstructor .chart-title{font-size:.84rem;padding-bottom:4px}
+.ctor-acciones{margin:8px 0;gap:4px}
+.ctor-acciones .add-weapon-trigger{width:100%;justify-content:center;padding:9px;font-size:.72rem}
+.ctor-acciones .ctor-nota{width:100%;text-align:center}
+.ctor-credito{margin-top:8px;font-size:.56rem}
+}
+.ctor-op-tot,.ctor-fondo{display:none}
+@media (max-width:768px){
+html.ctor-modal{overflow:hidden}
+.ctor-fondo{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999998;animation:ctorFondo .2s ease}
+.ctor-opciones{position:fixed;left:0;right:0;bottom:0;z-index:999999;width:100%;margin:0;max-height:68vh;max-height:68dvh;overflow-y:auto;overscroll-behavior:contain;padding:0 8px calc(10px + env(safe-area-inset-bottom));border:0;border-top:2px solid var(--accent);border-radius:14px 14px 0 0;animation:ctorSube .22s ease;transition:transform .18s ease}
+.ctor-opciones.arrastrando{transition:none}
+.ctor-op-head{position:sticky;top:0;z-index:2;background:var(--bg-secondary);padding:16px 4px 7px;touch-action:none}
+.ctor-op-head::before{content:'';position:absolute;top:6px;left:50%;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:var(--text-faint)}
+.ctor-op-head .ctor-nota{display:none}
+.ctor-op-head b{flex:1}
+.ctor-op-tot{display:block;font-size:.62rem;font-weight:800;color:var(--accent);white-space:nowrap}
+}
+@keyframes ctorSube{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes ctorFondo{from{opacity:0}to{opacity:1}}
+.ctor-boceto{opacity:.55;pointer-events:none;user-select:none}
+.ctor-boceto .ctor-editor,.ctor-boceto .hj-wrap,.ctor-boceto .ctor-ranura{border-style:dashed}
+.ctor-boceto .hj-b{background:var(--text-faint)}
+.ctor-boceto .hj-v b,.ctor-boceto .ctor-ranura b{color:var(--text-dim);font-weight:600}
+.ctor-boceto .hj .hj-arma b{color:var(--text-faint);font-style:italic}
 </style>
 </head>
 <body>
 <div class="main-title-section">
 <h2>COMPARADOR</h2>
-<div class="main-title-subtitle">Battlefield 6 · Análisis de armas</div>
+<div class="main-title-subtitle">Battlefield 6 - Análisis de armas</div>
 </div>
 <div class="main-tabs-section">
 <div class="main-tabs-nav" role="tablist" aria-label="Secciones del comparador">
@@ -1125,7 +1181,7 @@ function updateCombinedUI(){
 const p = document.getElementById('advPanel'+S); if(!p) return;
 const h = ['advWh','advWc','advWs'].map(id=>{ const el=document.getElementById(id+S); return el ? (parseFloat(el.value)||0) : 0; }); const t = h[0]+h[1]+h[2];
 const hint = p.querySelector('.comb-hint');
-if(hint) hint.textContent = t>0 ? `Reparto: Cabeza ${Math.round(h[0]/t*100)} % \u00b7 Pecho ${Math.round(h[1]/t*100)} % \u00b7 Est\u00f3mago ${Math.round(h[2]/t*100)} %` : 'Indica al menos un porcentaje mayor que 0';
+if(hint) hint.textContent = t>0 ? `Reparto: Cabeza ${Math.round(h[0]/t*100)} % - Pecho ${Math.round(h[1]/t*100)} % - Est\u00f3mago ${Math.round(h[2]/t*100)} %` : 'Indica al menos un porcentaje mayor que 0';
 });
 }
 const CONFIG = Object.freeze({
@@ -1478,16 +1534,12 @@ const cacheKey = `ammo_${item.id}_${clase}_${ammoType}_${range}_${chartKey}_${st
 if(calcCache.has(cacheKey)) return calcCache.get(cacheKey);
 const row = item.weapon; const P = CLASS_PREFIXES[clase];
 const baseDamage = parseStatValue(row[P.DANO.pecho + range]);
-const bodyBalas = parseStatValue(row[P.BALAS.pecho + range]);
-const bodyTTK = parseStatValue(row[P.TTK.pecho + range]);
 let r = null;
-if(baseDamage !== null && baseDamage > 0 && bodyBalas > 0){
+if(baseDamage !== null && baseDamage > 0){
 const hp = st.health || 100; const prec = (st.precision !== undefined && st.precision !== null) ? st.precision : 1;
 const newDmg = baseDamage * multiplier; const newBalas = Math.ceil((hp / newDmg) - 1e-6);
-let newTTK = 0; if(newBalas > 1){ const fi = (bodyBalas > 1) ? (bodyTTK / (bodyBalas - 1)) : 0; newTTK = (newBalas - 1) * fi; }
 if(chartKey === 'Dano') r = parseFloat(newDmg.toFixed(4));
-else if(chartKey === 'Balas'){ r = newBalas; if(prec > 0 && prec < 1) r = r / prec; }
-else { r = newTTK; if(prec > 0 && prec < 1) r = r / prec; r = Math.round(r); }
+else if(prec > 0){ const disparos = newBalas / Math.min(prec, 1); r = chartKey === 'Balas' ? disparos : Math.round((disparos - 1) * getApproxRPM(row, clase)); }
 }
 calcCache.set(cacheKey, r);
 return r;
@@ -1497,18 +1549,23 @@ const cacheKey = `${item.id}_${prefix}_${range}_${chartKey}_${st.health}_${st.pr
 if(calcCache.has(cacheKey)) return calcCache.get(cacheKey);
 const row = item.weapon; const clase = item.clase || 'base'; const rawVal = row[prefix + range];
 if(!rawVal){ calcCache.set(cacheKey, null); return null; }
-let currentRawDamage = parseFloat(row[damagePrefix + range]);
-if(isNaN(currentRawDamage) || currentRawDamage <= 0){ calcCache.set(cacheKey, null); return null; }
-const health = st.health; const precision = st.precision; const customHealth = Math.abs(health - 100) > 0.001;
+const dano = parseFloat(row[damagePrefix + range]);
+if(isNaN(dano) || dano <= 0){ calcCache.set(cacheKey, null); return null; }
 let yVal;
-if(chartKey === 'Dano'){ yVal = currentRawDamage; }
-else if(customHealth){ const btk = Math.ceil(health / currentRawDamage); if(chartKey === 'Balas'){ yVal = btk; } else { const msPerShot = getApproxRPM(row, clase); yVal = (btk - 1) * msPerShot; } }
-else { yVal = parseFloat(rawVal); }
-if((chartKey === 'TTK' || chartKey === 'Balas') && precision > 0){ yVal = yVal / precision; }
+if(chartKey === 'Dano'){ yVal = dano; }
+else if(!(st.precision > 0)){ yVal = null; /* con 0 % nunca se mata */ }
+else {
+/* Disparos necesarios = impactos / precisión; TTK = (disparos - 1) x tiempo entre disparos */
+const disparos = Math.ceil(st.health / dano - 1e-9) / Math.min(st.precision, 1);
+if(chartKey === 'Balas') yVal = disparos;
+else yVal = (st.precision >= 1 && Math.abs(st.health - 100) <= 0.001) ? parseFloat(rawVal) : (disparos - 1) * getApproxRPM(row, clase);
+}
 calcCache.set(cacheKey, yVal);
 return yVal;
 }
+function msEntreDisparos(row, clase){ const v = row['MS' + ['base','clase1','clase2','clase3'].indexOf(clase || 'base')]; return v > 0 ? v : null; }
 function msPerShotAt(row, clase, range){
+const exacto = msEntreDisparos(row, clase); if(exacto) return exacto;
 const b = parseFloat(row[CLASS_PREFIXES[clase].BALAS.pecho + range]);
 const t = parseFloat(row[CLASS_PREFIXES[clase].TTK.pecho + range]);
 if(b > 1 && t > 0) return t / (b - 1);
@@ -1520,7 +1577,8 @@ if(k === 'DANO') return null;
 const w = [st.wH, st.wC, st.wS].map(v => Math.max(0, v || 0));
 const tot = w[0] + w[1] + w[2];
 if(tot <= 0) return null;
-const p = (st.precision > 0 && st.precision <= 1) ? st.precision : 1;
+if(!(st.precision > 0)) return null;
+const p = Math.min(st.precision, 1);
 const cacheKey = `comb_${item.id}_${item.clase||'base'}_${range}_${k}_${st.health}_${p}_${w.join('_')}`;
 if(calcCache.has(cacheKey)) return calcCache.get(cacheKey);
 const row = item.weapon;
@@ -1649,7 +1707,7 @@ function getChartKeyFromCanvasId(canvasId){ const idLower=(canvasId||'').toLower
 function buildAdvancedPanel(S){
 let ammoSection = `<div class="adv-block" id="ammoSection${S}" style="display:none;"></div>`;
 const gfxBlock = `<div class="adv-block"><div class="adv-label">Gr\u00e1fico</div><div class="adv-label">Valores en v\u00e9rtices <span class="info-tip" data-tip="Ocultos: sin etiquetas. Al pasar: valores bajo el cursor. Al fijar: valores del rango fijado. Todos: etiquetas en los v\u00e9rtices de cada l\u00ednea, omitiendo las que se solapan.">i</span></div><div class="seg-group vmode-group" role="radiogroup" aria-label="Valores en v\u00e9rtices"><button type="button" class="seg-btn vmode-btn" data-value="off">Ocultos</button><button type="button" class="seg-btn vmode-btn" data-value="hover">Al pasar</button><button type="button" class="seg-btn vmode-btn" data-value="pin">Al fijar</button><button type="button" class="seg-btn vmode-btn" data-value="all">Todos</button></div><div class="adv-label" style="margin-top:10px">Tooltip <span class="info-tip" data-tip="Muestra una tarjeta con el ranking de todas las armas al pasar el mouse por el gr\u00e1fico. Al activarlo se ocultan los valores en v\u00e9rtices.">i</span></div><div class="gfx-buttons"><label class="hitbox-btn"><input type="checkbox" class="chk-tt"><span class="hitbox-btn-text">Mostrar tooltip</span></label></div><div class="gfx-buttons"><label class="hitbox-btn"><input type="checkbox" class="chk-sil" checked><span class="hitbox-btn-text">Silueta</span></label><label class="hitbox-btn"><input type="checkbox" class="chk-bands"><span class="hitbox-btn-text">Distancias</span></label></div></div>`;
-return `<div class="adv-block"><div class="adv-row"><div class="adv-group"><div class="adv-label">Salud <span class="info-tip" data-tip="Puntos de vida (PV) del jugador">i</span></div><input type="number" class="adv-input adv-salud" value="${effectiveHealth()}" min="1" max="999" aria-label="Salud"></div><div class="adv-group"><div class="adv-label">Placas <span class="info-tip" data-tip="Cada placa agrega +50 PV">i</span></div><div class="seg-group placas-group" role="radiogroup" aria-label="N\u00famero de placas"><button type="button" class="seg-btn placas-btn ${globalPlacas===0?'active':''}" data-value="0" role="radio" aria-checked="${globalPlacas===0}">0</button><button type="button" class="seg-btn placas-btn ${globalPlacas===1?'active':''}" data-value="1" role="radio" aria-checked="${globalPlacas===1}">1</button><button type="button" class="seg-btn placas-btn ${globalPlacas===2?'active':''}" data-value="2" role="radio" aria-checked="${globalPlacas===2}">2</button><button type="button" class="seg-btn placas-btn ${globalPlacas===3?'active':''}" data-value="3" role="radio" aria-checked="${globalPlacas===3}">3</button></div></div><div class="adv-group"><div class="adv-label">Precisi\u00f3n (%) <span class="info-tip tip-end" data-tip="Porcentaje de precisi\u00f3n personalizado">i</span> <span class="adv-prec-value">${globalPrecision}%</span></div><input type="range" class="adv-prec-range" min="0" max="100" step="1" value="${globalPrecision}" aria-label="Precisi\u00f3n"></div></div></div><div class="adv-block"><div class="adv-label">Zona del cuerpo <span class="info-tip" data-tip="Selecciona la zona del cuerpo a analizar">i</span></div><div class="zone-buttons"><label class="hitbox-btn"><input type="checkbox" id="chkHead${S}" aria-label="Mostrar zona de cabeza"><span class="hitbox-btn-text">CABEZA</span></label><label class="hitbox-btn"><input type="checkbox" id="chkBody${S}" checked aria-label="Mostrar zona de pecho"><span class="hitbox-btn-text">PECHO</span></label><label class="hitbox-btn"><input type="checkbox" id="chkStomach${S}" aria-label="Mostrar zona de est\u00f3mago"><span class="hitbox-btn-text">EST\u00d3MAGO</span></label><label class="hitbox-btn"><input type="checkbox" class="chk-comb" id="chkComb${S}" aria-label="Modo combinado"><span class="hitbox-btn-text">COMBINADO</span></label></div><div class="combined-wrapper" style="display:none;width:100%;"><div class="combined-settings"><div class="adv-label">Reparto de tus impactos (%) <span class="info-tip" data-tip="Escribe qu\u00e9 % de tus disparos que aciertan va a cada zona. No hace falta que sumen 100">i</span></div><div class="comb-custom"><div class="combined-row"><span>CABEZA</span><span><input type="number" id="advWh${S}" value="20" min="0" max="100" aria-label="Peso cabeza">%</span></div><div class="combined-row"><span>PECHO</span><span><input type="number" id="advWc${S}" value="50" min="0" max="100" aria-label="Peso pecho">%</span></div><div class="combined-row"><span>EST\u00d3MAGO</span><span><input type="number" id="advWs${S}" value="30" min="0" max="100" aria-label="Peso est\u00f3mago">%</span></div></div><div class="comb-hint"></div><div class="comb-hint">Promedio esperado disparo a disparo usando el slider de Precisi\u00f3n. Los porcentajes se ajustan solos a 100 %.</div></div></div></div>${ammoSection}${gfxBlock}`;
+return `<div class="adv-block"><div class="adv-row"><div class="adv-group"><div class="adv-label">Salud <span class="info-tip" data-tip="Puntos de vida (PV) del jugador">i</span></div><input type="number" class="adv-input adv-salud" value="${effectiveHealth()}" min="1" max="999" aria-label="Salud"></div><div class="adv-group"><div class="adv-label">Placas <span class="info-tip" data-tip="Cada placa agrega +50 PV">i</span></div><div class="seg-group placas-group" role="radiogroup" aria-label="N\u00famero de placas"><button type="button" class="seg-btn placas-btn ${globalPlacas===0?'active':''}" data-value="0" role="radio" aria-checked="${globalPlacas===0}">0</button><button type="button" class="seg-btn placas-btn ${globalPlacas===1?'active':''}" data-value="1" role="radio" aria-checked="${globalPlacas===1}">1</button><button type="button" class="seg-btn placas-btn ${globalPlacas===2?'active':''}" data-value="2" role="radio" aria-checked="${globalPlacas===2}">2</button><button type="button" class="seg-btn placas-btn ${globalPlacas===3?'active':''}" data-value="3" role="radio" aria-checked="${globalPlacas===3}">3</button></div></div><div class="adv-group"><div class="adv-label">Precisi\u00f3n (%) <span class="info-tip tip-end" data-tip="Porcentaje de disparos que aciertan. Al bajarlo se necesitan más disparos y sube el TTK. Con 0 % no se puede matar, así que no se dibuja la línea.">i</span> <span class="adv-prec-value">${globalPrecision}%</span></div><input type="range" class="adv-prec-range" min="0" max="100" step="1" value="${globalPrecision}" aria-label="Precisi\u00f3n"></div></div></div><div class="adv-block"><div class="adv-label">Zona del cuerpo <span class="info-tip" data-tip="Selecciona la zona del cuerpo a analizar">i</span></div><div class="zone-buttons"><label class="hitbox-btn"><input type="checkbox" id="chkHead${S}" aria-label="Mostrar zona de cabeza"><span class="hitbox-btn-text">CABEZA</span></label><label class="hitbox-btn"><input type="checkbox" id="chkBody${S}" checked aria-label="Mostrar zona de pecho"><span class="hitbox-btn-text">PECHO</span></label><label class="hitbox-btn"><input type="checkbox" id="chkStomach${S}" aria-label="Mostrar zona de est\u00f3mago"><span class="hitbox-btn-text">EST\u00d3MAGO</span></label><label class="hitbox-btn"><input type="checkbox" class="chk-comb" id="chkComb${S}" aria-label="Modo combinado"><span class="hitbox-btn-text">COMBINADO</span></label></div><div class="combined-wrapper" style="display:none;width:100%;"><div class="combined-settings"><div class="adv-label">Reparto de tus impactos (%) <span class="info-tip" data-tip="Escribe qu\u00e9 % de tus disparos que aciertan va a cada zona. No hace falta que sumen 100">i</span></div><div class="comb-custom"><div class="combined-row"><span>CABEZA</span><span><input type="number" id="advWh${S}" value="20" min="0" max="100" aria-label="Peso cabeza">%</span></div><div class="combined-row"><span>PECHO</span><span><input type="number" id="advWc${S}" value="50" min="0" max="100" aria-label="Peso pecho">%</span></div><div class="combined-row"><span>EST\u00d3MAGO</span><span><input type="number" id="advWs${S}" value="30" min="0" max="100" aria-label="Peso est\u00f3mago">%</span></div></div><div class="comb-hint"></div><div class="comb-hint">Promedio esperado disparo a disparo usando el slider de Precisi\u00f3n. Los porcentajes se ajustan solos a 100 %.</div></div></div></div>${ammoSection}${gfxBlock}`;
 }
 function toggleAdvPanel(S){
 const panel = DOM_CACHE[S]?.advPanel || document.getElementById('advPanel'+S);
@@ -1904,7 +1962,7 @@ cont.innerHTML=all+'</div>'; return;
 }
 cont.innerHTML=statRowsHtml(activeStat);
 }
-function getApproxRPM(row,clase){const clasePref=clase||'base';const balasPref=CLASS_PREFIXES[clasePref].BALAS.pecho;const ttkPref=CLASS_PREFIXES[clasePref].TTK.pecho;const b0=parseFloat(row[balasPref+'0']);const t0=parseFloat(row[ttkPref+'0']);if(b0>1&&t0>0)return t0/(b0-1);for(let r=0;r<=CONFIG.CHART.MAX_RANGE;r+=5){const br=parseFloat(row[balasPref+r]);const tr=parseFloat(row[ttkPref+r]);if(br>1&&tr>0)return tr/(br-1);}return 100;}
+function getApproxRPM(row,clase){const exacto=msEntreDisparos(row,clase);if(exacto)return exacto;const clasePref=clase||'base';const balasPref=CLASS_PREFIXES[clasePref].BALAS.pecho;const ttkPref=CLASS_PREFIXES[clasePref].TTK.pecho;const b0=parseFloat(row[balasPref+'0']);const t0=parseFloat(row[ttkPref+'0']);if(b0>1&&t0>0)return t0/(b0-1);for(let r=0;r<=CONFIG.CHART.MAX_RANGE;r+=5){const br=parseFloat(row[balasPref+r]);const tr=parseFloat(row[ttkPref+r]);if(br>1&&tr>0)return tr/(br-1);}return 100;}
 function renderChart(filteredData,chart){
 if(!filteredData.length){
 chart.data.labels=[];
@@ -1928,13 +1986,12 @@ const claseLabel=classTitleGraph(item,clase);
 const classPrefs=CLASS_PREFIXES[clase][S];
 const headPrefix=classPrefs.cabeza,bodyPrefix=classPrefs.pecho,stomachPrefix=classPrefs.estomago;
 const damagePrefixes=CLASS_PREFIXES[clase].DANO;
-const msPerShot=getApproxRPM(row,clase);
 const bodyColor = singleWeapon ? ZONE_COLORS.pecho : primaryColor;
 const headColor = singleWeapon ? ZONE_COLORS.cabeza : primaryColor;
 const stomachColor = singleWeapon ? ZONE_COLORS.estomago : primaryColor;
 const processData=(prefix,damageKeyPrefix)=>{
 const dataPoints=[];
-for(const key in row){ if(key.startsWith(prefix)){ let range=parseInt(key.replace(prefix,'')); if(!isNaN(range)&&row[key]){ const currentRawDamage=parseFloat(row[damageKeyPrefix+range]); let yVal; if(customHealth){ if(isNaN(currentRawDamage)||currentRawDamage<=0)continue; if(isDanoTable){yVal=currentRawDamage;} else{const btk=Math.ceil(health/currentRawDamage);yVal=isBalasTable?btk:(btk-1)*msPerShot;} }else{ yVal=parseFloat(row[key]); } if((isTTKTable||isBalasTable)&&currentPrecision>0){yVal=yVal/currentPrecision;} dataPoints.push({x:range,y:yVal}); } } }
+for(const key in row){ if(key.startsWith(prefix)){ let range=parseInt(key.replace(prefix,'')); if(!isNaN(range)&&row[key]){ const yVal=computeProcessedValue(item,prefix,damageKeyPrefix,range,settingsKey,st); if(yVal===null||yVal===undefined||isNaN(yVal))continue; dataPoints.push({x:range,y:yVal}); } } }
 dataPoints.sort((a,b)=>a.x-b.x);
 const filledPoints=[];
 if(dataPoints.length>0){ let pIndex=0;let lastY=dataPoints[0].y; for(let x=CONFIG.CHART.MIN_RANGE;x<=CONFIG.CHART.MAX_RANGE;x++){ while(pIndex<dataPoints.length&&dataPoints[pIndex].x<=x){lastY=dataPoints[pIndex].y;pIndex++;} if(x>=dataPoints[0].x){filledPoints.push({x,y:lastY});} else if(dataPoints[0].x>0&&x===0){filledPoints.push({x,y:dataPoints[0].y});} } return filledPoints; }
@@ -2356,6 +2413,7 @@ function bf6Filas(doc){
       Object.keys(BF6_COD_MUN).forEach(function(id){ if(b.mun[id] != null) row['A' + (cod.stats + BF6_COD_MUN[id] - 1)] = b.mun[id]; });
       if(k > 0) BF6_RANURAS.forEach(function(r, i){ if(b.acc[r]) row['A' + (cod.nombre + 1 + i)] = b.acc[r]; });
       var cad = (k === 0 && a.cadenciaTTK) ? a.cadenciaTTK : (b.stats.cadencia || a.cadenciaTTK);
+      if(cad > 0) row['MS' + k] = 60000 / cad;   /* tiempo exacto entre disparos (sin redondear) */
       var vida = 100;
       ['cabeza', 'pecho', 'estomago'].forEach(function(z){
         var t = b.dano[z]; if(!t || !t.length) return;
@@ -2482,7 +2540,7 @@ const missing = awmFilteredWeapons.filter(w => !selectedNames.has(w[HEADERS.ARMA
 const btn = missing > 0
 ? `<button type="button" class="awm-bulk-add"><i class="fa-solid fa-plus" aria-hidden="true"></i> AGREGAR TODAS (${missing})</button>`
 : `<button type="button" class="awm-bulk-remove"><i class="fa-solid fa-minus" aria-hidden="true"></i> QUITAR TODAS (${total})</button>`;
-bar.innerHTML = `<div class="awm-bulk-info"><strong>${escapeHtml(awmActiveCategory)}</strong> · ${total} arma${total !== 1 ? 's' : ''}</div>${btn}`;
+bar.innerHTML = `<div class="awm-bulk-info"><strong>${escapeHtml(awmActiveCategory)}</strong> - ${total} arma${total !== 1 ? 's' : ''}</div>${btn}`;
 bar.style.display = 'flex';
 }
 function awmBulkApply(add){
@@ -2548,7 +2606,7 @@ rows[rows.length-1].push(item); rowW[rows.length-1]+=w+sp;
 // Filtros activos
 let info='';
 try{ const st=getAdvancedSettings(ck), z=[]; if(st.showBody)z.push('Pecho'); if(st.showHead)z.push(activeAmmoTypes.length?'Cabeza ('+AMMO_TYPES[activeAmmoTypes[0]].label+')':'Cabeza'); if(st.showStomach)z.push('Est\u00f3mago'); if(st.showComb&&ck!=='Dano')z.push('Combinado');
-info='Salud '+effectiveHealth()+' PV \u00b7 Placas '+globalPlacas+(ck!=='Dano'?' \u00b7 Precisi\u00f3n '+globalPrecision+'%':'')+(z.length?' \u00b7 Zonas: '+z.join(', '):''); }catch(e){ info=''; }
+info='Salud '+effectiveHealth()+' PV - Placas '+globalPlacas+(ck!=='Dano'?' - Precisi\u00f3n '+globalPrecision+'%':'')+(z.length?' - Zonas: '+z.join(', '):''); }catch(e){ info=''; }
 // Tabla comparativa por distancia
 const desc=(ck==='Dano'), xs=chart.scales.x;
 const dists=[0,10,25,50,75,100,150,200].filter(d=>d>=xs.min&&d<=xs.max);
@@ -2588,9 +2646,9 @@ const y0=headerHeight+targetHeight, tx=pad, tw=targetWidth-pad*2, n=dists.length
 const rankW=46*k, colW=Math.min(96*k,(tw-rankW-260*k)/n), nameW=tw-rankW-colW*n;
 const colX=j=>tx+rankW+nameW+colW*j;
 ctx.textBaseline='middle';
-ctx.fillStyle='#FFA500'; ctx.font=F(18); ctx.textAlign='left'; ctx.fillText('C\u00d3MO QUEDAN LAS ARMAS \u00b7 '+ttUnit(chart),tx,y0+30*k);
+ctx.fillStyle='#FFA500'; ctx.font=F(18); ctx.textAlign='left'; ctx.fillText('C\u00d3MO QUEDAN LAS ARMAS - '+ttUnit(chart),tx,y0+30*k);
 ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.font=F(13,'600'); ctx.textAlign='right';
-ctx.fillText('Orden: '+dists[si]+' m'+(hasPin?' (fijado)':'')+' \u00b7 '+(desc?'mayor a menor':'menor a mayor'),tx+tw,y0+30*k);
+ctx.fillText('Orden: '+dists[si]+' m'+(hasPin?' (fijado)':'')+' - '+(desc?'mayor a menor':'menor a mayor'),tx+tw,y0+30*k);
 const yh=y0+titleH;
 ctx.fillStyle='#262626'; ctx.fillRect(tx,yh,tw,headH);
 ctx.fillStyle='rgba(255,165,0,0.14)'; ctx.fillRect(colX(si),yh,colW,headH);
@@ -2870,7 +2928,7 @@ return [{z:z.id,w:1,from:z.from,to:z.to}];
 function activeParams(){ return ['ttk','ret','pre','man'].filter(function(p){ return META.params[p]; }); }
 function distText(){
 if(META.dist==='exact') return 'los '+Math.round(META.exact)+' m';
-if(META.dist==='all'){ var sp=getSpecs(), tot=sp.reduce(function(a,s){return a+s.w;},0); return 'todas las distancias ('+sp.map(function(s){ var z=ZONES.filter(function(q){return q.id===s.z;})[0]; return z.short+' '+Math.round(s.w/tot*100)+' %'; }).join(' \u00b7 ')+')'; }
+if(META.dist==='all'){ var sp=getSpecs(), tot=sp.reduce(function(a,s){return a+s.w;},0); return 'todas las distancias ('+sp.map(function(s){ var z=ZONES.filter(function(q){return q.id===s.z;})[0]; return z.short+' '+Math.round(s.w/tot*100)+' %'; }).join(' - ')+')'; }
 return ZONES.filter(function(q){return q.id===META.dist;})[0].name.toLowerCase();
 }
 function listText(a){ if(a.length<2) return a.join(''); return a.slice(0,-1).join(', ')+' y '+a[a.length-1]; }
@@ -3000,7 +3058,7 @@ list.forEach(function(r,i){ h+=rowHtml(r,i+1,bm[r.e.wi]); });
 h+='</div>';
 });
 if(!h) return {a:'',h:'<div class="meta-empty">Sin datos para las categor\u00edas seleccionadas.</div>'};
-return {a:'Mejor arma de cada categor\u00eda para <b>'+distText()+'</b> (cada categor\u00eda se punt\u00faa solo contra sus propias armas): '+win.join(' \u00b7 ')+'.',h:h};
+return {a:'Mejor arma de cada categor\u00eda para <b>'+distText()+'</b> (cada categor\u00eda se punt\u00faa solo contra sus propias armas): '+win.join(' - ')+'.',h:h};
 }
 /* ---------- interfaz ---------- */
 function slider(attr,val,min,max){ return '<input type="range" min="'+(min||0)+'" max="'+(max||100)+'" step="1" value="'+val+'" '+attr+'><span class="mv">'+val+'</span>'; }
@@ -3052,7 +3110,7 @@ var box=document.getElementById('metaSummary'); if(!box) return;
 var eq=selectedClasses().map(function(c){ return CLASS_NAME[c]; }).join(' + ')||'Sin equipamiento';
 var d=META.dist==='all'?'Todas las distancias':(META.dist==='exact'?Math.round(META.exact)+' m':ZONES.filter(function(z){return z.id===META.dist;})[0].name);
 var SH={ttk:'TTK',ret:'Ret.',pre:'Prec.',man:'Manejo'};
-var p=activeParams().map(function(x){ return SH[x]; }).join(' \u00b7 ')||'Sin par\u00e1metros';
+var p=activeParams().map(function(x){ return SH[x]; }).join(' - ')||'Sin par\u00e1metros';
 var c=META.cats.length?(META.cats.length===1?META.cats[0]:META.cats.length+' categor\u00edas'):'Todas las categor\u00edas';
 box.innerHTML=[eq,d,p,c].map(function(x){ return '<span class="sm-chip">'+esc(x)+'</span>'; }).join('');
 }
@@ -3192,8 +3250,6 @@ var MOTOR_URL = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/bf6-
 var MAX = 4;
 var M = null, cargando = null, errorMotor = null;
 var builds = [], activo = 0, abierta = null, uid = 0;
-var vista = { modo: 'TTK', zona: 'pecho', vida: 100, ph: true, sin: true };
-var chart = null, ro = null;
 
 /* Dónde va cada ranura alrededor de la imagen (área de la cuadrícula) y a qué punto de la imagen apunta su línea (% ancho, % alto). */
 var LUGAR = {
@@ -3206,9 +3262,6 @@ var LUGAR = {
 var CORTO = { cadera: 'Cadera', precision: 'Precisión', control: 'Control', movilidad: 'Movilidad', velApuntar: 'Apuntar', velBala: 'Vel. bala',
   velRecarga: 'Recarga', recoilVertical: 'Ret. V', recoilHorizontal: 'Ret. H', cargador: 'Balas', cadencia: 'Cadencia' };
 var MENOR_MEJOR = { velApuntar: 1, velRecarga: 1, recoilVertical: 1, recoilHorizontal: 1 };
-var BARRAS = [['cadera', 'Disparo de cadera'], ['precision', 'Precisión'], ['control', 'Control'], ['movilidad', 'Movilidad']];
-var TABLA = [['cadencia', 'Cadencia', 'RPM'], ['velBala', 'Vel. de bala', 'm/s'], ['velApuntar', 'Vel. al apuntar', 'ms'], ['velRecarga', 'Vel. de recarga', 'ms'],
-  ['recoilVertical', 'Recoil vertical', '°'], ['recoilHorizontal', 'Recoil horizontal', '°'], ['cargador', 'Cargador', 'balas']];
 
 function $(id){ return document.getElementById(id); }
 function esc(s){ return escapeHtml(s == null ? '' : s); }
@@ -3253,8 +3306,26 @@ function quitar(i){ builds.splice(i, 1); if(activo >= builds.length) activo = Ma
 function avisar(t){ var el = $('ctorAviso'); if(!el) return; el.textContent = t; el.style.display = 'block'; clearTimeout(avisar.t); avisar.t = setTimeout(function(){ el.style.display = 'none'; }, 3500); }
 
 /* ---------- Datos que muestra cada build ---------- */
-function stats(b){ return b.res ? b.res.stats : (b.arma.base || {}); }
-function statsFab(b){ return b.fab ? b.fab.stats : (b.arma.base || {}); }
+/* Los valores de fabrica son los de armas.json; el motor solo aporta cuanto sube o baja cada accesorio. */
+function statsFab(b){
+  var propio = b.arma.base || {}, out = Object.assign({}, b.fab ? b.fab.stats : {}, propio), mag = b.arma.municion && b.arma.municion.cargador;
+  if(typeof mag === 'number') out.cargador = mag;
+  return out;
+}
+function stats(b){
+  var fab = statsFab(b); if(!b.res || !b.fab) return fab;
+  var out = Object.assign({}, fab), atrib = { cadera: 1, precision: 1, control: 1, movilidad: 1 };
+  Object.keys(b.res.stats).forEach(function(k){
+    var m = b.res.stats[k], f = b.fab.stats[k]; if(typeof m !== 'number' || typeof f !== 'number' || typeof fab[k] !== 'number') return;
+    if(k === 'cargador'){ if(m !== f) out[k] = m; return; }   /* otro cargador: su tamano es fijo, no una suma */
+    var v = r2(fab[k] + (m - f)); out[k] = atrib[k] ? Math.max(0, Math.min(100, v)) : Math.max(0, v);
+  });
+  return out;
+}
+/* Punta hueca y sintético: botones del gráfico. Solo aparecen si alguna build lleva esa munición; la curva usa los datos propios (pecho x multiplicador). */
+var TIPOS_MUNICION = [{ clave: 'puntaHueca', valor: 'hollow_pt' }, { clave: 'sintetico', valor: 'synthetic' }];
+function llevaMunicion(b, t){ return !!(b.res && b.res.seleccion.municion === t.valor && b.arma.municion && b.arma.municion[t.clave]); }
+function usaMultiplicadorPropio(b){ return TIPOS_MUNICION.some(function(t){ return llevaMunicion(b, t); }); }
 function danoZonas(b){
   var a = b.arma, z = {};
   ['cabeza', 'pecho', 'estomago'].forEach(function(k){ z[k] = a.dano && a.dano[k] ? expandirTramos(a.dano[k]) : null; });
@@ -3264,7 +3335,7 @@ function danoZonas(b){
   else if(b.res && b.res.cambiaCurva) { z.cabeza = b.res.dano.cabeza; z.pecho = b.res.dano.pecho; z.estomago = b.res.dano.estomago; }
   else if(b.res){
     var f = b.res.factores;
-    if(z.cabeza && Math.abs(f.cabeza - 1) > 1e-6) z.cabeza = z.cabeza.map(function(v){ return v == null ? null : r2(v * f.cabeza); });
+    if(z.cabeza && !usaMultiplicadorPropio(b) && Math.abs(f.cabeza - 1) > 1e-6) z.cabeza = z.cabeza.map(function(v){ return v == null ? null : r2(v * f.cabeza); });
     if(z.estomago && Math.abs(f.estomago - 1) > 1e-6) z.estomago = z.estomago.map(function(v){ return v == null ? null : r2(v * f.estomago); });
   }
   return z;
@@ -3290,28 +3361,31 @@ function render(){
   if(errorMotor) html += '<div class="ctor-nota ctor-error">No se pudo cargar el cálculo de accesorios. Recarga la página para intentarlo de nuevo.</div>';
   if(builds.length){
     html += editorHtml(builds[activo]);
-    html += '<div class="chart-top-bar"><div class="chart-title">Atributos del juego</div></div>' + barrasHtml();
-    html += '<div class="chart-top-bar"><div class="chart-title">Estadísticas</div></div>' + tablaHtml();
-    html += graficoHtml();
+    html += '<div class="chart-top-bar"><div class="chart-title">Comparaci\u00f3n</div></div>' + hojaHtml();
     html += '<div class="ctor-acciones"><button type="button" class="add-weapon-trigger" id="ctorEnviar"><i class="fa-solid fa-right-left" aria-hidden="true"></i> ENVIAR AL COMPARADOR</button>'
-      + '<span class="ctor-nota">Agrega estas builds a las pestañas TTK, Estadísticas y Retroceso.</span></div>';
+      + '<span class="ctor-nota">Env\u00edalas para ver su TTK, balas y da\u00f1o en la pesta\u00f1a TTK.</span></div>';
   }
+  if(!builds.length) html += bocetoHtml();
   html += '<div class="ctor-credito">Cálculo de accesorios basado en <a href="https://raymdl.github.io/BF6-Weapon-Analyzer/" target="_blank" rel="noopener">BF6 Weapon Analyzer</a> de Raymdl, usado con su permiso.</div>';
   root.innerHTML = html;
-  if(builds.length){ dibujarLineas(); dibujarGrafico(); }
+  dibujarLineas();
+  /* Panel inferior en movil: bloquea el fondo y muestra la opcion elegida. */
+  document.documentElement.classList.toggle('ctor-modal', !!(abierta && builds.length));
+  var panel = $('ctorOpciones'), elegida = panel && isMobile() && panel.querySelector('.ctor-op.sel');
+  if(elegida) panel.scrollTop = Math.max(0, elegida.offsetTop - 70);
 }
 function filaResumen(b, i){
   var c = cambios(b), act = i === activo;
   return '<div class="ctor-fila' + (act ? ' activa' : '') + '" data-i="' + i + '" style="--c:' + b.color + '">'
     + '<span class="ctor-punto"></span>' + weaponImageHtml(b.fila, 'ctor-mini') + '<div class="ctor-fila-txt"><b>' + esc(b.arma.nombre) + '</b><span>'
-    + esc(c.length ? c.join(' · ') : (b.res ? 'De fábrica' : 'Sin datos de accesorios')) + '</span></div>'
+    + esc(c.length ? c.join(' - ') : (b.res ? 'De fábrica' : 'Sin datos de accesorios')) + '</span></div>'
     + (b.res ? '<span class="ctor-pts">' + b.res.puntos + ' pts</span>' : '')
     + (act ? '<span class="ctor-editando">EDITANDO</span>' : '<button type="button" class="ctor-ico" data-editar="' + i + '" aria-label="Editar"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>')
     + '<button type="button" class="ctor-ico" data-quitar="' + i + '" aria-label="Quitar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>';
 }
 function editorHtml(b){
   var a = b.arma;
-  var h = '<div class="chart-top-bar ctor-cab"><div class="chart-title">Editor · ' + esc(a.nombre) + '</div><div class="chart-top-actions ctor-herr">';
+  var h = '<div class="chart-top-bar ctor-cab"><div class="chart-title">Editor - ' + esc(a.nombre) + '</div><div class="chart-top-actions ctor-herr">';
   if(!b.res){
     return h + '</div></div><div class="ctor-nota">Esta arma todavía no tiene datos de accesorios. Se compara con sus estadísticas base.</div>';
   }
@@ -3364,7 +3438,7 @@ function opcionesHtml(b, r){
   if(!r) return '';
   var limite = M.LIMITE_PUNTOS || 100, actual = r.opciones.find(function(x){ return x.valor === r.valor; }) || { puntos: 0 };
   var filas = r.opciones.map(function(o){
-    var sel = o.valor === r.valor, nombre = o.valor === 'none' ? 'Ninguno' : (r.compartida && o.tipo ? o.tipo + ' · ' : '') + nombreEs(o.en);
+    var sel = o.valor === r.valor, nombre = o.valor === 'none' ? 'Ninguno' : (r.compartida && o.tipo ? o.tipo + ' - ' : '') + nombreEs(o.en);
     var total = b.res.puntos - (actual.puntos || 0) + (o.puntos || 0), excede = !sel && total > limite, bloq = o.disponible === false || excede;
     var ef = sel || bloq ? '' : (efectos(b, r.id, o.valor) || '<span class="ctor-ef">Sin cambios en estadísticas</span>');
     return '<button type="button" class="ctor-op' + (sel ? ' sel' : '') + '" data-op="' + esc(o.valor) + '"' + (bloq ? ' disabled' : '') + '>'
@@ -3372,123 +3446,93 @@ function opcionesHtml(b, r){
       + (o.disponible === false ? ' <em class="bloq">' + esc(requiereTxt(o.requiere)) + '</em>' : excede ? ' <em class="bloq">supera ' + limite + ' pts (' + total + ')</em>' : '') + '</span>'
       + '<span class="ctor-op-pts">' + (o.puntos ? o.puntos + ' pts' : '') + '</span><span class="ctor-op-ef">' + ef + '</span></button>';
   }).join('');
-  return '<div class="ctor-opciones"><div class="ctor-op-head"><b>' + esc(r.nombre) + '</b><span class="ctor-nota">Lo que cambia cada accesorio frente a lo que tienes ahora</span>'
+  return '<div class="ctor-fondo" id="ctorFondo"></div><div class="ctor-opciones" id="ctorOpciones"><div class="ctor-op-head" id="ctorOpHead"><b>' + esc(r.nombre) + '</b><span class="ctor-op-tot">' + b.res.puntos + ' / ' + limite + ' pts</span><span class="ctor-nota">Lo que cambia cada accesorio frente a lo que tienes ahora</span>'
     + '<button type="button" class="ctor-ico" id="ctorCerrarOp" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>' + filas + '</div>';
 }
-/* Igual que la pestaña Estadísticas: orden de mejor a peor, barra en escala verde (mejor) a rojo (peor) y diferencia contra el mejor. */
-function barrasHtml(){
-  return '<div class="stats-all ctor-atrib">' + BARRAS.map(function(p){
-    var k = p[0];
-    var es = builds.map(function(b, idx){ var v = stats(b)[k]; return { b: b, idx: idx, num: typeof v === 'number' ? v : null }; });
-    var nums = es.filter(function(e){ return e.num !== null; }).map(function(e){ return e.num; });
-    var best = nums.length ? Math.max.apply(null, nums) : null, worst = nums.length ? Math.min.apply(null, nums) : null, multi = nums.length > 1;
-    es.forEach(function(e){ e.rank = e.num === null ? null : 1 + nums.filter(function(n){ return n > e.num; }).length; });
-    es.sort(function(a, c){ if(a.num === null) return 1; if(c.num === null) return -1; return (c.num - a.num) || (a.idx - c.idx); });
-    var filas = es.map(function(e){
-      var level = 'neutral', fill = '', hue = null;
-      if(e.num !== null){ if(nums.length === 1) level = 'best'; else if(best === worst) level = 'neutral'; else if(e.num === best) level = 'best'; else if(e.num === worst) level = 'worst'; }
-      if(e.num !== null && multi && best !== worst){ hue = Math.round((e.num - worst) / (best - worst) * 120); fill = 'background:linear-gradient(90deg,hsla(' + hue + ',75%,45%,0.15),hsl(' + hue + ',80%,48%));'; }
-      var delta = '';
-      if(e.num !== null && multi){
-        if(e.num === best) delta = '<span class="stat-delta-tag best" title="El mejor valor de la selección">MEJOR</span>';
-        else { var pct = best ? Math.abs((e.num - best) / best * 100) : 0, r = pct < 10 ? pct.toFixed(1) : String(Math.round(pct));
-          delta = '<span class="stat-delta-tag" style="' + (hue !== null ? 'color:hsl(' + hue + ',75%,60%);' : '') + '" title="Diferencia contra el mejor valor">' + (Number(r) === 0 ? '≈0%' : '−' + r + '%') + '</span>'; }
-      }
-      var f = statsFab(e.b)[k], d = (e.num !== null && typeof f === 'number') ? e.num - f : 0;
-      var sub = d ? '<span class="' + (d > 0 ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '') + d + '</span> vs fábrica' : 'De fábrica';
-      return '<div class="stat-row">' + (multi && e.rank !== null ? '<div class="stat-rank' + (e.rank === 1 ? ' first' : '') + '">#' + e.rank + '</div>' : '<div class="stat-rank"></div>')
-        + weaponImageHtml(e.b.fila, 'stat-img', 'align-self:center; flex-shrink:0;')
-        + '<div class="stat-name"><b><i class="ctor-dot" style="background:' + e.b.color + '"></i>' + esc(e.b.arma.nombre) + '</b><span class="stat-clase">' + sub + '</span></div>'
-        + '<div class="stat-bar">' + (e.num !== null ? '<div class="stat-fill ' + level + '" style="width:' + Math.max(12, Math.min(100, e.num)) + '%;' + fill + '">' + e.num + '</div>' : '<div class="stat-fill neutral" style="width:32px;">—</div>') + '</div>'
-        + '<div class="stat-delta">' + delta + '</div></div>';
-    }).join('');
-    return '<section class="stats-all-stat"><div class="stats-all-stat-head"><span class="stats-all-stat-name">' + p[1] + '</span><span class="stats-all-dir" title="Más es mejor">↑</span></div><div class="stats-all-rows">' + filas + '</div></section>';
-  }).join('') + '</div>';
+/* ---------- Hoja comparativa: lo que gana y pierde cada build ---------- */
+var HOJA_ATRIB = [['cadera', 'Disparo de cadera', 'Cadera'], ['precision', 'Precisión', 'Precisión'], ['control', 'Control', 'Control'], ['movilidad', 'Movilidad', 'Movilidad']];
+var HOJA_STATS = [['cadencia', 'Cadencia', 'RPM', 'Cadencia'], ['velBala', 'Vel. de bala', 'm/s', 'Vel. bala'], ['velApuntar', 'Vel. al apuntar', 'ms', 'Apuntar'], ['velRecarga', 'Vel. de recarga', 'ms', 'Recarga'],
+  ['recoilVertical', 'Recoil vertical', '°', 'Ret. V'], ['recoilHorizontal', 'Recoil horizontal', '°', 'Ret. H'], ['cargador', 'Cargador', 'balas', 'Cargador']];
+/* Multiplicador a la cabeza sobre el pecho: con punta hueca o sintetico usa el dato propio del arma. */
+function multCabeza(b){
+  var a = b.arma, d = a.dano || {};
+  var base = (d.cabeza && d.pecho && d.pecho.length && d.pecho[0][1]) ? d.cabeza[0][1] / d.pecho[0][1] : null;
+  var t = TIPOS_MUNICION.filter(function(x){ return llevaMunicion(b, x); })[0], v = base;
+  if(t) v = a.municion[t.clave];
+  else if(b.res && b.res.cambiaCurva) v = b.res.multiplicadores.cabeza;
+  else if(b.res && base != null) v = base * b.res.factores.cabeza;
+  if(v == null) return null;
+  return { v: r2(v), f: base == null ? r2(v) : r2(base) };
 }
-function tablaHtml(){
-  var h = '<div class="ctor-tabla-wrap"><table class="data-table ctor-tabla"><thead><tr><th>Estadística</th>' + builds.map(function(b){ return '<th style="color:' + b.color + '">' + esc(b.arma.nombre) + '</th>'; }).join('') + '</tr></thead><tbody>';
-  TABLA.forEach(function(t){
-    var vals = builds.map(function(b){ return stats(b)[t[0]]; }), nums = vals.filter(function(v){ return typeof v === 'number'; });
-    var mejor = nums.length > 1 ? (MENOR_MEJOR[t[0]] ? Math.min.apply(null, nums) : Math.max.apply(null, nums)) : null;
-    h += '<tr><td>' + t[1] + ' <span class="ctor-u">' + t[2] + '</span></td>' + vals.map(function(v, i){
+function balance(b){
+  var g = [], p = [], s = stats(b), f = statsFab(b);
+  if(b.res) Object.keys(CORTO).forEach(function(k){
+    if(typeof s[k] !== 'number' || typeof f[k] !== 'number' || Math.abs(s[k] - f[k]) < 0.005) return;
+    ((MENOR_MEJOR[k] ? s[k] < f[k] : s[k] > f[k]) ? g : p).push(CORTO[k]);
+  });
+  var m = multCabeza(b);
+  if(m && Math.abs(m.v - m.f) >= 0.005) (m.v > m.f ? g : p).push('Cabeza');
+  return { g: g, p: p };
+}
+function listaCorta(a){ return a.slice(0, 3).join(', ') + (a.length > 3 ? ' +' + (a.length - 3) : ''); }
+function deltaHtml(d, mejora){ if(!d) return ''; return '<span class="' + (mejora ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '−') + Math.abs(d) + '</span>'; }
+function mejorDe(vals, menor){ var n = vals.filter(function(v){ return typeof v === 'number'; }); if(n.length < 2) return null; var a = Math.max.apply(null, n), c = Math.min.apply(null, n); return a === c ? null : (menor ? c : a); }
+function barraHtml(v, f){
+  if(typeof v !== 'number') return '';
+  var fab = typeof f === 'number' ? f : v, cl = function(x){ return Math.max(0, Math.min(100, x)); }, base = cl(Math.min(v, fab)), resto = cl(Math.max(v, fab)) - base;
+  return '<div class="hj-bar"><i class="hj-b" style="width:' + base + '%"></i>' + (resto > 0 ? '<i class="' + (v > fab ? 'hj-g' : 'hj-r') + '" style="left:' + base + '%;width:' + resto + '%"></i>' : '') + '</div>';
+}
+function nombreFila(largo, corto, u){ return '<th class="hj-st" scope="row"><span class="t-long">' + largo + '</span><span class="t-short">' + corto + '</span>' + (u ? ' <em>' + u + '</em>' : '') + '</th>'; }
+function hojaHtml(){
+  var col = builds.length + 1;
+  var h = '<div class="hj-wrap"><table class="hj"><thead><tr><th class="hj-st"></th>' + builds.map(function(b, i){
+    var bl = balance(b), res = !b.res ? '<span class="hj-res">Sin datos de accesorios</span>'
+      : (bl.g.length || bl.p.length) ? (bl.g.length ? '<span class="hj-res pos">Gana: ' + esc(listaCorta(bl.g)) + '</span>' : '') + (bl.p.length ? '<span class="hj-res neg">Pierde: ' + esc(listaCorta(bl.p)) + '</span>' : '')
+      : '<span class="hj-res">De fábrica</span>';
+    return '<th class="hj-arma' + (i === activo ? ' act' : '') + '"><b><i class="ctor-dot" style="background:' + b.color + '"></i>' + esc(b.arma.nombre) + '</b>' + (b.res ? '<span class="hj-pts">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span>' : '') + res + '</th>';
+  }).join('') + '</tr></thead><tbody>';
+  var grupo = function(t){ return '<tr class="hj-g-row"><th colspan="' + col + '"><span>' + t + '</span></th></tr>'; };
+  h += grupo('Atributos');
+  HOJA_ATRIB.forEach(function(t){
+    var vals = builds.map(function(b){ return stats(b)[t[0]]; }), mejor = mejorDe(vals, false);
+    h += '<tr>' + nombreFila(t[1], t[2]) + vals.map(function(v, i){
       var f = statsFab(builds[i])[t[0]], d = typeof v === 'number' && typeof f === 'number' ? r2(v - f) : 0;
-      return '<td class="' + (v === mejor ? 'cell-best' : '') + '">' + (v == null ? '—' : v) + (d ? ' <i class="' + ((MENOR_MEJOR[t[0]] ? d < 0 : d > 0) ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '') + d + '</i>' : '') + '</td>';
+      return '<td><div class="hj-v"><b class="' + (v === mejor ? 'hj-best' : '') + '">' + (v == null ? '—' : v) + '</b>' + deltaHtml(d, d > 0) + '</div>' + barraHtml(v, f) + '</td>';
     }).join('') + '</tr>';
   });
+  h += grupo('Estadísticas');
+  HOJA_STATS.forEach(function(t){
+    var menor = !!MENOR_MEJOR[t[0]], vals = builds.map(function(b){ return stats(b)[t[0]]; }), mejor = mejorDe(vals, menor);
+    h += '<tr>' + nombreFila(t[1], t[3], t[2]) + vals.map(function(v, i){
+      var f = statsFab(builds[i])[t[0]], d = typeof v === 'number' && typeof f === 'number' ? r2(v - f) : 0;
+      return '<td><div class="hj-v"><b class="' + (v === mejor ? 'hj-best' : '') + '">' + (v == null ? '—' : v) + '</b>' + deltaHtml(d, menor ? d < 0 : d > 0) + '</div></td>';
+    }).join('') + '</tr>';
+  });
+  var ms = builds.map(multCabeza), vm = ms.map(function(m){ return m ? m.v : null; }), mm = mejorDe(vm, false);
+  h += '<tr>' + nombreFila('Multiplicador a la cabeza', 'Cabeza') + ms.map(function(m){
+    if(!m) return '<td>—</td>';
+    var d = r2(m.v - m.f);
+    return '<td><div class="hj-v"><b class="' + (m.v === mm ? 'hj-best' : '') + '">×' + m.v.toFixed(2) + '</b>' + deltaHtml(d, d > 0) + '</div></td>';
+  }).join('') + '</tr>';
   return h + '</tbody></table></div>';
 }
-function graficoHtml(){
-  var seg = function(grupo, op, act, txt){ return '<button type="button" class="seg-btn' + (act ? ' active' : '') + '" data-' + grupo + '="' + op + '">' + txt + '</button>'; };
-  var municiones = builds.some(function(b){ return b.arma.municion && (b.arma.municion.puntaHueca || b.arma.municion.sintetico); });
-  return '<div class="chart-top-bar"><div class="chart-title">Gráfico de ' + (vista.modo === 'Dano' ? 'daño' : vista.modo === 'Balas' ? 'balas' : 'TTK') + '</div><div class="chart-top-actions">'
-    + '<div class="seg-group">' + seg('gmodo', 'TTK', vista.modo === 'TTK', 'TTK') + seg('gmodo', 'Balas', vista.modo === 'Balas', 'Balas') + seg('gmodo', 'Dano', vista.modo === 'Dano', 'Daño') + '</div>'
-    + '<div class="seg-group">' + seg('gzona', 'cabeza', vista.zona === 'cabeza', 'Cabeza') + seg('gzona', 'pecho', vista.zona === 'pecho', 'Pecho') + seg('gzona', 'estomago', vista.zona === 'estomago', 'Estómago') + '</div>'
-    + '<label class="ctor-sel">Vida <input type="number" id="ctorVida" min="1" max="999" value="' + vista.vida + '" style="width:64px"></label></div></div>'
-    + (vista.zona === 'cabeza' && municiones ? '<div class="ctor-municion"><span>A la cabeza, también con:</span>'
-      + '<label><input type="checkbox" id="ctorPH"' + (vista.ph ? ' checked' : '') + '> <i class="ctor-trazo rayado"></i> Punta hueca</label>'
-      + '<label><input type="checkbox" id="ctorSin"' + (vista.sin ? ' checked' : '') + '> <i class="ctor-trazo punteado"></i> Sintético</label></div>' : '')
-    + '<div class="chart-container ctor-chart"><canvas id="ctor' + vista.modo + '" role="img" aria-label="Gráfico del constructor"></canvas></div>'
-    + '<div class="chart-legend-mobile" id="ctorLeyenda"></div>';
-}
 
-/* ---------- Gráfico ---------- */
-function serie(b, dano){
-  var cad = stats(b).cadencia || (b.arma.base && b.arma.base.cadencia), vida = vista.vida;
-  return dano.map(function(d, m){
-    if(d == null) return { x: m, y: null };
-    if(vista.modo === 'Dano') return { x: m, y: d };
-    var balas = Math.ceil(vida / d - 1e-9);
-    return { x: m, y: vista.modo === 'Balas' ? balas : (cad ? Math.round(60 / cad * (balas - 1) * 1000) : null) };
-  });
-}
-/* Igual que la pestaña TTK: línea vertical bajo el cursor, la tarjeta "Clasificado a X m" (showHoverTooltip)
-   y las leyendas con botones (mismo estilo que renderMobileLegend). El id del canvas (ctorTTK, ctorBalas, ctorDano)
-   le dice a showHoverTooltip qué unidades usar y en qué orden clasificar. */
-var ctorHover = { id: 'ctorHover',
-  afterEvent: function(ch, args){
-    var e = args.event;
-    if(e.type === 'mouseout' || !args.inChartArea){ if(ch.$hx != null){ ch.$hx = null; ch.draw(); } if(ch.$tt) ch.$tt.style.display = 'none'; return; }
-    if(['mousemove', 'touchmove', 'touchstart', 'click'].indexOf(e.type) < 0) return;
-    ch.$hx = e.x; showHoverTooltip(ch, e); ch.draw();
-  },
-  afterDraw: function(ch){
-    if(ch.$hx == null) return;
-    var xs = ch.scales.x, ys = ch.scales.y, v = Math.max(xs.min, Math.min(xs.max, Math.round(xs.getValueForPixel(ch.$hx)))), x = xs.getPixelForValue(v), c = ch.ctx;
-    c.save(); c.beginPath(); c.moveTo(x, ys.top); c.lineTo(x, ys.bottom); c.lineWidth = 1; c.strokeStyle = 'rgba(255,255,255,0.5)'; c.stroke(); c.restore();
-  } };
-function leyenda(){
-  var cont = $('ctorLeyenda'); if(!cont || !chart) return;
-  cont.innerHTML = ''; cont.style.display = '';
-  chart.data.datasets.forEach(function(ds, i){
-    var chip = document.createElement('div'); chip.className = 'legend-chip';
-    var bg = (Array.isArray(ds.borderDash) && ds.borderDash.length) ? 'repeating-linear-gradient(90deg,' + ds.borderColor + ' 0 4px,transparent 4px 7px)' : ds.borderColor;
-    chip.innerHTML = '<span class="lc-line" style="background:' + bg + '"></span><span class="lc-text" title="' + esc(ds.label) + '">' + esc(ds.label) + '</span>';
-    if(!chart.isDatasetVisible(i)) chip.classList.add('dimmed');
-    chip.onclick = function(){ var v = chart.isDatasetVisible(i); chart.setDatasetVisibility(i, !v); chart.update(); chip.classList.toggle('dimmed', v); };
-    cont.appendChild(chip);
-  });
-}
-function dibujarGrafico(){
-  var cv = document.querySelector('#ctorRoot .ctor-chart canvas'); if(!cv || typeof Chart === 'undefined') return;
-  var sets = [];
-  builds.forEach(function(b){
-    var z = danoZonas(b), d = z[vista.zona];
-    if(d) sets.push({ label: b.arma.nombre, data: serie(b, d), borderColor: b.color, backgroundColor: b.color, borderWidth: 2.5 });
-    if(vista.zona !== 'cabeza' || !z.pecho) return;
-    var mun = b.arma.municion || {}, actual = b.res ? b.res.seleccion.municion : null;
-    [['puntaHueca', 'Punta hueca', vista.ph, [7, 4], 'hollow_pt'], ['sintetico', 'Sintético', vista.sin, [2, 4], 'synthetic']].forEach(function(t){
-      if(!t[2] || !mun[t[0]] || actual === t[4]) return;
-      sets.push({ label: b.arma.nombre + ' · ' + t[1], data: serie(b, z.pecho.map(function(v){ return v == null ? null : r2(v * mun[t[0]]); })), borderColor: b.color, backgroundColor: b.color, borderDash: t[3], borderWidth: 2 });
-    });
-  });
-  if(chart){ chart.destroy(); chart = null; }
-  chart = new Chart(cv.getContext('2d'), { type: 'line', data: { datasets: sets }, plugins: [ctorHover], options: {
-    responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
-    elements: { point: { radius: 0 }, line: { borderWidth: 2 } }, interaction: { mode: 'index', intersect: false },
-    plugins: { legend: { display: false }, tooltip: { enabled: false } },
-    scales: { x: { type: 'linear', min: 0, max: 200, ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: 'Distancia (m)', color: 'white' } },
-      y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: vista.modo === 'TTK' ? 'Tiempo (ms)' : vista.modo === 'Balas' ? 'Balas' : 'Daño', color: 'white' } } } } });
-  leyenda();
+/* ---------- Boceto inicial: lo que se ve antes de agregar la primera arma ---------- */
+var BOCETO_RANURAS = [['laser', 'Láser'], ['mira', 'Mira'], ['accesorioOptico', 'Accesorio óptico'], ['boca', 'Boca'], ['ergonomia', 'Ergonomía'], ['luz', 'Luz'], ['canon', 'Cañón'], ['canonInferior', 'Cañón inferior'], ['cargador', 'Cargador'], ['municion', 'Munición']];
+function bocetoHtml(){
+  var vacio = '—', anchos = [[46, 62], [28, 40], [58, 34], [52, 66]], cols = ['Arma 1', 'Arma 2'];
+  var editor = '<div class="ctor-editor" id="ctorEditor"><svg class="ctor-lineas" id="ctorLineas" aria-hidden="true"></svg><div class="ctor-img" id="ctorImg"><div class="ctor-arma">' + WEAPON_SVG + '</div></div>'
+    + BOCETO_RANURAS.map(function(r){ return '<div class="ctor-ranura vacia" data-ranura="' + r[0] + '" style="grid-area:' + LUGAR[r[0]].area + '"><span>' + r[1] + '</span><b>' + vacio + '</b></div>'; }).join('') + '</div>';
+  var tabla = '<div class="hj-wrap"><table class="hj"><thead><tr><th class="hj-st"></th>' + cols.map(function(c){ return '<th class="hj-arma"><b>' + c + '</b><span class="hj-pts">' + vacio + ' / 100 pts</span><span class="hj-res">Gana / Pierde</span></th>'; }).join('') + '</tr></thead><tbody>';
+  var grupo = function(t){ return '<tr class="hj-g-row"><th colspan="3"><span>' + t + '</span></th></tr>'; };
+  tabla += grupo('Atributos');
+  HOJA_ATRIB.forEach(function(t, i){ tabla += '<tr>' + nombreFila(t[1], t[2]) + anchos[i].map(function(a){ return '<td><div class="hj-v"><b>' + vacio + '</b></div><div class="hj-bar"><i class="hj-b" style="width:' + a + '%"></i></div></td>'; }).join('') + '</tr>'; });
+  tabla += grupo('Estadísticas');
+  HOJA_STATS.forEach(function(t){ tabla += '<tr>' + nombreFila(t[1], t[3], t[2]) + '<td><div class="hj-v"><b>' + vacio + '</b></div></td><td><div class="hj-v"><b>' + vacio + '</b></div></td></tr>'; });
+  tabla += '<tr>' + nombreFila('Multiplicador a la cabeza', 'Cabeza') + '<td><div class="hj-v"><b>' + vacio + '</b></div></td><td><div class="hj-v"><b>' + vacio + '</b></div></td></tr></tbody></table></div>';
+  return '<div class="ctor-boceto" aria-hidden="true"><div class="chart-top-bar ctor-cab"><div class="chart-title">Editor de accesorios</div></div>' + editor
+    + '<div class="chart-top-bar"><div class="chart-title">Comparación</div></div>' + tabla
+    + '<div class="ctor-acciones"><button type="button" class="add-weapon-trigger" disabled tabindex="-1"><i class="fa-solid fa-right-left" aria-hidden="true"></i> ENVIAR AL COMPARADOR</button></div></div>';
 }
 
 /* ---------- Líneas del editor ---------- */
@@ -3518,8 +3562,8 @@ function enviar(){
   builds.forEach(function(b, i){
     var a = b.arma, z = danoZonas(b), c = cambios(b);
     var etiqueta = c.length ? 'Constructor ' + (i + 1) : 'Base';
-    var fake = { nombre: a.nombre + ' · ' + etiqueta + ' #' + b.uid, categoria: a.categoria, imagen: a.imagen, municion: a.municion,
-      base: Object.assign({}, a.base || {}, b.res ? b.res.stats : {}), dano: {}, equipamientos: [] };
+    var fake = { nombre: a.nombre + ' - ' + etiqueta + ' #' + b.uid, categoria: a.categoria, imagen: a.imagen, municion: a.municion,
+      base: Object.assign({}, a.base || {}, stats(b)), cadenciaTTK: (a.cadenciaTTK && stats(b).cadencia === statsFab(b).cadencia) ? a.cadenciaTTK : undefined, dano: {}, equipamientos: [] };
     ['cabeza', 'pecho', 'estomago'].forEach(function(k){ if(z[k]) fake.dano[k] = aTramos(z[k]); });
     var fila = bf6Filas({ esquema: doc().esquema, armas: [fake] })[0];
     fila[HEADERS.ARMA] = a.nombre + (c.length ? ' (' + c.join(', ') + ')' : '');
@@ -3535,19 +3579,17 @@ function enviar(){
 /* ---------- Eventos ---------- */
 document.addEventListener('click', function(e){
   var root = $('ctorRoot'); if(!root || !root.contains(e.target)) return;
-  var t = e.target.closest('button, .ctor-fila'); if(!t) return;
+  var t = e.target.closest('button, .ctor-fila, #ctorLimpiar, #ctorFondo'); if(!t) return;
   var b = builds[activo];
   if(t.id === 'ctorAgregar'){ openAddWeaponModal('constructor'); return; }
   if(t.id === 'ctorLimpiar'){ builds = []; activo = 0; abierta = null; render(); return; }
   if(t.id === 'ctorEnviar'){ enviar(); return; }
   if(t.id === 'ctorFabrica' && b){ b.sel = M.seleccionPorDefecto(b.arma.idAnalizador); b.partir = 'base'; abierta = null; calcular(b); render(); return; }
-  if(t.id === 'ctorCerrarOp'){ abierta = null; render(); return; }
+  if(t.id === 'ctorCerrarOp' || t.id === 'ctorFondo'){ abierta = null; render(); return; }
   if(t.dataset.quitar != null){ quitar(+t.dataset.quitar); return; }
   if(t.dataset.editar != null){ activo = +t.dataset.editar; abierta = null; render(); return; }
   if(t.dataset.ranura){ abierta = abierta === t.dataset.ranura ? null : t.dataset.ranura; render(); return; }
-  if(t.dataset.op != null && b && abierta){ b.sel[abierta] = t.dataset.op; calcular(b); render(); return; }
-  if(t.dataset.gmodo){ vista.modo = t.dataset.gmodo; render(); return; }
-  if(t.dataset.gzona){ vista.zona = t.dataset.gzona; render(); return; }
+  if(t.dataset.op != null && b && abierta){ b.sel[abierta] = t.dataset.op; calcular(b); if(isMobile()) abierta = null; render(); return; }
   if(t.classList.contains('ctor-fila') && t.dataset.i != null && +t.dataset.i !== activo){ activo = +t.dataset.i; abierta = null; render(); }
 });
 document.addEventListener('change', function(e){
@@ -3555,10 +3597,14 @@ document.addEventListener('change', function(e){
   var b = builds[activo], id = e.target.id;
   if(id === 'ctorModo' && b){ b.sel.modo = e.target.value; calcular(b); render(); }
   else if(id === 'ctorPartir' && b){ b.partir = e.target.value; b.sel = b.partir === 'base' ? M.seleccionPorDefecto(b.arma.idAnalizador) : selDeEquip(b.arma, b.arma.equipamientos[+b.partir]); abierta = null; calcular(b); render(); }
-  else if(id === 'ctorVida'){ vista.vida = Math.max(1, Math.min(999, parseFloat(e.target.value) || 100)); render(); }
-  else if(id === 'ctorPH'){ vista.ph = e.target.checked; render(); }
-  else if(id === 'ctorSin'){ vista.sin = e.target.checked; render(); }
 });
+
+/* Deslizar hacia abajo la cabecera del panel para cerrarlo (movil). */
+var arrastre = null;
+document.addEventListener('touchstart', function(e){ var c = e.target.closest && e.target.closest('#ctorOpHead'); if(!c || e.target.closest('button') || !isMobile()) return; arrastre = { y: e.touches[0].clientY, d: 0, p: $('ctorOpciones') }; arrastre.p.classList.add('arrastrando'); }, { passive: true });
+document.addEventListener('touchmove', function(e){ if(!arrastre) return; arrastre.d = Math.max(0, e.touches[0].clientY - arrastre.y); arrastre.p.style.transform = 'translateY(' + arrastre.d + 'px)'; }, { passive: true });
+function finArrastre(){ if(!arrastre) return; var a = arrastre; arrastre = null; a.p.classList.remove('arrastrando'); if(a.d > 70){ abierta = null; render(); } else a.p.style.transform = ''; }
+document.addEventListener('touchend', finArrastre); document.addEventListener('touchcancel', finArrastre);
 
 window.bf6Ctor = {
   abrir: function(){ render(); },
