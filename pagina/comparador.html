@@ -1019,11 +1019,11 @@ html.ctor-modal{overflow:hidden}
 .ctor-boceto .hj-b{background:var(--text-faint)}
 .ctor-boceto .hj-v b,.ctor-boceto .ctor-ranura b{color:var(--text-dim);font-weight:600}
 .ctor-boceto .hj .hj-arma b{color:var(--text-faint);font-style:italic}
-.rc-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px 18px;align-items:center;background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:10px 12px;margin-bottom:6px}
+.rc-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 18px;align-items:center;background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:10px 12px;margin-bottom:6px}
 .rc-ctl{display:grid;grid-template-columns:auto minmax(60px,1fr) 58px;gap:8px;align-items:center;font-size:.72rem;font-weight:800;color:var(--text-secondary);text-transform:uppercase}
 .rc-ctl input{width:100%;accent-color:var(--accent);cursor:pointer;margin:0}
 .rc-ctl b{color:var(--accent);text-align:right;font-variant-numeric:tabular-nums;text-transform:none}
-.rc-acc{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rc-acc{grid-column:1 / -1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .rc-sub{display:flex;justify-content:space-between;gap:10px;font-size:.66rem;font-weight:700;color:var(--text-muted);margin:0 2px 8px}
 .rc-plots{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
 .rc-plots.unida{grid-template-columns:minmax(0,640px);justify-content:center}
@@ -3578,7 +3578,7 @@ function cono(puntos){
 }
 /* Zona de cadera: union de un circulo por disparo (centro en la trayectoria, radio = dispersion), como el contorno del Analyzer. */
 function circulosZona(res, X, Y, ppd){
-  var base = res.ref.map(function(p, i){ return { x: X(p.x), y: Y(p.y), r: (res.sps[i] + res.alcance) * ppd }; }).filter(function(c){ return isFinite(c.x) && isFinite(c.y) && isFinite(c.r) && c.r > 0.5; });
+  var base = res.ref.map(function(p, i){ return { x: X(p.x), y: Y(p.y), r: Math.abs(X(p.x + res.sps[i] + res.alcance) - X(p.x)) }; }).filter(function(c){ return isFinite(c.x) && isFinite(c.y) && isFinite(c.r) && c.r > 0.5; });
   var out = [];
   base.forEach(function(c, i){
     if(i){
@@ -3596,8 +3596,8 @@ function pintarZona(ctx, L, dpr, lista, color){
   var borde = capa(); borde.fillStyle = color; circulos(borde, 1.6); borde.globalCompositeOperation = 'destination-out'; borde.fillStyle = '#000'; circulos(borde, 0);
   ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 0.22; ctx.drawImage(relleno.canvas, 0, 0); ctx.globalAlpha = 1; ctx.drawImage(borde.canvas, 0, 0); ctx.restore();
 }
-function medioRango(){ return 1.5 * Math.pow(40 / 1.5, (100 - vista.zoom) / 100); }
-function cm(g){ return Math.tan(g * Math.PI / 180) * vista.distancia * 100; }
+function aumento(){ return Math.pow(4, (vista.zoom - 50) / 50); }
+function medioRango(){ return 1.6 / aumento(); }
 function paso(R){ var b = R / 4, m = Math.pow(10, Math.floor(Math.log10(b))), f = b / m; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * m; }
 var siluetas = null;
 function silueta(ctx, px, py, s){
@@ -3610,13 +3610,13 @@ function dibujar(cv, capas){
   var L = cv.clientWidth; if(!L) return;
   var dpr = window.devicePixelRatio || 1; cv.width = L * dpr; cv.height = L * dpr;
   var ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  var R = medioRango(), ppd = L / (2 * R), ox = L / 2, oy = L * 0.75, X = function(x){ return ox + x * ppd; }, Y = function(y){ return oy - y * ppd; };
+  var R = medioRango(), ppm = L / (2 * R), ox = L / 2, oy = L * 0.6, K = Math.PI / 180, ppd = Math.tan(K) * vista.distancia * ppm, X = function(x){ return ox + Math.tan(x * K) * vista.distancia * ppm; }, Y = function(y){ return oy - Math.tan(y * K) * vista.distancia * ppm; };
   ctx.fillStyle = '#121821'; ctx.fillRect(0, 0, L, L);
-  var alto = Math.atan(1.8 / Math.max(vista.distancia, 1)) * 180 / Math.PI * ppd; silueta(ctx, ox, oy, alto / 1180);
+  var alto = 1.8 * ppm; silueta(ctx, ox, oy, alto / 1180);
   var st = paso(R), fs = L < 340 ? 9 : 10; ctx.lineWidth = 1; ctx.font = '700 ' + fs + 'px sans-serif'; ctx.textBaseline = 'top';
-  var etiqueta = function(v){ return String(Math.round(v * 100) / 100) + '\u00b0'; };
-  for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = X(i * st); ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, L); ctx.stroke(); if(i){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'center'; ctx.fillText(etiqueta(i * st), x, L - fs - 3); } }
-  for(var j = Math.ceil((oy - L) / ppd / st); j * st * ppd <= oy; j++){ var y = Y(j * st); ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(L, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y + 2); } }
+  var etiqueta = function(v){ var a = Math.abs(v); return a < 1 ? Math.round(v * 100) + ' cm' : (Math.round(v * 100) / 100) + ' m'; };
+  for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = ox + i * st * ppm; ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, L); ctx.stroke(); if(i){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'center'; ctx.fillText(etiqueta(i * st), x, L - fs - 3); } }
+  for(var j = Math.ceil((oy - L) / ppm / st); j * st * ppm <= oy; j++){ var y = oy - j * st * ppm; ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(L, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y + 2); } }
   var rPeq = L < 340 ? 1.2 : 1.5, rGr = L < 340 ? 2.2 : 2.8;
   capas.forEach(function(c){ if(vista.modo !== 'patron' && !(vista.modo === 'cono' && vista.apunta === 'hip')) return; ctx.fillStyle = c.color + '66'; c.res.nube.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq, 0, 6.3); ctx.fill(); }); });
   capas.forEach(function(c){
@@ -3645,8 +3645,7 @@ function lista(){
 function pintarControles(){
   var d = $('rcDist'), z = $('rcZoom'); if(!d) return;
   $('rcDistV').textContent = vista.distancia + ' m';
-  $('rcZoomV').textContent = '\u00b1' + (Math.round(medioRango() * 10) / 10) + '\u00b0';
-  $('rcEscala').textContent = '1\u00b0 = ' + Math.round(cm(1)) + ' cm a ' + vista.distancia + ' m';
+  $('rcZoomV').textContent = aumento().toFixed(2) + '\u00d7';
 }
 function redibujar(){ pintarControles(); document.querySelectorAll('#rcPlots canvas').forEach(function(c){ if(c.$capas) dibujar(c, c.$capas); }); }
 function render(){
@@ -3659,7 +3658,7 @@ function render(){
     + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-apunta', 'ads', 'ADS', vista.apunta === 'ads') + seg('data-rc-apunta', 'hip', 'Cadera', vista.apunta === 'hip') + '</div><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patr\u00f3n', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', vista.apunta === 'hip' ? 'Zona' : 'Cono', vista.modo === 'cono') + '</div>'
     + '<button type="button" class="recoil-param-btn' + (vista.unir ? ' active' : '') + '" id="rcUnir"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
     + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra r\u00e1faga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra r\u00e1faga</button></div></div>'
-    + '<div class="rc-sub"><span>' + (vista.apunta === 'hip' ? 'Desde la cadera y quieto' : 'Apuntando y quieto') + '</span><span id="rcEscala"></span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
+    + '<div class="rc-sub"><span>' + (vista.apunta === 'hip' ? 'Desde la cadera y quieto' : 'Apuntando y quieto') + '</span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
   cont.innerHTML = h;
   var plots = $('rcPlots'), items = lista(), validas = [];
   items.forEach(function(x){ if(x.a){ x.res = simular(x.a); validas.push(x); } });
