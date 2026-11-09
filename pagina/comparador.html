@@ -3564,7 +3564,7 @@ function simular(a){
     for(var s = 1; s <= RUNS; s++) nube = nube.concat(pasada(Sim.genRecoilPts(w, (s * 0x9e3779b9) >>> 0, n), Sim.mulberry32((Sim.whash(w.id) ^ (s * 0x6c62272e)) >>> 0)));
     var res = { ref: ref, nube: nube, spray: pasada(ref, Sim.mulberry32((Sim.whash(w.id) ^ vista.sem ^ 0xdeadbeef) >>> 0)), n: n, sp0: sp[0], spN: sp[n - 1] };
   } finally { Sim.setSimContext({ aimState: 'ads' }); }
-  res.cono = cono(res.nube);
+  res.cono = cono(res.nube); res.elipse = elipse(res.nube);
   if(cache.size > 200) cache.clear();
   cache.set(key, res); return res;
 }
@@ -3575,6 +3575,16 @@ function cono(puntos){
   var angs = puntos.filter(function(p){ return Math.hypot(p.x, p.y) >= largo * 0.15; }).map(function(p){ return Math.atan2(p.x, p.y); }).sort(function(a, b){ return a - b; });
   if(!angs.length) return { a: 0, b: 0, c: 0, r: largo };
   return { a: percentil(angs, 0.05), b: percentil(angs, 0.95), c: percentil(angs, 0.5), r: largo };
+}
+/* Zona de cadera: elipse orientada que encierra cerca del 90 % de las balas. */
+function elipse(puntos){
+  var n = puntos.length, mx = 0, my = 0, xx = 0, yy = 0, xy = 0;
+  puntos.forEach(function(p){ mx += p.x; my += p.y; }); mx /= n; my /= n;
+  puntos.forEach(function(p){ var dx = p.x - mx, dy = p.y - my; xx += dx * dx; yy += dy * dy; xy += dx * dy; }); xx /= n; yy /= n; xy /= n;
+  var t = Math.atan2(2 * xy, xx - yy) / 2, m = (xx + yy) / 2, d = Math.sqrt(Math.pow((xx - yy) / 2, 2) + xy * xy), l1 = Math.max(m + d, 1e-9), l2 = Math.max(m - d, 1e-9), c = Math.cos(t), s = Math.sin(t);
+  var dist = puntos.map(function(p){ var dx = p.x - mx, dy = p.y - my, u = dx * c + dy * s, v = -dx * s + dy * c; return Math.sqrt(u * u / l1 + v * v / l2); }).sort(function(a, b){ return a - b; });
+  var k = percentil(dist, 0.9);
+  return { x: mx, y: my, a: Math.sqrt(l1) * k, b: Math.sqrt(l2) * k, t: t, k: k, l1: l1, l2: l2 };
 }
 function medioRango(){ return 1.5 * Math.pow(40 / 1.5, (100 - vista.zoom) / 100); }
 function cm(g){ return Math.tan(g * Math.PI / 180) * vista.distancia * 100; }
@@ -3601,6 +3611,13 @@ function dibujar(cv, capas){
   capas.forEach(function(c){ if(vista.modo !== 'patron') return; ctx.fillStyle = c.color + '66'; c.res.nube.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq, 0, 6.3); ctx.fill(); }); });
   capas.forEach(function(c){
     if(vista.modo === 'patron'){ c.res.spray.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rGr, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); ctx.lineWidth = 0.7; ctx.strokeStyle = '#000'; ctx.stroke(); }); return; }
+    if(vista.modo === 'cono' && vista.apunta === 'hip'){
+      var z = c.res.elipse;
+      ctx.beginPath(); ctx.ellipse(X(z.x), Y(z.y), z.a * ppd, z.b * ppd, -z.t, 0, Math.PI * 2);
+      ctx.fillStyle = c.color + '40'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = c.color; ctx.stroke();
+      ctx.beginPath(); ctx.arc(X(z.x), Y(z.y), 3, 0, 6.3); ctx.fillStyle = c.color; ctx.fill();
+      return;
+    }
     if(vista.modo === 'cono'){
       var k = c.res.cono, cr = k.r * ppd, borde = function(t){ return [ox + Math.sin(t) * cr, oy - Math.cos(t) * cr]; };
       ctx.beginPath(); ctx.moveTo(ox, oy);
@@ -3631,7 +3648,7 @@ function render(){
   var seg = function(a, v, t, on){ return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" ' + a + '="' + v + '">' + t + '</button>'; };
   var h = '<div class="rc-bar"><label class="rc-ctl"><span>Distancia</span><input type="range" id="rcDist" min="5" max="30" step="1" value="' + vista.distancia + '" aria-label="Distancia"><b id="rcDistV"></b></label>'
     + '<label class="rc-ctl"><span>Zoom</span><input type="range" id="rcZoom" min="0" max="100" step="1" value="' + vista.zoom + '" aria-label="Zoom"><b id="rcZoomV"></b></label>'
-    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-apunta', 'ads', 'ADS', vista.apunta === 'ads') + seg('data-rc-apunta', 'hip', 'Cadera', vista.apunta === 'hip') + '</div><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patr\u00f3n', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', 'Cono', vista.modo === 'cono') + '</div>'
+    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-apunta', 'ads', 'ADS', vista.apunta === 'ads') + seg('data-rc-apunta', 'hip', 'Cadera', vista.apunta === 'hip') + '</div><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patr\u00f3n', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', vista.apunta === 'hip' ? 'Zona' : 'Cono', vista.modo === 'cono') + '</div>'
     + '<button type="button" class="recoil-param-btn' + (vista.unir ? ' active' : '') + '" id="rcUnir"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
     + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra r\u00e1faga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra r\u00e1faga</button></div></div>'
     + '<div class="rc-sub"><span>' + (vista.apunta === 'hip' ? 'Desde la cadera y quieto' : 'Apuntando y quieto') + '</span><span id="rcEscala"></span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
