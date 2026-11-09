@@ -784,6 +784,7 @@ function htmlEquipMotor(a, eq, i) {
   return `<div class="card">
       <div class="row"><div class="field" style="flex:1"><label>Nombre que verán en la página</label>${inputTxt(`equipamientos.${i}.nombre`, eq.nombre)}</div>
         <button class="btn small" data-equp="${i}" ${i === 0 ? 'disabled' : ''}>↑</button><button class="btn small danger" data-eqdel="${i}">Eliminar</button></div>
+      <div class="grid">${campo('Cargador (balas)', inputNum(`equipamientos.${i}.cargador`, eq.cargador, a.municion?.cargador ?? ''), 'Déjalo vacío para usar el cargador del arma base.')}</div>
       ${antiguo ? `<div class="aviso">Este equipamiento se cargó a mano antes del cálculo automático. Sus valores guardados no se tocan hasta que elijas:
         <div class="row" style="margin-top:6px"><button class="btn small primary" data-eqconv="${i}">Usar los valores calculados</button>
         <button class="btn small" data-eqkeep="${i}">Conservar mis valores como manuales</button></div></div>` : ''}
@@ -803,6 +804,7 @@ function htmlEquipManual(a, eq, i) {
   return `<div class="card">
       <div class="row"><div class="field" style="flex:1"><label>Nombre que verán en la página</label>${inputTxt(`equipamientos.${i}.nombre`, eq.nombre)}</div>
         <button class="btn small" data-equp="${i}" ${i === 0 ? 'disabled' : ''}>↑</button><button class="btn small danger" data-eqdel="${i}">Eliminar</button></div>
+      <div class="grid">${campo('Cargador (balas)', inputNum(`equipamientos.${i}.cargador`, eq.cargador, a.municion?.cargador ?? ''), 'Déjalo vacío para usar el cargador del arma base.')}</div>
       <h3>Estadísticas propias</h3><p class="note">Déjalas vacías para usar las de la Base.</p>
       <div class="grid">${stats.map(s => campo(`${s.nombre}${s.unidad ? ' (' + s.unidad + ')' : ''}`, inputNum(`equipamientos.${i}.estadisticas.${s.id}`, eq.estadisticas?.[s.id], a.base?.[s.id] ?? ''))).join('')}</div>
       <h3>Daño</h3>${eq.dano
