@@ -1168,7 +1168,7 @@ window.__csvCached = null;
 try { window.__csvCached = localStorage.getItem(window.CSV_CACHE_KEY); } catch(e){}
 function bf6Fetch(url){ return fetch(url, { cache: 'no-cache' }).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); }); }
 window.__csvPromise = bf6Fetch(URL_JSON).catch(function(){ return bf6Fetch(URL_JSON_RESPALDO); });
-/* Nombres de los accesorios en español (se editan en el panel, sección Accesorios). */
+/* Nombres de los accesorios en espa\u00f1ol (se editan en el panel, secci\u00f3n Accesorios). */
 var URL_ACC = "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/data/accesorios.json";
 window.__bf6Acc = null;
 try { window.__bf6Acc = JSON.parse(localStorage.getItem('bf6_acc_cache_v1') || 'null'); } catch(e){}
@@ -1560,7 +1560,7 @@ let yVal;
 if(chartKey === 'Dano'){ yVal = dano; }
 else if(!(st.precision > 0)){ yVal = null; /* con 0 % nunca se mata */ }
 else {
-/* Disparos necesarios = impactos / precisión; TTK = (disparos - 1) x tiempo entre disparos */
+/* Disparos necesarios = impactos / precisi\u00f3n; TTK = (disparos - 1) x tiempo entre disparos */
 const disparos = Math.ceil(st.health / dano - 1e-9) / Math.min(st.precision, 1);
 if(chartKey === 'Balas') yVal = disparos;
 else yVal = (st.precision >= 1 && Math.abs(st.health - 100) <= 0.001) ? parseFloat(rawVal) : (disparos - 1) * getApproxRPM(row, clase);
@@ -1712,7 +1712,7 @@ function getChartKeyFromCanvasId(canvasId){ const idLower=(canvasId||'').toLower
 function buildAdvancedPanel(S){
 let ammoSection = `<div class="adv-block" id="ammoSection${S}" style="display:none;"></div>`;
 const gfxBlock = `<div class="adv-block"><div class="adv-label">Gr\u00e1fico</div><div class="adv-label">Valores en v\u00e9rtices <span class="info-tip" data-tip="Ocultos: sin etiquetas. Al pasar: valores bajo el cursor. Al fijar: valores del rango fijado. Todos: etiquetas en los v\u00e9rtices de cada l\u00ednea, omitiendo las que se solapan.">i</span></div><div class="seg-group vmode-group" role="radiogroup" aria-label="Valores en v\u00e9rtices"><button type="button" class="seg-btn vmode-btn" data-value="off">Ocultos</button><button type="button" class="seg-btn vmode-btn" data-value="hover">Al pasar</button><button type="button" class="seg-btn vmode-btn" data-value="pin">Al fijar</button><button type="button" class="seg-btn vmode-btn" data-value="all">Todos</button></div><div class="adv-label" style="margin-top:10px">Tooltip <span class="info-tip" data-tip="Muestra una tarjeta con el ranking de todas las armas al pasar el mouse por el gr\u00e1fico. Al activarlo se ocultan los valores en v\u00e9rtices.">i</span></div><div class="gfx-buttons"><label class="hitbox-btn"><input type="checkbox" class="chk-tt"><span class="hitbox-btn-text">Mostrar tooltip</span></label></div><div class="gfx-buttons"><label class="hitbox-btn"><input type="checkbox" class="chk-sil" checked><span class="hitbox-btn-text">Silueta</span></label><label class="hitbox-btn"><input type="checkbox" class="chk-bands"><span class="hitbox-btn-text">Distancias</span></label></div></div>`;
-return `<div class="adv-block"><div class="adv-row"><div class="adv-group"><div class="adv-label">Salud <span class="info-tip" data-tip="Puntos de vida (PV) del jugador">i</span></div><input type="number" class="adv-input adv-salud" value="${effectiveHealth()}" min="1" max="999" aria-label="Salud"></div><div class="adv-group"><div class="adv-label">Placas <span class="info-tip" data-tip="Cada placa agrega +50 PV">i</span></div><div class="seg-group placas-group" role="radiogroup" aria-label="N\u00famero de placas"><button type="button" class="seg-btn placas-btn ${globalPlacas===0?'active':''}" data-value="0" role="radio" aria-checked="${globalPlacas===0}">0</button><button type="button" class="seg-btn placas-btn ${globalPlacas===1?'active':''}" data-value="1" role="radio" aria-checked="${globalPlacas===1}">1</button><button type="button" class="seg-btn placas-btn ${globalPlacas===2?'active':''}" data-value="2" role="radio" aria-checked="${globalPlacas===2}">2</button><button type="button" class="seg-btn placas-btn ${globalPlacas===3?'active':''}" data-value="3" role="radio" aria-checked="${globalPlacas===3}">3</button></div></div><div class="adv-group"><div class="adv-label">Precisi\u00f3n (%) <span class="info-tip tip-end" data-tip="Porcentaje de disparos que aciertan. Al bajarlo se necesitan más disparos y sube el TTK. Con 0 % no se puede matar, así que no se dibuja la línea.">i</span> <span class="adv-prec-value">${globalPrecision}%</span></div><input type="range" class="adv-prec-range" min="0" max="100" step="1" value="${globalPrecision}" aria-label="Precisi\u00f3n"></div></div></div><div class="adv-block"><div class="adv-label">Zona del cuerpo <span class="info-tip" data-tip="Selecciona la zona del cuerpo a analizar">i</span></div><div class="zone-buttons"><label class="hitbox-btn"><input type="checkbox" id="chkHead${S}" aria-label="Mostrar zona de cabeza"><span class="hitbox-btn-text">CABEZA</span></label><label class="hitbox-btn"><input type="checkbox" id="chkBody${S}" checked aria-label="Mostrar zona de pecho"><span class="hitbox-btn-text">PECHO</span></label><label class="hitbox-btn"><input type="checkbox" id="chkStomach${S}" aria-label="Mostrar zona de est\u00f3mago"><span class="hitbox-btn-text">EST\u00d3MAGO</span></label><label class="hitbox-btn"><input type="checkbox" class="chk-comb" id="chkComb${S}" aria-label="Modo combinado"><span class="hitbox-btn-text">COMBINADO</span></label></div><div class="combined-wrapper" style="display:none;width:100%;"><div class="combined-settings"><div class="adv-label">Reparto de tus impactos (%) <span class="info-tip" data-tip="Escribe qu\u00e9 % de tus disparos que aciertan va a cada zona. No hace falta que sumen 100">i</span></div><div class="comb-custom"><div class="combined-row"><span>CABEZA</span><span><input type="number" id="advWh${S}" value="20" min="0" max="100" aria-label="Peso cabeza">%</span></div><div class="combined-row"><span>PECHO</span><span><input type="number" id="advWc${S}" value="50" min="0" max="100" aria-label="Peso pecho">%</span></div><div class="combined-row"><span>EST\u00d3MAGO</span><span><input type="number" id="advWs${S}" value="30" min="0" max="100" aria-label="Peso est\u00f3mago">%</span></div></div><div class="comb-hint"></div><div class="comb-hint">Promedio esperado disparo a disparo usando el slider de Precisi\u00f3n. Los porcentajes se ajustan solos a 100 %.</div></div></div></div>${ammoSection}${gfxBlock}`;
+return `<div class="adv-block"><div class="adv-row"><div class="adv-group"><div class="adv-label">Salud <span class="info-tip" data-tip="Puntos de vida (PV) del jugador">i</span></div><input type="number" class="adv-input adv-salud" value="${effectiveHealth()}" min="1" max="999" aria-label="Salud"></div><div class="adv-group"><div class="adv-label">Placas <span class="info-tip" data-tip="Cada placa agrega +50 PV">i</span></div><div class="seg-group placas-group" role="radiogroup" aria-label="N\u00famero de placas"><button type="button" class="seg-btn placas-btn ${globalPlacas===0?'active':''}" data-value="0" role="radio" aria-checked="${globalPlacas===0}">0</button><button type="button" class="seg-btn placas-btn ${globalPlacas===1?'active':''}" data-value="1" role="radio" aria-checked="${globalPlacas===1}">1</button><button type="button" class="seg-btn placas-btn ${globalPlacas===2?'active':''}" data-value="2" role="radio" aria-checked="${globalPlacas===2}">2</button><button type="button" class="seg-btn placas-btn ${globalPlacas===3?'active':''}" data-value="3" role="radio" aria-checked="${globalPlacas===3}">3</button></div></div><div class="adv-group"><div class="adv-label">Precisi\u00f3n (%) <span class="info-tip tip-end" data-tip="Porcentaje de disparos que aciertan. Al bajarlo se necesitan m\u00e1s disparos y sube el TTK. Con 0 % no se puede matar, as\u00ed que no se dibuja la l\u00ednea.">i</span> <span class="adv-prec-value">${globalPrecision}%</span></div><input type="range" class="adv-prec-range" min="0" max="100" step="1" value="${globalPrecision}" aria-label="Precisi\u00f3n"></div></div></div><div class="adv-block"><div class="adv-label">Zona del cuerpo <span class="info-tip" data-tip="Selecciona la zona del cuerpo a analizar">i</span></div><div class="zone-buttons"><label class="hitbox-btn"><input type="checkbox" id="chkHead${S}" aria-label="Mostrar zona de cabeza"><span class="hitbox-btn-text">CABEZA</span></label><label class="hitbox-btn"><input type="checkbox" id="chkBody${S}" checked aria-label="Mostrar zona de pecho"><span class="hitbox-btn-text">PECHO</span></label><label class="hitbox-btn"><input type="checkbox" id="chkStomach${S}" aria-label="Mostrar zona de est\u00f3mago"><span class="hitbox-btn-text">EST\u00d3MAGO</span></label><label class="hitbox-btn"><input type="checkbox" class="chk-comb" id="chkComb${S}" aria-label="Modo combinado"><span class="hitbox-btn-text">COMBINADO</span></label></div><div class="combined-wrapper" style="display:none;width:100%;"><div class="combined-settings"><div class="adv-label">Reparto de tus impactos (%) <span class="info-tip" data-tip="Escribe qu\u00e9 % de tus disparos que aciertan va a cada zona. No hace falta que sumen 100">i</span></div><div class="comb-custom"><div class="combined-row"><span>CABEZA</span><span><input type="number" id="advWh${S}" value="20" min="0" max="100" aria-label="Peso cabeza">%</span></div><div class="combined-row"><span>PECHO</span><span><input type="number" id="advWc${S}" value="50" min="0" max="100" aria-label="Peso pecho">%</span></div><div class="combined-row"><span>EST\u00d3MAGO</span><span><input type="number" id="advWs${S}" value="30" min="0" max="100" aria-label="Peso est\u00f3mago">%</span></div></div><div class="comb-hint"></div><div class="comb-hint">Promedio esperado disparo a disparo usando el slider de Precisi\u00f3n. Los porcentajes se ajustan solos a 100 %.</div></div></div></div>${ammoSection}${gfxBlock}`;
 }
 function toggleAdvPanel(S){
 const panel = DOM_CACHE[S]?.advPanel || document.getElementById('advPanel'+S);
@@ -2213,10 +2213,10 @@ if(typeof metaOnData === 'function') metaOnData();
 }
 
 /* ================= DATOS DESDE armas.json ================= */
-/* Balas para matar: vida / daño, redondeado hacia arriba (24.84 -> 4.03 -> 5). */
+/* Balas para matar: vida / da\u00f1o, redondeado hacia arriba (24.84 -> 4.03 -> 5). */
 function calcBalas(vida, dano){ return dano > 0 ? Math.ceil(vida / dano - 1e-9) : null; }
 function calcTTK(cadencia, balas){ return (cadencia > 0 && balas) ? Math.round((60 / cadencia) * (balas - 1) * 1000) : null; }
-/* Tramos [[desde, daño], [desde, daño, "rampa"], ...]: un tramo "rampa" va en línea recta hasta el daño del tramo siguiente. */
+/* Tramos [[desde, da\u00f1o], [desde, da\u00f1o, "rampa"], ...]: un tramo "rampa" va en l\u00ednea recta hasta el da\u00f1o del tramo siguiente. */
 function expandirTramos(t){
   var out = [], j = -1;
   for(var m = 0; m <= 200; m++){
@@ -2229,9 +2229,9 @@ function expandirTramos(t){
   return out;
 }
 var BF6_CLASES = ['base', 'clase1', 'clase2', 'clase3'];
-/* Nombres originales de la página: se mantienen como alias aunque cambies la etiqueta en el panel. */
-var BF6_ALIAS = { cadencia:'Cadencia', velBala:'Vel. de Bala', velApuntar:'Vel. al apuntar', velRecarga:'Vel. de recarga', cadera:'Disparo de cadera', precision:'Precisión', control:'Control', movilidad:'Movilidad', recoilVertical:'Recoil vertical', recoilHorizontal:'Recoil horizontal' };
-/* Códigos de columna de la hoja antigua (por compatibilidad). */
+/* Nombres originales de la p\u00e1gina: se mantienen como alias aunque cambies la etiqueta en el panel. */
+var BF6_ALIAS = { cadencia:'Cadencia', velBala:'Vel. de Bala', velApuntar:'Vel. al apuntar', velRecarga:'Vel. de recarga', cadera:'Disparo de cadera', precision:'Precisi\u00f3n', control:'Control', movilidad:'Movilidad', recoilVertical:'Recoil vertical', recoilHorizontal:'Recoil horizontal' };
+/* C\u00f3digos de columna de la hoja antigua (por compatibilidad). */
 var BF6_COD_STATS = { vida:1, cadencia:2, velBala:3, velApuntar:4, velRecarga:5, cadera:6, precision:7, control:8, movilidad:9, danoCabeza:10, danoPecho:11, danoEstomago:12, balasParaMatar:13, recoilVertical:14, recoilHorizontal:15, recoil3:16 };
 var BF6_COD_MUN = { puntaHueca:17, sintetico:18 };
 var BF6_COD_OTROS = { imagen:25, meta:26, alcance:27, parche:28, youtube:29 };
@@ -2316,7 +2316,7 @@ function bf6Filas(doc){
         for(var m = 0; m <= 200; m++){
           if(d[m] == null) continue;
           var balas = calcBalas(vida, d[m]);
-          /* Como texto, igual que llegaban del CSV: la página trata "0" (muerte de un disparo) como dato válido. */
+          /* Como texto, igual que llegaban del CSV: la p\u00e1gina trata "0" (muerte de un disparo) como dato v\u00e1lido. */
           row[pf.DANO[z] + m] = String(d[m]);
           row[pf.BALAS[z] + m] = String(balas);
           var ttk = calcTTK(cad, balas); if(ttk != null) row[pf.TTK[z] + m] = String(ttk);
@@ -2425,7 +2425,7 @@ renderAwmChunk(container);
 }, { root: container, rootMargin: '100px' });
 awmObserver.observe(sentinel);
 }
-/* Agregar / quitar todas las armas de la categoría activa (no disponible en TODAS) */
+/* Agregar / quitar todas las armas de la categor\u00eda activa (no disponible en TODAS) */
 function renderAwmBulk(){
 const bar = document.getElementById('awmBulk'); if(!bar) return;
 if(awmTarget === 'constructor' || awmActiveCategory === 'all' || !awmFilteredWeapons.length){ bar.style.display = 'none'; bar.innerHTML = ''; return; }
@@ -3137,7 +3137,7 @@ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded'
 })();
 </script>
 <script>
-/* ===================== PESTAÑA CONSTRUCTOR ===================== */
+/* ===================== PESTA\u00d1A CONSTRUCTOR ===================== */
 (function(){
 'use strict';
 var MOTOR_URL = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/bf6-motor.js';
@@ -3145,7 +3145,7 @@ var MAX = 4;
 var M = null, cargando = null, errorMotor = null;
 var builds = [], activo = 0, abierta = null, uid = 0;
 
-/* Dónde va cada ranura alrededor de la imagen (área de la cuadrícula) y a qué punto de la imagen apunta su línea (% ancho, % alto). */
+/* D\u00f3nde va cada ranura alrededor de la imagen (\u00e1rea de la cuadr\u00edcula) y a qu\u00e9 punto de la imagen apunta su l\u00ednea (% ancho, % alto). */
 var LUGAR = {
   laser: { area: 'laser', x: 22, y: 30 }, riel: { area: 'laser', x: 24, y: 38 },
   mira: { area: 'mira', x: 56, y: 12 }, accesorioOptico: { area: 'optico', x: 66, y: 14 },
@@ -3153,7 +3153,7 @@ var LUGAR = {
   ergonomia: { area: 'ergo', x: 88, y: 42 }, canon: { area: 'canon', x: 22, y: 46 },
   canonInferior: { area: 'inferior', x: 32, y: 62 }, cargador: { area: 'cargador', x: 50, y: 82 }, municion: { area: 'municion', x: 56, y: 66 }
 };
-var CORTO = { cadera: 'Cadera', precision: 'Precisión', control: 'Control', movilidad: 'Movilidad', velApuntar: 'Apuntar', velBala: 'Vel. bala',
+var CORTO = { cadera: 'Cadera', precision: 'Precisi\u00f3n', control: 'Control', movilidad: 'Movilidad', velApuntar: 'Apuntar', velBala: 'Vel. bala',
   velRecarga: 'Recarga', recoilVertical: 'Ret. V', recoilHorizontal: 'Ret. H', cargador: 'Balas', cadencia: 'Cadencia' };
 var MENOR_MEJOR = { velApuntar: 1, velRecarga: 1, recoilVertical: 1, recoilHorizontal: 1 };
 
@@ -3171,11 +3171,11 @@ function cargarMotor(){
     .catch(function(e){ errorMotor = e; console.error('Constructor: no se pudo cargar el motor', e); return null; });
   return cargando;
 }
-/* Puntos de accesorios cambiados a mano en el panel para esta arma (pestaña Puntos). */
+/* Puntos de accesorios cambiados a mano en el panel para esta arma (pesta\u00f1a Puntos). */
 function aj(a){ return (a && a.puntosAccesorios) || null; }
 function tieneMotor(a){ return !!(M && a && a.idAnalizador && M.existe(a.idAnalizador)); }
 
-/* ---------- Armas en la comparación ---------- */
+/* ---------- Armas en la comparaci\u00f3n ---------- */
 function selDeEquip(a, eq){
   var s = M.seleccionPorDefecto(a.idAnalizador);
   Object.keys((eq && eq.accesorios) || {}).forEach(function(r){ var v = eq.accesorios[r]; if(v && typeof v === 'object' && v.id) s[r] = v.id; });
@@ -3216,7 +3216,7 @@ function stats(b){
   });
   return out;
 }
-/* Punta hueca y sintético: botones del gráfico. Solo aparecen si alguna build lleva esa munición; la curva usa los datos propios (pecho x multiplicador). */
+/* Punta hueca y sint\u00e9tico: botones del gr\u00e1fico. Solo aparecen si alguna build lleva esa munici\u00f3n; la curva usa los datos propios (pecho x multiplicador). */
 var TIPOS_MUNICION = [{ clave: 'puntaHueca', valor: 'hollow_pt' }, { clave: 'sintetico', valor: 'synthetic' }];
 function llevaMunicion(b, t){ return !!(b.res && b.res.seleccion.municion === t.valor && b.arma.municion && b.arma.municion[t.clave]); }
 function usaMultiplicadorPropio(b){ return TIPOS_MUNICION.some(function(t){ return llevaMunicion(b, t); }); }
@@ -3246,13 +3246,13 @@ function cambios(b){
 function render(){
   var root = $('ctorRoot'); if(!root) return;
   if(!M && !errorMotor){ root.innerHTML = '<div class="ctor-vacio"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando el constructor...</div>'; cargarMotor().then(render); return; }
-  var html = '<div class="selection-panel"><div class="selection-header"><div class="selection-header-left"><span class="selection-title">ARMAS EN LA COMPARACIÓN</span>'
+  var html = '<div class="selection-panel"><div class="selection-header"><div class="selection-header-left"><span class="selection-title">ARMAS EN LA COMPARACI\u00d3N</span>'
     + '<span class="selection-counter">' + builds.length + ' de ' + MAX + '</span></div><div class="selection-header-right">'
     + (builds.length ? '<span class="clear-all-link" id="ctorLimpiar"><i class="fa-regular fa-trash-can" aria-hidden="true"></i> BORRAR TODO</span>' : '')
     + '<button type="button" class="add-weapon-trigger" id="ctorAgregar"' + (builds.length >= MAX ? ' disabled' : '') + '><i class="fa-solid fa-plus" aria-hidden="true"></i> AGREGAR ARMA</button></div></div>'
     + '<div class="ctor-lista">' + (builds.length ? builds.map(filaResumen).join('') : '<span class="weapons-empty-hint">Agrega un arma para empezar a armarla.</span>') + '</div>'
     + '<div id="ctorAviso" class="ctor-aviso" role="status"></div></div>';
-  if(errorMotor) html += '<div class="ctor-nota ctor-error">No se pudo cargar el cálculo de accesorios. Recarga la página para intentarlo de nuevo.</div>';
+  if(errorMotor) html += '<div class="ctor-nota ctor-error">No se pudo cargar el c\u00e1lculo de accesorios. Recarga la p\u00e1gina para intentarlo de nuevo.</div>';
   if(builds.length){
     html += editorHtml(builds[activo]);
     html += '<div class="chart-top-bar"><div class="chart-title">Comparaci\u00f3n</div></div>' + hojaHtml();
@@ -3271,7 +3271,7 @@ function filaResumen(b, i){
   var c = cambios(b), act = i === activo;
   return '<div class="ctor-fila' + (act ? ' activa' : '') + '" data-i="' + i + '" style="--c:' + b.color + '">'
     + '<span class="ctor-punto"></span>' + weaponImageHtml(b.fila, 'ctor-mini') + '<div class="ctor-fila-txt"><b>' + esc(b.arma.nombre) + '</b><span>'
-    + esc(c.length ? c.join(' - ') : (b.res ? 'De fábrica' : 'Sin datos de accesorios')) + '</span></div>'
+    + esc(c.length ? c.join(' - ') : (b.res ? 'De f\u00e1brica' : 'Sin datos de accesorios')) + '</span></div>'
     + (b.res ? '<span class="ctor-pts">' + b.res.puntos + ' pts</span>' : '')
     + (act ? '<span class="ctor-editando">EDITANDO</span>' : '<button type="button" class="ctor-ico" data-editar="' + i + '" aria-label="Editar"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>')
     + '<button type="button" class="ctor-ico" data-quitar="' + i + '" aria-label="Quitar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>';
@@ -3280,13 +3280,13 @@ function editorHtml(b){
   var a = b.arma;
   var h = '<div class="chart-top-bar ctor-cab"><div class="chart-title">Editor - ' + esc(a.nombre) + '</div><div class="chart-top-actions ctor-herr">';
   if(!b.res){
-    return h + '</div></div><div class="ctor-nota">Esta arma todavía no tiene datos de accesorios. Se compara con sus estadísticas base.</div>';
+    return h + '</div></div><div class="ctor-nota">Esta arma todav\u00eda no tiene datos de accesorios. Se compara con sus estad\u00edsticas base.</div>';
   }
   var eqs = (a.equipamientos || []).map(function(e, k){ return '<option value="' + k + '"' + (b.partir === String(k) ? ' selected' : '') + '>' + esc(e.nombre) + '</option>'; }).join('');
   if(eqs) h += '<label class="ctor-sel"><span class="ctor-txt">Partir de</span> <select id="ctorPartir" aria-label="Partir de"><option value="base">Base</option>' + eqs + '</select></label>';
   var modos = M.modos(a.idAnalizador, b.sel);
   if(modos.length) h += '<label class="ctor-sel"><span class="ctor-txt">Modo</span> <select id="ctorModo" aria-label="Modo de disparo">' + modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === b.res.modo ? ' selected' : '') + '>' + m.nombre + '</option>'; }).join('') + '</select></label>';
-  h += '<span class="ctor-pts grande' + (b.res.puntos > (M.LIMITE_PUNTOS || 100) ? ' excede' : '') + '">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica" title="Volver a la configuración de fábrica" aria-label="Volver a fábrica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span class="ctor-txt"> Fábrica</span></button></div></div>';
+  h += '<span class="ctor-pts grande' + (b.res.puntos > (M.LIMITE_PUNTOS || 100) ? ' excede' : '') + '">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span><button type="button" class="adv-btn" id="ctorFabrica" title="Volver a la configuraci\u00f3n de f\u00e1brica" aria-label="Volver a f\u00e1brica"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span class="ctor-txt"> F\u00e1brica</span></button></div></div>';
   var rs = M.ranuras(a.idAnalizador, b.sel, aj(a)), f = b.fab.seleccion;
   var tarjetas = rs.map(function(r){
     var o = r.opciones.find(function(x){ return x.valor === r.valor; }) || {};
@@ -3298,9 +3298,9 @@ function editorHtml(b){
     + '<div class="ctor-img" id="ctorImg">' + weaponImageHtml(b.fila, 'ctor-arma') + '</div>' + tarjetas + '</div>';
   if(abierta) h += opcionesHtml(b, rs.find(function(r){ return r.id === abierta; }));
   var faltan = [];
-  if(!rs.some(function(r){ return r.id === 'accesorioOptico'; })) faltan.push('Accesorio óptico');
-  if(!rs.some(function(r){ return r.id === 'canonInferior' || r.id === 'riel' && r.nombre.indexOf('Cañón') === 0; })) faltan.push('Cañón inferior');
-  if(!rs.some(function(r){ return r.id === 'ergonomia'; })) faltan.push('Ergonomía');
+  if(!rs.some(function(r){ return r.id === 'accesorioOptico'; })) faltan.push('Accesorio \u00f3ptico');
+  if(!rs.some(function(r){ return r.id === 'canonInferior' || r.id === 'riel' && r.nombre.indexOf('Ca\u00f1\u00f3n') === 0; })) faltan.push('Ca\u00f1\u00f3n inferior');
+  if(!rs.some(function(r){ return r.id === 'ergonomia'; })) faltan.push('Ergonom\u00eda');
   if(!rs.some(function(r){ return r.id === 'boca'; })) faltan.push('Boca');
   var riel = rs.find(function(r){ return r.id === 'riel'; });
   var nota = [];
@@ -3318,14 +3318,14 @@ function efectos(b, rid, valor){
     var d = r2(v - a), mejor = MENOR_MEJOR[k] ? d < 0 : d > 0;
     out.push('<span class="ctor-ef ' + (mejor ? 'pos' : 'neg') + '">' + CORTO[k] + ' ' + (d > 0 ? '+' : '') + d + '</span>');
   });
-  if(Math.abs(r.factores.cabeza - base.factores.cabeza) > 1e-6) out.push('<span class="ctor-ef ' + (r.factores.cabeza > base.factores.cabeza ? 'pos' : 'neg') + '">Daño cabeza ×' + r2(r.factores.cabeza / base.factores.cabeza) + '</span>');
+  if(Math.abs(r.factores.cabeza - base.factores.cabeza) > 1e-6) out.push('<span class="ctor-ef ' + (r.factores.cabeza > base.factores.cabeza ? 'pos' : 'neg') + '">Da\u00f1o cabeza \u00d7' + r2(r.factores.cabeza / base.factores.cabeza) + '</span>');
   if(r.cambiaCurva !== base.cambiaCurva) out.push('<span class="ctor-ef">Otra bala</span>');
   return out.slice(0, 6).join('');
 }
 function requiereTxt(req){
   if(!req) return 'no disponible';
   var n = req.opciones.map(nombreEs);
-  return 'elige antes una ' + req.ranura.toLowerCase() + ' compatible: ' + n.slice(0, 3).join(', ') + (n.length > 3 ? '… (' + n.length + ' en total)' : '');
+  return 'elige antes una ' + req.ranura.toLowerCase() + ' compatible: ' + n.slice(0, 3).join(', ') + (n.length > 3 ? '\u2026 (' + n.length + ' en total)' : '');
 }
 function opcionesHtml(b, r){
   if(!r) return '';
@@ -3333,9 +3333,9 @@ function opcionesHtml(b, r){
   var filas = r.opciones.map(function(o){
     var sel = o.valor === r.valor, nombre = o.valor === 'none' ? 'Ninguno' : (r.compartida && o.tipo ? o.tipo + ' - ' : '') + nombreEs(o.en);
     var total = b.res.puntos - (actual.puntos || 0) + (o.puntos || 0), excede = !sel && total > limite, bloq = o.disponible === false || excede;
-    var ef = sel || bloq ? '' : (efectos(b, r.id, o.valor) || '<span class="ctor-ef">Sin cambios en estadísticas</span>');
+    var ef = sel || bloq ? '' : (efectos(b, r.id, o.valor) || '<span class="ctor-ef">Sin cambios en estad\u00edsticas</span>');
     return '<button type="button" class="ctor-op' + (sel ? ' sel' : '') + '" data-op="' + esc(o.valor) + '"' + (bloq ? ' disabled' : '') + '>'
-      + '<span class="ctor-op-n">' + esc(nombre) + (o.porDefecto ? ' <em>de fábrica</em>' : '')
+      + '<span class="ctor-op-n">' + esc(nombre) + (o.porDefecto ? ' <em>de f\u00e1brica</em>' : '')
       + (o.disponible === false ? ' <em class="bloq">' + esc(requiereTxt(o.requiere)) + '</em>' : excede ? ' <em class="bloq">supera ' + limite + ' pts (' + total + ')</em>' : '') + '</span>'
       + '<span class="ctor-op-pts">' + (o.puntos ? o.puntos + ' pts' : '') + '</span><span class="ctor-op-ef">' + ef + '</span></button>';
   }).join('');
@@ -3343,9 +3343,9 @@ function opcionesHtml(b, r){
     + '<button type="button" class="ctor-ico" id="ctorCerrarOp" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>' + filas + '</div>';
 }
 /* ---------- Hoja comparativa: lo que gana y pierde cada build ---------- */
-var HOJA_ATRIB = [['cadera', 'Disparo de cadera', 'Cadera'], ['precision', 'Precisión', 'Precisión'], ['control', 'Control', 'Control'], ['movilidad', 'Movilidad', 'Movilidad']];
+var HOJA_ATRIB = [['cadera', 'Disparo de cadera', 'Cadera'], ['precision', 'Precisi\u00f3n', 'Precisi\u00f3n'], ['control', 'Control', 'Control'], ['movilidad', 'Movilidad', 'Movilidad']];
 var HOJA_STATS = [['cadencia', 'Cadencia', 'RPM', 'Cadencia'], ['velBala', 'Vel. de bala', 'm/s', 'Vel. bala'], ['velApuntar', 'Vel. al apuntar', 'ms', 'Apuntar'], ['velRecarga', 'Vel. de recarga', 'ms', 'Recarga'],
-  ['recoilVertical', 'Recoil vertical', '°', 'Ret. V'], ['recoilHorizontal', 'Recoil horizontal', '°', 'Ret. H'], ['cargador', 'Cargador', 'balas', 'Cargador']];
+  ['recoilVertical', 'Recoil vertical', '\u00b0', 'Ret. V'], ['recoilHorizontal', 'Recoil horizontal', '\u00b0', 'Ret. H'], ['cargador', 'Cargador', 'balas', 'Cargador']];
 /* Multiplicador a la cabeza sobre el pecho: con punta hueca o sintetico usa el dato propio del arma. */
 function multCabeza(b){
   var a = b.arma, d = a.dano || {};
@@ -3368,7 +3368,7 @@ function balance(b){
   return { g: g, p: p };
 }
 function listaCorta(a){ return a.slice(0, 3).join(', ') + (a.length > 3 ? ' +' + (a.length - 3) : ''); }
-function deltaHtml(d, mejora){ if(!d) return ''; return '<span class="' + (mejora ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '−') + Math.abs(d) + '</span>'; }
+function deltaHtml(d, mejora){ if(!d) return ''; return '<span class="' + (mejora ? 'pos' : 'neg') + '">' + (d > 0 ? '+' : '\u2212') + Math.abs(d) + '</span>'; }
 function mejorDe(vals, menor){ var n = vals.filter(function(v){ return typeof v === 'number'; }); if(n.length < 2) return null; var a = Math.max.apply(null, n), c = Math.min.apply(null, n); return a === c ? null : (menor ? c : a); }
 function barraHtml(v, f){
   if(typeof v !== 'number') return '';
@@ -3381,7 +3381,7 @@ function hojaHtml(){
   var h = '<div class="hj-wrap"><table class="hj"><thead><tr><th class="hj-st"></th>' + builds.map(function(b, i){
     var bl = balance(b), res = !b.res ? '<span class="hj-res">Sin datos de accesorios</span>'
       : (bl.g.length || bl.p.length) ? (bl.g.length ? '<span class="hj-res pos">Gana: ' + esc(listaCorta(bl.g)) + '</span>' : '') + (bl.p.length ? '<span class="hj-res neg">Pierde: ' + esc(listaCorta(bl.p)) + '</span>' : '')
-      : '<span class="hj-res">De fábrica</span>';
+      : '<span class="hj-res">De f\u00e1brica</span>';
     return '<th class="hj-arma' + (i === activo ? ' act' : '') + '"><b><i class="ctor-dot" style="background:' + b.color + '"></i>' + esc(b.arma.nombre) + '</b>' + (b.res ? '<span class="hj-pts">' + b.res.puntos + ' / ' + (M.LIMITE_PUNTOS || 100) + ' pts</span>' : '') + res + '</th>';
   }).join('') + '</tr></thead><tbody>';
   var grupo = function(t){ return '<tr class="hj-g-row"><th colspan="' + col + '"><span>' + t + '</span></th></tr>'; };
@@ -3390,45 +3390,45 @@ function hojaHtml(){
     var vals = builds.map(function(b){ return stats(b)[t[0]]; }), mejor = mejorDe(vals, false);
     h += '<tr>' + nombreFila(t[1], t[2]) + vals.map(function(v, i){
       var f = statsFab(builds[i])[t[0]], d = typeof v === 'number' && typeof f === 'number' ? r2(v - f) : 0;
-      return '<td><div class="hj-v"><b class="' + (v === mejor ? 'hj-best' : '') + '">' + (v == null ? '—' : v) + '</b>' + deltaHtml(d, d > 0) + '</div>' + barraHtml(v, f) + '</td>';
+      return '<td><div class="hj-v"><b class="' + (v === mejor ? 'hj-best' : '') + '">' + (v == null ? '\u2014' : v) + '</b>' + deltaHtml(d, d > 0) + '</div>' + barraHtml(v, f) + '</td>';
     }).join('') + '</tr>';
   });
-  h += grupo('Estadísticas');
+  h += grupo('Estad\u00edsticas');
   HOJA_STATS.forEach(function(t){
     var menor = !!MENOR_MEJOR[t[0]], vals = builds.map(function(b){ return stats(b)[t[0]]; }), mejor = mejorDe(vals, menor);
     h += '<tr>' + nombreFila(t[1], t[3], t[2]) + vals.map(function(v, i){
       var f = statsFab(builds[i])[t[0]], d = typeof v === 'number' && typeof f === 'number' ? r2(v - f) : 0;
-      return '<td><div class="hj-v"><b class="' + (v === mejor ? 'hj-best' : '') + '">' + (v == null ? '—' : v) + '</b>' + deltaHtml(d, menor ? d < 0 : d > 0) + '</div></td>';
+      return '<td><div class="hj-v"><b class="' + (v === mejor ? 'hj-best' : '') + '">' + (v == null ? '\u2014' : v) + '</b>' + deltaHtml(d, menor ? d < 0 : d > 0) + '</div></td>';
     }).join('') + '</tr>';
   });
   var ms = builds.map(multCabeza), vm = ms.map(function(m){ return m ? m.v : null; }), mm = mejorDe(vm, false);
   h += '<tr>' + nombreFila('Multiplicador a la cabeza', 'Cabeza') + ms.map(function(m){
-    if(!m) return '<td>—</td>';
+    if(!m) return '<td>\u2014</td>';
     var d = r2(m.v - m.f);
-    return '<td><div class="hj-v"><b class="' + (m.v === mm ? 'hj-best' : '') + '">×' + m.v.toFixed(2) + '</b>' + deltaHtml(d, d > 0) + '</div></td>';
+    return '<td><div class="hj-v"><b class="' + (m.v === mm ? 'hj-best' : '') + '">\u00d7' + m.v.toFixed(2) + '</b>' + deltaHtml(d, d > 0) + '</div></td>';
   }).join('') + '</tr>';
   return h + '</tbody></table></div>';
 }
 
 /* ---------- Boceto inicial: lo que se ve antes de agregar la primera arma ---------- */
-var BOCETO_RANURAS = [['laser', 'Láser'], ['mira', 'Mira'], ['accesorioOptico', 'Accesorio óptico'], ['boca', 'Boca'], ['ergonomia', 'Ergonomía'], ['luz', 'Luz'], ['canon', 'Cañón'], ['canonInferior', 'Cañón inferior'], ['cargador', 'Cargador'], ['municion', 'Munición']];
+var BOCETO_RANURAS = [['laser', 'L\u00e1ser'], ['mira', 'Mira'], ['accesorioOptico', 'Accesorio \u00f3ptico'], ['boca', 'Boca'], ['ergonomia', 'Ergonom\u00eda'], ['luz', 'Luz'], ['canon', 'Ca\u00f1\u00f3n'], ['canonInferior', 'Ca\u00f1\u00f3n inferior'], ['cargador', 'Cargador'], ['municion', 'Munici\u00f3n']];
 function bocetoHtml(){
-  var vacio = '—', anchos = [[46, 62], [28, 40], [58, 34], [52, 66]], cols = ['Arma 1', 'Arma 2'];
+  var vacio = '\u2014', anchos = [[46, 62], [28, 40], [58, 34], [52, 66]], cols = ['Arma 1', 'Arma 2'];
   var editor = '<div class="ctor-editor" id="ctorEditor"><svg class="ctor-lineas" id="ctorLineas" aria-hidden="true"></svg><div class="ctor-img" id="ctorImg"><div class="ctor-arma">' + WEAPON_SVG + '</div></div>'
     + BOCETO_RANURAS.map(function(r){ return '<div class="ctor-ranura vacia" data-ranura="' + r[0] + '" style="grid-area:' + LUGAR[r[0]].area + '"><span>' + r[1] + '</span><b>' + vacio + '</b></div>'; }).join('') + '</div>';
   var tabla = '<div class="hj-wrap"><table class="hj"><thead><tr><th class="hj-st"></th>' + cols.map(function(c){ return '<th class="hj-arma"><b>' + c + '</b><span class="hj-pts">' + vacio + ' / 100 pts</span><span class="hj-res">Gana / Pierde</span></th>'; }).join('') + '</tr></thead><tbody>';
   var grupo = function(t){ return '<tr class="hj-g-row"><th colspan="3"><span>' + t + '</span></th></tr>'; };
   tabla += grupo('Atributos');
   HOJA_ATRIB.forEach(function(t, i){ tabla += '<tr>' + nombreFila(t[1], t[2]) + anchos[i].map(function(a){ return '<td><div class="hj-v"><b>' + vacio + '</b></div><div class="hj-bar"><i class="hj-b" style="width:' + a + '%"></i></div></td>'; }).join('') + '</tr>'; });
-  tabla += grupo('Estadísticas');
+  tabla += grupo('Estad\u00edsticas');
   HOJA_STATS.forEach(function(t){ tabla += '<tr>' + nombreFila(t[1], t[3], t[2]) + '<td><div class="hj-v"><b>' + vacio + '</b></div></td><td><div class="hj-v"><b>' + vacio + '</b></div></td></tr>'; });
   tabla += '<tr>' + nombreFila('Multiplicador a la cabeza', 'Cabeza') + '<td><div class="hj-v"><b>' + vacio + '</b></div></td><td><div class="hj-v"><b>' + vacio + '</b></div></td></tr></tbody></table></div>';
   return '<div class="ctor-boceto" aria-hidden="true"><div class="chart-top-bar ctor-cab"><div class="chart-title">Editor de accesorios</div></div>' + editor
-    + '<div class="chart-top-bar"><div class="chart-title">Comparación</div></div>' + tabla
+    + '<div class="chart-top-bar"><div class="chart-title">Comparaci\u00f3n</div></div>' + tabla
     + '<div class="ctor-acciones"><button type="button" class="add-weapon-trigger" disabled tabindex="-1"><i class="fa-solid fa-right-left" aria-hidden="true"></i> ENVIAR AL COMPARADOR</button></div></div>';
 }
 
-/* ---------- Líneas del editor ---------- */
+/* ---------- L\u00edneas del editor ---------- */
 function dibujarLineas(){
   var ed = $('ctorEditor'), svg = $('ctorLineas'), img = $('ctorImg'); if(!ed || !svg || !img) return;
   if(getComputedStyle(svg).display === 'none'){ svg.innerHTML = ''; return; }
@@ -3502,7 +3502,7 @@ document.addEventListener('touchend', finArrastre); document.addEventListener('t
 window.bf6Ctor = {
   abrir: function(){ render(); },
   agregar: agregar,
-  /* Si cambian los datos (nueva versión de armas.json), vuelve a enlazar las armas. */
+  /* Si cambian los datos (nueva versi\u00f3n de armas.json), vuelve a enlazar las armas. */
   refrescar: function(){ builds.forEach(function(b){ var a = (doc().armas || []).find(function(x){ return x.id === b.arma.id; }); if(a){ b.arma = a; b.fab = null; calcular(b); } }); if($('mainConstructor') && $('mainConstructor').classList.contains('active')) render(); }
 };
 })();
@@ -3575,7 +3575,7 @@ function dibujar(cv, capas){
   ctx.fillStyle = '#121821'; ctx.fillRect(0, 0, L, L);
   var alto = Math.atan(1.8 / Math.max(vista.distancia, 1)) * 180 / Math.PI * ppd; silueta(ctx, ox, oy, alto / 1180);
   var st = paso(R), fs = L < 340 ? 9 : 10; ctx.lineWidth = 1; ctx.font = '700 ' + fs + 'px sans-serif'; ctx.textBaseline = 'top';
-  var etiqueta = function(v){ return String(Math.round(v * 100) / 100) + '°'; };
+  var etiqueta = function(v){ return String(Math.round(v * 100) / 100) + '\u00b0'; };
   for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = X(i * st); ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, L); ctx.stroke(); if(i){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'center'; ctx.fillText(etiqueta(i * st), x, L - fs - 3); } }
   for(var j = Math.ceil((oy - L) / ppd / st); j * st * ppd <= oy; j++){ var y = Y(j * st); ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(L, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y + 2); } }
   var rPeq = L < 340 ? 1.2 : 1.5, rGr = L < 340 ? 2.2 : 2.8;
@@ -3595,44 +3595,44 @@ function dibujar(cv, capas){
   });
   ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ox - 6, oy); ctx.lineTo(ox + 6, oy); ctx.moveTo(ox, oy - 6); ctx.lineTo(ox, oy + 6); ctx.stroke();
 }
-function dirTxt(d){ return d === 0 ? 'Recto' : (d < 0 ? '← Izq. ' : '→ Der. ') + Math.abs(d) + '°'; }
+function dirTxt(d){ return d === 0 ? 'Recto' : (d < 0 ? '\u2190 Izq. ' : '\u2192 Der. ') + Math.abs(d) + '\u00b0'; }
 function lugar(v, u, n){ return '<span><em>' + n + '</em>' + v + (u || '') + '</span>'; }
 function deriva(g){ var c = cm(g), a = Math.abs(c); return (a >= 100 ? (Math.round(a / 10) / 10) + ' m' : Math.round(a) + ' cm'); }
 function datos(a, res){ var u = res.ref[res.ref.length - 1];
-  if(vista.modo === 'cono') return lugar(a.v === null ? '—' : a.v, '°', 'Vertical') + lugar(a.h === null ? '—' : a.h, '°', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Dirección') + lugar(Math.round((res.cono.b - res.cono.a) * 180 / Math.PI) + '° / ' + deriva(res.cono.r), '', 'Abertura / largo');
-  return lugar(a.v === null ? '—' : a.v, '°', 'Vertical') + lugar(a.h === null ? '—' : a.h, '°', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Dirección') + lugar((Math.abs(u.y) < 0.005 && Math.abs(u.x) < 0.005) ? 'Vuelve al centro' : deriva(u.y) + (Math.abs(u.x) > 0.005 ? ' / ' + (u.x < 0 ? '← ' : '→ ') + deriva(u.x) : ''), '', 'Tras ' + res.n + ' disparos'); }
+  if(vista.modo === 'cono') return lugar(a.v === null ? '\u2014' : a.v, '\u00b0', 'Vertical') + lugar(a.h === null ? '\u2014' : a.h, '\u00b0', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Direcci\u00f3n') + lugar(Math.round((res.cono.b - res.cono.a) * 180 / Math.PI) + '\u00b0 / ' + deriva(res.cono.r), '', 'Abertura / largo');
+  return lugar(a.v === null ? '\u2014' : a.v, '\u00b0', 'Vertical') + lugar(a.h === null ? '\u2014' : a.h, '\u00b0', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Direcci\u00f3n') + lugar((Math.abs(u.y) < 0.005 && Math.abs(u.x) < 0.005) ? 'Vuelve al centro' : deriva(u.y) + (Math.abs(u.x) > 0.005 ? ' / ' + (u.x < 0 ? '\u2190 ' : '\u2192 ') + deriva(u.x) : ''), '', 'Tras ' + res.n + ' disparos'); }
 function lista(){
   return selectedRecoilWeapons.map(function(it){ var a = armar(it); return { it: it, a: a, nombre: it.weapon[HEADERS.ARMA], color: getColorForWeapon(it.weapon[HEADERS.ARMA] + '_' + it.id), clase: classTitleGraph(it, it.clase || 'base') }; });
 }
 function pintarControles(){
   var d = $('rcDist'), z = $('rcZoom'); if(!d) return;
   $('rcDistV').textContent = vista.distancia + ' m';
-  $('rcZoomV').textContent = '±' + (Math.round(medioRango() * 10) / 10) + '°';
-  $('rcEscala').textContent = '1° = ' + Math.round(cm(1)) + ' cm a ' + vista.distancia + ' m';
+  $('rcZoomV').textContent = '\u00b1' + (Math.round(medioRango() * 10) / 10) + '\u00b0';
+  $('rcEscala').textContent = '1\u00b0 = ' + Math.round(cm(1)) + ' cm a ' + vista.distancia + ' m';
 }
 function redibujar(){ pintarControles(); document.querySelectorAll('#rcPlots canvas').forEach(function(c){ if(c.$capas) dibujar(c, c.$capas); }); actualizarTextos(); }
 function actualizarTextos(){ document.querySelectorAll('#rcPlots .rc-datos[data-i]').forEach(function(el){ var it = el.$it; if(it) el.innerHTML = datos(it.a, it.res); }); }
 function render(){
   var cont = $('recoilContainer'); if(!cont) return;
   if(!selectedRecoilWeapons.length){ cont.innerHTML = '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-arrow-up-short-wide"></i></div><p class="recoil-placeholder-text">No hay armas seleccionadas.</p></div>'; return; }
-  if(!Sim){ cont.innerHTML = fallo ? '<div class="recoil-placeholder"><p class="recoil-placeholder-text">No se pudo cargar la simulación. Recarga la página.</p></div>' : '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="recoil-placeholder-text">Cargando la simulación...</p></div>'; if(!fallo) cargar(); return; }
+  if(!Sim){ cont.innerHTML = fallo ? '<div class="recoil-placeholder"><p class="recoil-placeholder-text">No se pudo cargar la simulaci\u00f3n. Recarga la p\u00e1gina.</p></div>' : '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="recoil-placeholder-text">Cargando la simulaci\u00f3n...</p></div>'; if(!fallo) cargar(); return; }
   var seg = function(a, v, t, on){ return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" ' + a + '="' + v + '">' + t + '</button>'; };
   var h = '<div class="rc-bar"><label class="rc-ctl"><span>Distancia</span><input type="range" id="rcDist" min="0" max="30" step="1" value="' + vista.distancia + '" aria-label="Distancia"><b id="rcDistV"></b></label>'
     + '<label class="rc-ctl"><span>Zoom</span><input type="range" id="rcZoom" min="0" max="100" step="1" value="' + vista.zoom + '" aria-label="Zoom"><b id="rcZoomV"></b></label>'
-    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patrón', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', 'Cono', vista.modo === 'cono') + '</div>'
+    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patr\u00f3n', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', 'Cono', vista.modo === 'cono') + '</div>'
     + '<button type="button" class="recoil-param-btn' + (vista.unir ? ' active' : '') + '" id="rcUnir"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
-    + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra ráfaga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra ráfaga</button></div></div>'
+    + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra r\u00e1faga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra r\u00e1faga</button></div></div>'
     + '<div class="rc-sub"><span>Apuntando y quieto</span><span id="rcEscala"></span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
   cont.innerHTML = h;
   var plots = $('rcPlots'), items = lista(), validas = [];
   items.forEach(function(x){ if(x.a){ x.res = simular(x.a); validas.push(x); } });
-  var tarjeta = function(capas, titulo){ var d = document.createElement('div'); d.className = 'rc-card'; d.innerHTML = titulo + '<canvas role="img" aria-label="Patrón de retroceso"></canvas>'; plots.appendChild(d); var cv = d.querySelector('canvas'); cv.$capas = capas; return d; };
+  var tarjeta = function(capas, titulo){ var d = document.createElement('div'); d.className = 'rc-card'; d.innerHTML = titulo + '<canvas role="img" aria-label="Patr\u00f3n de retroceso"></canvas>'; plots.appendChild(d); var cv = d.querySelector('canvas'); cv.$capas = capas; return d; };
   var cab = function(x){ return '<div class="rc-tit"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><span>' + escapeHtml(x.clase) + '</span></div>'; };
   if(vista.unir && validas.length){
     var card = tarjeta(validas.map(function(x){ return { res: x.res, color: x.color }; }), '');
     validas.forEach(function(x, i){ var f = document.createElement('div'); f.className = 'rc-fila'; f.innerHTML = cab(x) + '<div class="rc-datos" data-i="' + i + '"></div>'; card.appendChild(f); f.querySelector('.rc-datos').$it = x; });
   } else validas.forEach(function(x, i){ var c = tarjeta([{ res: x.res, color: x.color }], cab(x)), f = document.createElement('div'); f.className = 'rc-datos'; f.dataset.i = i; f.$it = x; c.appendChild(f); });
-  items.forEach(function(x){ if(!x.a){ var d = document.createElement('div'); d.className = 'rc-card rc-sin'; d.innerHTML = cab(x) + '<p>Esta arma todavía no está en el motor de simulación.</p>'; plots.appendChild(d); } });
+  items.forEach(function(x){ if(!x.a){ var d = document.createElement('div'); d.className = 'rc-card rc-sin'; d.innerHTML = cab(x) + '<p>Esta arma todav\u00eda no est\u00e1 en el motor de simulaci\u00f3n.</p>'; plots.appendChild(d); } });
   redibujar();
 }
 document.addEventListener('input', function(e){ var id = e.target.id; if(id === 'rcDist'){ vista.distancia = +e.target.value; redibujar(); } else if(id === 'rcZoom'){ vista.zoom = +e.target.value; redibujar(); } });
