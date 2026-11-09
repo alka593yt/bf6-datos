@@ -340,7 +340,8 @@
     "recoilHorizontal": 40.8
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 20
    },
    "dano": {
     "cabeza": [
@@ -413,7 +414,8 @@
     "recoilHorizontal": 28.9
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -510,7 +512,8 @@
     "recoilHorizontal": 50.3
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -583,7 +586,8 @@
     "recoilHorizontal": 41.4
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -659,7 +663,8 @@
     "extra2": "manejo mal"
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 20
    },
    "dano": {
     "cabeza": [
@@ -731,7 +736,8 @@
     "recoilHorizontal": 29.2
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -805,7 +811,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -877,7 +884,8 @@
     "recoilHorizontal": 28.9
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -950,7 +958,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1023,7 +1032,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1096,7 +1106,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1247,7 +1258,10 @@
    },
    "equipamientos": [],
    "revisar": true,
-   "notas": "Mezclaba valores de los cañones Extended y Light."
+   "notas": "Mezclaba valores de los cañones Extended y Light.",
+   "municion": {
+    "cargador": 5
+   }
   },
   {
    "id": "m4a1",
@@ -1274,7 +1288,8 @@
     "recoilHorizontal": 30.7
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1371,7 +1386,8 @@
     "recoilHorizontal": 34.4
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 20
    },
    "dano": {
     "cabeza": [
@@ -1437,7 +1453,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1533,7 +1550,8 @@
     "recoilHorizontal": 15.4
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 20
    },
    "dano": {
     "cabeza": [
@@ -1629,7 +1647,8 @@
     "recoilHorizontal": 26.1
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1726,7 +1745,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1822,7 +1842,8 @@
     "recoilHorizontal": 35.8
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -1918,7 +1939,8 @@
     "recoilHorizontal": 15.8
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2016,7 +2038,8 @@
     "recoilHorizontal": 24.3
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2113,7 +2136,8 @@
     "recoilHorizontal": 31.7
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2210,7 +2234,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2309,7 +2334,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2382,7 +2408,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2479,7 +2506,8 @@
     "recoilHorizontal": 35.5
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 50
    },
    "dano": {
     "cabeza": [
@@ -2577,7 +2605,8 @@
     "recoilHorizontal": 50
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 17
    },
    "dano": {
     "cabeza": [
@@ -2674,7 +2703,8 @@
     "recoilHorizontal": 33.5
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 15
    },
    "dano": {
     "cabeza": [
@@ -2772,7 +2802,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2869,7 +2900,8 @@
     "recoilHorizontal": 50.8
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -2967,7 +2999,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -3064,7 +3097,8 @@
     "recoilHorizontal": 31
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 100
    },
    "dano": {
     "cabeza": [
@@ -3139,7 +3173,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 30
    },
    "dano": {
     "cabeza": [
@@ -3212,7 +3247,8 @@
     "recoilHorizontal": 29.9
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 100
    },
    "dano": {
     "cabeza": [
@@ -3288,7 +3324,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 40
    },
    "dano": {
     "cabeza": [
@@ -3385,7 +3422,8 @@
     "recoilHorizontal": 47.7
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 100
    },
    "dano": {
     "cabeza": [
@@ -3457,7 +3495,8 @@
     "recoilHorizontal": 35.9
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 50
    },
    "dano": {
     "cabeza": [
@@ -3507,7 +3546,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 60
    },
    "dano": {
     "cabeza": [
@@ -3580,7 +3620,8 @@
     "recoilHorizontal": 34.5
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 50
    },
    "dano": {
     "cabeza": [
@@ -3653,7 +3694,8 @@
     "recoilHorizontal": 31.8
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 50
    },
    "dano": {
     "cabeza": [
@@ -3727,7 +3769,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 45
    },
    "dano": {
     "cabeza": [
@@ -3801,7 +3844,8 @@
    },
    "municion": {
     "puntaHueca": 1.5,
-    "sintetico": 1.75
+    "sintetico": 1.75,
+    "cargador": 20
    },
    "dano": {
     "cabeza": [
@@ -3874,7 +3918,8 @@
    },
    "municion": {
     "puntaHueca": 1.5,
-    "sintetico": 1.75
+    "sintetico": 1.75,
+    "cargador": 10
    },
    "dano": {
     "cabeza": [
@@ -4023,7 +4068,10 @@
     ]
    },
    "equipamientos": [],
-   "notas": "Base anotada con el cañón Light."
+   "notas": "Base anotada con el cañón Light.",
+   "municion": {
+    "cargador": 7
+   }
   },
   {
    "id": "mini-scout",
@@ -4097,7 +4145,10 @@
    "equipamientos": [],
    "cadenciaTTK": 51,
    "revisar": true,
-   "notas": "Sus tablas de TTK usan 51 RPM y no 47. Se conserva con \"cadenciaTTK\"; revisar en el juego."
+   "notas": "Sus tablas de TTK usan 51 RPM y no 47. Se conserva con \"cadenciaTTK\"; revisar en el juego.",
+   "municion": {
+    "cargador": 10
+   }
   },
   {
    "id": "m2010-esr",
@@ -4195,7 +4246,10 @@
      ]
     ]
    },
-   "equipamientos": []
+   "equipamientos": [],
+   "municion": {
+    "cargador": 5
+   }
   },
   {
    "id": "sv-98",
@@ -4293,7 +4347,10 @@
      ]
     ]
    },
-   "equipamientos": []
+   "equipamientos": [],
+   "municion": {
+    "cargador": 10
+   }
   },
   {
    "id": "psr",
@@ -4433,7 +4490,10 @@
      ]
     ]
    },
-   "equipamientos": []
+   "equipamientos": [],
+   "municion": {
+    "cargador": 10
+   }
   },
   {
    "id": "l115",
@@ -4531,7 +4591,10 @@
      ]
     ]
    },
-   "equipamientos": []
+   "equipamientos": [],
+   "municion": {
+    "cargador": 5
+   }
   },
   {
    "id": "mk-24",
@@ -4557,7 +4620,8 @@
     "recoilHorizontal": 27.6
    },
    "municion": {
-    "puntaHueca": 1.8
+    "puntaHueca": 1.8,
+    "cargador": 20
    },
    "dano": {
     "cabeza": [
@@ -4617,7 +4681,8 @@
     "recoilHorizontal": 56.7
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 100
    },
    "dano": {
     "cabeza": [
@@ -4708,7 +4773,8 @@
     "balasParaMatar": 2
    },
    "municion": {
-    "puntaHueca": 1.75
+    "puntaHueca": 1.75,
+    "cargador": 10
    },
    "dano": {
     "pecho": [
@@ -4781,7 +4847,8 @@
     "balasParaMatar": 3
    },
    "municion": {
-    "puntaHueca": 1.75
+    "puntaHueca": 1.75,
+    "cargador": 10
    },
    "dano": {
     "pecho": [
@@ -4855,7 +4922,8 @@
    },
    "municion": {
     "puntaHueca": 1.5,
-    "sintetico": 1.75
+    "sintetico": 1.75,
+    "cargador": 20
    },
    "dano": {
     "pecho": [
@@ -4997,7 +5065,10 @@
    },
    "equipamientos": [],
    "revisar": true,
-   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen.",
+   "municion": {
+    "cargador": 20
+   }
   },
   {
    "id": "m87a1",
@@ -5079,7 +5150,10 @@
    },
    "equipamientos": [],
    "revisar": true,
-   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando.",
+   "municion": {
+    "cargador": 7
+   }
   },
   {
    "id": "m1014",
@@ -5161,7 +5235,10 @@
    },
    "equipamientos": [],
    "revisar": true,
-   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando.",
+   "municion": {
+    "cargador": 6
+   }
   },
   {
    "id": "18-5ks-k",
@@ -5231,7 +5308,10 @@
    },
    "equipamientos": [],
    "revisar": true,
-   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando.",
+   "municion": {
+    "cargador": 8
+   }
   },
   {
    "id": "db-12",
@@ -5301,7 +5381,10 @@
    },
    "equipamientos": [],
    "revisar": true,
-   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando."
+   "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen. Escopeta: el daño es el de un disparo con los 16 perdigones acertando.",
+   "municion": {
+    "cargador": 14
+   }
   },
   {
    "id": "p18",
@@ -5326,7 +5409,8 @@
     "balasParaMatar": 4
    },
    "municion": {
-    "puntaHueca": 1.5
+    "puntaHueca": 1.5,
+    "cargador": 17
    },
    "dano": {
     "pecho": [
@@ -5423,7 +5507,8 @@
     "balasParaMatar": 5
    },
    "municion": {
-    "puntaHueca": 1.5
+    "puntaHueca": 1.5,
+    "cargador": 20
    },
    "dano": {
     "pecho": [
@@ -5520,7 +5605,8 @@
     "balasParaMatar": 3
    },
    "municion": {
-    "puntaHueca": 1.5
+    "puntaHueca": 1.5,
+    "cargador": 7
    },
    "dano": {
     "pecho": [
@@ -5629,7 +5715,8 @@
     "balasParaMatar": 2
    },
    "municion": {
-    "puntaHueca": 1.75
+    "puntaHueca": 1.75,
+    "cargador": 6
    },
    "dano": {
     "pecho": [
@@ -5714,7 +5801,8 @@
     "balasParaMatar": 4
    },
    "municion": {
-    "puntaHueca": 1.5
+    "puntaHueca": 1.5,
+    "cargador": 15
    },
    "dano": {
     "pecho": [
@@ -5811,7 +5899,8 @@
     "balasParaMatar": 2
    },
    "municion": {
-    "puntaHueca": 1.75
+    "puntaHueca": 1.75,
+    "cargador": 8
    },
    "dano": {
     "pecho": [
@@ -5909,7 +5998,8 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8
+    "sintetico": 1.8,
+    "cargador": 10
    },
    "dano": {
     "pecho": [
@@ -6006,7 +6096,8 @@
     "balasParaMatar": 3
    },
    "municion": {
-    "puntaHueca": 1.57
+    "puntaHueca": 1.57,
+    "cargador": 20
    },
    "dano": {
     "pecho": [

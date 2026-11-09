@@ -403,7 +403,7 @@ function tabStats(a) {
   const mun = esquema().municiones.map(m => campo(`${m.nombre} (multiplicador)`, inputNum('municion.' + m.id, a.municion?.[m.id]))).join('');
   $('tabBody').innerHTML = grupos.map(g => bloque(g.nombre, stats.filter(s => s.grupo === g.id))).join('')
     + bloque('Otros datos', stats.filter(s => !s.grupo))
-    + `<h3>Munición</h3><div class="grid">${mun}${campo('Cadencia para TTK (opcional)', inputNum('cadenciaTTK', a.cadenciaTTK), 'Solo si el TTK real usa otra cadencia que la mostrada.')}</div>`;
+    + `<h3>Munición</h3><div class="grid">${mun}${campo('Cargador (balas)', inputNum('municion.cargador', a.municion?.cargador), 'Tamaño de fábrica. El Constructor parte de este valor.')}${campo('Cadencia para TTK (opcional)', inputNum('cadenciaTTK', a.cadenciaTTK), 'Solo si el TTK real usa otra cadencia que la mostrada.')}</div>`;
 }
 
 /* ---------- Daño: gráfico, herramientas, rejilla y tramos ---------- */
