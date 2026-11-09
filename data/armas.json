@@ -125,6 +125,14 @@
     "visible": true
    },
    {
+    "id": "recoilDireccion",
+    "nombre": "Dirección del retroceso",
+    "unidad": "°",
+    "grupo": "punteria",
+    "mejor": null,
+    "visible": false
+   },
+   {
     "id": "recoil3",
     "nombre": "Recoil 3",
     "unidad": "",
@@ -337,7 +345,8 @@
     "danoEstomago": 29.67,
     "balasParaMatar": 3,
     "recoilVertical": 1.16,
-    "recoilHorizontal": 40.8
+    "recoilHorizontal": 40.8,
+    "recoilDireccion": -20
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -411,7 +420,8 @@
     "danoEstomago": 29.67,
     "balasParaMatar": 3,
     "recoilVertical": 0.73,
-    "recoilHorizontal": 28.9
+    "recoilHorizontal": 28.9,
+    "recoilDireccion": 12
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -509,7 +519,8 @@
     "danoEstomago": 27.79,
     "balasParaMatar": 4,
     "recoilVertical": 0.82,
-    "recoilHorizontal": 50.3
+    "recoilHorizontal": 50.3,
+    "recoilDireccion": -18
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -583,7 +594,8 @@
     "danoEstomago": 21.79,
     "balasParaMatar": 4,
     "recoilVertical": 0.79,
-    "recoilHorizontal": 41.4
+    "recoilHorizontal": 41.4,
+    "recoilDireccion": 22
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -660,7 +672,8 @@
     "balasParaMatar": 3,
     "recoilVertical": 0.85,
     "recoilHorizontal": 20,
-    "extra2": "manejo mal"
+    "extra2": "manejo mal",
+    "recoilDireccion": 18
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -733,7 +746,8 @@
     "danoEstomago": 21.79,
     "balasParaMatar": 4,
     "recoilVertical": 0.73,
-    "recoilHorizontal": 29.2
+    "recoilHorizontal": 29.2,
+    "recoilDireccion": 21
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -807,7 +821,8 @@
     "danoEstomago": 21.79,
     "balasParaMatar": 4,
     "recoilVertical": 0.73,
-    "recoilHorizontal": 28
+    "recoilHorizontal": 28,
+    "recoilDireccion": 15
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -881,7 +896,8 @@
     "danoEstomago": 17.4,
     "balasParaMatar": 5,
     "recoilVertical": 0.54,
-    "recoilHorizontal": 28.9
+    "recoilHorizontal": 28.9,
+    "recoilDireccion": -18
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -954,7 +970,8 @@
     "danoEstomago": 21.79,
     "balasParaMatar": 4,
     "recoilVertical": 0.72,
-    "recoilHorizontal": 26.1
+    "recoilHorizontal": 26.1,
+    "recoilDireccion": -11
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1028,7 +1045,8 @@
     "danoEstomago": 27.79,
     "balasParaMatar": 4,
     "recoilVertical": 0.67,
-    "recoilHorizontal": 22.8
+    "recoilHorizontal": 22.8,
+    "recoilDireccion": -12
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1102,7 +1120,8 @@
     "danoEstomago": 21.79,
     "balasParaMatar": 4,
     "recoilVertical": 0.62,
-    "recoilHorizontal": 12.7
+    "recoilHorizontal": 12.7,
+    "recoilDireccion": 9
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1175,7 +1194,8 @@
     "danoEstomago": 80,
     "balasParaMatar": 2,
     "recoilVertical": 2.2,
-    "recoilHorizontal": 10
+    "recoilHorizontal": 10,
+    "recoilDireccion": 8
    },
    "dano": {
     "cabeza": [
@@ -1285,7 +1305,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.85,
-    "recoilHorizontal": 30.7
+    "recoilHorizontal": 30.7,
+    "recoilDireccion": 18
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1383,7 +1404,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.95,
-    "recoilHorizontal": 34.4
+    "recoilHorizontal": 34.4,
+    "recoilDireccion": 22
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1449,7 +1471,8 @@
     "recoilVertical": 0.51,
     "recoilHorizontal": 7.4,
     "extra2": "Daño 25 CABEZA PECHO 80",
-    "extra3": "retroceso"
+    "extra3": "retroceso",
+    "recoilDireccion": -6
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1547,7 +1570,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.94,
-    "recoilHorizontal": 15.4
+    "recoilHorizontal": 15.4,
+    "recoilDireccion": 16
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1644,7 +1668,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.81,
-    "recoilHorizontal": 26.1
+    "recoilHorizontal": 26.1,
+    "recoilDireccion": -16
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1741,7 +1766,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.77,
-    "recoilHorizontal": 19.9
+    "recoilHorizontal": 19.9,
+    "recoilDireccion": 10
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1839,7 +1865,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.83,
-    "recoilHorizontal": 35.8
+    "recoilHorizontal": 35.8,
+    "recoilDireccion": 20
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -1936,7 +1963,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.74,
-    "recoilHorizontal": 15.8
+    "recoilHorizontal": 15.8,
+    "recoilDireccion": 12
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2035,7 +2063,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.84,
-    "recoilHorizontal": 24.3
+    "recoilHorizontal": 24.3,
+    "recoilDireccion": 16
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2133,7 +2162,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.6,
-    "recoilHorizontal": 31.7
+    "recoilHorizontal": 31.7,
+    "recoilDireccion": 18
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2230,7 +2260,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.56,
-    "recoilHorizontal": 28.3
+    "recoilHorizontal": 28.3,
+    "recoilDireccion": 10
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2330,7 +2361,8 @@
     "danoEstomago": 14.39,
     "balasParaMatar": 6,
     "recoilVertical": 0.51,
-    "recoilHorizontal": 27.8
+    "recoilHorizontal": 27.8,
+    "recoilDireccion": 10
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2404,7 +2436,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.6,
-    "recoilHorizontal": 13
+    "recoilHorizontal": 13,
+    "recoilDireccion": 16
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2503,7 +2536,8 @@
     "danoEstomago": 17.36,
     "balasParaMatar": 5,
     "recoilVertical": 0.55,
-    "recoilHorizontal": 35.5
+    "recoilHorizontal": 35.5,
+    "recoilDireccion": -10
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2602,7 +2636,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.54,
-    "recoilHorizontal": 50
+    "recoilHorizontal": 50,
+    "recoilDireccion": -22
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2700,7 +2735,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.71,
-    "recoilHorizontal": 33.5
+    "recoilHorizontal": 33.5,
+    "recoilDireccion": 18
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2798,7 +2834,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.52,
-    "recoilHorizontal": 13
+    "recoilHorizontal": 13,
+    "recoilDireccion": 0
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2897,7 +2934,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.68,
-    "recoilHorizontal": 50.8
+    "recoilHorizontal": 50.8,
+    "recoilDireccion": 15
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -2995,7 +3033,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.54,
-    "recoilHorizontal": 18
+    "recoilHorizontal": 18,
+    "recoilDireccion": -6
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3094,7 +3133,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.57,
-    "recoilHorizontal": 31
+    "recoilHorizontal": 31,
+    "recoilDireccion": 0
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3169,7 +3209,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.71,
-    "recoilHorizontal": 29.3
+    "recoilHorizontal": 29.3,
+    "recoilDireccion": 14
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3244,7 +3285,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.74,
-    "recoilHorizontal": 29.9
+    "recoilHorizontal": 29.9,
+    "recoilDireccion": 0
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3320,7 +3362,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.66,
-    "recoilHorizontal": 17.5
+    "recoilHorizontal": 17.5,
+    "recoilDireccion": -5
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3419,7 +3462,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.61,
-    "recoilHorizontal": 47.7
+    "recoilHorizontal": 47.7,
+    "recoilDireccion": 10
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3492,7 +3536,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.73,
-    "recoilHorizontal": 35.9
+    "recoilHorizontal": 35.9,
+    "recoilDireccion": 14
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3542,7 +3587,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.52,
-    "recoilHorizontal": 9.5
+    "recoilHorizontal": 9.5,
+    "recoilDireccion": -8
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3617,7 +3663,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.81,
-    "recoilHorizontal": 34.5
+    "recoilHorizontal": 34.5,
+    "recoilDireccion": -5
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3691,7 +3738,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.81,
-    "recoilHorizontal": 31.8
+    "recoilHorizontal": 31.8,
+    "recoilDireccion": 7
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3765,7 +3813,8 @@
     "danoEstomago": 17.36,
     "balasParaMatar": 5,
     "recoilVertical": 0.48,
-    "recoilHorizontal": 16.1
+    "recoilHorizontal": 16.1,
+    "recoilDireccion": -6
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -3840,7 +3889,8 @@
     "danoEstomago": 37.76,
     "balasParaMatar": 3,
     "recoilVertical": 1.75,
-    "recoilHorizontal": 8
+    "recoilHorizontal": 8,
+    "recoilDireccion": 12
    },
    "municion": {
     "puntaHueca": 1.5,
@@ -3914,7 +3964,8 @@
     "danoEstomago": 26.75,
     "balasParaMatar": 4,
     "recoilVertical": 0.92,
-    "recoilHorizontal": 11
+    "recoilHorizontal": 11,
+    "recoilDireccion": -10
    },
    "municion": {
     "puntaHueca": 1.5,
@@ -3987,7 +4038,8 @@
     "danoEstomago": 53.6,
     "balasParaMatar": 2,
     "recoilVertical": 1.67,
-    "recoilHorizontal": 6
+    "recoilHorizontal": 6,
+    "recoilDireccion": 8
    },
    "dano": {
     "cabeza": [
@@ -4093,7 +4145,8 @@
     "danoEstomago": 41.54,
     "balasParaMatar": 2,
     "recoilVertical": 1,
-    "recoilHorizontal": 5
+    "recoilHorizontal": 5,
+    "recoilDireccion": 5
    },
    "dano": {
     "cabeza": [
@@ -4170,7 +4223,8 @@
     "danoEstomago": 54,
     "balasParaMatar": 2,
     "recoilVertical": 1.5,
-    "recoilHorizontal": 10
+    "recoilHorizontal": 10,
+    "recoilDireccion": 5
    },
    "dano": {
     "cabeza": [
@@ -4271,7 +4325,8 @@
     "danoEstomago": 53.6,
     "balasParaMatar": 2,
     "recoilVertical": 1.3,
-    "recoilHorizontal": 10
+    "recoilHorizontal": 10,
+    "recoilDireccion": 5
    },
    "dano": {
     "cabeza": [
@@ -4372,7 +4427,8 @@
     "danoEstomago": 53.6,
     "balasParaMatar": 2,
     "recoilVertical": 1.8,
-    "recoilHorizontal": 12
+    "recoilHorizontal": 12,
+    "recoilDireccion": 4
    },
    "dano": {
     "cabeza": [
@@ -4515,7 +4571,8 @@
     "danoEstomago": 53.6,
     "balasParaMatar": 2,
     "recoilVertical": 2,
-    "recoilHorizontal": 4
+    "recoilHorizontal": 4,
+    "recoilDireccion": 8
    },
    "dano": {
     "cabeza": [
@@ -4617,7 +4674,8 @@
     "danoEstomago": 21.88,
     "balasParaMatar": 4,
     "recoilVertical": 0.8,
-    "recoilHorizontal": 27.6
+    "recoilHorizontal": 27.6,
+    "recoilDireccion": 19
    },
    "municion": {
     "puntaHueca": 1.8,
@@ -4678,7 +4736,8 @@
     "danoEstomago": 29.58,
     "balasParaMatar": 3,
     "recoilVertical": 0.96,
-    "recoilHorizontal": 56.7
+    "recoilHorizontal": 56.7,
+    "recoilDireccion": -12
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -4770,7 +4829,8 @@
     "danoCabeza": 100.05,
     "danoPecho": 66.7,
     "danoEstomago": 60.7,
-    "balasParaMatar": 2
+    "balasParaMatar": 2,
+    "recoilDireccion": 7
    },
    "municion": {
     "puntaHueca": 1.75,
@@ -4844,7 +4904,8 @@
     "danoCabeza": 62.25,
     "danoPecho": 41.5,
     "danoEstomago": 37.77,
-    "balasParaMatar": 3
+    "balasParaMatar": 3,
+    "recoilDireccion": -20
    },
    "municion": {
     "puntaHueca": 1.75,
@@ -4918,7 +4979,8 @@
     "danoCabeza": 39.4,
     "danoPecho": 29.4,
     "danoEstomago": 26.75,
-    "balasParaMatar": 4
+    "balasParaMatar": 4,
+    "recoilDireccion": 5
    },
    "municion": {
     "puntaHueca": 1.5,
@@ -4993,7 +5055,8 @@
     "danoCabeza": 63.4,
     "danoPecho": 35.22,
     "danoEstomago": 29.58,
-    "balasParaMatar": 3
+    "balasParaMatar": 3,
+    "recoilDireccion": 13
    },
    "dano": {
     "pecho": [
@@ -5090,7 +5153,8 @@
     "danoCabeza": 134.4,
     "danoPecho": 134.4,
     "danoEstomago": 134.4,
-    "balasParaMatar": 1
+    "balasParaMatar": 1,
+    "recoilDireccion": 10
    },
    "dano": {
     "pecho": [
@@ -5175,7 +5239,8 @@
     "danoCabeza": 115.2,
     "danoPecho": 115.2,
     "danoEstomago": 115.2,
-    "balasParaMatar": 1
+    "balasParaMatar": 1,
+    "recoilDireccion": 5
    },
    "dano": {
     "pecho": [
@@ -5260,7 +5325,8 @@
     "danoCabeza": 80,
     "danoPecho": 80,
     "danoEstomago": 80,
-    "balasParaMatar": 2
+    "balasParaMatar": 2,
+    "recoilDireccion": -8
    },
    "dano": {
     "pecho": [
@@ -5333,7 +5399,8 @@
     "danoCabeza": 89.6,
     "danoPecho": 89.6,
     "danoEstomago": 89.6,
-    "balasParaMatar": 2
+    "balasParaMatar": 2,
+    "recoilDireccion": 0
    },
    "dano": {
     "pecho": [
@@ -5406,7 +5473,8 @@
     "danoCabeza": 33.5,
     "danoPecho": 25,
     "danoEstomago": 25,
-    "balasParaMatar": 4
+    "balasParaMatar": 4,
+    "recoilDireccion": 5
    },
    "municion": {
     "puntaHueca": 1.5,
@@ -5504,7 +5572,8 @@
     "danoCabeza": 26.8,
     "danoPecho": 20,
     "danoEstomago": 20,
-    "balasParaMatar": 5
+    "balasParaMatar": 5,
+    "recoilDireccion": -5
    },
    "municion": {
     "puntaHueca": 1.5,
@@ -5602,7 +5671,8 @@
     "danoCabeza": 44.76,
     "danoPecho": 33.4,
     "danoEstomago": 33.4,
-    "balasParaMatar": 3
+    "balasParaMatar": 3,
+    "recoilDireccion": 0
    },
    "municion": {
     "puntaHueca": 1.5,
@@ -5712,7 +5782,8 @@
     "danoCabeza": 100.05,
     "danoPecho": 66.7,
     "danoEstomago": 66.7,
-    "balasParaMatar": 2
+    "balasParaMatar": 2,
+    "recoilDireccion": 8
    },
    "municion": {
     "puntaHueca": 1.75,
@@ -5798,7 +5869,8 @@
     "danoCabeza": 33.5,
     "danoPecho": 25,
     "danoEstomago": 25,
-    "balasParaMatar": 4
+    "balasParaMatar": 4,
+    "recoilDireccion": 7
    },
    "municion": {
     "puntaHueca": 1.5,
@@ -5896,7 +5968,8 @@
     "danoCabeza": 75,
     "danoPecho": 50,
     "danoEstomago": 50,
-    "balasParaMatar": 2
+    "balasParaMatar": 2,
+    "recoilDireccion": 10
    },
    "municion": {
     "puntaHueca": 1.75,
@@ -5994,7 +6067,8 @@
     "danoCabeza": 23.98,
     "danoPecho": 17.13,
     "danoEstomago": 14.39,
-    "balasParaMatar": 6
+    "balasParaMatar": 6,
+    "recoilDireccion": 10
    },
    "municion": {
     "puntaHueca": 1.57,
@@ -6093,7 +6167,8 @@
     "danoCabeza": 49.31,
     "danoPecho": 35.22,
     "danoEstomago": 29.58,
-    "balasParaMatar": 3
+    "balasParaMatar": 3,
+    "recoilDireccion": -21
    },
    "municion": {
     "puntaHueca": 1.57,
