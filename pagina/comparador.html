@@ -1019,6 +1019,41 @@ html.ctor-modal{overflow:hidden}
 .ctor-boceto .hj-b{background:var(--text-faint)}
 .ctor-boceto .hj-v b,.ctor-boceto .ctor-ranura b{color:var(--text-dim);font-weight:600}
 .ctor-boceto .hj .hj-arma b{color:var(--text-faint);font-style:italic}
+.rc-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px 18px;align-items:center;background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:10px 12px;margin-bottom:6px}
+.rc-ctl{display:grid;grid-template-columns:auto minmax(60px,1fr) 58px;gap:8px;align-items:center;font-size:.72rem;font-weight:800;color:var(--text-secondary);text-transform:uppercase}
+.rc-ctl input{width:100%;accent-color:var(--accent);cursor:pointer;margin:0}
+.rc-ctl b{color:var(--accent);text-align:right;font-variant-numeric:tabular-nums;text-transform:none}
+.rc-acc{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rc-sub{display:flex;justify-content:space-between;gap:10px;font-size:.66rem;font-weight:700;color:var(--text-muted);margin:0 2px 8px}
+.rc-plots{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.rc-plots.unida{grid-template-columns:minmax(0,640px);justify-content:center}
+.rc-card{background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:8px;min-width:0}
+.rc-card canvas{display:block;width:100%!important;height:auto!important;aspect-ratio:1;border-radius:5px}
+.rc-tit{display:flex;align-items:center;gap:6px;min-width:0;margin-bottom:6px;font-size:.76rem}
+.rc-tit i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.rc-tit b{font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-tit span{font-size:.6rem;color:var(--accent);font-weight:700;text-transform:uppercase;white-space:nowrap}
+.rc-datos{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.85fr) minmax(0,1.05fr) minmax(0,1.5fr);gap:6px;margin-top:6px;font-size:.72rem;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.rc-datos em{display:block;font-style:normal;font-size:.56rem;font-weight:700;color:var(--text-muted);text-transform:uppercase}
+.rc-fila{border-top:1px solid var(--border);margin-top:8px;padding-top:6px}
+.rc-fila .rc-tit{margin-bottom:0}
+.rc-sin p{font-size:.72rem;color:var(--text-muted);margin:4px 0}
+@media (max-width:768px){
+.rc-bar{grid-template-columns:minmax(0,1fr);gap:6px;padding:7px 8px}
+.rc-ctl{font-size:.62rem;grid-template-columns:62px minmax(0,1fr) 50px}
+.rc-acc{gap:5px;flex-wrap:wrap}
+.rc-acc .seg-group{flex:1 1 100%;width:100%}
+.rc-acc .seg-btn{flex:1}
+.rc-acc .recoil-param-btn{flex:1;text-align:center}
+.rc-acc .seg-btn{padding:6px 4px;font-size:.66rem}
+.rc-acc .recoil-param-btn{padding:6px 7px;font-size:.66rem;white-space:nowrap}
+.rc-sub{font-size:.58rem;margin-bottom:5px}
+.rc-plots{grid-template-columns:minmax(0,1fr);gap:8px}
+.rc-card{padding:6px}
+.rc-tit{font-size:.68rem;margin-bottom:4px}
+.rc-datos{gap:4px;font-size:.62rem;margin-top:4px}
+.rc-datos em{font-size:.5rem}
+}
 </style>
 </head>
 <body>
@@ -1102,31 +1137,7 @@ html.ctor-modal{overflow:hidden}
 </div>
 <div class="weapons-bar" id="recoilChips" aria-live="polite"></div>
 </div>
-<div class="chart-top-bar">
-<div class="chart-title">Retroceso</div>
-<div class="chart-top-actions">
-<button id="advBtnRecoil" class="adv-btn" data-action="toggleAdvPanel" data-a0="Recoil"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Parámetros avanzados <i class="fa-solid fa-chevron-down adv-chevron" aria-hidden="true"></i></button>
-</div>
-</div>
-<div class="chart-area-wrapper">
-<div id="advPanelRecoil" class="adv-panel">
-<div class="adv-block">
-<div class="recoil-adv-row">
-<div class="recoil-adv-group">
-<button id="recoilUnifyBtn" class="recoil-param-btn" data-action="toggleRecoilUnify"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>
-</div>
-<div class="recoil-adv-group" style="flex:1; max-width:350px;">
-<div class="recoil-distance-control">
-<div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:#ccc;"><span>Distancia</span><span id="recoilDistDisplay">10 m</span></div>
-<input type="range" id="recoilDistSlider" class="recoil-distance-slider" min="0" max="30" step="1" value="10" aria-label="Distancia de retroceso">
-<div style="display:flex; justify-content:space-between; font-size:10px; font-weight:bold; color:#888;"><span>0m</span><span>30m</span></div>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div id="recoilContainer" style="width:100%;"></div>
-</div>
 </div>
 </div>
 <div id="addWeaponModal" class="awm-overlay" role="dialog" aria-modal="true" aria-label="Agregar arma"><div class="awm-container"><div class="awm-header"><h3 class="awm-title"><i class="fa-solid fa-gun" aria-hidden="true"></i> AÑADIR ARMA</h3><button class="awm-close" data-action="closeAddWeaponModal" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div><div class="awm-toolbar"><div class="awm-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="text" id="awmSearch" placeholder="Buscar arma..." aria-label="Buscar arma"></div><div class="awm-categories" id="awmCategories"></div><div class="awm-bulk" id="awmBulk" style="display:none;"></div></div><div class="awm-body"><div id="awmList"></div></div></div></div>
@@ -1172,7 +1183,7 @@ window.__csvPromise.catch(function(){});
 <script>
 function onReady(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
 function on(type,sel,fn){ if(typeof sel==='function'){ document.addEventListener(type,sel); return; } document.addEventListener(type==='blur'?'focusout':type,function(e){ const t=e.target&&e.target.closest?e.target.closest(sel):null; if(t) fn.call(t,e); }); }
-const ACTIONS = { openMainTab:(...a)=>openMainTab(...a), openTab:(...a)=>openTab(...a), toggleAdvPanel:(...a)=>toggleAdvPanel(...a), togglePinFromButton:(...a)=>togglePinFromButton(...a), openAddWeaponModal:(...a)=>openAddWeaponModal(...a), closeAddWeaponModal:()=>closeAddWeaponModal(), downloadChart:(...a)=>downloadChart(...a), closeStatsClassModal:()=>closeStatsClassModal(), closeDownloadModal:()=>closeDownloadModal(), toggleRecoilUnify:()=>toggleRecoilUnify(), toggleHoverTable:(...a)=>toggleHoverTable(...a) };
+const ACTIONS = { openMainTab:(...a)=>openMainTab(...a), openTab:(...a)=>openTab(...a), toggleAdvPanel:(...a)=>toggleAdvPanel(...a), togglePinFromButton:(...a)=>togglePinFromButton(...a), openAddWeaponModal:(...a)=>openAddWeaponModal(...a), closeAddWeaponModal:()=>closeAddWeaponModal(), downloadChart:(...a)=>downloadChart(...a), closeStatsClassModal:()=>closeStatsClassModal(), closeDownloadModal:()=>closeDownloadModal(), toggleHoverTable:(...a)=>toggleHoverTable(...a) };
 function updateCombinedUI(){
 ['TTK','Balas','Dano'].forEach(S=>{
 const p = document.getElementById('advPanel'+S); if(!p) return;
@@ -1299,8 +1310,6 @@ let pinnedState = { TTK: null, Balas: null, Dano: null };
 let focusState = { TTK: null, Balas: null, Dano: null };
 let lastHoverIndex = { TTK: 0, Balas: 0, Dano: 0 };
 let selectedRecoilWeapons = [], recoilIdCounter = 0;
-let recoilUnify = false, recoilState = { scale:1, x:0, y:0 };
-const recoilColors = ['#FF0000','#00E5FF','#FFEA00','#FF00FF','#00FF00','#FF5722','#00BCD4','#FFD600','#9C27B0','#4CAF50'];
 let activeAmmoTypes = [];
 let silSelZone='pecho';
 const SIL_ZONE_LABEL={cabeza:'Cabeza',pecho:'Pecho',estomago:'Est\u00f3mago',comb:'Combinado'};
@@ -1482,7 +1491,6 @@ t = setTimeout(() => fn.apply(this, args), delay);
 };
 const debouncedUpdateCharts = debounce(function(){ invalidateCalcCache(); updateSelectionAndChartsMP(); }, CONFIG.UI.DEBOUNCE_MS);
 const debouncedSearch = debounce(function(){ renderAwmList(); }, CONFIG.UI.DEBOUNCE_MS);
-const debouncedRecoilDist = debounce(renderRecoilCones, CONFIG.UI.DEBOUNCE_MS);
 function isMobile(){ return window.innerWidth <= 768; }
 function effectiveHealth(){ return baseSalud+(globalPlacas*50); }
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
@@ -1779,118 +1787,7 @@ html+=`<div class="weapon-chip"><span class="chip-dot" style="background:${color
 bar.innerHTML=html;
 renderRecoilCones();
 }
-function renderRecoilCones(){
-const container = DOM_CACHE.recoilContainer || document.getElementById('recoilContainer');
-if(!container) return;
-container.innerHTML = '';
-if(!selectedRecoilWeapons.length) { container.innerHTML = '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-arrow-up-short-wide"></i></div><p class="recoil-placeholder-text">No hay armas seleccionadas.</p></div>'; return; }
-const distSlider = document.getElementById('recoilDistSlider');
-const currentDistance = distSlider ? parseFloat(distSlider.value) : 10;
-const distanceScale = currentDistance / 15;
-const track = document.createElement('div');
-track.className = 'recoil-track' + (recoilUnify ? ' unified' : '');
-const stage = document.createElement('div');
-stage.className = 'recoil-zoom-stage';
-if(recoilUnify){
-const bgDiv = document.createElement('div');
-bgDiv.className = 'recoil-unified-bg';
-bgDiv.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:calc(100% + 40px);';
-const tpl = document.getElementById('silhouetteTemplate');
-if(tpl && tpl.content && tpl.content.querySelector && tpl.content.querySelector('svg path')){
-bgDiv.appendChild(tpl.content.cloneNode(true));
-}
-const svgClone = bgDiv.querySelector('svg');
-if(svgClone){
-svgClone.classList.remove('silueta-svg-split');
-svgClone.classList.add('recoil-silhouette-bg');
-svgClone.querySelectorAll('.silhouette-part-split').forEach(p=>{p.classList.remove('silhouette-part-split','head-part','body-part','stomach-part');});
-svgClone.style.cssText = 'position:absolute;left:49.90%;bottom:8%;transform:translateX(-50%);height:65%;width:auto;display:block;';
-}
-stage.appendChild(bgDiv);
-}
-initRecoilPinchZoom(track, stage);
-const legendData = [];
-const generateBullets = (dev, cDrop, color) => {
-let html = ''; const numBullets = CONFIG.RECOIL.BULLET_COUNT;
-for(let i = 0; i < numBullets; i++){
-let progress = Math.sqrt(Math.random()); let y = 100 - 105 * progress;
-let currentDev = dev * ((100 - y) / (100 - cDrop)) * 1.2;
-let x = 50 - currentDev + Math.random() * (currentDev * 2);
-let r = Math.random() * 0.8 + 1.2; let delay = Math.random() * 0.4;
-html += `<circle cx="${x}" cy="${y}" r="${r}" fill="#1a1a1a" stroke="${color}" stroke-width="0.8" class="bullet-dot" style="animation-delay:${delay}s;"/>`;
-}
-return html;
-};
-selectedRecoilWeapons.forEach((item, index) => {
-const weapon = item.weapon; const clase = item.clase || 'base';
-const rMap = RECOIL_MAP[clase] || RECOIL_MAP.base;
-const vertVal = parseStatValue(weapon[rMap.vertical]) || 0;
-const horizVal = parseStatValue(weapon[rMap.horizontal]) || 0;
-const color = getColorForWeapon(weapon[HEADERS.ARMA]+'_'+item.id);
-const lane = document.createElement('div'); lane.className = 'recoil-lane'; lane.dataset.weaponIndex = index;
-const baseTrackHeight = CONFIG.RECOIL.TRACK_HEIGHT; const maxPxHeight = baseTrackHeight * 0.9 * 0.85;
-const scaleX = CONFIG.RECOIL.CONE_WIDTH / CONFIG.RECOIL.VIEWBOX_W;
-const heightScaleFactor = CONFIG.RECOIL.HEIGHT_SCALE; const baseHeight = CONFIG.RECOIL.BASE_HEIGHT;
-const coneHeightPct = Math.max(2, baseHeight + (vertVal * heightScaleFactor));
-const scaledH = coneHeightPct * distanceScale;
-const pxHeight = maxPxHeight * (coneHeightPct / 100);
-const spreadAngle = horizVal > 0 ? horizVal : 1.0;
-const halfAngleRad = (spreadAngle / 2) * (Math.PI / 180);
-const dev = pxHeight * Math.tan(halfAngleRad) / scaleX;
-const cDrop = Math.min(25, dev * 0.35);
-const pPath = `M 49 100 L ${50-dev} ${cDrop} Q 50 -${cDrop} ${50+dev} ${cDrop} L 51 100 Z`;
-const fill = recoilUnify ? "transparent" : "rgba(255,165,0,0.1)";
-const clipId = `clip-r-${index}-${Math.floor(Math.random()*10000)}`;
-lane.innerHTML = `<div class="recoil-cones-pair"><div class="recoil-single-cone-container" style="height:${scaledH}%;"><div class="recoil-value">V:${vertVal.toFixed(2)}\u00b0 H:${horizVal.toFixed(2)}\u00b0</div><svg class="recoil-cone-svg" viewBox="-50 0 200 100" preserveAspectRatio="none" style="filter:drop-shadow(0 0 5px ${color});overflow:visible;"><defs><clipPath id="${clipId}"><path d="${pPath}"/></clipPath></defs><path d="${pPath}" fill="${fill}" stroke="${color}" stroke-width="${recoilUnify?3:2}"/><g clip-path="url(#${clipId})" class="bullet-spray-group">${generateBullets(dev, cDrop, color)}</g><line x1="50" y1="0" x2="50" y2="100" stroke="${color}" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.5"/></svg><div class="recoil-cone-title">${classTitleGraph(item, clase)}</div></div></div><div class="recoil-label">${escapeHtml(weapon[HEADERS.ARMA])}</div>`;
-stage.appendChild(lane);
-legendData.push({ name: weapon[HEADERS.ARMA], type: classTitleGraph(item, clase), color, index });
-});
-track.appendChild(stage);
-const zoomControls = document.createElement('div');
-zoomControls.className = 'recoil-zoom-controls';
-zoomControls.innerHTML = `<button class="recoil-zoom-btn" id="rZoomPlus" aria-label="Acercar">+</button><button class="recoil-zoom-btn" id="rZoomMinus" aria-label="Alejar">\u2212</button><button class="recoil-zoom-btn" id="rZoomReset" style="font-size:12px;" aria-label="Resetear zoom">R</button>`;
-zoomControls.querySelector('#rZoomPlus').onclick = () => {
-recoilState.scale = Math.min(recoilState.scale*1.2, CONFIG.RECOIL.MAX_ZOOM);
-stage.style.transform = `translate(${recoilState.x}px,${recoilState.y}px) scale(${recoilState.scale})`;
-};
-zoomControls.querySelector('#rZoomMinus').onclick = () => {
-recoilState.scale = Math.max(recoilState.scale*0.8, CONFIG.RECOIL.MIN_ZOOM);
-stage.style.transform = `translate(${recoilState.x}px,${recoilState.y}px) scale(${recoilState.scale})`;
-};
-zoomControls.querySelector('#rZoomReset').onclick = () => {
-recoilState = {scale:1,x:0,y:0};
-stage.style.transition='transform 0.3s ease-out';
-stage.style.transform='translate(0,0) scale(1)';
-setTimeout(()=>{stage.style.transition='none';},300);
-};
-track.appendChild(zoomControls);
-container.appendChild(track);
-const legend = document.createElement('div'); legend.className = 'recoil-unified-legend';
-legendData.forEach(d => {
-const el = document.createElement('div'); el.className = 'recoil-legend-item';
-el.innerHTML = `<div class="recoil-legend-color" style="background:${d.color};box-shadow:0 0 5px ${d.color};border:1px solid white;"></div><span>${escapeHtml(d.name)} (${d.type})</span>`;
-if(d.index > 0){ const rm = document.createElement('button'); rm.className='recoil-legend-remove'; rm.innerHTML='\u2715'; rm.setAttribute('aria-label','Eliminar '+d.name); rm.onclick=(e)=>{e.stopPropagation(); selectedRecoilWeapons.splice(d.index,1); renderRecoilChips();}; el.appendChild(rm); }
-legend.appendChild(el);
-});
-container.appendChild(legend);
-}
-function initRecoilPinchZoom(track, stage){
-let startX=0, startY=0, initialDist=0, lastScale=1;
-track.addEventListener('touchstart', e => {
-stage.classList.add('interacting');
-if(e.touches.length===1){ startX=e.touches[0].pageX-recoilState.x; startY=e.touches[0].pageY-recoilState.y; }
-else if(e.touches.length===2){ e.preventDefault(); initialDist=Math.hypot(e.touches[0].pageX-e.touches[1].pageX, e.touches[0].pageY-e.touches[1].pageY); lastScale=recoilState.scale; }
-}, {passive:false});
-track.addEventListener('touchmove', e => {
-if(e.touches.length===1){ recoilState.x=e.touches[0].pageX-startX; recoilState.y=e.touches[0].pageY-startY; }
-else if(e.touches.length===2 && initialDist>0){ e.preventDefault(); const dist=Math.hypot(e.touches[0].pageX-e.touches[1].pageX, e.touches[0].pageY-e.touches[1].pageY); recoilState.scale=Math.min(Math.max(CONFIG.RECOIL.MIN_ZOOM, lastScale*(dist/initialDist)), CONFIG.RECOIL.MAX_ZOOM); }
-stage.style.transform=`translate(${recoilState.x}px,${recoilState.y}px) scale(${recoilState.scale})`;
-}, {passive:false});
-track.addEventListener('touchend', e => { if(e.touches.length<2) initialDist=0; if(e.touches.length===0) stage.classList.remove('interacting'); }, {passive:true});
-}
-function toggleRecoilUnify(){ recoilUnify = !recoilUnify; document.getElementById('recoilUnifyBtn').classList.toggle('active', recoilUnify); renderRecoilCones(); }
-function resetRecoilView(){ recoilState = {scale:1,x:0,y:0}; recoilUnify = false; document.getElementById('recoilUnifyBtn').classList.remove('active'); const slider = document.getElementById('recoilDistSlider'); if(slider) slider.value = 10; document.getElementById('recoilDistDisplay').textContent = '10 m'; renderRecoilCones(); }
-function updateRecoilDistance(){ const slider = document.getElementById('recoilDistSlider'); document.getElementById('recoilDistDisplay').textContent = slider.value + ' m'; debouncedRecoilDist(); }
+function renderRecoilCones(){ if(window.bf6Retroceso) window.bf6Retroceso.render(); }
 function openStatsClassModal(id,source){scmCurrentSource=source||'stats';const arr=getSelArr(source);const item=arr.find(i=>i.id===id);if(!item)return;scmCurrentId=id;document.getElementById('scmTitle').innerHTML=weaponImageHtml(item.weapon,'scm-title-img','align-self:center; flex-shrink:0;')+'<span style="align-self:center;">'+escapeHtml(item.weapon[HEADERS.ARMA])+'</span>';renderScmBody(item,source);document.getElementById('statsClassModal').classList.add('visible');}
 function closeStatsClassModal(){document.getElementById('statsClassModal').classList.remove('visible');scmCurrentId=null;scmCurrentSource='stats';}
 function classHasName(weapon,clase){if(clase==='base')return true;if(clase==='clase1')return String(weapon['A54']||'').trim()!=='';if(clase==='clase2')return String(weapon['A90']||'').trim()!=='';if(clase==='clase3')return String(weapon['A126']||'').trim()!=='';return false;}
@@ -2392,17 +2289,18 @@ function bf6Filas(doc){
   var esq = doc.esquema || {};
   var ids = (esq.estadisticas || []).map(function(st){ return st.id; });
   return (doc.armas || []).map(function(a){
-    var row = { CATEGORIA: a.categoria || '', NOMBRE: a.nombre };
+    var row = { CATEGORIA: a.categoria || '', NOMBRE: a.nombre, IDA: a.idAnalizador || '', MAG: a.municion && a.municion.cargador };
     Object.keys(BF6_COD_OTROS).forEach(function(k){ if(a[k] != null) row['A' + BF6_COD_OTROS[k]] = a[k]; });
     var base = a.base || {};
     var bloques = [{ nombre: null, stats: base, mun: a.municion || {}, dano: a.dano || {}, acc: {} }];
     (a.equipamientos || []).slice(0, 3).forEach(function(eq){
       var st = {}; ids.forEach(function(id){ var v = (eq.estadisticas && eq.estadisticas[id] != null) ? eq.estadisticas[id] : base[id]; if(v != null) st[id] = v; });
-      bloques.push({ nombre: eq.nombre || 'Equipamiento', stats: st, mun: Object.assign({}, a.municion || {}, eq.municion || {}), dano: (eq.dano && Object.keys(eq.dano).length) ? Object.assign({}, a.dano || {}, eq.dano) : (a.dano || {}), acc: bf6Accesorios(eq) });
+      bloques.push({ nombre: eq.nombre || 'Equipamiento', stats: st, mun: Object.assign({}, a.municion || {}, eq.municion || {}), dano: (eq.dano && Object.keys(eq.dano).length) ? Object.assign({}, a.dano || {}, eq.dano) : (a.dano || {}), acc: bf6Accesorios(eq), mag: eq.cargador });
     });
     bloques.forEach(function(b, k){
       var cod = BF6_BLOQUES[k], cl = BF6_CLASES[k];
       if(b.nombre) row['A' + cod.nombre] = b.nombre;
+      if(typeof b.mag === 'number') row['S' + k + '_cargador'] = b.mag;
       Object.keys(b.stats).forEach(function(id){
         row['S' + k + '_' + id] = b.stats[id];
         if(BF6_COD_STATS[id]) row['A' + (cod.stats + BF6_COD_STATS[id] - 1)] = b.stats[id];
@@ -2702,7 +2600,6 @@ onReady(function(){
 cacheDom();
 document.addEventListener('click',function(e){ const el=e.target.closest('[data-action]'); if(!el) return; const fn=ACTIONS[el.dataset.action]; if(!fn) return; const args=[]; for(let i=0;el.dataset['a'+i]!==undefined;i++) args.push(el.dataset['a'+i]); fn(...args, el); });
 document.addEventListener('error',function(e){ const t=e.target; if(t&&t.tagName==='IMG'&&/(^|\s)(awm-img|stat-img|cmp-img|scm-title-img)(\s|$)/.test(t.className)) weaponImgFallback(t); },true);
-const rds=document.getElementById('recoilDistSlider'); if(rds) rds.addEventListener('input',updateRecoilDistance);
 const silHtml = getSilhouetteHtml();
 ['TTK','Balas','Dano'].forEach(function(S){
 const wrapper = document.querySelector('#silhouetteColumn' + S + ' .silhouette-wrapper-relative');
@@ -3558,7 +3455,7 @@ function enviar(){
   builds.forEach(function(b, i){
     var a = b.arma, z = danoZonas(b), c = cambios(b);
     var etiqueta = c.length ? 'Constructor ' + (i + 1) : 'Base';
-    var fake = { nombre: a.nombre + ' - ' + etiqueta + ' #' + b.uid, categoria: a.categoria, imagen: a.imagen, municion: a.municion,
+    var fake = { idAnalizador: a.idAnalizador, nombre: a.nombre + ' - ' + etiqueta + ' #' + b.uid, categoria: a.categoria, imagen: a.imagen, municion: a.municion,
       base: Object.assign({}, a.base || {}, stats(b)), cadenciaTTK: (a.cadenciaTTK && stats(b).cadencia === statsFab(b).cadencia) ? a.cadenciaTTK : undefined, dano: {}, equipamientos: [] };
     ['cabeza', 'pecho', 'estomago'].forEach(function(k){ if(z[k]) fake.dano[k] = aTramos(z[k]); });
     var fila = bf6Filas({ esquema: doc().esquema, armas: [fake] })[0];
@@ -3608,6 +3505,146 @@ window.bf6Ctor = {
   /* Si cambian los datos (nueva versión de armas.json), vuelve a enlazar las armas. */
   refrescar: function(){ builds.forEach(function(b){ var a = (doc().armas || []).find(function(x){ return x.id === b.arma.id; }); if(a){ b.arma = a; b.fab = null; calcular(b); } }); if($('mainConstructor') && $('mainConstructor').classList.contains('active')) render(); }
 };
+})();
+</script>
+<script>
+/* ===================== PESTANA RETROCESO (ADS, quieto) ===================== */
+/* Vertical, horizontal, direccion y cadencia salen de armas.json; recuperacion y dispersion las aporta el motor. */
+(function(){
+'use strict';
+var BASE = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/';
+var RUNS = 10, MAX_DISPAROS = 40;
+var Sim = null, W = null, DISP = {}, carga = null, fallo = false, cache = new Map();
+var vista = { distancia: 5, zoom: 50, modo: 'patron', unir: false, sem: 0 };
+function $(id){ return document.getElementById(id); }
+function cargar(){
+  if(!carga) carga = Promise.all([import(BASE + 'bf6-motor.js'), import(BASE + 'sim/core.js'), fetch(BASE + 'datos-juego.json').then(function(r){ return r.json(); })])
+    .then(function(x){ return x[0].cargar().then(function(){ Sim = x[1]; W = {}; x[2].weapons.forEach(function(w){ W[w.id] = w; }); DISP = (x[2].weaponAttributes && x[2].weaponAttributes.shotgunDispersion) || {}; render(); }); })
+    .catch(function(e){ fallo = true; console.error('Retroceso: no se pudo cargar el motor', e); render(); });
+  return carga;
+}
+function num(v){ var n = parseFloat(v); return isFinite(n) ? n : null; }
+/* Copia del arma del motor con los datos propios encima. */
+function armar(item){
+  var row = item.weapon, base = W && W[row.IDA]; if(!base) return null;
+  var k = ['base', 'clase1', 'clase2', 'clase3'].indexOf(item.clase || 'base'), p = 'S' + k + '_';
+  var v = num(row[p + 'recoilVertical']), h = num(row[p + 'recoilHorizontal']), dir = num(row[p + 'recoilDireccion']), ms = num(row['MS' + k]), mag = num(row[p + 'cargador']);
+  if(mag === null) mag = num(row.MAG);
+  var c = Object.assign({}, base), g = Object.assign({}, base.recoil.ads);
+  if(dir === null) dir = g.dir === 0 ? 0 : -g.dir; else g.dir = dir === 0 ? 0 : -dir;
+  c.recoil = Object.assign({}, base.recoil, { ads: g }); c.recoilDir = g.dir;
+  if(v > 0) c.recoilV = v; if(h > 0) c.recoilVar = h; if(ms > 0) c.rpm = 60000 / ms; if(mag > 0) c.mag = mag;
+  if(DISP[base.id] != null) c.pelletDispersion = DISP[base.id];
+  return { w: c, v: v, h: h, dir: dir };
+}
+function simular(a){
+  var w = a.w, n = Math.min(Math.max(w.mag || 20, 2), MAX_DISPAROS), key = [w.id, w.recoilV, w.recoilVar, w.recoilDir, w.rpm, n, vista.sem].join('|');
+  if(cache.has(key)) return cache.get(key);
+  var sp = Sim.simulateSpread(w, n);
+  function pasada(pts, rng){ var out = []; pts.forEach(function(p, i){ var ang = rng() * Math.PI * 2, r = Sim.sampleSpreadRadius(w, sp[i], rng()), x = p.x + r * Math.cos(ang), y = p.y + r * Math.sin(ang), pel = Sim.samplePellets(w, x, y, rng); (pel || [{ x: x, y: y }]).forEach(function(q){ out.push(q); }); }); return out; }
+  var ref = Sim.genRecoilPts(w, vista.sem >>> 0, n), nube = [];
+  for(var s = 1; s <= RUNS; s++) nube = nube.concat(pasada(Sim.genRecoilPts(w, (s * 0x9e3779b9) >>> 0, n), Sim.mulberry32((Sim.whash(w.id) ^ (s * 0x6c62272e)) >>> 0)));
+  var res = { ref: ref, nube: nube, spray: pasada(ref, Sim.mulberry32((Sim.whash(w.id) ^ vista.sem ^ 0xdeadbeef) >>> 0)), n: n };
+  res.cono = cono(nube);
+  if(cache.size > 200) cache.clear();
+  cache.set(key, res); return res;
+}
+/* Cono calculado con la simulacion: centro y bordes que encierran cerca del 90 % de las balas. */
+function percentil(s, p){ return s[Math.min(s.length - 1, Math.floor(p * s.length))]; }
+function cono(puntos){
+  var rs = puntos.map(function(p){ return Math.hypot(p.x, p.y); }).sort(function(a, b){ return a - b; }), largo = percentil(rs, 0.95);
+  var angs = puntos.filter(function(p){ return Math.hypot(p.x, p.y) >= largo * 0.15; }).map(function(p){ return Math.atan2(p.x, p.y); }).sort(function(a, b){ return a - b; });
+  if(!angs.length) return { a: 0, b: 0, c: 0, r: largo };
+  return { a: percentil(angs, 0.05), b: percentil(angs, 0.95), c: percentil(angs, 0.5), r: largo };
+}
+function medioRango(){ return 1.5 * Math.pow(40 / 1.5, (100 - vista.zoom) / 100); }
+function cm(g){ return Math.tan(g * Math.PI / 180) * vista.distancia * 100; }
+function paso(R){ var b = R / 4, m = Math.pow(10, Math.floor(Math.log10(b))), f = b / m; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * m; }
+var siluetas = null;
+function silueta(ctx, px, py, s){
+  if(!siluetas){ var t = $('silhouetteTemplate'); siluetas = t ? Array.prototype.map.call(t.content.querySelectorAll('path'), function(p){ return { p: new Path2D(p.getAttribute('d')), dx: p.classList.contains('stomach-part') ? 50 : 0 }; }) : []; }
+  ctx.save(); ctx.translate(px, py); ctx.scale(s, s); ctx.translate(-360, -350); ctx.translate(0, 1280); ctx.scale(0.1, -0.1); ctx.fillStyle = '#39414d';
+  siluetas.forEach(function(x){ ctx.save(); ctx.translate(x.dx, 0); ctx.fill(x.p); ctx.restore(); });
+  ctx.restore();
+}
+function dibujar(cv, capas){
+  var L = cv.clientWidth; if(!L) return;
+  var dpr = window.devicePixelRatio || 1; cv.width = L * dpr; cv.height = L * dpr;
+  var ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var R = medioRango(), ppd = L / (2 * R), ox = L / 2, oy = L * 0.75, X = function(x){ return ox + x * ppd; }, Y = function(y){ return oy - y * ppd; };
+  ctx.fillStyle = '#121821'; ctx.fillRect(0, 0, L, L);
+  var alto = Math.atan(1.8 / Math.max(vista.distancia, 1)) * 180 / Math.PI * ppd; silueta(ctx, ox, oy, alto / 1180);
+  var st = paso(R), fs = L < 340 ? 9 : 10; ctx.lineWidth = 1; ctx.font = '700 ' + fs + 'px sans-serif'; ctx.textBaseline = 'top';
+  var etiqueta = function(v){ return String(Math.round(v * 100) / 100) + '°'; };
+  for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = X(i * st); ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, L); ctx.stroke(); if(i){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'center'; ctx.fillText(etiqueta(i * st), x, L - fs - 3); } }
+  for(var j = Math.ceil((oy - L) / ppd / st); j * st * ppd <= oy; j++){ var y = Y(j * st); ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(L, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y + 2); } }
+  var rPeq = L < 340 ? 1.2 : 1.5, rGr = L < 340 ? 2.2 : 2.8;
+  capas.forEach(function(c){ if(vista.modo !== 'patron') return; ctx.fillStyle = c.color + '66'; c.res.nube.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq, 0, 6.3); ctx.fill(); }); });
+  capas.forEach(function(c){
+    if(vista.modo === 'patron'){ c.res.spray.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rGr, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); ctx.lineWidth = 0.7; ctx.strokeStyle = '#000'; ctx.stroke(); }); return; }
+    if(vista.modo === 'cono'){
+      var k = c.res.cono, cr = k.r * ppd, borde = function(t){ return [ox + Math.sin(t) * cr, oy - Math.cos(t) * cr]; };
+      ctx.beginPath(); ctx.moveTo(ox, oy);
+      for(var t = k.a, pasos = 24, q = 0; q <= pasos; q++){ t = k.a + (k.b - k.a) * q / pasos; var e = borde(t); ctx.lineTo(e[0], e[1]); }
+      ctx.closePath(); ctx.fillStyle = c.color + '40'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = c.color; ctx.stroke();
+      var m = borde(k.c); ctx.save(); ctx.setLineDash([5, 4]); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(m[0], m[1]); ctx.stroke(); ctx.restore();
+      return;
+    }
+    ctx.beginPath(); c.res.ref.forEach(function(p, n){ if(n) ctx.lineTo(X(p.x), Y(p.y)); else ctx.moveTo(X(p.x), Y(p.y)); }); ctx.strokeStyle = c.color; ctx.lineWidth = 2; ctx.stroke();
+    c.res.ref.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq + 0.6, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); });
+  });
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ox - 6, oy); ctx.lineTo(ox + 6, oy); ctx.moveTo(ox, oy - 6); ctx.lineTo(ox, oy + 6); ctx.stroke();
+}
+function dirTxt(d){ return d === 0 ? 'Recto' : (d < 0 ? '← Izq. ' : '→ Der. ') + Math.abs(d) + '°'; }
+function lugar(v, u, n){ return '<span><em>' + n + '</em>' + v + (u || '') + '</span>'; }
+function deriva(g){ var c = cm(g), a = Math.abs(c); return (a >= 100 ? (Math.round(a / 10) / 10) + ' m' : Math.round(a) + ' cm'); }
+function datos(a, res){ var u = res.ref[res.ref.length - 1];
+  if(vista.modo === 'cono') return lugar(a.v === null ? '—' : a.v, '°', 'Vertical') + lugar(a.h === null ? '—' : a.h, '°', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Dirección') + lugar(Math.round((res.cono.b - res.cono.a) * 180 / Math.PI) + '° / ' + deriva(res.cono.r), '', 'Abertura / largo');
+  return lugar(a.v === null ? '—' : a.v, '°', 'Vertical') + lugar(a.h === null ? '—' : a.h, '°', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Dirección') + lugar((Math.abs(u.y) < 0.005 && Math.abs(u.x) < 0.005) ? 'Vuelve al centro' : deriva(u.y) + (Math.abs(u.x) > 0.005 ? ' / ' + (u.x < 0 ? '← ' : '→ ') + deriva(u.x) : ''), '', 'Tras ' + res.n + ' disparos'); }
+function lista(){
+  return selectedRecoilWeapons.map(function(it){ var a = armar(it); return { it: it, a: a, nombre: it.weapon[HEADERS.ARMA], color: getColorForWeapon(it.weapon[HEADERS.ARMA] + '_' + it.id), clase: classTitleGraph(it, it.clase || 'base') }; });
+}
+function pintarControles(){
+  var d = $('rcDist'), z = $('rcZoom'); if(!d) return;
+  $('rcDistV').textContent = vista.distancia + ' m';
+  $('rcZoomV').textContent = '±' + (Math.round(medioRango() * 10) / 10) + '°';
+  $('rcEscala').textContent = '1° = ' + Math.round(cm(1)) + ' cm a ' + vista.distancia + ' m';
+}
+function redibujar(){ pintarControles(); document.querySelectorAll('#rcPlots canvas').forEach(function(c){ if(c.$capas) dibujar(c, c.$capas); }); actualizarTextos(); }
+function actualizarTextos(){ document.querySelectorAll('#rcPlots .rc-datos[data-i]').forEach(function(el){ var it = el.$it; if(it) el.innerHTML = datos(it.a, it.res); }); }
+function render(){
+  var cont = $('recoilContainer'); if(!cont) return;
+  if(!selectedRecoilWeapons.length){ cont.innerHTML = '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-arrow-up-short-wide"></i></div><p class="recoil-placeholder-text">No hay armas seleccionadas.</p></div>'; return; }
+  if(!Sim){ cont.innerHTML = fallo ? '<div class="recoil-placeholder"><p class="recoil-placeholder-text">No se pudo cargar la simulación. Recarga la página.</p></div>' : '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="recoil-placeholder-text">Cargando la simulación...</p></div>'; if(!fallo) cargar(); return; }
+  var seg = function(a, v, t, on){ return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" ' + a + '="' + v + '">' + t + '</button>'; };
+  var h = '<div class="rc-bar"><label class="rc-ctl"><span>Distancia</span><input type="range" id="rcDist" min="0" max="30" step="1" value="' + vista.distancia + '" aria-label="Distancia"><b id="rcDistV"></b></label>'
+    + '<label class="rc-ctl"><span>Zoom</span><input type="range" id="rcZoom" min="0" max="100" step="1" value="' + vista.zoom + '" aria-label="Zoom"><b id="rcZoomV"></b></label>'
+    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patrón', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', 'Cono', vista.modo === 'cono') + '</div>'
+    + '<button type="button" class="recoil-param-btn' + (vista.unir ? ' active' : '') + '" id="rcUnir"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
+    + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra ráfaga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra ráfaga</button></div></div>'
+    + '<div class="rc-sub"><span>Apuntando y quieto</span><span id="rcEscala"></span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
+  cont.innerHTML = h;
+  var plots = $('rcPlots'), items = lista(), validas = [];
+  items.forEach(function(x){ if(x.a){ x.res = simular(x.a); validas.push(x); } });
+  var tarjeta = function(capas, titulo){ var d = document.createElement('div'); d.className = 'rc-card'; d.innerHTML = titulo + '<canvas role="img" aria-label="Patrón de retroceso"></canvas>'; plots.appendChild(d); var cv = d.querySelector('canvas'); cv.$capas = capas; return d; };
+  var cab = function(x){ return '<div class="rc-tit"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><span>' + escapeHtml(x.clase) + '</span></div>'; };
+  if(vista.unir && validas.length){
+    var card = tarjeta(validas.map(function(x){ return { res: x.res, color: x.color }; }), '');
+    validas.forEach(function(x, i){ var f = document.createElement('div'); f.className = 'rc-fila'; f.innerHTML = cab(x) + '<div class="rc-datos" data-i="' + i + '"></div>'; card.appendChild(f); f.querySelector('.rc-datos').$it = x; });
+  } else validas.forEach(function(x, i){ var c = tarjeta([{ res: x.res, color: x.color }], cab(x)), f = document.createElement('div'); f.className = 'rc-datos'; f.dataset.i = i; f.$it = x; c.appendChild(f); });
+  items.forEach(function(x){ if(!x.a){ var d = document.createElement('div'); d.className = 'rc-card rc-sin'; d.innerHTML = cab(x) + '<p>Esta arma todavía no está en el motor de simulación.</p>'; plots.appendChild(d); } });
+  redibujar();
+}
+document.addEventListener('input', function(e){ var id = e.target.id; if(id === 'rcDist'){ vista.distancia = +e.target.value; redibujar(); } else if(id === 'rcZoom'){ vista.zoom = +e.target.value; redibujar(); } });
+document.addEventListener('click', function(e){
+  var b = e.target.closest('#recoilContainer button'); if(!b) return;
+  if(b.dataset.rcModo){ vista.modo = b.dataset.rcModo; render(); }
+  else if(b.id === 'rcUnir'){ vista.unir = !vista.unir; render(); }
+  else if(b.id === 'rcOtra'){ vista.sem = (vista.sem + 0x9e3779b9) >>> 0; render(); }
+});
+var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ if($('rcPlots')) redibujar(); }, 120); });
+window.bf6Retroceso = { render: render, cargar: cargar };
+if(typeof selectedRecoilWeapons !== 'undefined' && selectedRecoilWeapons.length) render();
 })();
 </script>
 </body>
