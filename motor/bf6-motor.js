@@ -248,3 +248,9 @@ export function calcular(id, sel = {}, ajustes = null) {
     avisos: [...new Set(avisos)],
   };
 }
+
+/** El arma con los accesorios ya aplicados, para simular su retroceso y dispersion. */
+export function construir(id, sel = {}) {
+  const w = arma(id);
+  return { arma: applyAttachments(w, aAtts(w, sel)), stats: calcular(id, sel).stats };
+}
