@@ -1033,10 +1033,6 @@ html.ctor-modal{overflow:hidden}
 .rc-tit i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .rc-tit b{font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rc-tit span{font-size:.6rem;color:var(--accent);font-weight:700;text-transform:uppercase;white-space:nowrap}
-.rc-datos{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.85fr) minmax(0,1.05fr) minmax(0,1.5fr);gap:6px;margin-top:6px;font-size:.72rem;font-weight:800;color:var(--text-primary);font-variant-numeric:tabular-nums}
-.rc-datos em{display:block;font-style:normal;font-size:.56rem;font-weight:700;color:var(--text-muted);text-transform:uppercase}
-.rc-fila{border-top:1px solid var(--border);margin-top:8px;padding-top:6px}
-.rc-fila .rc-tit{margin-bottom:0}
 .rc-sin p{font-size:.72rem;color:var(--text-muted);margin:4px 0}
 @media (max-width:768px){
 .rc-bar{grid-template-columns:minmax(0,1fr);gap:6px;padding:7px 8px}
@@ -1051,9 +1047,13 @@ html.ctor-modal{overflow:hidden}
 .rc-plots{grid-template-columns:minmax(0,1fr);gap:8px}
 .rc-card{padding:6px}
 .rc-tit{font-size:.68rem;margin-bottom:4px}
-.rc-datos{gap:4px;font-size:.62rem;margin-top:4px}
-.rc-datos em{font-size:.5rem}
 }
+.rc-ley{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.rc-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg-input);border:1px solid var(--border-medium);border-radius:4px;padding:4px 8px;font-size:.72rem;min-width:0;max-width:100%}
+.rc-chip i{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.rc-chip b{font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-chip em{font-style:normal;font-size:.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;white-space:nowrap}
+@media (max-width:768px){.rc-ley{gap:4px;margin-top:5px}.rc-chip{font-size:.62rem;padding:3px 6px}.rc-chip em{font-size:.52rem}}
 </style>
 </head>
 <body>
@@ -2285,6 +2285,7 @@ function bf6AplicarEsquema(esq){
   }).join('');
 }
 
+function bf6SelEq(eq){ var s = {}; Object.keys(eq.accesorios || {}).forEach(function(r){ var v = eq.accesorios[r]; if(v && v.id) s[r] = v.id; }); if(eq.modo) s.modo = eq.modo; return s; }
 function bf6Filas(doc){
   var esq = doc.esquema || {};
   var ids = (esq.estadisticas || []).map(function(st){ return st.id; });
@@ -2295,12 +2296,13 @@ function bf6Filas(doc){
     var bloques = [{ nombre: null, stats: base, mun: a.municion || {}, dano: a.dano || {}, acc: {} }];
     (a.equipamientos || []).slice(0, 3).forEach(function(eq){
       var st = {}; ids.forEach(function(id){ var v = (eq.estadisticas && eq.estadisticas[id] != null) ? eq.estadisticas[id] : base[id]; if(v != null) st[id] = v; });
-      bloques.push({ nombre: eq.nombre || 'Equipamiento', stats: st, mun: Object.assign({}, a.municion || {}, eq.municion || {}), dano: (eq.dano && Object.keys(eq.dano).length) ? Object.assign({}, a.dano || {}, eq.dano) : (a.dano || {}), acc: bf6Accesorios(eq), mag: eq.cargador });
+      bloques.push({ nombre: eq.nombre || 'Equipamiento', stats: st, mun: Object.assign({}, a.municion || {}, eq.municion || {}), dano: (eq.dano && Object.keys(eq.dano).length) ? Object.assign({}, a.dano || {}, eq.dano) : (a.dano || {}), acc: bf6Accesorios(eq), mag: eq.cargador, sel: bf6SelEq(eq) });
     });
     bloques.forEach(function(b, k){
       var cod = BF6_BLOQUES[k], cl = BF6_CLASES[k];
       if(b.nombre) row['A' + cod.nombre] = b.nombre;
       if(typeof b.mag === 'number') row['S' + k + '_cargador'] = b.mag;
+      if(b.sel) row['SEL' + k] = b.sel;
       Object.keys(b.stats).forEach(function(id){
         row['S' + k + '_' + id] = b.stats[id];
         if(BF6_COD_STATS[id]) row['A' + (cod.stats + BF6_COD_STATS[id] - 1)] = b.stats[id];
@@ -3459,6 +3461,7 @@ function enviar(){
       base: Object.assign({}, a.base || {}, stats(b)), cadenciaTTK: (a.cadenciaTTK && stats(b).cadencia === statsFab(b).cadencia) ? a.cadenciaTTK : undefined, dano: {}, equipamientos: [] };
     ['cabeza', 'pecho', 'estomago'].forEach(function(k){ if(z[k]) fake.dano[k] = aTramos(z[k]); });
     var fila = bf6Filas({ esquema: doc().esquema, armas: [fake] })[0];
+    if(b.res) fila.SEL0 = Object.assign({}, b.res.seleccion);
     fila[HEADERS.ARMA] = a.nombre + (c.length ? ' (' + c.join(', ') + ')' : '');
     selectedWeaponsMP.push({ id: ++graphIdCounter, weapon: fila, clase: 'base' });
     selectedStatsWeapons.push({ id: ++statsIdCounter, weapon: fila, clase: 'base' });
@@ -3514,38 +3517,54 @@ window.bf6Ctor = {
 'use strict';
 var BASE = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/';
 var RUNS = 10, MAX_DISPAROS = 40;
-var Sim = null, W = null, DISP = {}, carga = null, fallo = false, cache = new Map();
-var vista = { distancia: 5, zoom: 50, modo: 'patron', unir: false, sem: 0 };
+var Sim = null, Mot = null, W = null, DISP = {}, carga = null, fallo = false, cache = new Map();
+var vista = { distancia: 5, zoom: 50, modo: 'patron', unir: false, sem: 0, apunta: 'ads' };
 function $(id){ return document.getElementById(id); }
 function cargar(){
   if(!carga) carga = Promise.all([import(BASE + 'bf6-motor.js'), import(BASE + 'sim/core.js'), fetch(BASE + 'datos-juego.json').then(function(r){ return r.json(); })])
-    .then(function(x){ return x[0].cargar().then(function(){ Sim = x[1]; W = {}; x[2].weapons.forEach(function(w){ W[w.id] = w; }); DISP = (x[2].weaponAttributes && x[2].weaponAttributes.shotgunDispersion) || {}; render(); }); })
+    .then(function(x){ return x[0].cargar().then(function(){ Sim = x[1]; Mot = x[0]; W = {}; x[2].weapons.forEach(function(w){ W[w.id] = w; }); DISP = (x[2].weaponAttributes && x[2].weaponAttributes.shotgunDispersion) || {}; render(); }); })
     .catch(function(e){ fallo = true; console.error('Retroceso: no se pudo cargar el motor', e); render(); });
   return carga;
 }
 function num(v){ var n = parseFloat(v); return isFinite(n) ? n : null; }
-/* Copia del arma del motor con los datos propios encima. */
+/* Barra Disparo de cadera <-> dispersion inicial, con la formula del motor. */
+var K_CAD = 83.33333587646484 / 40.92409896850586;
+function barraDe(H){ return Math.min(100, 10 * Math.sqrt(0.425 / Math.tan(1.25 * H * Math.PI / 180) * K_CAD)); }
+function dispDe(c){ return Math.atan(0.425 * K_CAD / Math.pow(c / 10, 2)) * 180 / Math.PI / 1.25; }
+/* El arma del motor con sus accesorios y los datos propios encima. */
 function armar(item){
   var row = item.weapon, base = W && W[row.IDA]; if(!base) return null;
-  var k = ['base', 'clase1', 'clase2', 'clase3'].indexOf(item.clase || 'base'), p = 'S' + k + '_';
-  var v = num(row[p + 'recoilVertical']), h = num(row[p + 'recoilHorizontal']), dir = num(row[p + 'recoilDireccion']), ms = num(row['MS' + k]), mag = num(row[p + 'cargador']);
+  var k = ['base', 'clase1', 'clase2', 'clase3'].indexOf(item.clase || 'base'), p = 'S' + k + '_', sel = row['SEL' + k] || {};
+  var cons = Mot && Mot.construir ? Mot.construir(base.id, sel) : null, b = cons ? cons.arma : base;
+  var v = num(row[p + 'recoilVertical']), h = num(row[p + 'recoilHorizontal']), dir = num(row[p + 'recoilDireccion']), ms = num(row['MS' + k]), mag = num(row[p + 'cargador']), cad = num(row[p + 'cadera']);
   if(mag === null) mag = num(row.MAG);
-  var c = Object.assign({}, base), g = Object.assign({}, base.recoil.ads);
-  if(dir === null) dir = g.dir === 0 ? 0 : -g.dir; else g.dir = dir === 0 ? 0 : -dir;
-  c.recoil = Object.assign({}, base.recoil, { ads: g }); c.recoilDir = g.dir;
+  var c = Object.assign({}, b), ads = Object.assign({}, b.recoil.ads), hip = Object.assign({}, b.recoil.hip), difDir = hip.dir - ads.dir;
+  if(dir === null) dir = ads.dir === 0 ? 0 : -ads.dir; else ads.dir = dir === 0 ? 0 : -dir;
+  hip.dir = ads.dir + difDir;
+  if(v > 0 && b.recoilV > 0) hip.amount *= v / b.recoilV;
+  if(h > 0 && b.recoilVar > 0) hip.dirVar *= h / b.recoilVar;
+  c.recoil = Object.assign({}, b.recoil, { ads: ads, hip: hip }); c.recoilDir = ads.dir;
   if(v > 0) c.recoilV = v; if(h > 0) c.recoilVar = h; if(ms > 0) c.rpm = 60000 / ms; if(mag > 0) c.mag = mag;
   if(DISP[base.id] != null) c.pelletDispersion = DISP[base.id];
-  return { w: c, v: v, h: h, dir: dir };
+  var mc = cons && cons.stats.cadera;
+  if(cad > 0 && typeof mc === 'number' && mc > 0 && Math.abs(cad - mc) > 0.5){
+    var H0 = b.spread.hipStand[0], gate = mc / barraDe(H0), H = dispDe(Math.min(100, cad / gate));
+    c.spread = Object.assign({}, b.spread, { hipStand: [H, Math.max(H, b.spread.hipStand[1])] });
+  }
+  return { w: c, v: v, h: h, dir: dir, clave: JSON.stringify(sel) };
 }
 function simular(a){
-  var w = a.w, n = Math.min(Math.max(w.mag || 20, 2), MAX_DISPAROS), key = [w.id, w.recoilV, w.recoilVar, w.recoilDir, w.rpm, n, vista.sem].join('|');
+  var w = a.w, n = Math.min(Math.max(w.mag || 20, 2), MAX_DISPAROS), key = [w.id, w.recoilV, w.recoilVar, w.recoilDir, w.rpm, n, vista.sem, vista.apunta, a.clave, w.spread.hipStand[0]].join('|');
   if(cache.has(key)) return cache.get(key);
-  var sp = Sim.simulateSpread(w, n);
-  function pasada(pts, rng){ var out = []; pts.forEach(function(p, i){ var ang = rng() * Math.PI * 2, r = Sim.sampleSpreadRadius(w, sp[i], rng()), x = p.x + r * Math.cos(ang), y = p.y + r * Math.sin(ang), pel = Sim.samplePellets(w, x, y, rng); (pel || [{ x: x, y: y }]).forEach(function(q){ out.push(q); }); }); return out; }
-  var ref = Sim.genRecoilPts(w, vista.sem >>> 0, n), nube = [];
-  for(var s = 1; s <= RUNS; s++) nube = nube.concat(pasada(Sim.genRecoilPts(w, (s * 0x9e3779b9) >>> 0, n), Sim.mulberry32((Sim.whash(w.id) ^ (s * 0x6c62272e)) >>> 0)));
-  var res = { ref: ref, nube: nube, spray: pasada(ref, Sim.mulberry32((Sim.whash(w.id) ^ vista.sem ^ 0xdeadbeef) >>> 0)), n: n };
-  res.cono = cono(nube);
+  Sim.setSimContext({ aimState: vista.apunta });
+  try {
+    var sp = Sim.simulateSpread(w, n);
+    var pasada = function(pts, rng){ var out = []; pts.forEach(function(p, i){ var ang = rng() * Math.PI * 2, r = Sim.sampleSpreadRadius(w, sp[i], rng()), x = p.x + r * Math.cos(ang), y = p.y + r * Math.sin(ang), pel = Sim.samplePellets(w, x, y, rng); (pel || [{ x: x, y: y }]).forEach(function(q){ out.push(q); }); }); return out; };
+    var ref = Sim.genRecoilPts(w, vista.sem >>> 0, n), nube = [];
+    for(var s = 1; s <= RUNS; s++) nube = nube.concat(pasada(Sim.genRecoilPts(w, (s * 0x9e3779b9) >>> 0, n), Sim.mulberry32((Sim.whash(w.id) ^ (s * 0x6c62272e)) >>> 0)));
+    var res = { ref: ref, nube: nube, spray: pasada(ref, Sim.mulberry32((Sim.whash(w.id) ^ vista.sem ^ 0xdeadbeef) >>> 0)), n: n, sp0: sp[0], spN: sp[n - 1] };
+  } finally { Sim.setSimContext({ aimState: 'ads' }); }
+  res.cono = cono(res.nube);
   if(cache.size > 200) cache.clear();
   cache.set(key, res); return res;
 }
@@ -3595,12 +3614,6 @@ function dibujar(cv, capas){
   });
   ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ox - 6, oy); ctx.lineTo(ox + 6, oy); ctx.moveTo(ox, oy - 6); ctx.lineTo(ox, oy + 6); ctx.stroke();
 }
-function dirTxt(d){ return d === 0 ? 'Recto' : (d < 0 ? '\u2190 Izq. ' : '\u2192 Der. ') + Math.abs(d) + '\u00b0'; }
-function lugar(v, u, n){ return '<span><em>' + n + '</em>' + v + (u || '') + '</span>'; }
-function deriva(g){ var c = cm(g), a = Math.abs(c); return (a >= 100 ? (Math.round(a / 10) / 10) + ' m' : Math.round(a) + ' cm'); }
-function datos(a, res){ var u = res.ref[res.ref.length - 1];
-  if(vista.modo === 'cono') return lugar(a.v === null ? '\u2014' : a.v, '\u00b0', 'Vertical') + lugar(a.h === null ? '\u2014' : a.h, '\u00b0', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Direcci\u00f3n') + lugar(Math.round((res.cono.b - res.cono.a) * 180 / Math.PI) + '\u00b0 / ' + deriva(res.cono.r), '', 'Abertura / largo');
-  return lugar(a.v === null ? '\u2014' : a.v, '\u00b0', 'Vertical') + lugar(a.h === null ? '\u2014' : a.h, '\u00b0', 'Horizontal') + lugar(dirTxt(a.dir), '', 'Direcci\u00f3n') + lugar((Math.abs(u.y) < 0.005 && Math.abs(u.x) < 0.005) ? 'Vuelve al centro' : deriva(u.y) + (Math.abs(u.x) > 0.005 ? ' / ' + (u.x < 0 ? '\u2190 ' : '\u2192 ') + deriva(u.x) : ''), '', 'Tras ' + res.n + ' disparos'); }
 function lista(){
   return selectedRecoilWeapons.map(function(it){ var a = armar(it); return { it: it, a: a, nombre: it.weapon[HEADERS.ARMA], color: getColorForWeapon(it.weapon[HEADERS.ARMA] + '_' + it.id), clase: classTitleGraph(it, it.clase || 'base') }; });
 }
@@ -3610,8 +3623,7 @@ function pintarControles(){
   $('rcZoomV').textContent = '\u00b1' + (Math.round(medioRango() * 10) / 10) + '\u00b0';
   $('rcEscala').textContent = '1\u00b0 = ' + Math.round(cm(1)) + ' cm a ' + vista.distancia + ' m';
 }
-function redibujar(){ pintarControles(); document.querySelectorAll('#rcPlots canvas').forEach(function(c){ if(c.$capas) dibujar(c, c.$capas); }); actualizarTextos(); }
-function actualizarTextos(){ document.querySelectorAll('#rcPlots .rc-datos[data-i]').forEach(function(el){ var it = el.$it; if(it) el.innerHTML = datos(it.a, it.res); }); }
+function redibujar(){ pintarControles(); document.querySelectorAll('#rcPlots canvas').forEach(function(c){ if(c.$capas) dibujar(c, c.$capas); }); }
 function render(){
   var cont = $('recoilContainer'); if(!cont) return;
   if(!selectedRecoilWeapons.length){ cont.innerHTML = '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-arrow-up-short-wide"></i></div><p class="recoil-placeholder-text">No hay armas seleccionadas.</p></div>'; return; }
@@ -3619,19 +3631,19 @@ function render(){
   var seg = function(a, v, t, on){ return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" ' + a + '="' + v + '">' + t + '</button>'; };
   var h = '<div class="rc-bar"><label class="rc-ctl"><span>Distancia</span><input type="range" id="rcDist" min="5" max="30" step="1" value="' + vista.distancia + '" aria-label="Distancia"><b id="rcDistV"></b></label>'
     + '<label class="rc-ctl"><span>Zoom</span><input type="range" id="rcZoom" min="0" max="100" step="1" value="' + vista.zoom + '" aria-label="Zoom"><b id="rcZoomV"></b></label>'
-    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patr\u00f3n', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', 'Cono', vista.modo === 'cono') + '</div>'
+    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-apunta', 'ads', 'ADS', vista.apunta === 'ads') + seg('data-rc-apunta', 'hip', 'Cadera', vista.apunta === 'hip') + '</div><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patr\u00f3n', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', 'Cono', vista.modo === 'cono') + '</div>'
     + '<button type="button" class="recoil-param-btn' + (vista.unir ? ' active' : '') + '" id="rcUnir"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
     + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra r\u00e1faga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra r\u00e1faga</button></div></div>'
-    + '<div class="rc-sub"><span>Apuntando y quieto</span><span id="rcEscala"></span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
+    + '<div class="rc-sub"><span>' + (vista.apunta === 'hip' ? 'Desde la cadera y quieto' : 'Apuntando y quieto') + '</span><span id="rcEscala"></span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
   cont.innerHTML = h;
   var plots = $('rcPlots'), items = lista(), validas = [];
   items.forEach(function(x){ if(x.a){ x.res = simular(x.a); validas.push(x); } });
   var tarjeta = function(capas, titulo){ var d = document.createElement('div'); d.className = 'rc-card'; d.innerHTML = titulo + '<canvas role="img" aria-label="Patr\u00f3n de retroceso"></canvas>'; plots.appendChild(d); var cv = d.querySelector('canvas'); cv.$capas = capas; return d; };
   var cab = function(x){ return '<div class="rc-tit"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><span>' + escapeHtml(x.clase) + '</span></div>'; };
+  var ley = function(lista){ return '<div class="rc-ley">' + lista.map(function(x){ return '<span class="rc-chip"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><em>' + escapeHtml(x.clase) + '</em></span>'; }).join('') + '</div>'; };
   if(vista.unir && validas.length){
-    var card = tarjeta(validas.map(function(x){ return { res: x.res, color: x.color }; }), '');
-    validas.forEach(function(x, i){ var f = document.createElement('div'); f.className = 'rc-fila'; f.innerHTML = cab(x) + '<div class="rc-datos" data-i="' + i + '"></div>'; card.appendChild(f); f.querySelector('.rc-datos').$it = x; });
-  } else validas.forEach(function(x, i){ var c = tarjeta([{ res: x.res, color: x.color }], cab(x)), f = document.createElement('div'); f.className = 'rc-datos'; f.dataset.i = i; f.$it = x; c.appendChild(f); });
+    tarjeta(validas.map(function(x){ return { res: x.res, color: x.color }; }), '').insertAdjacentHTML('beforeend', ley(validas));
+  } else validas.forEach(function(x){ tarjeta([{ res: x.res, color: x.color }], '').insertAdjacentHTML('beforeend', ley([x])); });
   items.forEach(function(x){ if(!x.a){ var d = document.createElement('div'); d.className = 'rc-card rc-sin'; d.innerHTML = cab(x) + '<p>Esta arma todav\u00eda no est\u00e1 en el motor de simulaci\u00f3n.</p>'; plots.appendChild(d); } });
   redibujar();
 }
@@ -3639,6 +3651,7 @@ document.addEventListener('input', function(e){ var id = e.target.id; if(id === 
 document.addEventListener('click', function(e){
   var b = e.target.closest('#recoilContainer button'); if(!b) return;
   if(b.dataset.rcModo){ vista.modo = b.dataset.rcModo; render(); }
+  else if(b.dataset.rcApunta){ vista.apunta = b.dataset.rcApunta; render(); }
   else if(b.id === 'rcUnir'){ vista.unir = !vista.unir; render(); }
   else if(b.id === 'rcOtra'){ vista.sem = (vista.sem + 0x9e3779b9) >>> 0; render(); }
 });
