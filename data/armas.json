@@ -3325,7 +3325,6 @@
    },
    "municion": {
     "puntaHueca": 1.57,
-    "sintetico": 1.8,
     "cargador": 30
    },
    "dano": {
@@ -4251,7 +4250,7 @@
     "precision": 100,
     "control": 28,
     "movilidad": 56,
-    "danoCabeza": 108,
+    "danoCabeza": 108.5,
     "danoPecho": 62,
     "danoEstomago": 41.54,
     "balasParaMatar": 2,
@@ -4263,11 +4262,11 @@
     "cabeza": [
      [
       0,
-      108
+      108.5
      ],
      [
-      24,
-      108,
+      21,
+      108.5,
       "rampa"
      ],
      [
@@ -4285,7 +4284,7 @@
       62
      ],
      [
-      20,
+      21,
       62,
       "rampa"
      ],
@@ -4304,7 +4303,7 @@
       41.54
      ],
      [
-      20,
+      21,
       41.54,
       "rampa"
      ],
@@ -5700,6 +5699,7 @@
    },
    "municion": {
     "puntaHueca": 1.5,
+    "sintetico": 1.75,
     "cargador": 20
    },
    "dano": {
@@ -5997,6 +5997,7 @@
    },
    "municion": {
     "puntaHueca": 1.5,
+    "sintetico": 1.75,
     "cargador": 15
    },
    "dano": {
