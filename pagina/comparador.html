@@ -1176,6 +1176,18 @@ window.__accPromise = bf6Fetch(URL_ACC).catch(function(){ return bf6Fetch(URL_AC
   .then(function(t){ try { localStorage.setItem('bf6_acc_cache_v1', t); } catch(e){} window.__bf6Acc = JSON.parse(t); return window.__bf6Acc; })
   .catch(function(){ return window.__bf6Acc; });
 window.__csvPromise.catch(function(){});
+/* Motor: se carga desde la ultima version del repositorio (commit exacto), asi el navegador nunca usa un motor viejo guardado.
+   Si GitHub no responde, usa la ultima version conocida o @main. */
+var MOTOR_MAIN = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/';
+var MOTOR_SHA_KEY = 'bf6_motor_sha_v1';
+function motorDe(sha){ return 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@' + sha + '/motor/'; }
+function shaGuardado(){ try { var s = localStorage.getItem(MOTOR_SHA_KEY); return /^[0-9a-f]{40}$/.test(s || '') ? s : null; } catch(e){ return null; } }
+window.__bf6MotorBase = Promise.race([
+  fetch('https://api.github.com/repos/alka593yt/bf6-datos/commits/main', { headers: { Accept: 'application/vnd.github.sha' }, cache: 'no-store' })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(function(t){ var sha = String(t).trim(); if(!/^[0-9a-f]{40}$/.test(sha)) throw new Error('sha'); try { localStorage.setItem(MOTOR_SHA_KEY, sha); } catch(e){} return motorDe(sha); }),
+  new Promise(function(_, no){ setTimeout(function(){ no(new Error('tiempo')); }, 4000); })
+]).catch(function(){ var s = shaGuardado(); return s ? motorDe(s) : MOTOR_MAIN; });
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -3169,7 +3181,7 @@ function colorDe(i){ return COLORES[i]; }
 function r2(v){ return Math.round(v * 100) / 100; }
 
 function cargarMotor(){
-  if(!cargando) cargando = import(MOTOR_URL).then(function(m){ return m.cargar().then(function(){ M = m; return m; }); })
+  if(!cargando) cargando = (window.__bf6MotorBase || Promise.resolve(MOTOR_URL.replace('bf6-motor.js', ''))).then(function(base){ return import(base + 'bf6-motor.js'); }).then(function(m){ return m.cargar().then(function(){ M = m; return m; }); })
     .catch(function(e){ errorMotor = e; console.error('Constructor: no se pudo cargar el motor', e); return null; });
   return cargando;
 }
@@ -3521,7 +3533,7 @@ var Sim = null, Mot = null, W = null, DISP = {}, carga = null, fallo = false, ca
 var vista = { distancia: 5, zoom: 50, modo: 'patron', unir: false, sem: 0, apunta: 'ads' };
 function $(id){ return document.getElementById(id); }
 function cargar(){
-  if(!carga) carga = Promise.all([import(BASE + 'bf6-motor.js'), import(BASE + 'sim/core.js'), fetch(BASE + 'datos-juego.json').then(function(r){ return r.json(); })])
+  if(!carga) carga = (window.__bf6MotorBase || Promise.resolve(BASE)).then(function(b){ BASE = b; return Promise.all([import(BASE + 'bf6-motor.js'), import(BASE + 'sim/core.js'), fetch(BASE + 'datos-juego.json').then(function(r){ return r.json(); })]); })
     .then(function(x){ return x[0].cargar().then(function(){ Sim = x[1]; Mot = x[0]; W = {}; x[2].weapons.forEach(function(w){ W[w.id] = w; }); DISP = (x[2].weaponAttributes && x[2].weaponAttributes.shotgunDispersion) || {}; render(); }); })
     .catch(function(e){ fallo = true; console.error('Retroceso: no se pudo cargar el motor', e); render(); });
   return carga;
