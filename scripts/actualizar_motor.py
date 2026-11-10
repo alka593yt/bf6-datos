@@ -18,7 +18,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 SIM = ['required-data.js', 'fire-modes.js', 'core.js', 'damage.js', 'attachments.js',
-       'loadout.js', 'applyAttachments.js', 'weapon-attributes.js']
+       'loadout.js', 'applyAttachments.js', 'weapon-attributes.js', 'soldier-classes.js']
 DATOS = {
     'weapons': 'weapons.json', 'attachments': 'attachments.json', 'ammo': 'ammo.json',
     'balance': 'balance_tables.json', 'recoilDecay': 'recoil_decay.json', 'hitZones': 'hit_zones.json',
@@ -41,7 +41,7 @@ PROPUESTAS = {
     # Cañón inferior
     'Factory Angled': 'Angular de fábrica', 'Compact Handstop': 'Tope de mano compacto', 'Slim Handstop': 'Tope de mano delgado',
     'Folding Vertical': 'Vertical plegable', 'Alloy Vertical': 'Vertical de aleación', 'Ribbed Vertical': 'Vertical estriada',
-    '6H64 Vertical': 'Vertical 6H64', 'Classic Vertical': 'Vertical clásica', 'Canted Vertical': 'Vertical inclinada',
+    '6H64 Vertical': 'Vertical 6H64', 'Classic Vertical': 'Vertical clásica', 'Rubberized Vertical': 'Vertical engomada', 'Canted Vertical': 'Vertical inclinada',
     'Folding Stubby': 'Corta plegable', 'Ribbed Stubby': 'Corta estriada', 'Canted Stubby': 'Corta inclinada',
     'Stippled Stubby': 'Corta texturizada', 'Low-Profile Stubby': 'Corta de perfil bajo', 'Adjustable Angled': 'Angular ajustable',
     'Slim Angled': 'Angular delgada', 'Full Angled': 'Angular completa', 'Underslung Mount': 'Montura inferior',
@@ -65,7 +65,7 @@ PROPUESTAS = {
     'Standard': 'Estándar', 'Penetration': 'Perforante', 'Lightweight': 'Ligera', 'Long-Range': 'Largo alcance',
     'Hollow Point': 'Punta hueca', 'Frangible': 'Fragmentable', 'Synthetic': 'Sintética', '#01 BUCK': 'Perdigón #01',
     '#00 BUCK': 'Perdigón #00', 'Flechette': 'Dardos', 'Slugs': 'Balas sólidas', 'Subsonic': 'Subsónica',
-    'Sub HP': 'Subsónica punta hueca', 'Sub Pen': 'Subsónica perforante', 'Range Pen': 'Perforante de largo alcance',
+    'Sub HP': 'Subsónica punta hueca', 'Supersonic FMJ': 'FMJ supersónica', 'Sub Pen': 'Subsónica perforante', 'Range Pen': 'Perforante de largo alcance',
     # Mira
     'Iron Sights': 'Miras de hierro', 'Single Shot': 'Disparo único',
 }

@@ -251,6 +251,11 @@
    "es": "Vertical estriada",
    "revisado": false
   },
+  "Rubberized Vertical": {
+   "grupo": "canonInferior",
+   "es": "Vertical engomada",
+   "revisado": false
+  },
   "Slim Angled": {
    "grupo": "canonInferior",
    "es": "Angular delgada",
@@ -756,6 +761,11 @@
    "es": "Osa-7 1.00x",
    "revisado": false
   },
+  "PA-SL 2.50x": {
+   "grupo": "mira",
+   "es": "PA-SL 2.50x",
+   "revisado": false
+  },
   "PAS-35 3.00x": {
    "grupo": "mira",
    "es": "PAS-35 3.00x",
@@ -921,11 +931,16 @@
    "es": "Subsónica",
    "revisado": false
   },
+  "Supersonic FMJ": {
+   "grupo": "municion",
+   "es": "FMJ supersónica",
+   "revisado": false
+  },
   "Synthetic": {
    "grupo": "municion",
    "es": "Sintética",
    "revisado": false
   }
  },
- "versionJuego": "2.1.1.0"
+ "versionJuego": "2.1.2.0"
 }

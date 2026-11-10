@@ -3,6 +3,7 @@ import { requireNumber } from './required-data.js';
 import { baseRecoilGroup } from './core.js';
 import { normalizeAttachments, resolveMountAttachments } from './loadout.js';
 import { resolveHitMultipliers } from './damage.js';
+import { SNIPER_SWAY_PENALTY, soldierClass, soldierEffects } from './soldier-classes.js';
 
 /**
  * sim/applyAttachments.js — Applies attachment effects to a raw weapon object.
@@ -270,7 +271,9 @@ export function resolveReloadTiming({
   if (typeof weaponTacRld !== 'number' || !Number.isFinite(weaponTacRld) || weaponTacRld <= 0) {
     return { tacRld: null, branch: 'derived', reason: 'invalid-derived-base' };
   }
-  const magMult = _ctx.RELOAD_SPEED_MULTIPLIERS[hasReloadSpeedTier ? magData.reloadSpeedTier : 0];
+  // A magazine may carry a reload factor outside the tier ladder (KTS100 MK8 45 Fast, 2.1.2.0).
+  const magMult = _ctx.RELOAD_SPEED_MULTIPLIERS[hasReloadSpeedTier ? magData.reloadSpeedTier : 0]
+    * (Number.isFinite(magData?.reloadSpeedMult) && magData.reloadSpeedMult > 0 ? magData.reloadSpeedMult : 1);
   const ergoMult = hasReloadSpeedMult ? ergoData.reloadSpeedMult : 1;
   const derivedTacRld = weaponTacRld / (magMult * ergoMult);
   if (!Number.isFinite(derivedTacRld) || derivedTacRld <= 0) {
@@ -346,6 +349,13 @@ export function attachmentContributions(w, atts, defaultAtts) {
     if (atts[slot] && atts[slot] !== 'none') picks.push([slot, { [slot]: atts[slot] }, { [slot]: 'none' }]);
   }
   const out = [];
+  // The soldier class's signature weapon trait, measured on the bare weapon. It
+  // is left out of the other rows' solo builds; `without` rows keep it on both sides.
+  const { soldier, weaponTrait } = soldierEffects(atts.soldier, w.cls);
+  if (weaponTrait) {
+    out.push({ slot: 'class', mode: 'solo', record: weaponTrait,
+      build: applyAttachments(w, { ...bareAtts, soldier }, { neutralMagazine: true }), base: bare });
+  }
   for (const [slot, only, without] of picks) {
     const soloAtts = { ...bareAtts, ...only };
     const normalized = normalizeAttachments(soloAtts, w, _ctx);
@@ -391,7 +401,14 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
   const muzzleBase = MUZZLES_BY_ID[atts.muzzle] ?? MUZZLES[0];
   const muz = { ...muzzleBase, ...muzzleBase.weaponOverrides?.[w.id] };
   const barrelBase = BARRELS_BY_ID[atts.barrel] ?? BARRELS[0];
-  const bar = { ...barrelBase, adsTimeTierMod: barrelBase.adsTimeTierModByWeapon?.[w.id] ?? 0 };
+  // Per-weapon barrel maps (`<field>ByWeapon`) replace the shared value on the weapons they list.
+  const bar = {
+    ...barrelBase,
+    adsTimeTierMod: barrelBase.adsTimeTierModByWeapon?.[w.id] ?? 0,
+    hipSpreadTierMod: barrelBase.hipSpreadTierModByWeapon?.[w.id] ?? barrelBase.hipSpreadTierMod,
+    adsRecoilTierMod: barrelBase.adsRecoilTierModByWeapon?.[w.id] ?? barrelBase.adsRecoilTierMod,
+    hipRecoilTierMod: barrelBase.hipRecoilTierModByWeapon?.[w.id] ?? barrelBase.hipRecoilTierMod,
+  };
   const velocityResolution = resolveBarrelVelocity({ barData: bar });
   const { grip: grp, laser: las, light: lit } = resolveMountAttachments(atts, w, _ctx);
   const ammoBase = AMMO_BY_ID[atts.ammo ?? 'standard'] ?? AMMO[0];
@@ -407,15 +424,30 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
     && (w.fireModes?.single?.mechanism ?? w.fireMode) === 'semi';
   const ergoSemi = semiActive ? ergoData.semiAuto ?? {} : {};
   const ergoAdsRecoilTierMod = (ergoData.adsRecoilTierMod ?? 0) + (ergoSemi.adsRecoilTierMod ?? 0);
+  // Recoil smoothing comes from the muzzle; with no muzzle smoothing, an ergonomic
+  // that binds a smoothing package supplies it (M44 Match Trigger, 2.1.2.0).
+  const smoothing = {
+    recoilDurationOverride: muz.recoilDurationOverride ?? ergoData.recoilDurationOverride,
+    adsRecoilDecayMult: muz.adsRecoilDecayMult ?? ergoData.adsRecoilDecayMult,
+    hipRecoilDecayMult: muz.hipRecoilDecayMult ?? ergoData.hipRecoilDecayMult,
+  };
+
+  // ── Soldier class ────────────────────────────────────────────────────────────
+  // `atts.soldier` is the slot's class and training path. The signature weapon
+  // trait applies on that class's own weapon type; one ladder step per stat.
+  const { soldier, weaponTrait: classTrait, mountedRecoilTierMod } = soldierEffects(atts.soldier, w.cls);
+  const swayPenalty = w.cls === 'Sniper Rifle' ? SNIPER_SWAY_PENALTY : 1;
 
   // ── ADS Recoil ──────────────────────────────────────────────────────────────
   // Tier formula: effectiveRecoilV = recoilV × ADSRecoilAmountMultiplier ^ (sum of tier mods)
   const totalAdsRecoilTierMod = (grp.adsRecoilTierMod ?? 0)
     + (muz.adsRecoilTierMod ?? 0)
+    + (bar.adsRecoilTierMod ?? 0)
     + (ammoType.adsRecoilTierMod ?? 0)
     + ergoAdsRecoilTierMod;
   const totalHipRecoilTierMod = (grp.hipRecoilTierMod ?? 0)
     + (muz.hipRecoilTierMod ?? 0)
+    + (bar.hipRecoilTierMod ?? 0)
     + (ammoType.hipRecoilTierMod ?? 0)
     + (ergoData.hipRecoilTierMod ?? 0)
     + (ergoSemi.hipRecoilTierMod ?? 0);
@@ -442,7 +474,8 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
   const tags = [muz, bar, grp, las, lit].filter(a => a && a.id !== 'none').map(a => a.name);
 
   // ── ADS time ─────────────────────────────────────────────────────────────────
-  const combinedAdsTimeTierMod = (grp.adsTimeTierMod ?? 0) + (bar.adsTimeTierMod ?? 0);
+  const combinedAdsTimeTierMod = (grp.adsTimeTierMod ?? 0) + (bar.adsTimeTierMod ?? 0)
+    + (classTrait?.adsTimeTierMod ?? 0);
 
   // ── Weapon sway ───────────────────────────────────────────────────────────────
   const selectedMag = magRecord(WEAPON_MAG[w.id]?.mags?.[atts.mag ?? WEAPON_MAG[w.id]?.def]);
@@ -455,7 +488,8 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
   const weaponSwayMult = (muz.weaponSwayMult ?? 1) * (selectedMag?.weaponSwayMult ?? 1)
     * (grp.weaponSwayMult ?? 1)
     * (barrelBase.weaponSwayMultByWeapon?.[w.id] ?? 1)
-    * (sightData?.weaponSwayMultByWeapon?.[w.id] ?? 1);
+    * (sightData?.weaponSwayMultByWeapon?.[w.id] ?? 1)
+    * swayPenalty * (classTrait?.weaponSwayMult ?? 1);
 
   // ── Hip spread tier shift ─────────────────────────────────────────────────────
   // Catalog shifts have the opposite sign to Frosty's source index modifiers.
@@ -464,7 +498,9 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
     + (bar.hipSpreadTierMod ?? 0)
     + (las.hipSpreadTierMod ?? 0)
     + (grp.hipSpreadTierMod ?? 0)
-    + (ammoType.hipSpreadTierMod ?? 0);
+    + (ammoType.hipSpreadTierMod ?? 0)
+    + (ergoData.hipSpreadTierMod ?? 0)
+    + (classTrait?.hipSpreadTierMod ?? 0);
   const hipBaseIndex = HIP_SPREAD_BASE_INDEX_OVERRIDES[w.id] ?? HIP_SPREAD_BASE_INDEX[w.id];
   const hipRow = Number.isInteger(hipBaseIndex)
     ? HIP_SPREAD_TABLE[Math.max(0, Math.min(HIP_SPREAD_TABLE.length - 1, hipBaseIndex - hipSpreadTierMod))]
@@ -517,9 +553,10 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
   // suppressor + subsonic (150 * 0.14 * 0.4285714, approximately 9 m).
   // M45A1 and vz. 61 are subsonic by default (1.3.3.0): their WB files store
   // 27 / 64.285713 and the stat screen shows 27 m / 64 m (Frosty L4001, L4008).
+  // The NSW4 Devgru_WB (2.1.2.0) stores the same pair; its default FMJ adds no spotting factor.
   // Since 2.1.1.0 the M433, SGX, L110 and P18 WB files store 75 in-world; the stat
   // screen shows 75 m (ATTACHMENT_BUGS.md entry 17).
-  const [worldSpotBase, minimapSpotBase] = (w.id === 'm45a1' || w.id === 'vz61') ? [27, 64.285713]
+  const [worldSpotBase, minimapSpotBase] = (w.id === 'm45a1' || w.id === 'vz61' || w.id === 'nsw4') ? [27, 64.285713]
     : ['m433', 'sgx', 'l110', 'p18'].includes(w.id) ? [75, 150] : [54, 150];
   const worldSpot = +(worldSpotBase * (muz.worldSpotMult ?? 1) * (bar.worldSpotMult ?? 1) * (ammoType.worldSpotMult ?? 1)).toFixed(6);
   const minimapSpot = +(minimapSpotBase * (muz.minimapSpotMult ?? 1) * (bar.minimapSpotMult ?? 1) * (ammoType.minimapSpotMult ?? 1)).toFixed(6);
@@ -590,7 +627,7 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
       - (sightData?.adsMoveSpeedTierShift ?? 0)));
     _adsTimeMs       = ADS_SPD_TIERS[adsIdx];
     _adsMoveSpeedMult = ADS_MOVE_TIERS[amsIdx];
-    const timingAttachments = [magData, grp, ergoData, bar, muz, las, lit, ammoType];
+    const timingAttachments = [magData, grp, ergoData, bar, muz, las, lit, ammoType, classTrait];
     _drawTimeResolution = resolveDrawTime({
       weaponMag: wm,
       sprintRecoveryTierShift: timingAttachments.reduce(
@@ -611,7 +648,10 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
   // default mag when no mag is selected, so this covers the stock case too.
   const magTags  = magData?.name ? [magData.name] : [];
   const ergoTags = ergoData.id !== 'none' ? [ergoData.name] : [];
-  const allTags  = [...tags, ...(ammoName ? [ammoName] : []), ...magTags, ...ergoTags];
+  // The class goes last, as "Support: Fire Support", so it reads as one entry.
+  const soldierCls = soldier && soldierClass(soldier.cls);
+  const soldierTag = soldierCls ? `${soldierCls.name}: ${soldierCls.paths.find(p => p.id === soldier.path).name}` : null;
+  const allTags  = [...tags, ...(ammoName ? [ammoName] : []), ...magTags, ...ergoTags, ...(soldierTag ? [soldierTag] : [])];
   const fireMode = ergoData.setsFireModeAuto ? 'auto'
     : ergoData.setsFireModeBurst ? 'burst'
       : w.fireMode;
@@ -627,7 +667,7 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
     ? ergoData.autoRpm ?? w.autoRpm ?? null
     : null;
   const recoilOverride = w.recoil && (totalHipRecoilTierMod || totalHipVarTierMod || ergoData.recoilDurationAdd
-    || muz.recoilDurationOverride != null || muz.recoilDecreaseTimeExponentAdd
+    || smoothing.recoilDurationOverride != null || muz.recoilDecreaseTimeExponentAdd
     || ergoData.recoilDecreaseFactorOverride != null || ergoData.recoilDecreaseTimeExponentOverride != null
     || ergoSemi.recoilDecreaseFactorMult != null)
     ? Object.fromEntries(Object.entries(w.recoil).map(([state, group]) => [state, {
@@ -642,8 +682,8 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
       ...(state === 'hip' && totalHipVarTierMod
         ? { dirVarExp: (group.dirVarExp ?? 0) + totalHipVarTierMod } : {}),
       // Model choice: apply the Smooth override before the receiver's additive change.
-      ...((group.duration != null && ergoData.recoilDurationAdd) || muz.recoilDurationOverride != null
-        ? { duration: +Math.max(0, (muz.recoilDurationOverride ?? group.duration)
+      ...((group.duration != null && ergoData.recoilDurationAdd) || smoothing.recoilDurationOverride != null
+        ? { duration: +Math.max(0, (smoothing.recoilDurationOverride ?? group.duration)
           + (ergoData.recoilDurationAdd ?? 0)).toFixed(6) } : {}),
     }]))
     : w.recoil;
@@ -658,14 +698,19 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
     _adsSpreadFiringDecCoefMult:   bar.adsSpreadFiringDecCoefMult ?? 1,
     _adsSpreadFiringDecOffsetMult: bar.adsSpreadFiringDecOffsetMult ?? 1,
     _adsSpreadNotFiringDecOffsetMult: bar.adsSpreadNotFiringDecOffsetMult ?? 1,
-    _adsRecoilDecayMult:     muz.adsRecoilDecayMult ?? 1,
-    _hipRecoilDecayMult:     muz.hipRecoilDecayMult ?? 1,
+    _adsRecoilDecayMult:     smoothing.adsRecoilDecayMult ?? 1,
+    _hipRecoilDecayMult:     smoothing.hipRecoilDecayMult ?? 1,
     _hipSpreadFiringDecCoefMult: (lit?.hipSpreadFiringDecCoefMult ?? 1) * (las.hipSpreadFiringDecCoefMult ?? 1),
     _hipSpreadFiringDecOffsetMult: (lit?.hipSpreadFiringDecOffsetMult ?? 1) * (las.hipSpreadFiringDecOffsetMult ?? 1),
     _hipSpreadNotFiringDecOffsetMult: (lit?.hipSpreadNotFiringDecOffsetMult ?? 1) * (las.hipSpreadNotFiringDecOffsetMult ?? 1),
     _worldSpot:              worldSpot,
     _minimapSpot:            minimapSpot,
     _weaponSwayMult:         weaponSwayMult,
+    // The class factors inside `_weaponSwayMult`, so a breakdown can show them apart.
+    _swayPenalty:            swayPenalty,
+    _classSwayMult:          classTrait?.weaponSwayMult ?? 1,
+    _classTrait:             classTrait,
+    _mountedRecoilTierMod:   mountedRecoilTierMod,
     _visualRecoil:           ergoData.visualRecoil ?? 0,
     _laserVisible:           las.laserVisible ?? null,
     // Effective per-slot records, for the attachment effects breakdown.
@@ -729,17 +774,21 @@ export function applyAttachments(w, atts, { neutralMagazine = false } = {}) {
  *   hipSpreadTierMod hip spread table shift in the catalog sign (−2 = two source
  *                   steps better, `GDM_Array_HipDispersion_BTM_P20`).
  * Mounting without a bipod or grip pod changes nothing (the plain mounted
- * modifiers are identity operands), so the build is returned as is. Measured on
+ * modifiers are identity operands), so the build is returned as is, unless the
+ * soldier's training path adds mounted recoil tiers (`_mountedRecoilTierMod`:
+ * Steady Aim's `GRM_MountedPlus*` +3 amount; its −2 variation tiers are left
+ * out like the bipod's). Those apply with or without a bipod. Measured on
  * the M277 and PSR, 23 Oct 2026 (reference-data/provenance/
  * deployed-recoil-measurement-2026-10-23.md). Does NOT mutate `build`.
  */
 export function applyDeployedState(build) {
-  const deployed = build?._resolved?.grip?.deployed;
-  if (!deployed || build._deployed) return build;
+  const deployed = build?._resolved?.grip?.deployed ?? null;
+  const perkTier = build?._mountedRecoilTierMod ?? 0;
+  if ((!deployed && !perkTier) || build._deployed) return build;
   const { RECOIL_MULT, HIP_SPREAD_TABLE, HIP_SPREAD_BASE_INDEX, HIP_SPREAD_BASE_INDEX_OVERRIDES } = _ctx;
-  const tier = deployed.recoilTierMod ?? 0;
-  const k = deployed.adsSpreadK ?? 1;
-  const hipStep = deployed.hipSpreadTierMod ?? 0;
+  const tier = (deployed?.recoilTierMod ?? 0) + perkTier;
+  const k = deployed?.adsSpreadK ?? 1;
+  const hipStep = deployed?.hipSpreadTierMod ?? 0;
   const mult = requireNumber(RECOIL_MULT[build.id], `${build.id} RECOIL_MULT`);
   const recoil = build.recoil && tier
     ? Object.fromEntries(Object.entries(build.recoil).map(([state, group]) => [state,
