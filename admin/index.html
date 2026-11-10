@@ -376,6 +376,42 @@ $('editor').addEventListener('change', e => {
   if (S.tab === 'dano' || el.dataset.path === 'base.cadencia' || el.dataset.path === 'cadenciaTTK') { if (S.tab === 'dano') tabDano(a); }
 });
 
+/* Imagen del arma: se prepara en el navegador y se sube a img/armas/ del repositorio. */
+const IMG_ANCHO = 600;
+let IMG = null;
+async function imgPreparar(file) {
+  const bmp = await createImageBitmap(file), k = Math.min(1, IMG_ANCHO / bmp.width), w = Math.round(bmp.width * k), h = Math.round(bmp.height * k);
+  const c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(bmp, 0, 0, w, h);
+  let blob = await new Promise(r => c.toBlob(r, 'image/webp', 0.9));
+  if (!blob || blob.type !== 'image/webp') blob = await new Promise(r => c.toBlob(r, 'image/png'));
+  return { blob, w, h, ext: blob.type === 'image/webp' ? 'webp' : 'png' };
+}
+const blobB64 = blob => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(blob); });
+$('editor').addEventListener('change', async e => {
+  if (e.target.id !== 'imgArchivo') return;
+  const f = e.target.files && e.target.files[0], box = $('imgPrev'), btn = $('imgSubir'); IMG = null; btn.disabled = true;
+  if (!f) return;
+  try {
+    IMG = await imgPreparar(f);
+    box.innerHTML = `<img src="${URL.createObjectURL(IMG.blob)}" alt="" style="max-height:80px;background:#000;border-radius:6px;padding:4px;display:block;margin:6px 0">${IMG.w} × ${IMG.h} px · ${IMG.ext.toUpperCase()} · ${Math.round(IMG.blob.size / 1024)} KB`;
+    btn.disabled = false;
+  } catch (err) { box.textContent = 'No se pudo leer la imagen: ' + err.message; }
+});
+$('editor').addEventListener('click', async e => {
+  if (e.target.id !== 'imgSubir' || !IMG) return;
+  const a = armaSel(); if (!a) return;
+  const btn = e.target; btn.disabled = true; btn.textContent = 'Subiendo...';
+  try {
+    const sello = new Date().toISOString().slice(0, 16).replace(/[-:T]/g, ''), path = `img/armas/${a.id}-${sello}.${IMG.ext}`;
+    const r = await gh(`/repos/${REPO.owner}/${REPO.name}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `Imagen: ${a.nombre}`, content: await blobB64(IMG.blob), branch: REPO.branch }) });
+    a.imagen = `https://cdn.jsdelivr.net/gh/${REPO.owner}/${REPO.name}@${r.commit.sha}/${path}`;
+    IMG = null; marcar(a.id); renderEditor();
+    toast('Imagen subida. Pulsa Guardar para que la página la use.', 4000);
+  } catch (err) {
+    btn.disabled = false; btn.textContent = 'Subir y usar';
+    toast(err.status === 401 || err.status === 403 ? 'La clave no tiene permiso para escribir en el repositorio.' : 'No se pudo subir la imagen: ' + err.message, 6000);
+  }
+});
 function tabGeneral(a) {
   const cats = [...new Set(armas().map(x => x.categoria).filter(Boolean))].sort();
   const otros = esquema().otros.map(o => campo(o.nombre, o.opciones
@@ -389,6 +425,9 @@ function tabGeneral(a) {
       ${otros}
     </div>
     ${a.imagen ? `<p><img src="${esc(a.imagen)}" alt="" onerror="this.remove()" style="max-height:60px;background:#000;border-radius:6px;padding:4px"></p>` : ''}
+    <div class="card"><h4>Subir imagen</h4>
+      <div class="row"><input type="file" id="imgArchivo" accept="image/png,image/webp,image/jpeg"><button class="btn primary small" id="imgSubir" disabled>Subir y usar</button></div>
+      <div id="imgPrev" class="note">Se reduce a ${IMG_ANCHO} px de ancho como máximo, se convierte a WebP y se guarda en tu repositorio (img/armas/). Luego pulsa Guardar.</div></div>
     <h3>Seguimiento</h3>
     <label class="row"><input type="checkbox" data-path="revisar" ${a.revisar ? 'checked' : ''}> Marcar "por revisar"</label>
     <div class="field" style="margin-top:10px"><label>Notas internas</label><textarea data-path="notas" rows="3">${esc(a.notas || '')}</textarea></div>`;
@@ -445,7 +484,7 @@ function tabDano(a) {
           <button class="btn primary small" id="rAplicar">Aplicar rampa</button></div>
         <p class="note" id="rPrev">Calcula cada metro intermedio en línea recta.</p></div>
       <div class="card"><h4>Más</h4>
-        <div class="row"><button class="btn small" id="dePegar">Pegar tramos</button><button class="btn small" id="deCopiar">Copiar de otra zona</button><button class="btn small danger" id="deVaciar">Vaciar zona</button></div>
+        <div class="row"><button class="btn small" id="dePegar">Pegar tramos</button><button class="btn small" id="deCopiar">Copiar de otra zona</button><button class="btn small" id="deMult">Cabeza y estómago desde el pecho</button><button class="btn small danger" id="deVaciar">Vaciar zona</button></div>
         <div id="deExtra"></div></div>
     </div>
     <div class="card">
@@ -597,6 +636,50 @@ function dePrevRampa() {
   el.textContent = `${paso >= 0 ? 'Sube' : 'Baja'} ${Math.abs(r4(paso))} por metro: ${a} m → ${r2(va)}, ${a + 1} m → ${r2(va + paso)}, ${a + 2} m → ${r2(va + 2 * paso)} … ${b} m → ${r2(vb)}`;
 }
 
+/* Cabeza y estómago desde el pecho: multiplicadores del motor para esta arma (editables), redondeo a 2 decimales. */
+function multDefecto(a) {
+  if (!motorTiene(a)) return { cabeza: '', estomago: '' };
+  const eq = S.de.fuente !== 'base' ? a.equipamientos?.[+S.de.fuente] : null;
+  const m = MOTOR.calcular(a.idAnalizador, eq ? selDe(a, eq) : MOTOR.seleccionPorDefecto(a.idAnalizador), a.puntosAccesorios).multiplicadores;
+  const f = v => Number.isFinite(v) ? Math.round(v * 1000) / 1000 : '';
+  return { cabeza: f(m.cabeza), estomago: f(m.estomago) };
+}
+function multCalcular(a, silencio) {
+  const pecho = deFuenteObj(a).dano?.pecho;
+  if (!pecho || !pecho.some(r => r[1] != null)) { if (!silencio) toast('Primero llena los tramos del pecho.'); return null; }
+  const fc = numCampo('mulCab'), fe = numCampo('mulEst');
+  if (!(fc > 0) || !(fe > 0)) { if (!silencio) toast('Escribe multiplicadores mayores que 0.'); return null; }
+  const por = f => normalizarTramos(pecho.map(r => { const x = [r[0], r[1] == null ? null : r2(r[1] * f)]; if (r[2]) x.push(r[2]); return x; }));
+  return { pecho, cabeza: por(fc), estomago: por(fe), fc, fe };
+}
+function multVista(a) {
+  const pecho = deFuenteObj(a).dano?.pecho;
+  if (!pecho || !pecho.some(r => r[1] != null)) { toast('Primero llena los tramos del pecho.'); return; }
+  const d = multDefecto(a);
+  $('deExtra').innerHTML = `<div class="row" style="margin-top:8px"><label>Cabeza × <input id="mulCab" inputmode="decimal" value="${d.cabeza}" style="width:64px"></label>
+      <label>Estómago × <input id="mulEst" inputmode="decimal" value="${d.estomago}" style="width:64px"></label>
+      <span class="note">${d.cabeza === '' ? 'Esta arma no está en el motor: escribe los multiplicadores.' : 'Del motor para esta arma; puedes cambiarlos.'}</span></div>
+    <div id="multPrev"></div>
+    <div class="row" style="margin-top:6px"><button class="btn primary small" id="multAmbas">Aplicar a cabeza y estómago</button><button class="btn small" id="multCab">Solo cabeza</button><button class="btn small" id="multEst">Solo estómago</button><button class="btn small" id="extraNo">Cancelar</button></div>`;
+  multPrev(a);
+}
+function multPrev(a) {
+  const box = $('multPrev'); if (!box) return;
+  const r = multCalcular(a, true);
+  if (!r) { box.innerHTML = '<p class="note">Escribe los dos multiplicadores para ver el resultado.</p>'; return; }
+  const ok = r.pecho.filter(t => t[1] != null);
+  const fila = t => { const c = r.cabeza.find(x => x[0] === t[0]), s = r.estomago.find(x => x[0] === t[0]);
+    return `<tr><td>${t[0]} m${t[2] ? ' (rampa)' : ''}</td><td class="num">${fmtD(t[1])}</td><td class="num">${c ? fmtD(c[1]) : '—'}</td><td class="num">${s ? fmtD(s[1]) : '—'}</td></tr>`; };
+  const actual = deFuenteObj(a).dano || {}, avisos = [];
+  [['cabeza', 'Cabeza'], ['estomago', 'Estómago']].forEach(([z, n]) => { const v = actual[z]; if (v && v.some(t => t[1] != null) && JSON.stringify(v) !== JSON.stringify(r[z])) {
+    const nuevo = m => { let x = null; r[z].forEach(t => { if (t[0] <= m) x = t; }); return x ? x[1] : null; };
+    const p = v.find(t => t[1] != null && nuevo(t[0]) !== t[1]);
+    avisos.push(`${n} ya tiene datos que cambiarían${p ? ` (desde ${p[0]} m: ${fmtD(p[1])} → ${fmtD(nuevo(p[0]))})` : ' (cambian los cortes de distancia)'}.`); } });
+  box.innerHTML = `<div class="tablewrap"><table><thead><tr><th>Desde</th><th>Pecho</th><th>Cabeza</th><th>Estómago</th></tr></thead><tbody>${ok.map(fila).join('')}</tbody></table></div>`
+    + (avisos.length ? `<p class="note" style="color:var(--accent)">${avisos.join(' ')} Se reemplazarán al aplicar.</p>` : '');
+}
+$('editor').addEventListener('input', e => { if (['mulCab', 'mulEst'].includes(e.target.id)) { const a = armaSel(); if (a) multPrev(a); } });
+
 /* Eventos del editor de daño */
 $('editor').addEventListener('input', e => { if (['rA', 'rB', 'rVA', 'rVB'].includes(e.target.id)) dePrevRampa(); });
 $('editor').addEventListener('keydown', e => {
@@ -673,6 +756,16 @@ $('editor').addEventListener('click', async e => {
       const f = numCampo('copFactor'); if (!f || f <= 0) { toast('Escribe un multiplicador mayor que 0.'); return; }
       const src = deFuenteObj(a).dano[$('copZona').value] || [];
       $('deExtra').innerHTML = ''; deGuardar(a, normalizarTramos(src.map(r => { const x = [r[0], r[1] == null ? null : r4(r[1] * f)]; if (r[2]) x.push(r[2]); return x; }))); return;
+    }
+    case 'deMult': { await cargarMotor(); multVista(a); return; }
+    case 'multAmbas': case 'multCab': case 'multEst': {
+      const r = multCalcular(a); if (!r) return;
+      const zs = el.id === 'multCab' ? ['cabeza'] : el.id === 'multEst' ? ['estomago'] : ['cabeza', 'estomago'];
+      const tgt = deFuenteObj(a); tgt.dano = tgt.dano || {}; if (tgt !== a) tgt.danoPropio = true;
+      zs.forEach(z => { tgt.dano[z] = r[z]; });
+      $('deExtra').innerHTML = ''; marcar(a.id); renderDanoVista(a);
+      toast(zs.length === 2 ? `Cabeza (×${r.fc}) y estómago (×${r.fe}) calculados desde el pecho.` : zs[0] === 'cabeza' ? `Cabeza calculada (×${r.fc}).` : `Estómago calculado (×${r.fe}).`);
+      return;
     }
     case 'extraNo': $('deExtra').innerHTML = ''; return;
   }
