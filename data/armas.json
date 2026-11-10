@@ -329,7 +329,7 @@
    "nombre": "TR-7",
    "categoria": "Asalto",
    "idAnalizador": "tr7",
-   "imagen": "https://i.imgur.com/RgM2Tgo.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/tr-7.webp",
    "base": {
     "vida": 100,
     "cadencia": 720,
@@ -404,7 +404,7 @@
    "nombre": "NVO-228E",
    "categoria": "Asalto",
    "idAnalizador": "nvo228e",
-   "imagen": "https://i.imgur.com/7M8HSw8.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/nvo-228e.webp",
    "base": {
     "vida": 100,
     "cadencia": 654,
@@ -502,7 +502,7 @@
    "nombre": "VCR-2",
    "categoria": "Asalto",
    "idAnalizador": "vcr2",
-   "imagen": "https://i.imgur.com/pvjcjVn.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/vcr-2.webp",
    "alcance": "Corto-medio alcance",
    "base": {
     "vida": 100,
@@ -578,7 +578,7 @@
    "nombre": "M433",
    "categoria": "Asalto",
    "idAnalizador": "m433",
-   "imagen": "https://i.imgur.com/E81cJv6.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m433.webp",
    "base": {
     "vida": 100,
     "cadencia": 830,
@@ -652,7 +652,7 @@
    "nombre": "AK4D",
    "categoria": "Asalto",
    "idAnalizador": "ak4d",
-   "imagen": "https://i.imgur.com/gG69ftJ.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/ak4d.webp",
    "meta": "Viable",
    "alcance": "Corto-medio alcance",
    "parche": "Nerf",
@@ -730,7 +730,7 @@
    "nombre": "M16A4",
    "categoria": "Asalto",
    "idAnalizador": "m16a4",
-   "imagen": "https://i.imgur.com/wUQLmZ1.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m16a4.webp",
    "base": {
     "vida": 100,
     "cadencia": 771,
@@ -805,7 +805,7 @@
    "nombre": "B36A4",
    "categoria": "Asalto",
    "idAnalizador": "b36a4",
-   "imagen": "https://i.imgur.com/dY9RwBI.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/b36a4.webp",
    "base": {
     "vida": 100,
     "cadencia": 720,
@@ -880,7 +880,7 @@
    "nombre": "KORD 6P67",
    "categoria": "Asalto",
    "idAnalizador": "kord6p67",
-   "imagen": "https://i.imgur.com/HxuiFI5.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/kord-6p67.webp",
    "base": {
     "vida": 100,
     "cadencia": 900,
@@ -954,7 +954,7 @@
    "nombre": "EF88",
    "categoria": "Asalto",
    "idAnalizador": "ef88",
-   "imagen": "https://i.imgur.com/vW4znmh.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/ef88.webp",
    "base": {
     "vida": 100,
     "cadencia": 675,
@@ -1029,7 +1029,7 @@
    "nombre": "L85A3",
    "categoria": "Asalto",
    "idAnalizador": "l85a3",
-   "imagen": "https://i.imgur.com/s6TYrTn.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/l85a3.webp",
    "base": {
     "vida": 100,
     "cadencia": 635,
@@ -1104,7 +1104,7 @@
    "nombre": "SOR-556 MK2",
    "categoria": "Asalto",
    "idAnalizador": "sor556",
-   "imagen": "https://i.imgur.com/4F1NBSv.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/sor-556-mk2.webp",
    "base": {
     "vida": 100,
     "cadencia": 568,
@@ -1288,7 +1288,7 @@
    "nombre": "M4A1",
    "categoria": "Carabina",
    "idAnalizador": "m4a1",
-   "imagen": "https://i.imgur.com/eHjkZdx.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m4a1.webp",
    "alcance": "Corto-medio alcance",
    "base": {
     "vida": 100,
@@ -1387,7 +1387,7 @@
    "nombre": "M277",
    "categoria": "Carabina",
    "idAnalizador": "m277",
-   "imagen": "https://i.imgur.com/k23cq36.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m277.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -1450,7 +1450,7 @@
    "nombre": "AK-205",
    "categoria": "Carabina",
    "idAnalizador": "ak205",
-   "imagen": "https://i.imgur.com/IBM8d1F.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/ak-205.webp",
    "meta": "Regular",
    "parche": "Buff",
    "youtube": "hola",
@@ -1554,7 +1554,7 @@
    "nombre": "M417 A2",
    "categoria": "Carabina",
    "idAnalizador": "m417a2",
-   "imagen": "https://i.imgur.com/cAgFmQ4.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m417-a2.webp",
    "base": {
     "vida": 100,
     "cadencia": 654,
@@ -1652,7 +1652,7 @@
    "nombre": "GRT-BC",
    "categoria": "Carabina",
    "idAnalizador": "grtbc",
-   "imagen": "https://i.imgur.com/7Tf9hqS.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/grt-bc.webp",
    "base": {
     "vida": 100,
     "cadencia": 830,
@@ -1750,7 +1750,7 @@
    "nombre": "QBZ-192",
    "categoria": "Carabina",
    "idAnalizador": "qbz192",
-   "imagen": "https://i.imgur.com/MIQiFnQ.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/qbz-192.webp",
    "base": {
     "vida": 100,
     "cadencia": 771,
@@ -1849,7 +1849,7 @@
    "nombre": "SG 553R",
    "categoria": "Carabina",
    "idAnalizador": "sg553r",
-   "imagen": "https://i.imgur.com/fMXns3N.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/sg-553r.webp",
    "base": {
     "vida": 100,
     "cadencia": 720,
@@ -1947,7 +1947,7 @@
    "nombre": "SOR-300SC",
    "categoria": "Carabina",
    "idAnalizador": "sor300sc",
-   "imagen": "https://i.imgur.com/1BlYO98.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/sor-300sc.webp",
    "base": {
     "vida": 100,
     "cadencia": 600,
@@ -2045,7 +2045,7 @@
    "nombre": "BROD 3",
    "categoria": "Carabina",
    "idAnalizador": "brod3",
-   "imagen": "https://i.imgur.com/93G4klJ.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/brod-3.webp",
    "meta": "Competidor",
    "alcance": "Corto-medio alcance",
    "base": {
@@ -2145,7 +2145,7 @@
    "nombre": "SGX",
    "categoria": "Subfusil",
    "idAnalizador": "sgx",
-   "imagen": "https://i.imgur.com/X31vXni.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/sgx.webp",
    "alcance": "Corto alcance",
    "base": {
     "vida": 100,
@@ -2244,7 +2244,7 @@
    "nombre": "PW5A3",
    "categoria": "Subfusil",
    "idAnalizador": "pw5a3",
-   "imagen": "https://i.imgur.com/9bXCMGq.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/pw5a3.webp",
    "base": {
     "vida": 100,
     "cadencia": 771,
@@ -2343,7 +2343,7 @@
    "nombre": "PW7A2",
    "categoria": "Subfusil",
    "idAnalizador": "pw7a2",
-   "imagen": "https://i.imgur.com/sJ1rCF8.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/pw7a2.webp",
    "meta": "Regular",
    "alcance": "Corto alcance",
    "base": {
@@ -2420,7 +2420,7 @@
    "nombre": "UMG-40",
    "categoria": "Subfusil",
    "idAnalizador": "umg40",
-   "imagen": "https://i.imgur.com/vNHuEqT.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/umg-40.webp",
    "base": {
     "vida": 100,
     "cadencia": 635,
@@ -2519,7 +2519,7 @@
    "nombre": "USG-90",
    "categoria": "Subfusil",
    "idAnalizador": "usg90",
-   "imagen": "https://i.imgur.com/ug3J15Y.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/usg-90.webp",
    "alcance": "Corto-medio alcance",
    "base": {
     "vida": 100,
@@ -2619,7 +2619,7 @@
    "nombre": "KV9",
    "categoria": "Subfusil",
    "idAnalizador": "kv9",
-   "imagen": "https://i.imgur.com/cnogiGN.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/kv9.webp",
    "alcance": "Corto alcance",
    "base": {
     "vida": 100,
@@ -2718,7 +2718,7 @@
    "nombre": "SCW-10",
    "categoria": "Subfusil",
    "idAnalizador": "scw10",
-   "imagen": "https://i.imgur.com/MEnk3e4.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/scw-10.webp",
    "alcance": "Corto alcance",
    "base": {
     "vida": 100,
@@ -2817,7 +2817,7 @@
    "nombre": "SL9",
    "categoria": "Subfusil",
    "idAnalizador": "sl9",
-   "imagen": "https://i.imgur.com/7SEHzyq.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/sl9.webp",
    "alcance": "Corto alcance",
    "base": {
     "vida": 100,
@@ -2917,7 +2917,7 @@
    "nombre": "CZ3A1",
    "categoria": "Subfusil",
    "idAnalizador": "cz3a1",
-   "imagen": "https://i.imgur.com/a2jnKIL.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/cz3a1.webp",
    "alcance": "Corto alcance",
    "base": {
     "vida": 100,
@@ -3016,7 +3016,7 @@
    "nombre": "PP-19",
    "categoria": "Subfusil",
    "idAnalizador": "pp19",
-   "imagen": "https://i.imgur.com/eD4rySy.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/pp-19.webp",
    "alcance": "Corto alcance",
    "base": {
     "vida": 100,
@@ -3116,7 +3116,7 @@
    "nombre": "L110",
    "categoria": "Ametralladora",
    "idAnalizador": "l110",
-   "imagen": "https://i.imgur.com/yVimron.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/l110.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3191,7 +3191,7 @@
    "nombre": "DRS-IAR",
    "categoria": "Ametralladora",
    "idAnalizador": "drsiar",
-   "imagen": "https://i.imgur.com/kbeE4Vr.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/drs-iar.webp",
    "meta": "Meta absoluto",
    "alcance": "Largo alcance",
    "base": {
@@ -3268,7 +3268,7 @@
    "nombre": "M/60",
    "categoria": "Ametralladora",
    "idAnalizador": "m60",
-   "imagen": "https://i.imgur.com/bBLxgAG.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m-60.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3345,7 +3345,7 @@
    "nombre": "RPKM",
    "categoria": "Ametralladora",
    "idAnalizador": "rpkm",
-   "imagen": "https://i.imgur.com/UwjG1Za.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/rpkm.webp",
    "alcance": "Corto-medio alcance",
    "base": {
     "vida": 100,
@@ -3445,7 +3445,7 @@
    "nombre": "M123K",
    "categoria": "Ametralladora",
    "idAnalizador": "m123k",
-   "imagen": "https://i.imgur.com/oEgUO6s.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m123k.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3520,7 +3520,7 @@
    "nombre": "M250",
    "categoria": "Ametralladora",
    "idAnalizador": "m250",
-   "imagen": "https://i.imgur.com/qcbyrEN.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m250.webp",
    "base": {
     "vida": 100,
     "cadencia": 675,
@@ -3570,7 +3570,7 @@
    "nombre": "KTS100 MK8",
    "categoria": "Ametralladora",
    "idAnalizador": "kts100",
-   "imagen": "https://i.imgur.com/dOPZgL7.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/kts100-mk8.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3646,7 +3646,7 @@
    "nombre": "M240L",
    "categoria": "Ametralladora",
    "idAnalizador": "m240l",
-   "imagen": "https://i.imgur.com/iFW2Z6e.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m240l.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3721,7 +3721,7 @@
    "nombre": "M121 A2",
    "categoria": "Ametralladora",
    "idAnalizador": "m121a2",
-   "imagen": "https://i.imgur.com/CDKNpLU.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m121-a2.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3796,7 +3796,7 @@
    "nombre": "RPK-74M",
    "categoria": "Ametralladora",
    "idAnalizador": "rpk74m",
-   "imagen": "https://i.imgur.com/b3fdJWG.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/rpk-74m.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3872,7 +3872,7 @@
    "nombre": "M39 EMR",
    "categoria": "DMR",
    "idAnalizador": "m39emr",
-   "imagen": "https://i.imgur.com/npe66C9.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/m39-emr.webp",
    "alcance": "Largo alcance",
    "base": {
     "vida": 100,
@@ -3948,7 +3948,7 @@
    "nombre": "LMR27",
    "categoria": "DMR",
    "idAnalizador": "lmr27",
-   "imagen": "https://i.imgur.com/Z5gWPUY.png",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@adf719df89236fd4840b396682513af63d5dd866/img/armas/lmr27.webp",
    "base": {
     "vida": 100,
     "cadencia": 450,
