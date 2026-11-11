@@ -1,6 +1,6 @@
 {
  "formato": 1,
- "actualizado": "2026-11-10",
+ "actualizado": "2026-11-11",
  "fuente": "Migrado desde la hoja datosbf6. Correcciones según BF6 Weapon Analyzer (Temporada 5, v2.1.1.0).",
  "esquema": {
   "estadisticas": [
@@ -2237,7 +2237,8 @@
    },
    "equipamientos": [],
    "revisar": true,
-   "notas": "Agregada el 2026-11-10 con los valores de BF6 Weapon Analyzer (juego 2.1.2.0, commit d0cb6d4). Sin comprobar en el juego."
+   "notas": "Agregada el 2026-11-10 con los valores de BF6 Weapon Analyzer (juego 2.1.2.0, commit d0cb6d4). Sin comprobar en el juego.",
+   "imagen": "https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@584e4315d7b0aa4447f21cdd9acced9f793a867e/img/armas/nsw4-202611111409.webp"
   },
   {
    "id": "sgx",
