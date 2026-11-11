@@ -3555,7 +3555,7 @@ window.bf6Ctor = {
 var BASE = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/';
 var RUNS = 10, MAX_DISPAROS = 40;
 var Sim = null, Mot = null, W = null, DISP = {}, carga = null, fallo = false, cache = new Map();
-var vista = { distancia: 5, zoom: 50, capas: { scatter: true, spray: true, path: false, zona: false }, unir: false, sem: 0, apunta: 'ads', ocultas: {}, layout: 'grid' };
+var vista = { distancia: 5, zoom: 50, capas: { scatter: false, spray: true, path: false, zona: false }, unir: false, sem: 0, apunta: 'ads', ocultas: {}, layout: 'grid' };
 /* Capas del patron, como Chart Overlays del Analyzer (Scatter, Spray, Recoil Path); Zona/Cono va aparte. */
 var CAPAS = [
   { id: 'scatter', t: 'Dispersi\u00f3n', d: '10 r\u00e1fagas simuladas en puntos tenues: d\u00f3nde suelen caer las balas.' },
