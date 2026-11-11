@@ -1054,6 +1054,14 @@ html.ctor-modal{overflow:hidden}
 .rc-chip b{font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rc-chip em{font-style:normal;font-size:.6rem;font-weight:700;color:var(--accent);text-transform:uppercase;white-space:nowrap}
 @media (max-width:768px){.rc-ley{gap:4px;margin-top:5px}.rc-chip{font-size:.62rem;padding:3px 6px}.rc-chip em{font-size:.52rem}}
+button.rc-chip{cursor:pointer;color:inherit;font-family:inherit;text-align:left;transition:opacity .15s}
+button.rc-chip:hover{border-color:var(--accent)}
+.rc-chip.oculta{opacity:.4}
+.rc-chip.oculta b{text-decoration:line-through}
+.rc-desc{display:none;font-size:.66rem;color:var(--text-muted);margin:-4px 2px 8px;line-height:1.4}
+.rc-desc p{margin:0 0 2px}
+.rc-desc b{color:var(--accent)}
+@media (hover:none){.rc-desc{display:block}}
 </style>
 </head>
 <body>
@@ -3534,7 +3542,16 @@ window.bf6Ctor = {
 var BASE = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/';
 var RUNS = 10, MAX_DISPAROS = 40;
 var Sim = null, Mot = null, W = null, DISP = {}, carga = null, fallo = false, cache = new Map();
-var vista = { distancia: 5, zoom: 50, modo: 'patron', unir: false, sem: 0, apunta: 'ads' };
+var vista = { distancia: 5, zoom: 50, capas: { scatter: true, spray: true, path: false, zona: false }, unir: false, sem: 0, apunta: 'ads', ocultas: {} };
+/* Capas del patron, como Chart Overlays del Analyzer (Scatter, Spray, Recoil Path); Zona/Cono va aparte. */
+var CAPAS = [
+  { id: 'scatter', t: 'Dispersi\u00f3n', d: '10 r\u00e1fagas simuladas en puntos tenues: d\u00f3nde suelen caer las balas.' },
+  { id: 'spray', t: 'R\u00e1faga', d: 'Una r\u00e1faga de referencia en puntos s\u00f3lidos: las balas de una r\u00e1faga concreta, con su dispersi\u00f3n.' },
+  { id: 'path', t: 'Trayectoria', d: 'La l\u00ednea del retroceso solo, sin dispersi\u00f3n.' }
+];
+function capaZona(){ return vista.apunta === 'hip'
+  ? { id: 'zona', t: 'Zona', d: 'El \u00e1rea donde puede caer cada bala de la r\u00e1faga de referencia: retroceso m\u00e1s dispersi\u00f3n.' }
+  : { id: 'zona', t: 'Cono', d: 'El abanico que encierra cerca del 90 % de las balas simuladas.' }; }
 function $(id){ return document.getElementById(id); }
 function cargar(){
   if(!carga) carga = (window.__bf6MotorBase || Promise.resolve(BASE)).then(function(b){ BASE = b; return Promise.all([import(BASE + 'bf6-motor.js'), import(BASE + 'sim/core.js'), fetch(BASE + 'datos-juego.json').then(function(r){ return r.json(); })]); })
@@ -3635,29 +3652,27 @@ function dibujar(cv, capas){
   for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = ox + i * st * ppm; ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, L); ctx.stroke(); if(i){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'center'; ctx.fillText(etiqueta(i * st), x, L - fs - 3); } }
   for(var j = Math.ceil((oy - L) / ppm / st); j * st * ppm <= oy; j++){ var y = oy - j * st * ppm; ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(L, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y + 2); } }
   var rPeq = L < 340 ? 1.2 : 1.5, rGr = L < 340 ? 2.2 : 2.8;
-  capas.forEach(function(c){ if(vista.modo !== 'patron' && !(vista.modo === 'cono' && vista.apunta === 'hip')) return; ctx.fillStyle = c.color + '66'; c.res.nube.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq, 0, 6.3); ctx.fill(); }); });
-  capas.forEach(function(c){
-    if(vista.modo === 'patron'){ c.res.spray.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rGr, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); ctx.lineWidth = 0.7; ctx.strokeStyle = '#000'; ctx.stroke(); }); return; }
-    if(vista.modo === 'cono' && vista.apunta === 'hip'){
-      pintarZona(ctx, L, dpr, circulosZona(c.res, X, Y, ppd), c.color);
-      c.res.spray.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rGr, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); ctx.lineWidth = 0.7; ctx.strokeStyle = '#000'; ctx.stroke(); });
-      return;
-    }
-    if(vista.modo === 'cono'){
-      var k = c.res.cono, cr = k.r * ppd, borde = function(t){ return [ox + Math.sin(t) * cr, oy - Math.cos(t) * cr]; };
-      ctx.beginPath(); ctx.moveTo(ox, oy);
-      for(var t = k.a, pasos = 24, q = 0; q <= pasos; q++){ t = k.a + (k.b - k.a) * q / pasos; var e = borde(t); ctx.lineTo(e[0], e[1]); }
-      ctx.closePath(); ctx.fillStyle = c.color + '40'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = c.color; ctx.stroke();
-      var m = borde(k.c); ctx.save(); ctx.setLineDash([5, 4]); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(m[0], m[1]); ctx.stroke(); ctx.restore();
-      return;
-    }
+  /* Capas independientes: Zona/Cono debajo, luego Dispersion, Trayectoria y Rafaga encima. Las armas ocultas en la leyenda no se dibujan. */
+  var V = vista.capas;
+  capas = capas.filter(function(c){ return !vista.ocultas[c.key]; });
+  if(V.zona) capas.forEach(function(c){
+    if(vista.apunta === 'hip'){ pintarZona(ctx, L, dpr, circulosZona(c.res, X, Y, ppd), c.color); return; }
+    var k = c.res.cono, cr = k.r * ppd, borde = function(t){ return [ox + Math.sin(t) * cr, oy - Math.cos(t) * cr]; };
+    ctx.beginPath(); ctx.moveTo(ox, oy);
+    for(var t = k.a, pasos = 24, q = 0; q <= pasos; q++){ t = k.a + (k.b - k.a) * q / pasos; var e = borde(t); ctx.lineTo(e[0], e[1]); }
+    ctx.closePath(); ctx.fillStyle = c.color + '40'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = c.color; ctx.stroke();
+    var m = borde(k.c); ctx.save(); ctx.setLineDash([5, 4]); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(m[0], m[1]); ctx.stroke(); ctx.restore();
+  });
+  if(V.scatter) capas.forEach(function(c){ ctx.fillStyle = c.color + '66'; c.res.nube.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq, 0, 6.3); ctx.fill(); }); });
+  if(V.path) capas.forEach(function(c){
     ctx.beginPath(); c.res.ref.forEach(function(p, n){ if(n) ctx.lineTo(X(p.x), Y(p.y)); else ctx.moveTo(X(p.x), Y(p.y)); }); ctx.strokeStyle = c.color; ctx.lineWidth = 2; ctx.stroke();
     c.res.ref.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq + 0.6, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); });
   });
+  if(V.spray) capas.forEach(function(c){ c.res.spray.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rGr, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); ctx.lineWidth = 0.7; ctx.strokeStyle = '#000'; ctx.stroke(); }); });
   ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ox - 6, oy); ctx.lineTo(ox + 6, oy); ctx.moveTo(ox, oy - 6); ctx.lineTo(ox, oy + 6); ctx.stroke();
 }
 function lista(){
-  return selectedRecoilWeapons.map(function(it){ var a = armar(it); return { it: it, a: a, nombre: it.weapon[HEADERS.ARMA], color: getColorForWeapon(it.weapon[HEADERS.ARMA] + '_' + it.id), clase: classTitleGraph(it, it.clase || 'base') }; });
+  return selectedRecoilWeapons.map(function(it){ var a = armar(it); return { it: it, a: a, key: String(it.id), nombre: it.weapon[HEADERS.ARMA], color: getColorForWeapon(it.weapon[HEADERS.ARMA] + '_' + it.id), clase: classTitleGraph(it, it.clase || 'base') }; });
 }
 function pintarControles(){
   var d = $('rcDist'), z = $('rcZoom'); if(!d) return;
@@ -3670,28 +3685,35 @@ function render(){
   if(!selectedRecoilWeapons.length){ cont.innerHTML = '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-arrow-up-short-wide"></i></div><p class="recoil-placeholder-text">No hay armas seleccionadas.</p></div>'; return; }
   if(!Sim){ cont.innerHTML = fallo ? '<div class="recoil-placeholder"><p class="recoil-placeholder-text">No se pudo cargar la simulaci\u00f3n. Recarga la p\u00e1gina.</p></div>' : '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="recoil-placeholder-text">Cargando la simulaci\u00f3n...</p></div>'; if(!fallo) cargar(); return; }
   var seg = function(a, v, t, on){ return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" ' + a + '="' + v + '">' + t + '</button>'; };
+  var todasCapas = CAPAS.concat([capaZona()]);
+  var capaBtn = function(k){ var on = !!vista.capas[k.id]; return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" data-rc-capa="' + k.id + '" aria-pressed="' + on + '" title="' + k.t + ': ' + k.d + '">' + k.t + '</button>'; };
   var h = '<div class="rc-bar"><label class="rc-ctl"><span>Distancia</span><input type="range" id="rcDist" min="5" max="30" step="1" value="' + vista.distancia + '" aria-label="Distancia"><b id="rcDistV"></b></label>'
     + '<label class="rc-ctl"><span>Zoom</span><input type="range" id="rcZoom" min="0" max="100" step="1" value="' + vista.zoom + '" aria-label="Zoom"><b id="rcZoomV"></b></label>'
-    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-apunta', 'ads', 'ADS', vista.apunta === 'ads') + seg('data-rc-apunta', 'hip', 'Cadera', vista.apunta === 'hip') + '</div><div class="seg-group">' + seg('data-rc-modo', 'patron', 'Patr\u00f3n', vista.modo === 'patron') + seg('data-rc-modo', 'ruta', 'Trayectoria', vista.modo === 'ruta') + seg('data-rc-modo', 'cono', vista.apunta === 'hip' ? 'Zona' : 'Cono', vista.modo === 'cono') + '</div>'
+    + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-apunta', 'ads', 'ADS', vista.apunta === 'ads') + seg('data-rc-apunta', 'hip', 'Cadera', vista.apunta === 'hip') + '</div><div class="seg-group" role="group" aria-label="Capas del patr\u00f3n">' + todasCapas.map(capaBtn).join('') + '</div>'
     + '<button type="button" class="recoil-param-btn' + (vista.unir ? ' active' : '') + '" id="rcUnir"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
     + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra r\u00e1faga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra r\u00e1faga</button></div></div>'
-    + '<div class="rc-sub"><span>' + (vista.apunta === 'hip' ? 'Desde la cadera y quieto' : 'Apuntando y quieto') + '</span></div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
+    + '<div class="rc-sub"><span>' + (vista.apunta === 'hip' ? 'Desde la cadera y quieto' : 'Apuntando y quieto') + '</span></div>'
+    + '<div class="rc-desc">' + todasCapas.filter(function(k){ return vista.capas[k.id]; }).map(function(k){ return '<p><b>' + k.t + ':</b> ' + k.d + '</p>'; }).join('') + '</div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
   cont.innerHTML = h;
   var plots = $('rcPlots'), items = lista(), validas = [];
   items.forEach(function(x){ if(x.a){ x.res = simular(x.a); validas.push(x); } });
   var tarjeta = function(capas, titulo){ var d = document.createElement('div'); d.className = 'rc-card'; d.innerHTML = titulo + '<canvas role="img" aria-label="Patr\u00f3n de retroceso"></canvas>'; plots.appendChild(d); var cv = d.querySelector('canvas'); cv.$capas = capas; return d; };
   var cab = function(x){ return '<div class="rc-tit"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><span>' + escapeHtml(x.clase) + '</span></div>'; };
-  var ley = function(lista){ return '<div class="rc-ley">' + lista.map(function(x){ return '<span class="rc-chip"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><em>' + escapeHtml(x.clase) + '</em></span>'; }).join('') + '</div>'; };
+  /* Leyenda pulsable: cada chip oculta o muestra su arma en el grafico. */
+  var ley = function(lista){ return '<div class="rc-ley">' + lista.map(function(x){ var o = !!vista.ocultas[x.key]; return '<button type="button" class="rc-chip' + (o ? ' oculta' : '') + '" data-rc-arma="' + escapeHtml(x.key) + '" aria-pressed="' + !o + '" title="' + (o ? 'Mostrar' : 'Ocultar') + ' en el gr\u00e1fico"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><em>' + escapeHtml(x.clase) + '</em></button>'; }).join('') + '</div>'; };
   if(vista.unir && validas.length){
-    tarjeta(validas.map(function(x){ return { res: x.res, color: x.color }; }), '').insertAdjacentHTML('beforeend', ley(validas));
-  } else validas.forEach(function(x){ tarjeta([{ res: x.res, color: x.color }], '').insertAdjacentHTML('beforeend', ley([x])); });
+    tarjeta(validas.map(function(x){ return { res: x.res, color: x.color, key: x.key }; }), '').insertAdjacentHTML('beforeend', ley(validas));
+  } else validas.forEach(function(x){ tarjeta([{ res: x.res, color: x.color, key: x.key }], '').insertAdjacentHTML('beforeend', ley([x])); });
   items.forEach(function(x){ if(!x.a){ var d = document.createElement('div'); d.className = 'rc-card rc-sin'; d.innerHTML = cab(x) + '<p>Esta arma todav\u00eda no est\u00e1 en el motor de simulaci\u00f3n.</p>'; plots.appendChild(d); } });
   redibujar();
 }
 document.addEventListener('input', function(e){ var id = e.target.id; if(id === 'rcDist'){ vista.distancia = +e.target.value; redibujar(); } else if(id === 'rcZoom'){ vista.zoom = +e.target.value; redibujar(); } });
 document.addEventListener('click', function(e){
   var b = e.target.closest('#recoilContainer button'); if(!b) return;
-  if(b.dataset.rcModo){ vista.modo = b.dataset.rcModo; render(); }
+  if(b.dataset.rcCapa){ var k = b.dataset.rcCapa; vista.capas[k] = !vista.capas[k]; if(!Object.keys(vista.capas).some(function(x){ return vista.capas[x]; })) vista.capas[k] = true; render(); }
+  else if(b.dataset.rcArma){ var id = b.dataset.rcArma, o = !vista.ocultas[id]; if(o) vista.ocultas[id] = true; else delete vista.ocultas[id];
+    document.querySelectorAll('#recoilContainer [data-rc-arma]').forEach(function(x){ if(x.dataset.rcArma === id){ x.classList.toggle('oculta', o); x.setAttribute('aria-pressed', String(!o)); x.title = (o ? 'Mostrar' : 'Ocultar') + ' en el gr\u00e1fico'; } });
+    redibujar(); }
   else if(b.dataset.rcApunta){ vista.apunta = b.dataset.rcApunta; render(); }
   else if(b.id === 'rcUnir'){ vista.unir = !vista.unir; render(); }
   else if(b.id === 'rcOtra'){ vista.sem = (vista.sem + 0x9e3779b9) >>> 0; render(); }
