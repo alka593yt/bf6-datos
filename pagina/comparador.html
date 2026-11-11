@@ -1025,7 +1025,18 @@ html.ctor-modal{overflow:hidden}
 .rc-ctl b{color:var(--accent);text-align:right;font-variant-numeric:tabular-nums;text-transform:none}
 .rc-acc{grid-column:1 / -1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .rc-sub{display:flex;justify-content:space-between;gap:10px;font-size:.66rem;font-weight:700;color:var(--text-muted);margin:0 2px 8px}
-.rc-plots{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.rc-plots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:1000px){.rc-plots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.rc-plots.lineal{grid-template-columns:minmax(0,1fr)}
+.rc-lineal{background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:8px;min-width:0}
+.rc-scroll{overflow-x:auto;border-radius:5px;-webkit-overflow-scrolling:touch}
+.rc-scroll canvas{display:block}
+.rc-plots > .rc-card[data-key]{cursor:grab;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.rc-card.arrastrando{cursor:grabbing;outline:2px solid var(--accent);box-shadow:0 10px 28px rgba(0,0,0,.55);opacity:.95}
+.rc-hueco{border:2px dashed var(--accent);background:transparent}
+body.rc-arrastrando,body.rc-arrastrando *{cursor:grabbing!important;-webkit-user-select:none;user-select:none}
+.rc-acc .rc-vista .seg-btn{padding:7px 11px}
+.recoil-param-btn[disabled]{opacity:.45;cursor:not-allowed}
 .rc-plots.unida{grid-template-columns:minmax(0,640px);justify-content:center}
 .rc-card{background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:8px;min-width:0}
 .rc-card canvas{display:block;width:100%!important;height:auto!important;aspect-ratio:1;border-radius:5px}
@@ -1039,6 +1050,8 @@ html.ctor-modal{overflow:hidden}
 .rc-ctl{font-size:.62rem;grid-template-columns:62px minmax(0,1fr) 50px}
 .rc-acc{gap:5px;flex-wrap:wrap}
 .rc-acc .seg-group{flex:1 1 100%;width:100%}
+.rc-acc .seg-group.rc-vista{flex:0 0 auto;width:auto}
+.rc-acc .rc-vista .seg-btn{flex:0 0 auto;padding:6px 12px}
 .rc-acc .seg-btn{flex:1}
 .rc-acc .recoil-param-btn{flex:1;text-align:center}
 .rc-acc .seg-btn{padding:6px 4px;font-size:.66rem}
@@ -3542,7 +3555,7 @@ window.bf6Ctor = {
 var BASE = 'https://cdn.jsdelivr.net/gh/alka593yt/bf6-datos@main/motor/';
 var RUNS = 10, MAX_DISPAROS = 40;
 var Sim = null, Mot = null, W = null, DISP = {}, carga = null, fallo = false, cache = new Map();
-var vista = { distancia: 5, zoom: 50, capas: { scatter: true, spray: true, path: false, zona: false }, unir: false, sem: 0, apunta: 'ads', ocultas: {} };
+var vista = { distancia: 5, zoom: 50, capas: { scatter: true, spray: true, path: false, zona: false }, unir: false, sem: 0, apunta: 'ads', ocultas: {}, layout: 'grid' };
 /* Capas del patron, como Chart Overlays del Analyzer (Scatter, Spray, Recoil Path); Zona/Cono va aparte. */
 var CAPAS = [
   { id: 'scatter', t: 'Dispersi\u00f3n', d: '10 r\u00e1fagas simuladas en puntos tenues: d\u00f3nde suelen caer las balas.' },
@@ -3640,21 +3653,10 @@ function silueta(ctx, px, py, s){
   siluetas.forEach(function(x){ ctx.save(); ctx.translate(x.dx, 0); ctx.fill(x.p); ctx.restore(); });
   ctx.restore();
 }
-function dibujar(cv, capas){
-  var L = cv.clientWidth; if(!L) return;
-  var dpr = window.devicePixelRatio || 1; cv.width = L * dpr; cv.height = L * dpr;
-  var ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  var R = medioRango(), ppm = L / (2 * R), ox = L / 2, oy = L * 0.6, K = Math.PI / 180, ppd = Math.tan(K) * vista.distancia * ppm, X = function(x){ return ox + Math.tan(x * K) * vista.distancia * ppm; }, Y = function(y){ return oy - Math.tan(y * K) * vista.distancia * ppm; };
-  ctx.fillStyle = '#121821'; ctx.fillRect(0, 0, L, L);
-  var alto = 1.8 * ppm; silueta(ctx, ox, oy, alto / 1180);
-  var st = paso(R), fs = L < 340 ? 9 : 10; ctx.lineWidth = 1; ctx.font = '700 ' + fs + 'px sans-serif'; ctx.textBaseline = 'top';
-  var etiqueta = function(v){ var a = Math.abs(v); return a < 1 ? Math.round(v * 100) + ' cm' : (Math.round(v * 100) / 100) + ' m'; };
-  for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = ox + i * st * ppm; ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, L); ctx.stroke(); if(i){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'center'; ctx.fillText(etiqueta(i * st), x, L - fs - 3); } }
-  for(var j = Math.ceil((oy - L) / ppm / st); j * st * ppm <= oy; j++){ var y = oy - j * st * ppm; ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(L, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y + 2); } }
-  var rPeq = L < 340 ? 1.2 : 1.5, rGr = L < 340 ? 2.2 : 2.8;
+/* Dibuja las capas de una o varias armas con las funciones X/Y dadas (cuadricula o columna de la vista Linea). */
+function pintarCapas(ctx, L, dpr, capas, X, Y, ox, oy, ppd, rPeq, rGr){
   /* Capas independientes: Zona/Cono debajo, luego Dispersion, Trayectoria y Rafaga encima. Las armas ocultas en la leyenda no se dibujan. */
   var V = vista.capas;
-  capas = capas.filter(function(c){ return !vista.ocultas[c.key]; });
   if(V.zona) capas.forEach(function(c){
     if(vista.apunta === 'hip'){ pintarZona(ctx, L, dpr, circulosZona(c.res, X, Y, ppd), c.color); return; }
     var k = c.res.cono, cr = k.r * ppd, borde = function(t){ return [ox + Math.sin(t) * cr, oy - Math.cos(t) * cr]; };
@@ -3669,8 +3671,106 @@ function dibujar(cv, capas){
     c.res.ref.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rPeq + 0.6, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); });
   });
   if(V.spray) capas.forEach(function(c){ c.res.spray.forEach(function(p){ ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), rGr, 0, 6.3); ctx.fillStyle = c.color; ctx.fill(); ctx.lineWidth = 0.7; ctx.strokeStyle = '#000'; ctx.stroke(); }); });
+}
+function dibujar(cv, capas){
+  var L = cv.clientWidth; if(!L) return;
+  var dpr = window.devicePixelRatio || 1; cv.width = L * dpr; cv.height = L * dpr;
+  var ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var R = medioRango(), ppm = L / (2 * R), ox = L / 2, oy = L * 0.6, K = Math.PI / 180, ppd = Math.tan(K) * vista.distancia * ppm, X = function(x){ return ox + Math.tan(x * K) * vista.distancia * ppm; }, Y = function(y){ return oy - Math.tan(y * K) * vista.distancia * ppm; };
+  ctx.fillStyle = '#121821'; ctx.fillRect(0, 0, L, L);
+  var alto = 1.8 * ppm; silueta(ctx, ox, oy, alto / 1180);
+  var st = paso(R), fs = L < 340 ? 9 : 10; ctx.lineWidth = 1; ctx.font = '700 ' + fs + 'px sans-serif'; ctx.textBaseline = 'top';
+  var etiqueta = function(v){ var a = Math.abs(v); return a < 1 ? Math.round(v * 100) + ' cm' : (Math.round(v * 100) / 100) + ' m'; };
+  for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = ox + i * st * ppm; ctx.strokeStyle = i === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, L); ctx.stroke(); if(i){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'center'; ctx.fillText(etiqueta(i * st), x, L - fs - 3); } }
+  for(var j = Math.ceil((oy - L) / ppm / st); j * st * ppm <= oy; j++){ var y = oy - j * st * ppm; ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(L, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y + 2); } }
+  var rPeq = L < 340 ? 1.2 : 1.5, rGr = L < 340 ? 2.2 : 2.8;
+  pintarCapas(ctx, L, dpr, capas.filter(function(c){ return !vista.ocultas[c.key]; }), X, Y, ox, oy, ppd, rPeq, rGr);
   ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ox - 6, oy); ctx.lineTo(ox + 6, oy); ctx.moveTo(ox, oy - 6); ctx.lineTo(ox, oy + 6); ctx.stroke();
 }
+/* Vista Linea: una franja sin silueta, una columna por arma, misma escala y misma altura de mira. */
+function dibujarLinea(cv, capas){
+  var cont = cv.parentNode, W = cont ? cont.clientWidth : 0; if(!W) return;
+  var vis = capas.filter(function(c){ return !vista.ocultas[c.key]; }), n = Math.max(1, vis.length);
+  var IZQ = 44, PIE = 26, colW = Math.max(W < 600 ? 120 : 150, Math.floor((W - IZQ) / n)), Wt = IZQ + colW * n, H = W < 600 ? 380 : 460;
+  var dpr = window.devicePixelRatio || 1; cv.width = Wt * dpr; cv.height = H * dpr; cv.style.setProperty('width', Wt + 'px', 'important'); cv.style.setProperty('height', H + 'px', 'important');
+  var ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var R = medioRango(), ppm = H / (2 * R), oy = Math.round((H - PIE) * 0.72), K = Math.PI / 180, ppd = Math.tan(K) * vista.distancia * ppm;
+  ctx.fillStyle = '#121821'; ctx.fillRect(0, 0, Wt, H);
+  var st = paso(R), fs = 10; ctx.lineWidth = 1; ctx.font = '700 ' + fs + 'px sans-serif'; ctx.textBaseline = 'top';
+  var etiqueta = function(v){ var a = Math.abs(v); return a < 1 ? Math.round(v * 100) + ' cm' : (Math.round(v * 100) / 100) + ' m'; };
+  for(var j = Math.ceil((oy - (H - PIE)) / ppm / st); j * st * ppm <= oy; j++){ var y = oy - j * st * ppm; ctx.strokeStyle = j === 0 ? 'rgba(255,255,255,.28)' : 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.moveTo(IZQ, y); ctx.lineTo(Wt, y); ctx.stroke(); if(j){ ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.textAlign = 'left'; ctx.fillText(etiqueta(j * st), 4, y - fs / 2); } }
+  if(!vis.length){ ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.textAlign = 'center'; ctx.fillText('Todas las armas est\u00e1n ocultas', Wt / 2, H / 2); return; }
+  var rPeq = 1.5, rGr = 2.6;
+  vis.forEach(function(c, i){
+    var x0 = IZQ + colW * i, ox = x0 + colW / 2;
+    var X = function(x){ return ox + Math.tan(x * K) * vista.distancia * ppm; }, Y = function(y){ return oy - Math.tan(y * K) * vista.distancia * ppm; };
+    ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.beginPath(); ctx.moveTo(x0 + 0.5, 0); ctx.lineTo(x0 + 0.5, H); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, H - PIE); ctx.stroke();
+    ctx.save(); ctx.beginPath(); ctx.rect(x0 + 1, 0, colW - 1, H - PIE); ctx.clip();
+    pintarCapas(ctx, Wt, dpr, [c], X, Y, ox, oy, ppd, rPeq, rGr);
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ox - 6, oy); ctx.lineTo(ox + 6, oy); ctx.moveTo(ox, oy - 6); ctx.lineTo(ox, oy + 6); ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(x0 + 1, H - PIE, colW - 1, PIE);
+    var nom = String(c.nombre || '').toUpperCase(), maxT = colW - 26; ctx.font = '800 11px sans-serif';
+    while(nom.length > 3 && ctx.measureText(nom).width > maxT) nom = nom.slice(0, -2) + '\u2026';
+    var tw = ctx.measureText(nom).width, tx = ox - (tw + 14) / 2;
+    ctx.fillStyle = c.color; ctx.fillRect(tx, H - PIE / 2 - 5, 10, 10);
+    ctx.fillStyle = '#e8e8e8'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(nom, tx + 14, H - PIE / 2); ctx.textBaseline = 'top';
+  });
+}
+/* Arrastrar tarjetas en la vista Cuadricula: con el raton al moverse; en pantallas tactiles tras mantener presionado. Cambia el orden de selectedRecoilWeapons. */
+var arr = null;
+function tarjetasMovibles(){ return Array.prototype.slice.call(document.querySelectorAll('#rcPlots > .rc-card[data-key]')); }
+function empezarArrastre(p){
+  var card = p.card, r = card.getBoundingClientRect(), ph = document.createElement('div');
+  ph.className = 'rc-card rc-hueco'; ph.style.height = r.height + 'px'; card.parentNode.insertBefore(ph, card);
+  p.ph = ph; p.dx = p.x - r.left; p.dy = p.y - r.top; p.activo = true;
+  card.classList.add('arrastrando'); card.style.position = 'fixed'; card.style.left = r.left + 'px'; card.style.top = r.top + 'px'; card.style.width = r.width + 'px'; card.style.zIndex = '1000'; card.style.pointerEvents = 'none';
+  document.body.classList.add('rc-arrastrando');
+  if(p.tipo !== 'mouse' && navigator.vibrate){ try { navigator.vibrate(15); } catch(e){} }
+  autoScroll(p);
+}
+function moverArrastre(p){
+  p.card.style.left = (p.x - p.dx) + 'px'; p.card.style.top = (p.y - p.dy) + 'px';
+  var el = document.elementFromPoint(p.x, p.y), t = el && el.closest ? el.closest('#rcPlots > .rc-card[data-key]') : null;
+  if(!t || t === p.card) return;
+  var hijos = Array.prototype.slice.call(p.ph.parentNode.children);
+  if(hijos.indexOf(t) < hijos.indexOf(p.ph)) t.parentNode.insertBefore(p.ph, t); else t.parentNode.insertBefore(p.ph, t.nextSibling);
+}
+function autoScroll(p){
+  if(arr !== p || !p.activo) return;
+  var m = 70, v = p.y < m ? -(m - p.y) / 3 : p.y > innerHeight - m ? (p.y - (innerHeight - m)) / 3 : 0;
+  if(v){ window.scrollBy(0, v); moverArrastre(p); }
+  requestAnimationFrame(function(){ autoScroll(p); });
+}
+function terminarArrastre(){
+  var p = arr; if(!p) return; arr = null; clearTimeout(p.timer); if(!p.activo) return;
+  var card = p.card; card.classList.remove('arrastrando'); ['position', 'left', 'top', 'width', 'zIndex', 'pointerEvents'].forEach(function(k){ card.style[k] = ''; });
+  p.ph.parentNode.replaceChild(card, p.ph); document.body.classList.remove('rc-arrastrando');
+  var orden = tarjetasMovibles().map(function(c){ return c.dataset.key; }), pos = function(it){ var i = orden.indexOf(String(it.id)); return i < 0 ? 1e6 : i; };
+  var antes = selectedRecoilWeapons.map(function(i){ return i.id; }).join(',');
+  var nuevo = selectedRecoilWeapons.map(function(it, i){ return { it: it, i: i }; }).sort(function(a, b){ return (pos(a.it) - pos(b.it)) || (a.i - b.i); }).map(function(x){ return x.it; });
+  if(nuevo.map(function(i){ return i.id; }).join(',') !== antes){ selectedRecoilWeapons = nuevo; if(typeof renderRecoilChips === 'function') renderRecoilChips(); }
+}
+document.addEventListener('pointerdown', function(e){
+  var card = e.target.closest ? e.target.closest('#rcPlots > .rc-card[data-key]') : null;
+  if(!card || vista.unir || vista.layout === 'linea' || e.target.closest('button, a, input, select')) return;
+  if(e.pointerType === 'mouse' && e.button !== 0) return;
+  if(tarjetasMovibles().length < 2) return;
+  var p = { card: card, id: e.pointerId, tipo: e.pointerType, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, activo: false, timer: null };
+  arr = p;
+  if(p.tipo !== 'mouse') p.timer = setTimeout(function(){ if(arr === p && !p.activo) empezarArrastre(p); }, 450);
+});
+document.addEventListener('pointermove', function(e){
+  var p = arr; if(!p || e.pointerId !== p.id) return; p.x = e.clientX; p.y = e.clientY;
+  if(!p.activo){ var d = Math.hypot(p.x - p.x0, p.y - p.y0); if(p.tipo === 'mouse'){ if(d > 6) empezarArrastre(p); } else if(d > 10){ clearTimeout(p.timer); arr = null; } return; }
+  e.preventDefault(); moverArrastre(p);
+}, { passive: false });
+document.addEventListener('touchmove', function(e){ var p = arr; if(!p || !p.activo) return; e.preventDefault(); var t = e.touches[0]; if(t){ p.x = t.clientX; p.y = t.clientY; moverArrastre(p); } }, { passive: false });
+document.addEventListener('pointerup', function(e){ if(arr && e.pointerId === arr.id) terminarArrastre(); });
+document.addEventListener('pointercancel', function(e){ if(arr && e.pointerId === arr.id && !arr.activo){ clearTimeout(arr.timer); arr = null; } });
+document.addEventListener('touchend', function(){ if(arr && arr.activo) terminarArrastre(); });
+document.addEventListener('contextmenu', function(e){ if(arr && e.target.closest && e.target.closest('#rcPlots')) e.preventDefault(); });
 function lista(){
   return selectedRecoilWeapons.map(function(it){ var a = armar(it); return { it: it, a: a, key: String(it.id), nombre: it.weapon[HEADERS.ARMA], color: getColorForWeapon(it.weapon[HEADERS.ARMA] + '_' + it.id), clase: classTitleGraph(it, it.clase || 'base') }; });
 }
@@ -3679,32 +3779,38 @@ function pintarControles(){
   $('rcDistV').textContent = vista.distancia + ' m';
   $('rcZoomV').textContent = aumento().toFixed(2) + '\u00d7';
 }
-function redibujar(){ pintarControles(); document.querySelectorAll('#rcPlots canvas').forEach(function(c){ if(c.$capas) dibujar(c, c.$capas); }); }
+function redibujar(){ pintarControles(); document.querySelectorAll('#rcPlots canvas').forEach(function(c){ if(c.$capas) (c.$linea ? dibujarLinea : dibujar)(c, c.$capas); }); }
 function render(){
   var cont = $('recoilContainer'); if(!cont) return;
   if(!selectedRecoilWeapons.length){ cont.innerHTML = '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-arrow-up-short-wide"></i></div><p class="recoil-placeholder-text">No hay armas seleccionadas.</p></div>'; return; }
   if(!Sim){ cont.innerHTML = fallo ? '<div class="recoil-placeholder"><p class="recoil-placeholder-text">No se pudo cargar la simulaci\u00f3n. Recarga la p\u00e1gina.</p></div>' : '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="recoil-placeholder-text">Cargando la simulaci\u00f3n...</p></div>'; if(!fallo) cargar(); return; }
   var seg = function(a, v, t, on){ return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" ' + a + '="' + v + '">' + t + '</button>'; };
+  var lineal = vista.layout === 'linea';
   var todasCapas = CAPAS.concat([capaZona()]);
   var capaBtn = function(k){ var on = !!vista.capas[k.id]; return '<button type="button" class="seg-btn' + (on ? ' active' : '') + '" data-rc-capa="' + k.id + '" aria-pressed="' + on + '" title="' + k.t + ': ' + k.d + '">' + k.t + '</button>'; };
   var h = '<div class="rc-bar"><label class="rc-ctl"><span>Distancia</span><input type="range" id="rcDist" min="5" max="30" step="1" value="' + vista.distancia + '" aria-label="Distancia"><b id="rcDistV"></b></label>'
     + '<label class="rc-ctl"><span>Zoom</span><input type="range" id="rcZoom" min="0" max="100" step="1" value="' + vista.zoom + '" aria-label="Zoom"><b id="rcZoomV"></b></label>'
     + '<div class="rc-acc"><div class="seg-group">' + seg('data-rc-apunta', 'ads', 'ADS', vista.apunta === 'ads') + seg('data-rc-apunta', 'hip', 'Cadera', vista.apunta === 'hip') + '</div><div class="seg-group" role="group" aria-label="Capas del patr\u00f3n">' + todasCapas.map(capaBtn).join('') + '</div>'
-    + '<button type="button" class="recoil-param-btn' + (vista.unir ? ' active' : '') + '" id="rcUnir"><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
+    + '<div class="seg-group rc-vista" role="group" aria-label="Vista">' + '<button type="button" class="seg-btn' + (lineal ? '' : ' active') + '" data-rc-vista="grid" aria-pressed="' + !lineal + '" aria-label="Cuadr\u00edcula" title="Cuadr\u00edcula: una tarjeta por arma, con silueta. Arrastra las tarjetas para ordenarlas."><i class="fa-solid fa-table-cells-large" aria-hidden="true"></i></button>' + '<button type="button" class="seg-btn' + (lineal ? ' active' : '') + '" data-rc-vista="linea" aria-pressed="' + lineal + '" aria-label="L\u00ednea" title="L\u00ednea: todas las armas en una franja, sin silueta y con la misma escala."><i class="fa-solid fa-table-columns" aria-hidden="true"></i></button></div>'
+    + '<button type="button" class="recoil-param-btn' + (vista.unir && !lineal ? ' active' : '') + '" id="rcUnir"' + (lineal ? ' disabled title="En la vista L\u00ednea las armas ya est\u00e1n juntas"' : '') + '><i class="fa-solid fa-compress" aria-hidden="true"></i> Unir</button>'
     + '<button type="button" class="recoil-param-btn" id="rcOtra" title="Generar otra r\u00e1faga"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Otra r\u00e1faga</button></div></div>'
     + '<div class="rc-sub"><span>' + (vista.apunta === 'hip' ? 'Desde la cadera y quieto' : 'Apuntando y quieto') + '</span></div>'
-    + '<div class="rc-desc">' + todasCapas.filter(function(k){ return vista.capas[k.id]; }).map(function(k){ return '<p><b>' + k.t + ':</b> ' + k.d + '</p>'; }).join('') + '</div><div id="rcPlots" class="rc-plots' + (vista.unir ? ' unida' : '') + '"></div>';
+    + '<div class="rc-desc">' + todasCapas.filter(function(k){ return vista.capas[k.id]; }).map(function(k){ return '<p><b>' + k.t + ':</b> ' + k.d + '</p>'; }).join('') + '</div><div id="rcPlots" class="rc-plots' + (lineal ? ' lineal' : vista.unir ? ' unida' : '') + '"></div>';
   cont.innerHTML = h;
   var plots = $('rcPlots'), items = lista(), validas = [];
   items.forEach(function(x){ if(x.a){ x.res = simular(x.a); validas.push(x); } });
-  var tarjeta = function(capas, titulo){ var d = document.createElement('div'); d.className = 'rc-card'; d.innerHTML = titulo + '<canvas role="img" aria-label="Patr\u00f3n de retroceso"></canvas>'; plots.appendChild(d); var cv = d.querySelector('canvas'); cv.$capas = capas; return d; };
+  var tarjeta = function(capas, titulo){ var d = document.createElement('div'); d.className = 'rc-card'; d.innerHTML = titulo + '<canvas role="img" aria-label="Patr\u00f3n de retroceso"></canvas>'; if(capas.length === 1 && !vista.unir) d.dataset.key = capas[0].key; plots.appendChild(d); var cv = d.querySelector('canvas'); cv.$capas = capas; return d; };
   var cab = function(x){ return '<div class="rc-tit"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><span>' + escapeHtml(x.clase) + '</span></div>'; };
   /* Leyenda pulsable: cada chip oculta o muestra su arma en el grafico. */
   var ley = function(lista){ return '<div class="rc-ley">' + lista.map(function(x){ var o = !!vista.ocultas[x.key]; return '<button type="button" class="rc-chip' + (o ? ' oculta' : '') + '" data-rc-arma="' + escapeHtml(x.key) + '" aria-pressed="' + !o + '" title="' + (o ? 'Mostrar' : 'Ocultar') + ' en el gr\u00e1fico"><i style="background:' + x.color + '"></i><b>' + escapeHtml(x.nombre) + '</b><em>' + escapeHtml(x.clase) + '</em></button>'; }).join('') + '</div>'; };
-  if(vista.unir && validas.length){
+  if(lineal && validas.length){
+    var dl = document.createElement('div'); dl.className = 'rc-lineal'; dl.innerHTML = '<div class="rc-scroll"><canvas role="img" aria-label="Retroceso de las armas en l\u00ednea"></canvas></div>'; plots.appendChild(dl);
+    var cvl = dl.querySelector('canvas'); cvl.$linea = true; cvl.$capas = validas.map(function(x){ return { res: x.res, color: x.color, key: x.key, nombre: x.nombre }; });
+    dl.insertAdjacentHTML('beforeend', ley(validas));
+  } else if(vista.unir && validas.length){
     tarjeta(validas.map(function(x){ return { res: x.res, color: x.color, key: x.key }; }), '').insertAdjacentHTML('beforeend', ley(validas));
   } else validas.forEach(function(x){ tarjeta([{ res: x.res, color: x.color, key: x.key }], '').insertAdjacentHTML('beforeend', ley([x])); });
-  items.forEach(function(x){ if(!x.a){ var d = document.createElement('div'); d.className = 'rc-card rc-sin'; d.innerHTML = cab(x) + '<p>Esta arma todav\u00eda no est\u00e1 en el motor de simulaci\u00f3n.</p>'; plots.appendChild(d); } });
+  items.forEach(function(x){ if(!x.a){ var d = document.createElement('div'); d.className = 'rc-card rc-sin'; if(!lineal && !vista.unir) d.dataset.key = x.key; d.innerHTML = cab(x) + '<p>Esta arma todav\u00eda no est\u00e1 en el motor de simulaci\u00f3n.</p>'; plots.appendChild(d); } });
   redibujar();
 }
 document.addEventListener('input', function(e){ var id = e.target.id; if(id === 'rcDist'){ vista.distancia = +e.target.value; redibujar(); } else if(id === 'rcZoom'){ vista.zoom = +e.target.value; redibujar(); } });
@@ -3715,6 +3821,7 @@ document.addEventListener('click', function(e){
     document.querySelectorAll('#recoilContainer [data-rc-arma]').forEach(function(x){ if(x.dataset.rcArma === id){ x.classList.toggle('oculta', o); x.setAttribute('aria-pressed', String(!o)); x.title = (o ? 'Mostrar' : 'Ocultar') + ' en el gr\u00e1fico'; } });
     redibujar(); }
   else if(b.dataset.rcApunta){ vista.apunta = b.dataset.rcApunta; render(); }
+  else if(b.dataset.rcVista){ vista.layout = b.dataset.rcVista; render(); }
   else if(b.id === 'rcUnir'){ vista.unir = !vista.unir; render(); }
   else if(b.id === 'rcOtra'){ vista.sem = (vista.sem + 0x9e3779b9) >>> 0; render(); }
 });
