@@ -651,6 +651,11 @@
    "es": "Luz táctica (apuntando)",
    "revisado": false
   },
+  "Taclight - Hip": {
+   "grupo": "luz",
+   "es": "Luz táctica (cadera)",
+   "revisado": false
+  },
   "Taclight - Hipfire": {
    "grupo": "luz",
    "es": "Luz táctica (cadera)",
@@ -686,6 +691,11 @@
    "es": "A-P2 1.75x",
    "revisado": false
   },
+  "Aperture Sight": {
+   "grupo": "mira",
+   "es": "Mira de apertura",
+   "revisado": false
+  },
   "Baker 3.00x": {
    "grupo": "mira",
    "es": "Baker 3.00x",
@@ -694,6 +704,11 @@
   "BF-2M 2.50x": {
    "grupo": "mira",
    "es": "BF-2M 2.50x",
+   "revisado": false
+  },
+  "Carry Handle Irons": {
+   "grupo": "mira",
+   "es": "Miras del asa de transporte",
    "revisado": false
   },
   "CCO 2.00x": {
@@ -706,9 +721,19 @@
    "es": "CQ RDS 1.25x",
    "revisado": false
   },
+  "CQB Sights": {
+   "grupo": "mira",
+   "es": "Miras CQB",
+   "revisado": false
+  },
   "DVO LPVO 1-6x": {
    "grupo": "mira",
    "es": "DVO LPVO 1-6x",
+   "revisado": false
+  },
+  "Flip-Up Irons": {
+   "grupo": "mira",
+   "es": "Miras abatibles",
    "revisado": false
   },
   "GRIM 1.50x": {
@@ -839,6 +864,11 @@
   "SSDS 6.00x": {
    "grupo": "mira",
    "es": "SSDS 6.00x",
+   "revisado": false
+  },
+  "ST Prisim 5.00x": {
+   "grupo": "mira",
+   "es": "ST Prisim 5.00x",
    "revisado": false
   },
   "ST Prism 5.00x": {

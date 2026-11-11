@@ -52,14 +52,15 @@ PROPUESTAS = {
     '50 MW Violet': 'Violeta 50 MW', '120 MW Blue': 'Azul 120 MW', 'Combo Red': 'Combo rojo', 'Combo Green': 'Combo verde',
     # Luz
     'Flashlight': 'Linterna', 'Range Finder': 'Telémetro', 'Taclight - Aimed': 'Luz táctica (apuntando)',
-    'Taclight - Hipfire': 'Luz táctica (cadera)',
+    'Taclight - Hipfire': 'Luz táctica (cadera)', 'Taclight - Hip': 'Luz táctica (cadera)',
     # Ergonomía
     'Rail Cover': 'Cubierta de riel', 'Magwell Flare': 'Brocal ensanchado', 'Improved Mag Catch': 'Retén de cargador mejorado',
     'Match Trigger': 'Gatillo de competición', 'DLC Bolt': 'Cerrojo DLC', 'Aftermarket Buffer': 'Amortiguador mejorado',
     'A3 Receiver': 'Receptor A3', 'Speed Holster': 'Funda rápida', 'Gunslinger': 'Pistolero',
     'Burst Training': 'Entrenamiento de ráfaga', 'Burst Mode': 'Modo ráfaga', 'Folding Stock': 'Culata plegable',
     # Accesorio óptico
-    'Canted Iron Sights': 'Miras de hierro inclinadas', 'Secondary Optic': 'Mira secundaria',
+    'Canted Iron Sights': 'Miras de hierro inclinadas', 'Aperture Sight': 'Mira de apertura',
+    'Carry Handle Irons': 'Miras del asa de transporte', 'CQB Sights': 'Miras CQB', 'Flip-Up Irons': 'Miras abatibles', 'Secondary Optic': 'Mira secundaria',
     'Anti-Glare Coating': 'Recubrimiento antirreflejos',
     # Munición
     'Standard': 'Estándar', 'Penetration': 'Perforante', 'Lightweight': 'Ligera', 'Long-Range': 'Largo alcance',
@@ -96,6 +97,12 @@ def main(origen):
     except OSError:
         commit = ''
     version = datos['weaponAttributes'].get('sourceVersion', '')
+    if not version:  # desde nov 2026 el analizador guarda la version en data/provenance/data-status.json
+        try:
+            estado = json.load(open(origen / 'data' / 'provenance' / 'data-status.json', encoding='utf-8'))
+            version = (estado.get('lastStamp') or {}).get('build', '')
+        except (OSError, ValueError):
+            version = ''
     datos['origen'] = {'analizador': 'https://github.com/raymdl/BF6-Weapon-Analyzer', 'commit': commit, 'versionJuego': version}
     with open(RAIZ / 'motor' / 'datos-juego.json', 'w', encoding='utf-8') as f:
         json.dump(datos, f, ensure_ascii=False, separators=(',', ':'))
