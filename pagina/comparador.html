@@ -3618,7 +3618,8 @@ function paso(R){ var b = R / 4, m = Math.pow(10, Math.floor(Math.log10(b))), f 
 var siluetas = null;
 function silueta(ctx, px, py, s){
   if(!siluetas){ var t = $('silhouetteTemplate'); siluetas = t ? Array.prototype.map.call(t.content.querySelectorAll('path'), function(p){ return { p: new Path2D(p.getAttribute('d')), dx: p.classList.contains('stomach-part') ? 50 : 0 }; }) : []; }
-  ctx.save(); ctx.translate(px, py); ctx.scale(s, s); ctx.translate(-360, -350); ctx.translate(0, 1280); ctx.scale(0.1, -0.1); ctx.fillStyle = '#39414d';
+  /* Punto de mira a 58 cm bajo la punta de la cabeza, como el Analyzer (TARGET_AIM_Y.chest): cabeza en y 59, 1180 unidades = 180 cm. */
+  ctx.save(); ctx.translate(px, py); ctx.scale(s, s); ctx.translate(-360, -439); ctx.translate(0, 1280); ctx.scale(0.1, -0.1); ctx.fillStyle = '#39414d';
   siluetas.forEach(function(x){ ctx.save(); ctx.translate(x.dx, 0); ctx.fill(x.p); ctx.restore(); });
   ctx.restore();
 }
