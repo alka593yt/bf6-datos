@@ -874,7 +874,7 @@ html { scrollbar-gutter: stable; }
 .mr-box{display:flex;flex-direction:column;gap:4px;min-width:0}
 .mr-bar{display:flex;height:12px;background:var(--bg-input);border-radius:4px;overflow:hidden}
 .mr-bar i{display:block;height:100%;flex-shrink:0}
-.mr-te{background:var(--accent)}.mr-fa{background:var(--danger-bright)}.mr-ap{background:#5b8def}
+.mr-te{background:var(--accent)}.mr-fa{background:var(--danger-bright)}.mr-ap{background:#5b8def}.mr-vu{background:#9b6bdf}
 .mr-txt{font-size:.66rem;color:var(--text-muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mr-txt b{color:var(--text-primary);font-size:.84rem;font-weight:900;font-variant-numeric:tabular-nums}
 .mr-ley{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.62rem;color:var(--text-muted);font-weight:700;margin:0 0 8px}
@@ -2892,20 +2892,21 @@ var CLASS_NAME={base:'Base'};
 var NIVEL={casual:{t:'Casual',c:50},medio:{t:'Medio',c:70},experto:{t:'Experto',c:90}};
 var USA={ret:'retroceso',pre:'precisi\u00f3n',man:'manejo'};
 /* Cuerpo al que se dispara, en metros desde el punto de mira (pecho): torso y cabeza, sin piernas. */
-var CUERPO={arriba:0.58,abajo:-0.62,medio:0.23,cuello:0.33,cabeza:0.11};
+/* Cada zona: [desde, hasta, medio ancho]. APUNTA: cuanto sube el punto de mira si se apunta a la cabeza. */
+var CUERPO={cabeza:[0.33,0.58,0.11],pecho:[-0.10,0.33,0.23],estomago:[-0.50,-0.10,0.19]}, APUNTA={pecho:0,cabeza:0.455};
 var SEMILLAS=6, MUESTRAS=8, MAX_BALAS=50, RECARGA_DEF=2500;
-var DEF={eq:{base:true,clase1:false,clase2:false,clase3:false},cats:[],dist:'c',exact:50,usa:{ret:true,pre:true,man:true},nivel:'medio',ttkZone:'pecho',topN:10,view:'rank'};
+var DEF={eq:{base:true,clase1:false,clase2:false,clase3:false},cats:[],dist:'c',exact:50,usa:{ret:true,pre:true,man:true},nivel:'medio',postura:'stand',ttkZone:'pecho',topN:10,view:'rank'};
 var META=clone(DEF);
 var ENTRIES=null, BYKEY={}, dirty=true, ready=false, saveT=null, renderT=null, Sim=null, falloSim=false, pidiendo=false, hechos={};
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function merge(b,s){ if(!s||typeof s!=='object') return b; Object.keys(b).forEach(function(k){ if(s[k]===undefined) return; if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])) merge(b[k],s[k]); else if(typeof s[k]===typeof b[k]||Array.isArray(b[k])) b[k]=s[k]; }); return b; }
-function load(){ try{ merge(META,JSON.parse(localStorage.getItem(KEY)||'null')); }catch(e){} if(META.view!=='cats') META.view='rank'; if(!NIVEL[META.nivel]) META.nivel='medio'; }
+function load(){ try{ merge(META,JSON.parse(localStorage.getItem(KEY)||'null')); }catch(e){} if(META.view!=='cats') META.view='rank'; if(!NIVEL[META.nivel]) META.nivel='medio'; if(META.ttkZone!=='cabeza') META.ttkZone='pecho'; if(META.postura!=='move') META.postura='stand'; }
 function save(){ clearTimeout(saveT); saveT=setTimeout(function(){ try{ localStorage.setItem(KEY,JSON.stringify(META)); }catch(e){} },200); }
 function esc(s){ return escapeHtml(s); }
 function zoneOf(m){ return m<=20?'c':(m<=75?'m':'l'); }
 function zona(id){ return ZONES.filter(function(z){ return z.id===id; })[0]; }
 function fms(v){ return v>=10000?'m\u00e1s de 10 s':Math.round(v)+' ms'; }
-var RITMO={r5:'R\u00e1fagas de 5',r3:'R\u00e1fagas de 3',tiro:'Tiro a tiro'};
+var RITMO={r5:'R\u00e1fagas de 5',r3:'R\u00e1fagas de 3',tiro:'Tiro a tiro',cadera:'Desde la cadera'};
 function pct(v){ return Math.round(v*100)+' %'; }
 function usaSim(){ return META.usa.ret||META.usa.pre; }
 /* ---------- entradas (arma + equipamiento) ---------- */
@@ -2920,26 +2921,31 @@ out.push(e); BYKEY[e.key]=e;
 });
 return out;
 }
-function danoEn(e,m){
-var pf=CLASS_PREFIXES[e.clase].DANO[META.ttkZone], v=parseFloat(e.weapon[pf+m]);
+function danoEn(e,m,z){
+var pf=CLASS_PREFIXES[e.clase].DANO[z], v=parseFloat(e.weapon[pf+m]);
 for(var i=m-1;!(v>0)&&i>=0;i--) v=parseFloat(e.weapon[pf+i]);
 return v>0?v:null;
 }
 function statDe(e,nombre){ var col=STATS_MAP[e.clase]&&STATS_MAP[e.clase][nombre]; return col?parseStatValue(e.weapon[col]):null; }
 /* ---------- simulacion con el motor: donde cae cada bala de la rafaga, en grados ---------- */
-/* Ritmos de disparo que se prueban en las armas automaticas: todo seguido, rafagas de 5 o de 3 con una pausa, o tiro a tiro.
-   A cada distancia se usa el que mata antes, como haria un jugador. */
+/* Formas de disparar que se prueban: todo seguido, rafagas de 5 o de 3 con una pausa, tiro a tiro (armas automaticas)
+   y desde la cadera sin apuntar. A cada distancia se usa la que mata antes, como haria un jugador. */
 var PAUSA=0.2;
-function ritmos(w){
-var l=[{id:'auto',w:w}], iv=60/w.rpm;
-if(w.fireMode!=='auto'||!(iv>0)) return l;
-[5,3].forEach(function(k){ l.push({id:'r'+k,w:Object.assign({},w,{fireMode:'burst',burstRounds:k,burstRpm:w.rpm,burstBurstsPerMinute:60/((k-1)*iv+PAUSA)})}); });
-if(iv<PAUSA) l.push({id:'tiro',w:Object.assign({},w,{rpm:60/PAUSA})});
+function cero(){ return 0; }
+function ritmos(w,pre){
+var l=[{id:'auto',w:w,aim:'ads'}], iv=60/w.rpm;
+if(w.fireMode==='auto'&&iv>0){
+[5,3].forEach(function(k){ l.push({id:'r'+k,aim:'ads',w:Object.assign({},w,{fireMode:'burst',burstRounds:k,burstRpm:w.rpm,burstBurstsPerMinute:60/((k-1)*iv+PAUSA)})}); });
+if(iv<PAUSA) l.push({id:'tiro',aim:'ads',w:Object.assign({},w,{rpm:60/PAUSA})});
+}
+/* Sin contar la dispersion, la cadera no tendria ninguna desventaja: solo se prueba si la precision cuenta. */
+if(pre) l.push({id:'cadera',w:w,aim:'hip'});
 return l;
 }
-/* Una rafaga con un ritmo: donde cae cada bala (grados) y en que momento sale (ms). */
-function rafaga(w,id,ret,pre,comp){
-var n=Math.max(2,Math.min(Math.round(w.mag)||30,MAX_BALAS));
+/* Una rafaga: donde cae cada bala (grados) y en que momento sale (ms). */
+function rafaga(r,ret,pre,comp){
+var w=r.w, n=Math.max(2,Math.min(Math.round(w.mag)||30,MAX_BALAS));
+Sim.setSimContext({aimState:r.aim,stanceState:META.postura,compensationFn:cero});
 var sps=pre?Sim.simulateSpread(w,n):null, rutas=[], rng=Sim.mulberry32((Sim.whash(w.id)^0x51ed270b)>>>0), perd=(w.pellets||1)>1?(w.pelletDispersion||0):0, pts=[], s, i, m;
 /* El jugador devuelve la mira al blanco entre bala y bala: con 100 ms entre disparos corrige comp % del desvio; con menos tiempo, menos. */
 var tau=-0.1/Math.log(1-comp/100), queda=[1], t=[0];
@@ -2955,62 +2961,76 @@ var l=[];
 for(s=0;s<SEMILLAS;s++){
 var p=rutas[s]?rutas[s][i]:{x:0,y:0};
 if(!pre){ l.push(p.x,p.y); continue; }
-for(m=0;m<MUESTRAS;m++){ var ang=rng()*6.283185307, r=Sim.sampleSpreadRadius(w,sps[i],rng())+perd*rng(); l.push(p.x+r*Math.cos(ang),p.y+r*Math.sin(ang)); }
+for(m=0;m<MUESTRAS;m++){ var ang=rng()*6.283185307, rad=Sim.sampleSpreadRadius(w,sps[i],rng())+perd*rng(); l.push(p.x+rad*Math.cos(ang),p.y+rad*Math.sin(ang)); }
 }
 pts.push(l);
 }
-return {id:id,pts:pts,n:n,t:t,h:{}};
+return {id:r.id,hip:r.aim==='hip',pts:pts,n:n,t:t,h:{},res:{}};
 }
+function claveSim(){ return (META.usa.ret?NIVEL[META.nivel].c:'x')+'|'+(META.usa.pre?1:0)+'|'+META.postura; }
 function simular(e){
 var ret=META.usa.ret, pre=META.usa.pre;
 if(!ret&&!pre) return {libre:true};
 if(!Sim) return null;
-var ck=(ret?NIVEL[META.nivel].c:'x')+'|'+(pre?1:0);
+var ck=claveSim();
 e.sim=e.sim||{}; if(e.sim[ck]!==undefined) return e.sim[ck];
 var out=null, a=null, estr=[], comp=NIVEL[META.nivel].c;
 try{ a=window.bf6Retroceso.armar(e.item); }catch(x){ a=null; }
 if(a){
-try{
-Sim.setSimContext({aimState:'ads',stanceState:'stand',compensationFn:function(){ return 0; }});
-ritmos(a.w).forEach(function(r){ try{ estr.push(rafaga(r.w,r.id,ret,pre,comp)); }catch(x){} });
-}catch(x){}
-finally{ Sim.setSimContext({aimState:'ads',stanceState:'stand',compensationFn:function(){ return 0; }}); }
+try{ ritmos(a.w,pre).forEach(function(r){ try{ estr.push(rafaga(r,ret,pre,comp)); }catch(x){} }); }catch(x){}
+finally{ Sim.setSimContext({aimState:'ads',stanceState:'stand',compensationFn:cero}); }
 if(estr.length) out={estr:estr};
 }
 e.sim[ck]=out; return out;
 }
-/* Probabilidad de que cada bala de la rafaga pegue en el cuerpo a d metros. */
-function aciertos(est,d){
-if(est.h[d]) return est.h[d];
-var k=Math.PI/180, C=CUERPO;
-est.h[d]=est.pts.map(function(l){
-var ok=0;
-for(var j=0;j<l.length;j+=2){ var x=Math.abs(Math.tan(l[j]*k)*d), y=Math.tan(l[j+1]*k)*d; if(y<=C.arriba&&y>=C.abajo&&x<=(y>C.cuello?C.cabeza:C.medio)) ok++; }
-return ok/(l.length/2);
-});
-return est.h[d];
+/* En que zona del cuerpo cae cada bala a d metros: [cabeza, pecho, estomago] como probabilidades; el resto falla. */
+function zonas(est,d){
+var key=d+'|'+META.ttkZone; if(est.h[key]) return est.h[key];
+var k=Math.PI/180, dy=APUNTA[META.ttkZone]||0, C=CUERPO;
+est.h[key]=est.pts.map(function(l){
+var c=[0,0,0], n=l.length/2;
+for(var j=0;j<l.length;j+=2){
+var x=Math.abs(Math.tan(l[j]*k)*d), y=Math.tan(l[j+1]*k)*d+dy;
+if(y>C.cabeza[0]){ if(y<=C.cabeza[1]&&x<=C.cabeza[2]) c[0]++; }
+else if(y>C.pecho[0]){ if(x<=C.pecho[2]) c[1]++; }
+else if(y>=C.estomago[0]&&x<=C.estomago[2]) c[2]++;
 }
-/* Tiempo esperado para matar con un ritmo. Si no alcanza un cargador, se suma la recarga y se vuelve a intentar. */
-function tiempo(est,d,B,rec){
-var p=aciertos(est,d), n=est.n, t=est.t, lleva=[1], A=0, S=0, pk=0, i, h;
-for(i=0;i<n;i++){
-var pi=p[i], mata=(lleva[B-1]||0)*pi;
-A+=mata*t[i]; S+=mata*(i+1); pk+=mata;
-for(h=Math.min(B-1,i+1);h>=0;h--) lleva[h]=(lleva[h]||0)*(1-pi)+(h>0?(lleva[h-1]||0)*pi:0);
+return [c[0]/n,c[1]/n,c[2]/n];
+});
+return est.h[key];
+}
+/* Tiempo esperado para matar con una forma de disparar: cada bala quita el dano de la zona donde cae.
+   Si no alcanza un cargador, se suma la recarga y se vuelve a intentar. dz y hp van en centesimas de PV. */
+function tiempo(est,d,dz,hp,rec){
+var z=zonas(est,d), n=est.n, t=est.t, cur=new Map(), A=0, pk=0, tiros=0, dan=0, cab=0, i;
+cur.set(hp,1);
+for(i=0;i<n&&cur.size;i++){
+var p=z[i], falla=Math.max(0,1-p[0]-p[1]-p[2]), nxt=new Map(), vivo=0, mata=0;
+cur.forEach(function(pr,rem){
+vivo+=pr;
+if(falla>1e-9) nxt.set(rem,(nxt.get(rem)||0)+pr*falla);
+for(var q=0;q<3;q++){ if(!(p[q]>0)) continue; var r2=rem-dz[q]; if(r2<=0) mata+=pr*p[q]; else nxt.set(r2,(nxt.get(r2)||0)+pr*p[q]); }
+});
+tiros+=vivo; dan+=vivo*(1-falla); cab+=vivo*p[0];
+A+=mata*t[i]; pk+=mata; cur=nxt;
 }
 var q=Math.max(pk,0.02);
-return {real:(A+(1-pk)*(t[n-1]+rec))/q,ac:Math.min(1,B/((S+(1-pk)*n)/q)),pk:pk,id:est.id};
+return {real:(A+(1-pk)*(t[n-1]+rec))/q,ac:tiros?dan/tiros:0,cab:dan?cab/dan:0,pk:pk,id:est.id,hip:est.hip};
 }
-function evaluar(e,d,hp){
-var dn=danoEn(e,d); if(dn===null) return null;
+function evaluar(e,d,hp,ads){
+var dn=danoEn(e,d,META.ttkZone); if(dn===null) return null;
 var B=Math.ceil(hp/dn-1e-9), ms=msEntreDisparos(e.weapon,e.clase)||getApproxRPM(e.weapon,e.clase), teo=(B-1)*ms;
+var vel=statDe(e,'Vel. de Bala'), vuelo=vel>0?d/vel*1000:0;
 var sm=simular(e);
-if(!sm) return {teo:teo,real:null};
-if(sm.libre) return {teo:teo,real:teo,ac:1,pk:1,id:'auto'};
-var rec=statDe(e,'Vel. de recarga')||RECARGA_DEF, mejor=null;
-sm.estr.forEach(function(est){ var v=tiempo(est,d,B,rec); if(!mejor||v.real<mejor.real) mejor=v; });
-mejor.teo=teo; mejor.real=Math.max(mejor.real,teo);
-return mejor;
+if(!sm) return {teo:teo,real:null,vuelo:vuelo};
+if(sm.libre) return {teo:teo,real:teo,ac:1,cab:META.ttkZone==='cabeza'?1:0,pk:1,id:'auto',ads:ads,vuelo:vuelo};
+var pecho=danoEn(e,d,'pecho')||dn, dz=['cabeza','pecho','estomago'].map(function(z){ return Math.round((danoEn(e,d,z)||pecho)*100); });
+var rec=statDe(e,'Vel. de recarga')||RECARGA_DEF, key=d+'|'+META.ttkZone+'|'+hp, mejor=null, costo=Infinity;
+sm.estr.forEach(function(est){
+var v=est.res[key]||(est.res[key]=tiempo(est,d,dz,Math.round(hp*100),rec)), c=v.real+(v.hip?0:ads);
+if(c<costo){ costo=c; mejor=v; }
+});
+return {teo:teo,real:mejor.real,ac:mejor.ac,cab:mejor.cab,pk:mejor.pk,id:mejor.id,ads:mejor.hip?0:ads,vuelo:vuelo};
 }
 /* ---------- configuracion derivada ---------- */
 function grupos(){
@@ -3030,16 +3050,17 @@ function selectedClasses(){ return CLASSES; }
 var RES={};
 function resultado(e){
 if(RES[e.key]!==undefined) return RES[e.key];
-var hp=getAdvancedSettings('TTK').health, T=0,R=0,AC=0,PK=0,nt=0,nr=0, veces={};
+var hp=getAdvancedSettings('TTK').health, ads=META.usa.man?(statDe(e,'Vel. al apuntar')||0):0, S={t:0,vu:0,r:0,a:0,k:0,c:0,ap:0}, nt=0, nr=0, veces={};
 grupos().forEach(function(ds){
-var t=0,r=0,a=0,k=0,n=0,m=0;
-ds.forEach(function(d){ var v=evaluar(e,d,hp); if(!v) return; t+=v.teo; n++; if(v.real!==null){ r+=v.real; a+=v.ac; k+=v.pk; m++; veces[v.id]=(veces[v.id]||0)+1; } });
-if(n){ T+=t/n; nt++; } if(m){ R+=r/m; AC+=a/m; PK+=k/m; nr++; }
+var g={t:0,vu:0,r:0,a:0,k:0,c:0,ap:0}, n=0, m=0;
+ds.forEach(function(d){ var v=evaluar(e,d,hp,ads); if(!v) return; g.t+=v.teo; g.vu+=v.vuelo; n++; if(v.real!==null){ g.r+=v.real; g.a+=v.ac; g.k+=v.pk; g.c+=v.cab; g.ap+=v.ads; m++; veces[v.id]=(veces[v.id]||0)+1; } });
+if(n){ S.t+=g.t/n; S.vu+=g.vu/n; nt++; }
+if(m){ S.r+=g.r/m; S.a+=g.a/m; S.k+=g.k/m; S.c+=g.c/m; S.ap+=g.ap/m; nr++; }
 });
 var o=null;
 if(nt){
-o={e:e,teo:T/nt,real:null,total:null,ac:null,pk:null,ads:0,noSim:nr<nt};
-if(!o.noSim){ o.real=R/nr; o.ac=AC/nr; o.pk=PK/nr; o.ritmo=Object.keys(veces).sort(function(x,y){ return veces[y]-veces[x]; })[0]||'auto'; o.ads=META.usa.man?(statDe(e,'Vel. al apuntar')||0):0; o.total=o.real+o.ads; }
+o={e:e,teo:S.t/nt,vuelo:S.vu/nt,real:null,total:null,ac:null,pk:null,cab:0,ads:0,noSim:nr<nt};
+if(!o.noSim){ o.real=S.r/nr; o.ac=S.a/nr; o.pk=S.k/nr; o.cab=S.c/nr; o.ads=S.ap/nr; var tot=Object.keys(veces).reduce(function(s,x){ return s+veces[x]; },0); o.ritmo=Object.keys(veces).filter(function(x){ return veces[x]*2>tot; })[0]||''; o.total=o.real+o.ads+o.vuelo; }
 }
 RES[e.key]=o; return o;
 }
@@ -3069,32 +3090,33 @@ function toast(btn,txt){ var o=btn.innerHTML; btn.innerHTML='<i class="fa-solid 
 /* ---------- filas ---------- */
 function chip(txt,cls,tip){ return '<span class="meta-d'+(cls?' '+cls:'')+'" title="'+esc(tip)+'">'+txt+'</span>'; }
 function rowHtml(r,rank,mx){
-var e=r.e, tag=e.clase==='base'?'':'<span class="meta-eq">'+esc(e.label)+'</span>';
+var e=r.e;
 var rk='<div class="meta-rank'+(rank<=3&&r.total!==null?' top':'')+'">#'+rank+'</div>', caja, chips='';
 if(r.total===null){
 caja='<div class="meta-scorebox mr-box"><div class="mr-bar"><i class="mr-te" style="width:'+Math.max(2,Math.round(r.teo/mx*100))+'%"></i></div><div class="mr-txt">Solo te\u00f3rico: <b>'+fms(r.teo)+'</b></div></div>';
 } else {
 var fallo=Math.max(0,r.real-r.teo), w=function(v){ return (v/mx*100).toFixed(1); };
-caja='<div class="meta-scorebox mr-box"><div class="mr-bar"><i class="mr-te" style="width:'+w(r.teo)+'%"></i><i class="mr-fa" style="width:'+w(fallo)+'%"></i><i class="mr-ap" style="width:'+w(r.ads)+'%"></i></div>'
+caja='<div class="meta-scorebox mr-box"><div class="mr-bar"><i class="mr-te" style="width:'+w(Math.min(r.teo,r.real))+'%"></i><i class="mr-fa" style="width:'+w(fallo)+'%"></i><i class="mr-ap" style="width:'+w(r.ads)+'%"></i><i class="mr-vu" style="width:'+w(r.vuelo)+'%"></i></div>'
 +'<div class="mr-txt"><b>'+fms(r.total)+'</b> reales - te\u00f3rico '+fms(r.teo)+'</div></div>';
 if(usaSim()){
 chips+=chip('Acierto '+pct(r.ac),r.ac>=0.75?'good':(r.ac<0.5?'bad':''),'Parte de las balas que pegan en el cuerpo hasta matar');
+if(META.ttkZone==='pecho'&&r.cab>=0.05) chips+=chip('Cabeza '+pct(r.cab),'','Parte de los impactos que caen en la cabeza y hacen m\u00e1s da\u00f1o');
 if(fallo>=1) chips+=chip('Fallos +'+fms(fallo),'','Tiempo que se pierde por las balas que no pegan y por las pausas entre r\u00e1fagas');
-if(RITMO[r.ritmo]) chips+=chip(RITMO[r.ritmo],'','Ritmo de disparo con el que esta arma mata antes a esta distancia');
+if(RITMO[r.ritmo]) chips+=chip(RITMO[r.ritmo],'','Forma de disparar con la que esta arma mata antes a esta distancia');
 if(r.pk<0.95) chips+=chip('1 cargador '+pct(r.pk),'bad','Probabilidad de matar sin recargar');
 }
-if(META.usa.man&&r.ads>0) chips+=chip('Apuntar +'+fms(r.ads),'','Tiempo para apuntar con la mira');
-var b=baseDe(r);
-if(b&&b.total!==null){ var d=Math.round(r.total-b.total); if(d!==0) chips+=chip('vs base '+(d>0?'+':'\u2212')+fms(Math.abs(d)),(d<0?'good':'bad')+' strong','Diferencia de tiempo real contra la configuraci\u00f3n base'); }
+if(r.ads>=1) chips+=chip('Apuntar +'+fms(r.ads),'','Tiempo para apuntar con la mira');
+if(r.vuelo>=1) chips+=chip('Bala +'+fms(r.vuelo),'','Tiempo que tarda la bala en llegar al enemigo');
 }
 return '<div class="meta-row">'+rk+weaponImageHtml(e.weapon,'stat-img','align-self:center;flex-shrink:0;')+
-'<div class="meta-name"><b>'+esc(e.weapon[HEADERS.ARMA])+'</b><span>'+tag+(e.cat?'<span class="meta-cat">'+esc(e.cat)+'</span>':'')+(r.total===null?'<span class="meta-inc" title="Esta arma no est\u00e1 en el motor de simulaci\u00f3n: solo se conoce su TTK te\u00f3rico y va al final">sin simulaci\u00f3n</span>':'')+'</span></div>'+
+'<div class="meta-name"><b>'+esc(e.weapon[HEADERS.ARMA])+'</b><span>'+(e.cat?'<span class="meta-cat">'+esc(e.cat)+'</span>':'')+(r.total===null?'<span class="meta-inc" title="Esta arma no est\u00e1 en el motor de simulaci\u00f3n: solo se conoce su TTK te\u00f3rico y va al final">sin simulaci\u00f3n</span>':'')+'</span></div>'+
 caja+'<div class="meta-deltas">'+chips+'</div>'+addBtn(e.key)+'</div>';
 }
 function leyenda(){
 var h='<span><i class="mr-te"></i>TTK te\u00f3rico</span>';
 if(usaSim()) h+='<span><i class="mr-fa"></i>Balas falladas</span>';
 if(META.usa.man) h+='<span><i class="mr-ap"></i>Apuntar</span>';
+h+='<span><i class="mr-vu"></i>Vuelo de la bala</span>';
 return '<div class="mr-ley">'+h+'</div>';
 }
 function maxDe(list){ return Math.max.apply(null,list.map(function(r){ return r.total!==null?r.total:r.teo; }).concat([1])); }
@@ -3124,6 +3146,8 @@ else if(teo) s.push('Tambi\u00e9n tiene el TTK te\u00f3rico m\u00e1s r\u00e1pido
 }
 var ns=list.filter(function(r){ return r.total===null; }).length;
 if(ns) s.push(ns+' arma'+(ns>1?'s no est\u00e1n':' no est\u00e1')+' en el motor de simulaci\u00f3n y aparece'+(ns>1?'n':'')+' al final solo con su TTK te\u00f3rico.');
+if(META.ttkZone==='cabeza') s.push('Se apunta a la cabeza.');
+if(META.postura==='move'&&META.usa.pre) s.push('Se dispara en movimiento.');
 var hp=getAdvancedSettings('TTK').health; if(Math.abs(hp-100)>0.001) s.push('Se usa una salud de <b>'+hp+' PV</b> (Par\u00e1metros avanzados de la pesta\u00f1a TTK).');
 return s.join(' ');
 }
@@ -3154,11 +3178,12 @@ root.innerHTML=
 +'<div class="meta-grid">'
 +'<div class="meta-block"><div class="meta-label">Distancia'+tip('Corta: 0\u201320 m. Media: 21\u201375 m. Larga: 76\u2013200 m. Todas: promedio de las tres. Metro exacto: una distancia concreta.')+'</div><div class="seg-group meta-seg" role="radiogroup" aria-label="Distancia">'+dH+'</div>'
 +'<div id="metaExactRow" class="meta-range-row" style="display:none"><span class="rl">Metros</span><input type="range" min="0" max="200" step="1" value="'+META.exact+'" data-meta-exact="1" aria-label="Metros"><span class="mv">'+META.exact+'</span></div></div>'
-+'<div class="meta-block"><div class="meta-label">Tener en cuenta'+tip('TTK: tiempo para matar si todas las balas pegan. Retroceso: las balas se desv\u00edan seg\u00fan el patr\u00f3n del arma. Precisi\u00f3n: se a\u00f1ade la dispersi\u00f3n de cada bala. Manejo: se suma el tiempo de apuntar. Lo que desmarques se trata como perfecto.')+'</div><div class="meta-chips">'+uH+'</div>'
-+'<div class="meta-sub">Control del jugador'+tip('Qu\u00e9 tan r\u00e1pido devuelves la mira al blanco mientras disparas. Entre bala y bala, un casual corrige la mitad del desv\u00edo, un medio el 70 % y un experto el 90 %. Con armas de cadencia muy alta hay menos tiempo para corregir.')+'</div><div class="seg-group meta-seg" id="metaNivel" role="radiogroup" aria-label="Control del jugador">'+nH+'</div></div>'
++'<div class="meta-block"><div class="meta-label">Tener en cuenta'+tip('TTK: tiempo para matar si todas las balas pegan. Retroceso: las balas se desv\u00edan seg\u00fan el patr\u00f3n del arma. Precisi\u00f3n: se a\u00f1ade la dispersi\u00f3n de cada bala. Manejo: se suma el tiempo de apuntar, o se dispara desde la cadera si as\u00ed se mata antes. Lo que desmarques se trata como perfecto. Siempre se suma el tiempo que tarda la bala en llegar.')+'</div><div class="meta-chips">'+uH+'</div>'
++'<div class="meta-sub">Control del jugador'+tip('Qu\u00e9 tan r\u00e1pido devuelves la mira al blanco mientras disparas. Entre bala y bala, un casual corrige la mitad del desv\u00edo, un medio el 70 % y un experto el 90 %. Con armas de cadencia muy alta hay menos tiempo para corregir.')+'</div><div class="seg-group meta-seg" id="metaNivel" role="radiogroup" aria-label="Control del jugador">'+nH+'</div>'
++'<div class="meta-sub">Postura'+tip('Quieto: disparas sin moverte. Movi\u00e9ndote: la dispersi\u00f3n de cada bala es mayor.')+'</div><div class="seg-group meta-seg" role="radiogroup" aria-label="Postura"><button type="button" class="seg-btn" data-meta-postura="stand">Quieto</button><button type="button" class="seg-btn" data-meta-postura="move">Movi\u00e9ndote</button></div></div>'
 +'<div class="meta-block"><div class="meta-label">Armas'+tip('Se compara cada arma en su configuraci\u00f3n base (de f\u00e1brica), sin accesorios.')+'</div>'
 +'<details class="meta-dd"><summary><span>Categor\u00eda: <b id="metaCatLabel">Todas</b></span></summary><div class="meta-chips" id="metaCats"></div></details>'
-+'<details class="meta-dd" style="margin-top:6px"><summary><span>Zona del TTK: <b id="metaZoneLabel">Pecho</b></span></summary><div class="seg-group meta-seg" style="margin-top:8px" role="radiogroup" aria-label="Zona del TTK"><button type="button" class="seg-btn" data-meta-zone="pecho">Pecho</button><button type="button" class="seg-btn" data-meta-zone="cabeza">Cabeza</button><button type="button" class="seg-btn" data-meta-zone="estomago">Est\u00f3mago</button></div></details></div>'
++'<div class="meta-sub">Punto de mira'+tip('Se simula d\u00f3nde cae cada bala alrededor del punto donde pones la mira, con el retroceso y la dispersi\u00f3n del arma. Las que suben a la cabeza hacen da\u00f1o de cabeza, las que bajan al est\u00f3mago hacen da\u00f1o de est\u00f3mago y las que salen del cuerpo fallan.')+'</div><div class="seg-group meta-seg" role="radiogroup" aria-label="Punto de mira"><button type="button" class="seg-btn" data-meta-zone="pecho">Pecho</button><button type="button" class="seg-btn" data-meta-zone="cabeza">Cabeza</button></div><div class="meta-note">Cada bala hace el da\u00f1o de la zona donde cae: cabeza, pecho o est\u00f3mago.</div></div>'
 +'</div></div>'
 +'<div class="meta-bar"><div class="seg-group meta-seg meta-views" role="radiogroup" aria-label="Vista"><button type="button" class="seg-btn" data-meta-view="rank"><i class="fa-solid fa-list-ol" aria-hidden="true"></i> Ranking</button><button type="button" class="seg-btn" data-meta-view="cats"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> <span class="t-long">Mejores por categor\u00eda</span><span class="t-short">Categor\u00edas</span></button></div>'
 +'<div class="meta-top" id="metaTopWrap"><span class="rl">Top</span><div class="seg-group meta-seg"><button type="button" class="seg-btn" data-meta-top="5">5</button><button type="button" class="seg-btn" data-meta-top="10">10</button><button type="button" class="seg-btn" data-meta-top="20">20</button><button type="button" class="seg-btn" data-meta-top="9999">Todos</button></div><div class="meta-step"><button type="button" data-meta-step="-1" aria-label="Menos">-</button><input type="number" id="metaTopN" min="1" max="999" inputmode="numeric" placeholder="Todos" aria-label="Cantidad de armas a mostrar"><button type="button" data-meta-step="1" aria-label="M\u00e1s">+</button></div></div></div>'
@@ -3175,14 +3200,13 @@ var root=document.getElementById('metaRoot'); if(!root) return;
 var on=function(sel,attr,val){ root.querySelectorAll(sel).forEach(function(b){ var a=String(b.dataset[attr])===String(val); b.classList.toggle('active',a); b.setAttribute('aria-pressed',a); }); };
 root.querySelectorAll('[data-meta-eq]').forEach(function(i){ i.checked=!!META.eq[i.dataset.metaEq]; });
 root.querySelectorAll('[data-meta-usa]').forEach(function(i){ i.checked=!!META.usa[i.dataset.metaUsa]; });
-on('[data-meta-dist]','metaDist',META.dist); on('[data-meta-nivel]','metaNivel',META.nivel); on('[data-meta-zone]','metaZone',META.ttkZone); on('[data-meta-view]','metaView',META.view); on('[data-meta-top]','metaTop',META.topN);
+on('[data-meta-dist]','metaDist',META.dist); on('[data-meta-nivel]','metaNivel',META.nivel); on('[data-meta-postura]','metaPostura',META.postura); on('[data-meta-zone]','metaZone',META.ttkZone); on('[data-meta-view]','metaView',META.view); on('[data-meta-top]','metaTop',META.topN);
 document.getElementById('metaNivel').classList.toggle('off',!META.usa.ret);
 var tn=document.getElementById('metaTopN'); if(tn&&document.activeElement!==tn) tn.value=META.topN>=9999?'':META.topN;
 document.getElementById('metaTopWrap').style.display=META.view==='cats'?'none':'';
 var ex=document.getElementById('metaExactRow'); ex.style.display=META.dist==='exact'?'':'none';
 var r=ex.querySelector('input'); r.value=META.exact; r.nextElementSibling.textContent=META.exact+' m';
 document.getElementById('metaCatLabel').textContent=META.cats.length?(META.cats.length===1?META.cats[0]:META.cats.length+' seleccionadas'):'Todas';
-document.getElementById('metaZoneLabel').textContent={pecho:'Pecho',cabeza:'Cabeza',estomago:'Est\u00f3mago'}[META.ttkZone];
 }
 function aviso(html){ return '<div class="meta-empty">'+html+'</div>'; }
 function render(){
@@ -3197,7 +3221,7 @@ else if(!R||(m&&m.fallo)) falloSim=true;
 else { an.style.display='none'; box.innerHTML=aviso('<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando la simulaci\u00f3n\u2026'); if(!pidiendo){ pidiendo=true; R.cargar().then(function(){ pidiendo=false; var x=R.mods(); if(x.Sim) Sim=x.Sim; else falloSim=true; render(); }); } return; }
 }
 /* La primera vez que se simula un nivel de jugador tarda un momento: se avisa antes de calcular. */
-var ck=usaSim()&&Sim?(META.usa.ret?NIVEL[META.nivel].c:'x')+'|'+(META.usa.pre?1:0):'';
+var ck=usaSim()&&Sim?claveSim():'';
 if(ck&&!hechos[ck]){ hechos[ck]=1; an.style.display='none'; box.innerHTML=aviso('<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Simulando las armas\u2026'); clearTimeout(renderT); renderT=setTimeout(render,30); return; }
 RES={};
 var v=META.view==='cats'?viewCats():viewRank();
@@ -3235,6 +3259,7 @@ var b=e.target.closest('button'); if(!b) return;
 if(b.dataset.metaDist!==undefined){ META.dist=b.dataset.metaDist; }
 else if(b.dataset.metaNivel!==undefined){ META.nivel=b.dataset.metaNivel; }
 else if(b.dataset.metaZone!==undefined){ META.ttkZone=b.dataset.metaZone; }
+else if(b.dataset.metaPostura!==undefined){ META.postura=b.dataset.metaPostura; }
 else if(b.dataset.metaView!==undefined){ META.view=b.dataset.metaView; }
 else if(b.dataset.metaTop!==undefined){ META.topN=parseInt(b.dataset.metaTop,10); }
 else if(b.dataset.metaStep!==undefined){ var sg=parseInt(b.dataset.metaStep,10), cur=META.topN; if(cur>=9999){ META.topN=sg>0?9999:20; } else { META.topN=Math.max(1,Math.min(999,cur+sg)); } }
