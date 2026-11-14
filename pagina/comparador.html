@@ -1080,6 +1080,19 @@ button.rc-chip:hover{border-color:var(--accent)}
 .ds-explica{font-size:.74rem;color:var(--text-secondary);line-height:1.5;margin:0 2px 10px}
 .ds-explica b{color:var(--accent)}
 .ds-armas{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.ds-tira{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--text-faint) var(--bg-secondary)}
+.ds-tira::-webkit-scrollbar{height:5px}
+.ds-tira::-webkit-scrollbar-thumb{background:var(--border-medium);border-radius:4px}
+.ds-tab{--c:var(--accent);display:inline-flex;align-items:center;gap:7px;flex-shrink:0;background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-chip);border-radius:6px;padding:4px 9px;cursor:pointer;font-family:inherit;white-space:nowrap;text-align:left}
+.ds-tab:hover{border-color:var(--text-faint);background:var(--bg-input)}
+.ds-tab.activa{border-color:var(--c);box-shadow:inset 0 -3px 0 var(--c);background:var(--bg-input)}
+.ds-tab i{width:9px;height:9px;border-radius:50%;background:var(--c);flex-shrink:0}
+.ds-tab-txt{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.ds-tab-txt b{font-size:.7rem;font-weight:800;text-transform:uppercase;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+.ds-tab-txt span{font-size:.52rem;font-weight:700;color:var(--accent);text-transform:uppercase;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+.ds-tab em{font-style:normal;font-size:.62rem;font-weight:800;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.ds-tab.activa em{color:var(--accent)}
+.ds-tab em.excede{color:var(--danger-bright)}
 .ds-arma{--c:var(--accent);background:var(--bg-card);border:1px solid #2e2e2e;border-left:3px solid var(--c);border-radius:var(--radius-md);padding:7px 10px}
 .ds-arma-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .ds-punto{width:10px;height:10px;border-radius:50%;background:var(--c);flex-shrink:0}
@@ -1132,6 +1145,9 @@ button.rc-chip:hover{border-color:var(--accent)}
 .recoil-param-btn.ds-on{background:var(--accent);color:var(--bg-secondary);border-color:var(--accent)}
 @media (max-width:768px){
 .ds-ranuras{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ds-tab{padding:3px 7px;gap:5px}
+.ds-tab-txt b{font-size:.64rem;max-width:96px}
+.ds-tab-txt span{font-size:.48rem;max-width:96px}
 .ds-op{grid-template-columns:minmax(0,1fr) 48px}.ds-efs{grid-column:1 / -1}
 .ds-tabla th,.ds-tabla td{padding:6px 8px;font-size:.68rem}
 }
@@ -3902,7 +3918,7 @@ if(typeof selectedRecoilWeapons !== 'undefined' && selectedRecoilWeapons.length)
    que se cambian aqui solo valen en esta vista. Todo sale del motor que ya cargo Retroceso. */
 (function(){
 'use strict';
-var Sim = null, Mot = null, est = {}, sub = 'retroceso', abierta = null, ocultas = {};
+var Sim = null, Mot = null, est = {}, sub = 'retroceso', abierta = null, editando = null, ocultas = {};
 var cfg = { postura: 'stand', dist: 15, zoom: 50 };
 var t = 0, rafaga = 0, apretado = false, vaciando = false, corriendo = false, antes = 0;
 var NO_REVISAR = { mira: 1, accesorioOptico: 1 };   /* no cambian la dispersion en el motor */
@@ -3970,6 +3986,7 @@ function sincronizar(){
   var vivos = {};
   selectedRecoilWeapons.forEach(function(it){
     vivos[it.id] = 1; var e = est[it.id];
+    if(!e && Object.keys(est).length) editando = it.id;   /* un arma recien agregada pasa a ser la que se edita */
     if(!e || e.clave !== claveDe(it) || e.it.weapon !== it.weapon){ est[it.id] = nuevoEstado(it); if(abierta && abierta.id === it.id) abierta = null; }
     else e.it = it;
   });
@@ -4048,8 +4065,16 @@ function render(){
     + '<div class="ds-tabla-wrap"><table class="ds-tabla"><thead><tr><th>Arma</th><th>Balas</th><th>Ahora</th><th>Al empezar</th><th>Crece por bala</th><th>M\u00e1ximo en un cargador</th></tr></thead><tbody id="dsTabla"></tbody></table></div>';
   pintarLeyenda(); reiniciarTodo(); dibujar(); pintarTabla(); arrancar();
 }
+/* Tira con todas las armas (color, nombre, equipamiento y puntos) y debajo un solo editor: el del arma elegida. */
 function armasHtml(){
-  return lista().map(function(e){
+  var ls = lista(); if(!ls.length) return '';
+  if(!ls.some(function(e){ return e.it.id === editando; })) editando = ls[0].it.id;
+  var tira = '<div class="ds-tira" id="dsTira" role="tablist" aria-label="Arma a editar">' + ls.map(function(e){
+    var it = e.it, on = it.id === editando;
+    return '<button type="button" role="tab" aria-selected="' + on + '" class="ds-tab' + (on ? ' activa' : '') + '" data-ds-editar="' + it.id + '" style="--c:' + colorDe(e) + '"><i></i><span class="ds-tab-txt"><b>' + esc(it.weapon[HEADERS.ARMA]) + '</b><span>' + esc(classTitleGraph(it, it.clase || 'base')) + '</span></span>'
+      + (e.ok ? '<em' + (e.pts > lim() ? ' class="excede"' : '') + '>' + e.pts + ' pts</em>' : '') + '</button>';
+  }).join('') + '</div>';
+  return tira + ls.filter(function(e){ return e.it.id === editando; }).map(function(e){
     var it = e.it, col = colorDe(e), h = '<div class="ds-arma" style="--c:' + col + '"><div class="ds-arma-top"><span class="ds-punto"></span><div class="ds-nombre"><b>' + esc(it.weapon[HEADERS.ARMA]) + '</b><span>' + esc(classTitleGraph(it, it.clase || 'base')) + '</span></div>';
     if(!e.ok) return h + '</div><div class="ds-nota">Esta arma todav\u00eda no est\u00e1 en el motor de simulaci\u00f3n.</div></div>';
     if(e.modos.length) h += '<label class="ds-modo">Modo <select data-ds-id="' + it.id + '" data-ds-modo="1">' + e.modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === e.sel.modo ? ' selected' : '') + '>' + esc(m.nombre) + '</option>'; }).join('') + '</select></label>';
@@ -4089,7 +4114,11 @@ function opcionesHtml(e, r){
         + '<span class="ds-op-pts">' + (o.puntos ? o.puntos + ' pts' : '') + '</span><span class="ds-efs">' + ef + '</span></button>';
     }).join('') + '</div>';
 }
-function repintarArmas(){ var a = $('dsArmas'); if(a) a.innerHTML = armasHtml(); }
+function repintarArmas(){
+  var a = $('dsArmas'); if(!a) return;
+  var v = $('dsTira'), x = v ? v.scrollLeft : 0; a.innerHTML = armasHtml();
+  var n = $('dsTira'); if(n) n.scrollLeft = x;
+}
 function pintarLeyenda(){
   var l = $('dsLey'); if(!l) return;
   l.innerHTML = validas().map(function(e){ var o = !!ocultas[e.it.id]; return '<button type="button" class="rc-chip' + (o ? ' oculta' : '') + '" data-ds-ver="' + e.it.id + '" aria-pressed="' + !o + '" title="' + (o ? 'Mostrar' : 'Ocultar') + ' en el gr\u00e1fico"><i style="background:' + colorDe(e) + '"></i><b>' + esc(e.it.weapon[HEADERS.ARMA]) + '</b><em>' + esc(classTitleGraph(e.it, e.it.clase || 'base')) + '</em></button>'; }).join('');
@@ -4168,6 +4197,7 @@ document.addEventListener('click', function(e){
   if(b.dataset.dsVer){ var id = b.dataset.dsVer; if(ocultas[id]) delete ocultas[id]; else ocultas[id] = true; pintarLeyenda(); return; }
   if(b.id === 'dsVaciar'){ if(vacias()) reiniciarTodo(); vaciando = !vaciando; b.classList.toggle('ds-on', vaciando); return; }
   if(b.id === 'dsReiniciar'){ reiniciarTodo(); return; }
+  if(b.dataset.dsEditar){ var ed = +b.dataset.dsEditar; if(ed !== editando){ editando = ed; abierta = null; repintarArmas(); } return; }
   var x = est[b.dataset.dsId]; if(!x) return;
   if(b.dataset.dsRanura){ abierta = abierta && abierta.id === x.it.id && abierta.r === b.dataset.dsRanura ? null : { id: x.it.id, r: b.dataset.dsRanura }; repintarArmas(); return; }
   if(b.dataset.dsOp != null && abierta){ x.sel[abierta.r] = b.dataset.dsOp; construir(x); if(!x.rs.some(function(r){ return r.id === abierta.r; })) abierta = null; repintarArmas(); reiniciarTodo(); }
