@@ -1075,6 +1075,66 @@ button.rc-chip:hover{border-color:var(--accent)}
 .rc-desc p{margin:0 0 2px}
 .rc-desc b{color:var(--accent)}
 @media (hover:none){.rc-desc{display:block}}
+/* ===== RETROCESO > DISPERSION ===== */
+#mainRecoil .tab-container{margin:0 0 10px}
+.ds-explica{font-size:.74rem;color:var(--text-secondary);line-height:1.5;margin:0 2px 10px}
+.ds-explica b{color:var(--accent)}
+.ds-armas{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.ds-arma{--c:var(--accent);background:var(--bg-card);border:1px solid #2e2e2e;border-left:3px solid var(--c);border-radius:var(--radius-md);padding:7px 10px}
+.ds-arma-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ds-punto{width:10px;height:10px;border-radius:50%;background:var(--c);flex-shrink:0}
+.ds-nombre{flex:1 1 140px;min-width:0;display:flex;flex-direction:column}
+.ds-nombre b{font-size:.78rem;font-weight:800;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ds-nombre span{font-size:.6rem;color:var(--accent);font-weight:700;text-transform:uppercase}
+.ds-modo{display:inline-flex;align-items:center;gap:6px;font-size:.66rem;font-weight:700;color:var(--text-secondary)}
+.ds-modo select{background:var(--bg-input);color:var(--text-primary);border:1px solid var(--border-medium);border-radius:var(--radius-sm);padding:4px 6px;font-family:inherit;font-size:.72rem}
+.ds-pts{font-size:.68rem;font-weight:800;color:var(--accent);border:1px solid var(--border-medium);border-radius:var(--radius-sm);padding:4px 8px;white-space:nowrap}
+.ds-pts.excede{color:var(--danger-bright);border-color:var(--danger-bright)}
+.ds-ranuras{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-top:7px}
+.ds-ranura{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-chip);border-radius:6px;padding:5px 9px;cursor:pointer;font-family:inherit;min-width:0}
+.ds-ranura span{font-size:.55rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;letter-spacing:.4px}
+.ds-ranura b{font-size:.72rem;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ds-ranura:hover{border-color:var(--text-faint)}
+.ds-ranura.cambiada{border-color:var(--c);box-shadow:inset 3px 0 0 var(--c)}
+.ds-ranura.abierta{border-color:var(--accent);background:var(--bg-input)}
+.ds-nota{font-size:.64rem;color:var(--text-muted);margin-top:6px}
+.ds-opciones{margin-top:7px;background:var(--bg-secondary);border:1px solid var(--border-medium);border-radius:var(--radius-md);padding:6px;max-height:340px;overflow:auto}
+.ds-op-cab{display:flex;align-items:center;gap:8px;padding:2px 4px 6px;font-size:.72rem}
+.ds-op-cab b{text-transform:uppercase}
+.ds-op-cab span{flex:1;color:var(--text-muted);font-size:.62rem}
+.ds-op{display:grid;grid-template-columns:minmax(0,1.3fr) 54px minmax(0,2fr);gap:8px;align-items:center;width:100%;text-align:left;background:transparent;color:var(--text-primary);border:none;border-bottom:1px solid var(--border-light);padding:6px;cursor:pointer;font-family:inherit;font-size:.74rem}
+.ds-op:hover{background:rgba(255,165,0,.06)}
+.ds-op.sel{background:rgba(255,165,0,.12);box-shadow:inset 3px 0 0 var(--accent)}
+.ds-op:disabled{opacity:.45;cursor:default}
+.ds-op em{font-style:normal;font-size:.6rem;color:var(--text-muted);margin-left:4px}
+.ds-op em.bloq{color:var(--danger)}
+.ds-op-pts{color:var(--accent);font-weight:700;font-size:.66rem}
+.ds-efs{display:flex;flex-wrap:wrap;gap:4px}
+.ds-ef{font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--bg-input);color:var(--text-secondary)}
+.ds-ef.pos{color:var(--success-bright)}.ds-ef.neg{color:var(--danger-bright)}
+.ds-zona{display:grid;grid-template-columns:minmax(0,640px);justify-content:center}
+.ds-tarjeta{background:var(--bg-card);border:1px solid #2e2e2e;border-radius:var(--radius-md);padding:8px;min-width:0}
+.ds-tarjeta canvas{display:block;width:100%!important;height:auto!important;aspect-ratio:1;border-radius:5px}
+.ds-tit{display:flex;justify-content:space-between;gap:8px;font-size:.64rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin:0 2px 6px}
+.ds-tit b{color:var(--accent)}
+.ds-guia{display:flex;flex-wrap:wrap;gap:10px;font-size:.62rem;color:var(--text-secondary);margin-top:6px}
+.ds-guia i{display:inline-block;width:16px;height:0;border-top:2px solid #ccc;vertical-align:middle;margin-right:4px}
+.ds-tabla-wrap{overflow-x:auto;margin-top:8px;border:1px solid var(--border-light);border-radius:var(--radius-md)}
+.ds-tabla{width:100%;border-collapse:collapse;font-size:.74rem}
+.ds-tabla th,.ds-tabla td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ds-tabla th{background:var(--bg-tertiary);color:var(--accent);font-size:.62rem;text-transform:uppercase;letter-spacing:.5px}
+.ds-tabla td b{font-weight:800}
+.ds-tabla td em{font-style:normal;color:var(--text-muted);font-size:.64rem;margin-left:4px}
+.ds-tabla td.mejor b{color:#4ade80}
+.ds-tabla tr:last-child td{border-bottom:none}
+.ds-tabla tr.oculta{opacity:.4}
+#dsDisparar{touch-action:none;-webkit-user-select:none;user-select:none}
+.recoil-param-btn.ds-on{background:var(--accent);color:var(--bg-secondary);border-color:var(--accent)}
+@media (max-width:768px){
+.ds-ranuras{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ds-op{grid-template-columns:minmax(0,1fr) 48px}.ds-efs{grid-column:1 / -1}
+.ds-tabla th,.ds-tabla td{padding:6px 8px;font-size:.68rem}
+}
 </style>
 </head>
 <body>
@@ -1158,7 +1218,12 @@ button.rc-chip:hover{border-color:var(--accent)}
 </div>
 <div class="weapons-bar" id="recoilChips" aria-live="polite"></div>
 </div>
+<div class="tab-container" role="tablist" aria-label="Retroceso o dispersi&oacute;n">
+<button type="button" role="tab" aria-selected="true" class="tab active" data-rc-sub="retroceso">RETROCESO</button>
+<button type="button" role="tab" aria-selected="false" class="tab" data-rc-sub="dispersion">DISPERSI&Oacute;N</button>
+</div>
 <div id="recoilContainer" style="width:100%;"></div>
+<div id="dispContainer" style="width:100%;display:none;"></div>
 </div>
 </div>
 <div id="addWeaponModal" class="awm-overlay" role="dialog" aria-modal="true" aria-label="Agregar arma"><div class="awm-container"><div class="awm-header"><h3 class="awm-title"><i class="fa-solid fa-gun" aria-hidden="true"></i> AÑADIR ARMA</h3><button class="awm-close" data-action="closeAddWeaponModal" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div><div class="awm-toolbar"><div class="awm-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="text" id="awmSearch" placeholder="Buscar arma..." aria-label="Buscar arma"></div><div class="awm-categories" id="awmCategories"></div><div class="awm-bulk" id="awmBulk" style="display:none;"></div></div><div class="awm-body"><div id="awmList"></div></div></div></div>
@@ -1824,7 +1889,7 @@ html+=`<div class="weapon-chip"><span class="chip-dot" style="background:${color
 bar.innerHTML=html;
 renderRecoilCones();
 }
-function renderRecoilCones(){ if(window.bf6Retroceso) window.bf6Retroceso.render(); }
+function renderRecoilCones(){ if(window.bf6Retroceso) window.bf6Retroceso.render(); if(window.bf6Dispersion) window.bf6Dispersion.render(); }
 function openStatsClassModal(id,source){scmCurrentSource=source||'stats';const arr=getSelArr(source);const item=arr.find(i=>i.id===id);if(!item)return;scmCurrentId=id;document.getElementById('scmTitle').innerHTML=weaponImageHtml(item.weapon,'scm-title-img','align-self:center; flex-shrink:0;')+'<span style="align-self:center;">'+escapeHtml(item.weapon[HEADERS.ARMA])+'</span>';renderScmBody(item,source);document.getElementById('statsClassModal').classList.add('visible');}
 function closeStatsClassModal(){document.getElementById('statsClassModal').classList.remove('visible');scmCurrentId=null;scmCurrentSource='stats';}
 function classHasName(weapon,clase){if(clase==='base')return true;if(clase==='clase1')return String(weapon['A54']||'').trim()!=='';if(clase==='clase2')return String(weapon['A90']||'').trim()!=='';if(clase==='clase3')return String(weapon['A126']||'').trim()!=='';return false;}
@@ -3826,9 +3891,303 @@ document.addEventListener('click', function(e){
   else if(b.id === 'rcOtra'){ vista.sem = (vista.sem + 0x9e3779b9) >>> 0; render(); }
 });
 var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ if($('rcPlots')) redibujar(); }, 120); });
-window.bf6Retroceso = { render: render, cargar: cargar };
+/* mods(): el motor ya cargado, para la subpestana Dispersion (no lo descarga otra vez). */
+window.bf6Retroceso = { render: render, cargar: cargar, mods: function(){ return { Sim: Sim, Mot: Mot, fallo: fallo }; } };
 if(typeof selectedRecoilWeapons !== 'undefined' && selectedRecoilWeapons.length) render();
 })();
 </script>
+<script>
+/* ===================== RETROCESO > DISPERSION (solo apuntando) ===================== */
+/* Circulo de dispersion sin retroceso. Armas y equipamientos de la pestana Retroceso; los accesorios
+   que se cambian aqui solo valen en esta vista. Todo sale del motor que ya cargo Retroceso. */
+(function(){
+'use strict';
+var Sim = null, Mot = null, est = {}, sub = 'retroceso', abierta = null, ocultas = {};
+var cfg = { postura: 'stand', dist: 15, zoom: 50 };
+var t = 0, rafaga = 0, apretado = false, vaciando = false, corriendo = false, antes = 0;
+var NO_REVISAR = { mira: 1, accesorioOptico: 1 };   /* no cambian la dispersion en el motor */
+var POSTURAS = ['stand', 'move'], NOMBRE_POSTURA = { stand: 'quieto', move: 'movi\u00e9ndote' };
+var CLAVES = [['base', 'Inicial', '\u00b0'], ['inc', 'Crece', '\u00b0/bala'], ['pico', 'M\u00e1ximo', '\u00b0'], ['mag', 'Balas', '']];
+function $(id){ return document.getElementById(id); }
+function esc(s){ return escapeHtml(s == null ? '' : s); }
+function f3(v){ return (Math.round(v * 1000) / 1000).toFixed(3); }
+function fmt2(v){ return String(Math.round(v * 100) / 100).replace('.', ','); }
+function num(v){ var n = parseFloat(v); return isFinite(n) ? n : null; }
+function nombreEs(en){ var x = window.__bf6Acc && window.__bf6Acc.nombres && window.__bf6Acc.nombres[en]; return (x && x.es) || en || ''; }
+function nombreOpcion(r, o){ return o.valor === 'none' ? 'Ninguno' : (r.compartida && o.tipo ? o.tipo + ' - ' : '') + nombreEs(o.en); }
+function lim(){ return (Mot && Mot.LIMITE_PUNTOS) || 100; }
+function visible(){ var c = $('dispContainer'); return !!(c && c.offsetParent !== null); }
+
+/* ---------- Contexto del motor: siempre se deja como lo espera Retroceso (ads, quieto) ---------- */
+function contexto(ps){ Sim.setSimContext({ aimState: 'ads', stanceState: ps || cfg.postura }); }
+function restaurar(){ Sim.setSimContext({ aimState: 'ads', stanceState: 'stand' }); }
+
+/* ---------- El arma armada, con la cadencia y el cargador propios de armas.json ---------- */
+/* Igual que el Constructor: dato propio + lo que cambian los accesorios. Si se cambia de cargador, manda su tamano. */
+function armado(e, sel){
+  var w = Object.assign({}, Mot.construir(e.ida, sel).arma);
+  if(e.ms > 0 && e.rpmEq > 0 && w.rpm > 0) w.rpm = (60000 / e.ms) * (w.rpm / e.rpmEq);
+  if(e.mag > 0 && sel.cargador === e.magSel) w.mag = e.mag;
+  return w;
+}
+function params(w, ps){
+  contexto(ps);
+  var b = Sim.spreadBounds(w), r = Sim.spreadRecoveries(w), mag = Math.max(2, Math.min(w.mag || 30, 100));
+  return { base: b[0], max: b[1], inc: Sim.selectedSpreadIncFor(w), fir: r.firing, nof: r.notFiring, mag: mag, pico: Sim.effectiveSpreadMax(w, mag - 1) };
+}
+function firma(w){ var o = {}; POSTURAS.forEach(function(ps){ var p = params(w, ps); o[ps] = { base: p.base, inc: p.inc, pico: p.pico, mag: p.mag }; }); return o; }
+function diferente(a, b){ return POSTURAS.some(function(ps){ return CLAVES.some(function(k){ return Math.abs(b[ps][k[0]] - a[ps][k[0]]) > 0.0005; }); }); }
+
+/* ---------- Estado de cada arma de la seleccion de Retroceso ---------- */
+function claveDe(it){ var k = ['base', 'clase1', 'clase2', 'clase3'].indexOf(it.clase || 'base'); return k + '|' + JSON.stringify(it.weapon['SEL' + k] || {}) + '|' + it.weapon[HEADERS.ARMA]; }
+function nuevoEstado(it){
+  var row = it.weapon, k = ['base', 'clase1', 'clase2', 'clase3'].indexOf(it.clase || 'base'), p = 'S' + k + '_', ida = row.IDA;
+  var e = { it: it, clave: claveDe(it), ida: ida, ok: !!(ida && Mot.existe(ida)) };
+  if(!e.ok) return e;
+  var res = Mot.calcular(ida, row['SEL' + k] || {});
+  e.selEq = res.seleccion; e.sel = Object.assign({}, res.seleccion); e.magSel = res.seleccion.cargador;
+  e.ms = num(row['MS' + k]); e.mag = num(row[p + 'cargador']); if(e.mag === null) e.mag = num(row.MAG);
+  e.rpmEq = Mot.construir(ida, e.selEq).arma.rpm;
+  construir(e); return e;
+}
+function construir(e){
+  var res = Mot.calcular(e.ida, e.sel); e.sel = res.seleccion; e.pts = res.puntos;
+  e.W = armado(e, e.sel); e.F = firma(e.W); e.P = params(e.W); e.modos = Mot.modos(e.ida, e.sel);
+  /* Ranuras donde alguna opcion cambia la dispersion al apuntar, quieto o moviendote */
+  e.rs = Mot.ranuras(e.ida, e.sel).filter(function(r){
+    if(NO_REVISAR[r.id]) return false;
+    r.opciones.forEach(function(o){
+      if(o.valor === r.valor){ o.firma = e.F; return; }
+      if(o.disponible === false){ o.firma = null; return; }
+      var s = Object.assign({}, e.sel); s[r.id] = o.valor;
+      try { o.firma = firma(armado(e, s)); } catch(x){ o.firma = null; }
+    });
+    return r.opciones.some(function(o){ return o.firma && diferente(e.F, o.firma); });
+  });
+  restaurar(); reiniciarArma(e);
+}
+function sincronizar(){
+  var vivos = {};
+  selectedRecoilWeapons.forEach(function(it){
+    vivos[it.id] = 1; var e = est[it.id];
+    if(!e || e.clave !== claveDe(it) || e.it.weapon !== it.weapon){ est[it.id] = nuevoEstado(it); if(abierta && abierta.id === it.id) abierta = null; }
+    else e.it = it;
+  });
+  Object.keys(est).forEach(function(id){ if(!vivos[id]){ delete est[id]; delete ocultas[id]; } });
+}
+function lista(){ return selectedRecoilWeapons.map(function(it){ return est[it.id]; }).filter(Boolean); }
+function validas(){ return lista().filter(function(e){ return e.ok; }); }
+function colorDe(e){ return getColorForWeapon(e.it.weapon[HEADERS.ARMA] + '_' + e.it.id); }
+
+/* ---------- Disparo en tiempo real (paso de 1 ms, igual que el motor) ---------- */
+function reiniciarArma(e){ e.spread = e.P.base; e.balas = 0; e.prox = t; e.puntos = []; e.ultimo = null; e.destello = -1; }
+function reiniciarTodo(){ t = 0; rafaga = 0; vaciando = false; validas().forEach(reiniciarArma); var b = $('dsVaciar'); if(b) b.classList.remove('ds-on'); }
+function clamp(e, v){ return Math.min(Math.max(v, e.P.base), e.P.max); }
+function recuperar(e, dt, rec){ var d = Math.max(e.spread - e.P.base, 0); e.spread = clamp(e, e.spread - dt * (rec.coef * Math.pow(d, rec.exp) + rec.offset)); }
+function disparar(e){
+  var pre = clamp(e, e.spread), ang = Math.random() * Math.PI * 2, r = Sim.sampleSpreadRadius(e.W, pre, Math.random());
+  e.puntos.push({ x: r * Math.cos(ang), y: r * Math.sin(ang), t: t });
+  e.ultimo = pre; e.destello = t; e.spread = clamp(e, pre + e.P.inc); e.balas++;
+  e.prox = t + Sim.shotIntervalAfter(e.W, e.balas);
+}
+/* Circulo dibujado: el tamano con el que salio la ultima bala. El salto justo despues de cada disparo
+   no lo usa ninguna bala: se muestra como destello, asi el circulo nunca pasa su linea de maximo. */
+function mostrado(e){ return e.ultimo == null ? e.spread : Math.min(e.spread, e.ultimo); }
+function activas(){ return validas().filter(function(e){ return !ocultas[e.it.id]; }); }
+function vacias(){ var a = activas(); return a.length > 0 && a.every(function(e){ return e.balas >= e.P.mag; }); }
+function bucle(ahora){
+  if(!visible() || !Sim){ corriendo = false; antes = 0; return; }
+  var dt = antes ? Math.min(0.1, (ahora - antes) / 1000) : 0; antes = ahora;
+  var arms = activas(), gatillo = apretado || vaciando;
+  if(arms.length){
+    contexto();
+    for(var paso = 0.001, resto = dt; resto > 1e-9; resto -= paso){
+      var s = Math.min(paso, resto);
+      arms.forEach(function(e){
+        var dispara = gatillo && e.balas < e.P.mag;
+        if(dispara && t >= e.prox) disparar(e);
+        recuperar(e, s, dispara ? e.P.fir : e.P.nof);
+      });
+      if(gatillo && !vacias()) rafaga += s;
+      t += s;
+    }
+    restaurar();
+    if(vaciando && vacias()){ vaciando = false; var b = $('dsVaciar'); if(b) b.classList.remove('ds-on'); }
+  }
+  dibujar(); pintarTabla();
+  requestAnimationFrame(bucle);
+}
+function arrancar(){ if(!corriendo && Sim && visible()){ corriendo = true; antes = 0; requestAnimationFrame(bucle); } }
+
+/* ---------- Pintar el panel ---------- */
+function render(){
+  var c = $('dispContainer'); if(!c || sub !== 'dispersion') return;
+  if(!selectedRecoilWeapons.length){ c.innerHTML = '<div class="recoil-placeholder"><div class="recoil-placeholder-icon"><i class="fa-regular fa-circle-dot"></i></div><p class="recoil-placeholder-text">No hay armas seleccionadas.</p></div>'; return; }
+  if(!Sim){
+    var r = window.bf6Retroceso, m = r && r.mods();
+    if(m && m.Sim){ Sim = m.Sim; Mot = m.Mot; }
+    else {
+      c.innerHTML = '<div class="recoil-placeholder">' + (m && m.fallo ? '<p class="recoil-placeholder-text">No se pudo cargar la simulaci\u00f3n. Recarga la p\u00e1gina.</p>' : '<div class="recoil-placeholder-icon"><i class="fa-solid fa-spinner fa-spin"></i></div><p class="recoil-placeholder-text">Cargando la simulaci\u00f3n...</p>') + '</div>';
+      if(r && !(m && m.fallo)) r.cargar().then(function(){ render(); });
+      return;
+    }
+  }
+  sincronizar();
+  var seg = function(v, txt){ return '<button type="button" class="seg-btn' + (cfg.postura === v ? ' active' : '') + '" data-ds-postura="' + v + '">' + txt + '</button>'; };
+  c.innerHTML = '<p class="ds-explica">Aqu\u00ed <b>no hay retroceso</b>: la mira queda quieta en el pecho y solo se ve el <b>c\u00edrculo de dispersi\u00f3n al apuntar</b>, la zona donde puede caer cada bala. Crece con cada disparo y se cierra cuando paras. Cada arma muestra solo las ranuras que cambian este c\u00edrculo; al abrir una, cada accesorio dice en <b>verde</b> o <b>rojo</b> qu\u00e9 cambia. Los cambios solo valen en esta vista.</p>'
+    + '<div class="ds-armas" id="dsArmas">' + armasHtml() + '</div>'
+    + '<div class="rc-bar"><label class="rc-ctl"><span>Distancia</span><input type="range" id="dsDist" min="5" max="50" step="1" value="' + cfg.dist + '" aria-label="Distancia"><b id="dsDistV"></b></label>'
+    + '<label class="rc-ctl"><span>Zoom</span><input type="range" id="dsZoom" min="0" max="100" step="1" value="' + cfg.zoom + '" aria-label="Zoom"><b id="dsZoomV"></b></label>'
+    + '<div class="rc-acc"><div class="seg-group" role="radiogroup" aria-label="Postura">' + seg('stand', 'Quieto') + seg('move', 'Movi\u00e9ndote') + '</div>'
+    + '<button type="button" class="recoil-param-btn" id="dsDisparar"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Mant\u00e9n para disparar</button>'
+    + '<button type="button" class="recoil-param-btn" id="dsVaciar"><i class="fa-solid fa-forward" aria-hidden="true"></i> Vaciar cargador</button>'
+    + '<button type="button" class="recoil-param-btn" id="dsReiniciar"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reiniciar</button></div></div>'
+    + '<div class="ds-zona"><div class="ds-tarjeta"><div class="ds-tit"><span id="dsTit"></span><b id="dsT">Disparo: 0,0 s</b></div><canvas id="dsLienzo" role="img" aria-label="C\u00edrculo de dispersi\u00f3n al apuntar"></canvas>'
+    + '<div class="ds-guia"><span><i></i>C\u00edrculo ahora</span><span><i style="border-top-style:dashed"></i>M\u00e1ximo en un cargador</span><span><i style="border-top-style:dotted"></i>Al empezar</span></div>'
+    + '<div class="rc-ley" id="dsLey"></div></div></div>'
+    + '<div class="ds-tabla-wrap"><table class="ds-tabla"><thead><tr><th>Arma</th><th>Balas</th><th>Ahora</th><th>Al empezar</th><th>Crece por bala</th><th>M\u00e1ximo en un cargador</th></tr></thead><tbody id="dsTabla"></tbody></table></div>';
+  pintarLeyenda(); reiniciarTodo(); dibujar(); pintarTabla(); arrancar();
+}
+function armasHtml(){
+  return lista().map(function(e){
+    var it = e.it, col = colorDe(e), h = '<div class="ds-arma" style="--c:' + col + '"><div class="ds-arma-top"><span class="ds-punto"></span><div class="ds-nombre"><b>' + esc(it.weapon[HEADERS.ARMA]) + '</b><span>' + esc(classTitleGraph(it, it.clase || 'base')) + '</span></div>';
+    if(!e.ok) return h + '</div><div class="ds-nota">Esta arma todav\u00eda no est\u00e1 en el motor de simulaci\u00f3n.</div></div>';
+    if(e.modos.length) h += '<label class="ds-modo">Modo <select data-ds-id="' + it.id + '" data-ds-modo="1">' + e.modos.map(function(m){ return '<option value="' + m.valor + '"' + (m.valor === e.sel.modo ? ' selected' : '') + '>' + esc(m.nombre) + '</option>'; }).join('') + '</select></label>';
+    h += '<span class="ds-pts' + (e.pts > lim() ? ' excede' : '') + '">' + e.pts + ' / ' + lim() + ' pts</span></div>';
+    h += e.rs.length ? '<div class="ds-ranuras">' + e.rs.map(function(r){
+      var o = r.opciones.find(function(x){ return x.valor === r.valor; }) || {}, ab = abierta && abierta.id === it.id && abierta.r === r.id;
+      return '<button type="button" class="ds-ranura' + (r.valor !== e.selEq[r.id] ? ' cambiada' : '') + (ab ? ' abierta' : '') + '" data-ds-id="' + it.id + '" data-ds-ranura="' + r.id + '"><span>' + esc(r.nombre) + '</span><b>' + esc(nombreOpcion(r, o)) + '</b></button>';
+    }).join('') + '</div>' : '<div class="ds-nota">Ning\u00fan accesorio de esta arma cambia la dispersi\u00f3n al apuntar.</div>';
+    if(abierta && abierta.id === it.id) h += opcionesHtml(e, e.rs.find(function(r){ return r.id === abierta.r; }));
+    return h + '</div>';
+  }).join('');
+}
+function efectosHtml(a, b){
+  var ps = cfg.postura, otra = ps === 'stand' ? 'move' : 'stand', h = [];
+  CLAVES.forEach(function(k){
+    var d = b[ps][k[0]] - a[ps][k[0]]; if(Math.abs(d) <= 0.0005) return;
+    var txt = k[0] === 'mag' ? (d > 0 ? '+' : '\u2212') + Math.abs(Math.round(d)) : (d > 0 ? '+' : '\u2212') + fmt2(Math.abs(d)) + k[2];
+    /* mas o menos balas no es mejor ni peor: se muestra neutro */
+    h.push('<span class="ds-ef' + (k[0] === 'mag' ? '' : d < 0 ? ' pos' : ' neg') + '">' + k[1] + ' ' + txt + '</span>');
+  });
+  if(!h.length){
+    var enOtra = CLAVES.some(function(k){ return Math.abs(b[otra][k[0]] - a[otra][k[0]]) > 0.0005; });
+    h.push('<span class="ds-ef">' + (enOtra ? 'Solo cambia ' + NOMBRE_POSTURA[otra] : 'Sin cambio al apuntar') + '</span>');
+  }
+  return h.join('');
+}
+function opcionesHtml(e, r){
+  if(!r) return '';
+  var act = r.opciones.find(function(x){ return x.valor === r.valor; }) || { puntos: 0 };
+  return '<div class="ds-opciones"><div class="ds-op-cab"><b>' + esc(r.nombre) + '</b><span>Qu\u00e9 cambia cada opci\u00f3n frente a lo que llevas, ' + NOMBRE_POSTURA[cfg.postura] + '</span></div>'
+    + r.opciones.map(function(o){
+      var sel = o.valor === r.valor, total = e.pts - (act.puntos || 0) + (o.puntos || 0), excede = !sel && total > lim(), bloq = o.disponible === false || excede;
+      var ef = sel ? '<span class="ds-ef">Lo que llevas</span>' : bloq ? '' : (o.firma ? efectosHtml(e.F, o.firma) : '');
+      return '<button type="button" class="ds-op' + (sel ? ' sel' : '') + '" data-ds-id="' + e.it.id + '" data-ds-op="' + esc(o.valor) + '"' + (bloq ? ' disabled' : '') + '>'
+        + '<span>' + esc(nombreOpcion(r, o)) + (o.valor === e.selEq[r.id] ? '<em>del equipamiento</em>' : o.porDefecto ? '<em>de f\u00e1brica</em>' : '')
+        + (o.disponible === false ? '<em class="bloq">no compatible con lo que llevas</em>' : excede ? '<em class="bloq">supera ' + lim() + ' pts (' + total + ')</em>' : '') + '</span>'
+        + '<span class="ds-op-pts">' + (o.puntos ? o.puntos + ' pts' : '') + '</span><span class="ds-efs">' + ef + '</span></button>';
+    }).join('') + '</div>';
+}
+function repintarArmas(){ var a = $('dsArmas'); if(a) a.innerHTML = armasHtml(); }
+function pintarLeyenda(){
+  var l = $('dsLey'); if(!l) return;
+  l.innerHTML = validas().map(function(e){ var o = !!ocultas[e.it.id]; return '<button type="button" class="rc-chip' + (o ? ' oculta' : '') + '" data-ds-ver="' + e.it.id + '" aria-pressed="' + !o + '" title="' + (o ? 'Mostrar' : 'Ocultar') + ' en el gr\u00e1fico"><i style="background:' + colorDe(e) + '"></i><b>' + esc(e.it.weapon[HEADERS.ARMA]) + '</b><em>' + esc(classTitleGraph(e.it, e.it.clase || 'base')) + '</em></button>'; }).join('');
+}
+
+/* ---------- Dibujo ---------- */
+var siluetas = null;
+function silueta(c, px, py, s){
+  if(!siluetas){ var tp = $('silhouetteTemplate'); siluetas = tp ? Array.prototype.map.call(tp.content.querySelectorAll('path'), function(p){ return { p: new Path2D(p.getAttribute('d')), dx: p.classList.contains('stomach-part') ? 50 : 0 }; }) : []; }
+  c.save(); c.translate(px, py); c.scale(s, s); c.translate(-360, -439); c.translate(0, 1280); c.scale(0.1, -0.1); c.fillStyle = '#39414d';
+  siluetas.forEach(function(x){ c.save(); c.translate(x.dx, 0); c.fill(x.p); c.restore(); }); c.restore();
+}
+function metros(g){ return Math.tan(g * Math.PI / 180) * cfg.dist; }
+function aumento(){ return Math.pow(4, (cfg.zoom - 50) / 50); }
+function medioRango(arms){ var p = Math.max.apply(null, arms.map(function(e){ return e.P.pico; }).concat([0.1])); return Math.max(1.1, metros(p) * 1.3) / aumento(); }
+function paso(R){ var b = R / 4, m = Math.pow(10, Math.floor(Math.log10(b))), f = b / m; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * m; }
+function circulo(c, x, y, r, col, ancho, guion, relleno){ c.save(); c.beginPath(); c.arc(x, y, Math.max(0.5, r), 0, Math.PI * 2); if(relleno){ c.fillStyle = relleno; c.fill(); } c.setLineDash(guion || []); c.lineWidth = ancho; c.strokeStyle = col; c.stroke(); c.restore(); }
+function dibujar(){
+  var cv = $('dsLienzo'); if(!cv) return;
+  var L = cv.clientWidth; if(!L) return;
+  var dpr = window.devicePixelRatio || 1; if(cv.width !== Math.round(L * dpr)){ cv.width = Math.round(L * dpr); cv.height = Math.round(L * dpr); }
+  var c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  c.fillStyle = '#121821'; c.fillRect(0, 0, L, L);
+  var arms = activas(), R = medioRango(arms), ppm = L / (2 * R), ox = L / 2, oy = L * 0.55, px = function(g){ return metros(g) * ppm; };
+  silueta(c, ox, oy, 1.8 * ppm / 1180);
+  var st = paso(R), fs = L < 340 ? 9 : 10; c.font = '700 ' + fs + 'px sans-serif'; c.lineWidth = 1;
+  var et = function(v){ return Math.abs(v) < 1 ? Math.round(v * 100) + ' cm' : (Math.round(v * 100) / 100) + ' m'; };
+  for(var i = Math.ceil(-R / st); i * st <= R; i++){ var x = ox + i * st * ppm; c.strokeStyle = i ? 'rgba(255,255,255,.07)' : 'rgba(255,255,255,.25)'; c.beginPath(); c.moveTo(x, 0); c.lineTo(x, L); c.stroke(); if(i){ c.fillStyle = 'rgba(255,255,255,.4)'; c.textAlign = 'center'; c.textBaseline = 'top'; c.fillText(et(i * st), x, L - fs - 3); } }
+  for(var j = Math.ceil((oy - L) / ppm / st); j * st * ppm <= oy; j++){ var y = oy - j * st * ppm; c.strokeStyle = j ? 'rgba(255,255,255,.07)' : 'rgba(255,255,255,.25)'; c.beginPath(); c.moveTo(0, y); c.lineTo(L, y); c.stroke(); if(j){ c.fillStyle = 'rgba(255,255,255,.4)'; c.textAlign = 'left'; c.textBaseline = 'top'; c.fillText(et(j * st), 4, y + 2); } }
+  arms.forEach(function(e, k){
+    var col = colorDe(e), r = px(e.P.pico); circulo(c, ox, oy, r, col, 1.4, [6, 5]);
+    var ang = -Math.PI / 2 + (k - (arms.length - 1) / 2) * 0.5, tx = ox + Math.cos(ang) * r, ty = oy + Math.sin(ang) * r, txt = f3(e.P.pico).replace(/0+$/, '').replace(/\.$/, '') + '\u00b0';
+    c.font = '800 ' + fs + 'px sans-serif'; var w = c.measureText(txt).width + 8;
+    c.fillStyle = 'rgba(18,24,33,.9)'; c.fillRect(tx - w / 2, ty - 8, w, 16); c.strokeStyle = col; c.lineWidth = 1; c.setLineDash([]); c.strokeRect(tx - w / 2, ty - 8, w, 16);
+    c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(txt, tx, ty + 0.5);
+  });
+  arms.forEach(function(e){ circulo(c, ox, oy, px(e.P.base), colorDe(e), 1, [2, 3]); });
+  arms.forEach(function(e){
+    var col = colorDe(e), f = e.destello >= 0 ? Math.max(0, 1 - (t - e.destello) / 0.06) : 0, r = px(mostrado(e));
+    if(f > 0){ c.save(); c.shadowColor = col; c.shadowBlur = 14 * f; circulo(c, ox, oy, r, '#fff', 2.4 + 2 * f, null, col + (f > 0.5 ? '55' : '33')); c.restore(); }
+    circulo(c, ox, oy, r, col, 2.4, null, col + '1f');
+  });
+  var rp = L < 340 ? 2 : 2.6;
+  arms.forEach(function(e){ var col = colorDe(e); e.puntos.forEach(function(p){
+    c.globalAlpha = Math.max(0.35, 1 - (t - p.t) / 3); c.beginPath(); c.arc(ox + px(p.x), oy - px(p.y), rp, 0, Math.PI * 2); c.fillStyle = col; c.fill(); c.lineWidth = 0.6; c.strokeStyle = '#000'; c.stroke();
+  }); });
+  c.globalAlpha = 1;
+  c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(ox - 6, oy); c.lineTo(ox + 6, oy); c.moveTo(ox, oy - 6); c.lineTo(ox, oy + 6); c.stroke();
+  if(!arms.length){ c.fillStyle = 'rgba(255,255,255,.5)'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '700 12px sans-serif'; c.fillText('Todas las armas est\u00e1n ocultas', ox, 24); }
+  $('dsTit').textContent = 'Apuntando - ' + NOMBRE_POSTURA[cfg.postura] + ' - ' + cfg.dist + ' m';
+  $('dsT').textContent = 'Disparo: ' + rafaga.toFixed(1).replace('.', ',') + ' s';
+  $('dsDistV').textContent = cfg.dist + ' m'; $('dsZoomV').textContent = aumento().toFixed(2) + '\u00d7';
+}
+function pintarTabla(){
+  var tb = $('dsTabla'); if(!tb) return;
+  var vs = validas(), act = activas(), mejor = act.length > 1 ? Math.min.apply(null, act.map(function(e){ return e.P.pico; })) : null, cm = function(g){ return Math.round(metros(g) * 100) + ' cm'; };
+  tb.innerHTML = vs.map(function(e){
+    var celda = function(g, pre){ return '<td><b>' + (pre || '') + f3(g) + '\u00b0</b>' + (pre ? '' : '<em>' + cm(g) + '</em>') + '</td>'; };
+    return '<tr' + (ocultas[e.it.id] ? ' class="oculta"' : '') + '><td><b style="color:' + colorDe(e) + '">\u25cf</b> ' + esc(e.it.weapon[HEADERS.ARMA]) + ' <em>' + esc(classTitleGraph(e.it, e.it.clase || 'base')) + '</em></td><td>' + e.balas + ' / ' + e.P.mag + '</td>' + celda(mostrado(e)) + celda(e.P.base) + celda(e.P.inc, '+')
+      + '<td' + (!ocultas[e.it.id] && e.P.pico === mejor ? ' class="mejor"' : '') + '><b>' + f3(e.P.pico) + '\u00b0</b><em>' + cm(e.P.pico) + '</em></td></tr>';
+  }).join('');
+}
+
+/* ---------- Subpestanas y controles ---------- */
+function elegirSub(v){
+  sub = v;
+  document.querySelectorAll('#mainRecoil [data-rc-sub]').forEach(function(b){ var on = b.dataset.rcSub === v; b.classList.toggle('active', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+  $('recoilContainer').style.display = v === 'retroceso' ? '' : 'none';
+  $('dispContainer').style.display = v === 'dispersion' ? '' : 'none';
+  if(v === 'dispersion') render(); else if(window.bf6Retroceso) window.bf6Retroceso.render();
+}
+document.addEventListener('click', function(e){
+  var s = e.target.closest('#mainRecoil [data-rc-sub]'); if(s){ elegirSub(s.dataset.rcSub); return; }
+  var b = e.target.closest('#dispContainer button'); if(!b) return;
+  if(b.dataset.dsPostura){ cfg.postura = b.dataset.dsPostura; validas().forEach(function(x){ x.P = params(x.W); }); restaurar(); render(); return; }
+  if(b.dataset.dsVer){ var id = b.dataset.dsVer; if(ocultas[id]) delete ocultas[id]; else ocultas[id] = true; pintarLeyenda(); return; }
+  if(b.id === 'dsVaciar'){ if(vacias()) reiniciarTodo(); vaciando = !vaciando; b.classList.toggle('ds-on', vaciando); return; }
+  if(b.id === 'dsReiniciar'){ reiniciarTodo(); return; }
+  var x = est[b.dataset.dsId]; if(!x) return;
+  if(b.dataset.dsRanura){ abierta = abierta && abierta.id === x.it.id && abierta.r === b.dataset.dsRanura ? null : { id: x.it.id, r: b.dataset.dsRanura }; repintarArmas(); return; }
+  if(b.dataset.dsOp != null && abierta){ x.sel[abierta.r] = b.dataset.dsOp; construir(x); if(!x.rs.some(function(r){ return r.id === abierta.r; })) abierta = null; repintarArmas(); reiniciarTodo(); }
+});
+document.addEventListener('change', function(e){
+  var s = e.target.closest('#dispContainer select[data-ds-modo]'); if(!s) return; var x = est[s.dataset.dsId]; if(!x) return;
+  x.sel.modo = s.value; construir(x); repintarArmas(); reiniciarTodo();
+});
+document.addEventListener('input', function(e){ var id = e.target.id; if(id === 'dsDist') cfg.dist = +e.target.value; else if(id === 'dsZoom') cfg.zoom = +e.target.value; });
+document.addEventListener('pointerdown', function(e){
+  var b = e.target.closest('#dsDisparar'); if(!b) return; e.preventDefault();
+  if(vacias()) reiniciarTodo(); apretado = true; b.classList.add('ds-on'); try { b.setPointerCapture(e.pointerId); } catch(x){}
+});
+function soltar(){ if(!apretado) return; apretado = false; var b = $('dsDisparar'); if(b) b.classList.remove('ds-on'); }
+['pointerup', 'pointercancel'].forEach(function(n){ document.addEventListener(n, soltar); });
+document.addEventListener('contextmenu', function(e){ if(e.target.closest && e.target.closest('#dsDisparar')) e.preventDefault(); });
+window.addEventListener('resize', function(){ if(visible()) dibujar(); });
+window.bf6Dispersion = { render: render };
+})();
+</script>
+
 </body>
 </html>
