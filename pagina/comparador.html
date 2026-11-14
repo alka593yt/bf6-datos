@@ -2885,8 +2885,9 @@ return selectedWeaponsMP;
 'use strict';
 var KEY='metaCfgV3';
 var ZONES=[{id:'c',name:'Corta distancia',short:'corta',rango:'0\u201320 m',d:[5,10,20]},{id:'m',name:'Media distancia',short:'media',rango:'21\u201375 m',d:[30,50,70]},{id:'l',name:'Larga distancia',short:'larga',rango:'76\u2013200 m',d:[90,120,150]}];
-var CLASSES=['base','clase1','clase2','clase3'];
-var CLASS_NAME={base:'Base',clase1:'Equip. 1',clase2:'Equip. 2',clase3:'Equip. 3'};
+/* La META compara solo el arma base (de fabrica), sin equipamientos. */
+var CLASSES=['base'];
+var CLASS_NAME={base:'Base'};
 /* Control del jugador: % del desvio de la mira que corrige entre dos balas separadas 100 ms (600 RPM). */
 var NIVEL={casual:{t:'Casual',c:50},medio:{t:'Medio',c:70},experto:{t:'Experto',c:90}};
 var USA={ret:'retroceso',pre:'precisi\u00f3n',man:'manejo'};
@@ -3024,7 +3025,7 @@ return zona(META.dist).name.toLowerCase();
 }
 function listText(a){ if(a.length<2) return a.join(''); return a.slice(0,-1).join(', ')+' y '+a[a.length-1]; }
 function allCats(){ var s={}; ENTRIES.forEach(function(e){ if(e.cat) s[e.cat]=1; }); return Object.keys(s).sort(function(a,b){return a.localeCompare(b,'es');}); }
-function selectedClasses(){ return CLASSES.filter(function(c){ return META.eq[c]; }); }
+function selectedClasses(){ return CLASSES; }
 /* ---------- resultado de un arma con la configuracion actual ---------- */
 var RES={};
 function resultado(e){
@@ -3155,8 +3156,8 @@ root.innerHTML=
 +'<div id="metaExactRow" class="meta-range-row" style="display:none"><span class="rl">Metros</span><input type="range" min="0" max="200" step="1" value="'+META.exact+'" data-meta-exact="1" aria-label="Metros"><span class="mv">'+META.exact+'</span></div></div>'
 +'<div class="meta-block"><div class="meta-label">Tener en cuenta'+tip('TTK: tiempo para matar si todas las balas pegan. Retroceso: las balas se desv\u00edan seg\u00fan el patr\u00f3n del arma. Precisi\u00f3n: se a\u00f1ade la dispersi\u00f3n de cada bala. Manejo: se suma el tiempo de apuntar. Lo que desmarques se trata como perfecto.')+'</div><div class="meta-chips">'+uH+'</div>'
 +'<div class="meta-sub">Control del jugador'+tip('Qu\u00e9 tan r\u00e1pido devuelves la mira al blanco mientras disparas. Entre bala y bala, un casual corrige la mitad del desv\u00edo, un medio el 70 % y un experto el 90 %. Con armas de cadencia muy alta hay menos tiempo para corregir.')+'</div><div class="seg-group meta-seg" id="metaNivel" role="radiogroup" aria-label="Control del jugador">'+nH+'</div></div>'
-+'<div class="meta-block"><div class="meta-label">Armas</div><div class="meta-chips">'+eqH+'</div>'
-+'<details class="meta-dd" style="margin-top:8px"><summary><span>Categor\u00eda: <b id="metaCatLabel">Todas</b></span></summary><div class="meta-chips" id="metaCats"></div></details>'
++'<div class="meta-block"><div class="meta-label">Armas'+tip('Se compara cada arma en su configuraci\u00f3n base (de f\u00e1brica), sin accesorios.')+'</div>'
++'<details class="meta-dd"><summary><span>Categor\u00eda: <b id="metaCatLabel">Todas</b></span></summary><div class="meta-chips" id="metaCats"></div></details>'
 +'<details class="meta-dd" style="margin-top:6px"><summary><span>Zona del TTK: <b id="metaZoneLabel">Pecho</b></span></summary><div class="seg-group meta-seg" style="margin-top:8px" role="radiogroup" aria-label="Zona del TTK"><button type="button" class="seg-btn" data-meta-zone="pecho">Pecho</button><button type="button" class="seg-btn" data-meta-zone="cabeza">Cabeza</button><button type="button" class="seg-btn" data-meta-zone="estomago">Est\u00f3mago</button></div></details></div>'
 +'</div></div>'
 +'<div class="meta-bar"><div class="seg-group meta-seg meta-views" role="radiogroup" aria-label="Vista"><button type="button" class="seg-btn" data-meta-view="rank"><i class="fa-solid fa-list-ol" aria-hidden="true"></i> Ranking</button><button type="button" class="seg-btn" data-meta-view="cats"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> <span class="t-long">Mejores por categor\u00eda</span><span class="t-short">Categor\u00edas</span></button></div>'
