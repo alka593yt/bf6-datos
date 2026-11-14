@@ -870,6 +870,18 @@ html { scrollbar-gutter: stable; }
 .mw .mw-name{padding:4px 10px}
 .mw .mw-name .hitbox-btn-text{font-size:.62rem}
 }
+/* ===== META: TTK real ===== */
+.mr-box{display:flex;flex-direction:column;gap:4px;min-width:0}
+.mr-bar{display:flex;height:12px;background:var(--bg-input);border-radius:4px;overflow:hidden}
+.mr-bar i{display:block;height:100%;flex-shrink:0}
+.mr-te{background:var(--accent)}.mr-fa{background:var(--danger-bright)}.mr-ap{background:#5b8def}
+.mr-txt{font-size:.66rem;color:var(--text-muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mr-txt b{color:var(--text-primary);font-size:.84rem;font-weight:900;font-variant-numeric:tabular-nums}
+.mr-ley{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.62rem;color:var(--text-muted);font-weight:700;margin:0 0 8px}
+.mr-ley i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.meta-chips .hitbox-btn.fijo{opacity:.6;pointer-events:none}
+.meta-seg.off{opacity:.35;pointer-events:none}
+.meta-panel-title{margin:0 0 10px}
 /* ===== CONSTRUCTOR ===== */
 .ctor-lista{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
 .ctor-lista>*,.ctor-editor,.ctor-opciones{box-sizing:border-box;min-width:0}
@@ -2866,351 +2878,343 @@ return selectedWeaponsMP;
 }
 </script>
 <script>
-/* ===================== PESTA\u00d1A META ===================== */
+/* ===================== PESTA\u00d1A META (TTK real) ===================== */
+/* Ordena las armas por el tiempo real para matar: el TTK teorico de armas.json mas lo que se pierde por las balas
+   falladas (patron de retroceso y dispersion del motor contra un cuerpo a esa distancia) y por el tiempo de apuntar. */
 (function(){
 'use strict';
-var KEY='metaCfgV2';
-var ZONES=[{id:'c',name:'Corto alcance',short:'corto',from:0,to:20},{id:'m',name:'Medio alcance',short:'medio',from:21,to:75},{id:'l',name:'Largo alcance',short:'largo',from:76,to:200}];
+var KEY='metaCfgV3';
+var ZONES=[{id:'c',name:'Corta distancia',short:'corta',rango:'0\u201320 m',d:[5,10,20]},{id:'m',name:'Media distancia',short:'media',rango:'21\u201375 m',d:[30,50,70]},{id:'l',name:'Larga distancia',short:'larga',rango:'76\u2013200 m',d:[90,120,150]}];
 var CLASSES=['base','clase1','clase2','clase3'];
 var CLASS_NAME={base:'Base',clase1:'Equip. 1',clase2:'Equip. 2',clase3:'Equip. 3'};
-var STAT={ads:'Vel. al apuntar',hip:'Disparo de cadera',mob:'Movilidad',pre:'Precisi\u00f3n',ctl:'Control',rv:'Recoil vertical',rh:'Recoil horizontal'};
-var SHORT={ttk:'TTK',ads:'Apuntar',hip:'Cadera',mob:'Mov.',pre:'Prec.',ctl:'Control',rv:'Ret. V',rh:'Ret. H'};
-var GROUP={ret:['rv','rh','ctl'],man:['ads','hip','mob']};
-var PNAME={ttk:'TTK',ret:'retroceso',pre:'precisi\u00f3n',man:'manejo'};
-var PTAG={ttk:'TTK',ret:'RET',pre:'PRE',man:'MAN'};
-var DEF={eq:{base:true,clase1:false,clase2:false,clase3:false},cats:[],dist:'all',exact:50,
-zw:{c:30,m:40,l:30},params:{ttk:true,ret:true,pre:true,man:true},
-pw:{ttk:{c:60,m:55,l:50},ret:{c:8,m:17,l:20},pre:{c:8,m:15,l:22},man:{c:24,m:13,l:8}},
-sub:{man:{ads:100,hip:100,mob:100},ret:{rv:100,rh:100,ctl:100}},ttkZone:'pecho',ttkMin:50,topN:10,view:'rank'};
+/* Control del jugador: % del desvio de la mira que corrige entre dos balas separadas 100 ms (600 RPM). */
+var NIVEL={casual:{t:'Casual',c:50},medio:{t:'Medio',c:70},experto:{t:'Experto',c:90}};
+var USA={ret:'retroceso',pre:'precisi\u00f3n',man:'manejo'};
+/* Cuerpo al que se dispara, en metros desde el punto de mira (pecho): torso y cabeza, sin piernas. */
+var CUERPO={arriba:0.58,abajo:-0.62,medio:0.23,cuello:0.33,cabeza:0.11};
+var SEMILLAS=6, MUESTRAS=8, MAX_BALAS=50, RECARGA_DEF=2500;
+var DEF={eq:{base:true,clase1:false,clase2:false,clase3:false},cats:[],dist:'c',exact:50,usa:{ret:true,pre:true,man:true},nivel:'medio',ttkZone:'pecho',topN:10,view:'rank'};
 var META=clone(DEF);
-var ENTRIES=null, BYKEY={}, dirty=true, ready=false, saveT=null, renderT=null;
+var ENTRIES=null, BYKEY={}, dirty=true, ready=false, saveT=null, renderT=null, Sim=null, falloSim=false, pidiendo=false, hechos={};
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function merge(b,s){ if(!s||typeof s!=='object') return b; Object.keys(b).forEach(function(k){ if(s[k]===undefined) return; if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])) merge(b[k],s[k]); else if(typeof s[k]===typeof b[k]||Array.isArray(b[k])) b[k]=s[k]; }); return b; }
-function load(){ try{ merge(META,JSON.parse(localStorage.getItem(KEY)||'null')); }catch(e){} if(META.view!=='cats') META.view='rank'; }
+function load(){ try{ merge(META,JSON.parse(localStorage.getItem(KEY)||'null')); }catch(e){} if(META.view!=='cats') META.view='rank'; if(!NIVEL[META.nivel]) META.nivel='medio'; }
 function save(){ clearTimeout(saveT); saveT=setTimeout(function(){ try{ localStorage.setItem(KEY,JSON.stringify(META)); }catch(e){} },200); }
 function esc(s){ return escapeHtml(s); }
-function low(m){ return m==='ttk'||LOWER_IS_BETTER.has(STAT[m]); }
 function zoneOf(m){ return m<=20?'c':(m<=75?'m':'l'); }
-function r1(v){ return Math.round(v*10)/10; }
+function zona(id){ return ZONES.filter(function(z){ return z.id===id; })[0]; }
+function fms(v){ return v>=10000?'m\u00e1s de 10 s':Math.round(v)+' ms'; }
+var RITMO={r5:'R\u00e1fagas de 5',r3:'R\u00e1fagas de 3',tiro:'Tiro a tiro'};
+function pct(v){ return Math.round(v*100)+' %'; }
+function usaSim(){ return META.usa.ret||META.usa.pre; }
 /* ---------- entradas (arma + equipamiento) ---------- */
-function rangesFor(e,zone){
-e.rng=e.rng||{}; if(e.rng[zone]) return e.rng[zone];
-var pf=CLASS_PREFIXES[e.clase].TTK[zone], arr=[];
-for(var k in e.weapon){ if(k.indexOf(pf)!==0) continue; var rest=k.slice(pf.length), r=parseInt(rest,10);
-if(!isNaN(r)&&String(r)===rest&&String(e.weapon[k]||'').trim()!=='') arr.push(r); }
-arr.sort(function(a,b){return a-b;}); e.rng[zone]=arr; return arr;
-}
 function buildEntries(){
 var out=[]; BYKEY={};
 (allDataMP||[]).forEach(function(w,wi){
 CLASSES.forEach(function(cl){
 if(!classHasName(w,cl)) return;
-var raw={}, any=false;
-Object.keys(STAT).forEach(function(k){ var v=parseStatValue(w[STATS_MAP[cl][STAT[k]]]); raw[k]=v; if(v!==null) any=true; });
-var e={key:wi+'|'+cl,wi:wi,weapon:w,clase:cl,cat:String(w[HEADERS.CATEGORIA]||'').trim(),raw:raw,item:{id:'meta_'+wi+'_'+cl,weapon:w,clase:cl},label:classTitleGraph({weapon:w},cl)};
-if(any||rangesFor(e,'pecho').length){ out.push(e); BYKEY[e.key]=e; }
+var e={key:wi+'|'+cl,wi:wi,weapon:w,clase:cl,cat:String(w[HEADERS.CATEGORIA]||'').trim(),item:{id:'meta_'+wi+'_'+cl,weapon:w,clase:cl},label:classTitleGraph({weapon:w},cl)};
+out.push(e); BYKEY[e.key]=e;
 });
 });
 return out;
 }
-function series(e,zone){
-var st=getAdvancedSettings('TTK'), ck=zone+'|'+st.health+'|'+st.precision; e.ser=e.ser||{}; if(e.ser[ck]) return e.ser[ck];
-var R=rangesFor(e,zone), s=[], i;
-for(i=0;i<=200;i++) s.push(null);
-if(R.length){
-var pf=CLASS_PREFIXES[e.clase].TTK[zone], dm=CLASS_PREFIXES[e.clase].DANO[zone], vals={};
-R.forEach(function(r){ var v=computeProcessedValue(e.item,pf,dm,r,'TTK',st); vals[r]=(v===null||v===undefined||isNaN(v))?null:v; });
-var idx=0,last=null;
-for(var m=0;m<=200;m++){ while(idx<R.length&&R[idx]<=m){ if(vals[R[idx]]!==null) last=vals[R[idx]]; idx++; } s[m]=last; }
-var first=null; for(i=0;i<=200;i++){ if(s[i]!==null){ first=s[i]; break; } }
-for(i=0;i<=200&&s[i]===null;i++) s[i]=first;
+function danoEn(e,m){
+var pf=CLASS_PREFIXES[e.clase].DANO[META.ttkZone], v=parseFloat(e.weapon[pf+m]);
+for(var i=m-1;!(v>0)&&i>=0;i--) v=parseFloat(e.weapon[pf+i]);
+return v>0?v:null;
 }
-e.ser[ck]=s; return s;
+function statDe(e,nombre){ var col=STATS_MAP[e.clase]&&STATS_MAP[e.clase][nombre]; return col?parseStatValue(e.weapon[col]):null; }
+/* ---------- simulacion con el motor: donde cae cada bala de la rafaga, en grados ---------- */
+/* Ritmos de disparo que se prueban en las armas automaticas: todo seguido, rafagas de 5 o de 3 con una pausa, o tiro a tiro.
+   A cada distancia se usa el que mata antes, como haria un jugador. */
+var PAUSA=0.2;
+function ritmos(w){
+var l=[{id:'auto',w:w}], iv=60/w.rpm;
+if(w.fireMode!=='auto'||!(iv>0)) return l;
+[5,3].forEach(function(k){ l.push({id:'r'+k,w:Object.assign({},w,{fireMode:'burst',burstRounds:k,burstRpm:w.rpm,burstBurstsPerMinute:60/((k-1)*iv+PAUSA)})}); });
+if(iv<PAUSA) l.push({id:'tiro',w:Object.assign({},w,{rpm:60/PAUSA})});
+return l;
 }
-function ttkMean(e,sp){ var s=series(e,META.ttkZone), sum=0,n=0; for(var m=sp.from;m<=sp.to;m++){ if(s[m]!==null&&s[m]!==undefined){ sum+=s[m]; n++; } } return n?sum/n:null; }
-/* ---------- configuraci\u00f3n derivada ---------- */
-function getSpecs(){
-if(META.dist==='exact'){ var m=Math.max(0,Math.min(200,Math.round(+META.exact||0))); return [{z:zoneOf(m),w:1,from:m,to:m}]; }
-if(META.dist==='all'){
-var sp=ZONES.map(function(z){ return {z:z.id,w:+META.zw[z.id]||0,from:z.from,to:z.to}; }).filter(function(s){ return s.w>0; });
-if(!sp.length) sp=ZONES.map(function(z){ return {z:z.id,w:1,from:z.from,to:z.to}; });
-return sp;
+/* Una rafaga con un ritmo: donde cae cada bala (grados) y en que momento sale (ms). */
+function rafaga(w,id,ret,pre,comp){
+var n=Math.max(2,Math.min(Math.round(w.mag)||30,MAX_BALAS));
+var sps=pre?Sim.simulateSpread(w,n):null, rutas=[], rng=Sim.mulberry32((Sim.whash(w.id)^0x51ed270b)>>>0), perd=(w.pellets||1)>1?(w.pelletDispersion||0):0, pts=[], s, i, m;
+/* El jugador devuelve la mira al blanco entre bala y bala: con 100 ms entre disparos corrige comp % del desvio; con menos tiempo, menos. */
+var tau=-0.1/Math.log(1-comp/100), queda=[1], t=[0];
+for(i=1;i<n;i++){ var iv=Sim.shotIntervalAfter(w,i); queda.push(Math.exp(-iv/tau)); t.push(t[i-1]+iv*1000); }
+for(s=1;s<=SEMILLAS;s++){
+if(!ret){ rutas.push(null); continue; }
+var cruda=Sim.genRecoilPts(w,(s*0x9e3779b9)>>>0,n), ruta=[{x:0,y:0}], px=0, py=0;
+for(i=1;i<n;i++){ px=(px+cruda[i].x-cruda[i-1].x)*queda[i]; py=(py+cruda[i].y-cruda[i-1].y)*queda[i]; ruta.push({x:px,y:py}); }
+rutas.push(ruta);
 }
-var z=ZONES.filter(function(q){return q.id===META.dist;})[0]||ZONES[0];
-return [{z:z.id,w:1,from:z.from,to:z.to}];
+for(i=0;i<n;i++){
+var l=[];
+for(s=0;s<SEMILLAS;s++){
+var p=rutas[s]?rutas[s][i]:{x:0,y:0};
+if(!pre){ l.push(p.x,p.y); continue; }
+for(m=0;m<MUESTRAS;m++){ var ang=rng()*6.283185307, r=Sim.sampleSpreadRadius(w,sps[i],rng())+perd*rng(); l.push(p.x+r*Math.cos(ang),p.y+r*Math.sin(ang)); }
 }
-function activeParams(){ return ['ttk','ret','pre','man'].filter(function(p){ return META.params[p]; }); }
+pts.push(l);
+}
+return {id:id,pts:pts,n:n,t:t,h:{}};
+}
+function simular(e){
+var ret=META.usa.ret, pre=META.usa.pre;
+if(!ret&&!pre) return {libre:true};
+if(!Sim) return null;
+var ck=(ret?NIVEL[META.nivel].c:'x')+'|'+(pre?1:0);
+e.sim=e.sim||{}; if(e.sim[ck]!==undefined) return e.sim[ck];
+var out=null, a=null, estr=[], comp=NIVEL[META.nivel].c;
+try{ a=window.bf6Retroceso.armar(e.item); }catch(x){ a=null; }
+if(a){
+try{
+Sim.setSimContext({aimState:'ads',stanceState:'stand',compensationFn:function(){ return 0; }});
+ritmos(a.w).forEach(function(r){ try{ estr.push(rafaga(r.w,r.id,ret,pre,comp)); }catch(x){} });
+}catch(x){}
+finally{ Sim.setSimContext({aimState:'ads',stanceState:'stand',compensationFn:function(){ return 0; }}); }
+if(estr.length) out={estr:estr};
+}
+e.sim[ck]=out; return out;
+}
+/* Probabilidad de que cada bala de la rafaga pegue en el cuerpo a d metros. */
+function aciertos(est,d){
+if(est.h[d]) return est.h[d];
+var k=Math.PI/180, C=CUERPO;
+est.h[d]=est.pts.map(function(l){
+var ok=0;
+for(var j=0;j<l.length;j+=2){ var x=Math.abs(Math.tan(l[j]*k)*d), y=Math.tan(l[j+1]*k)*d; if(y<=C.arriba&&y>=C.abajo&&x<=(y>C.cuello?C.cabeza:C.medio)) ok++; }
+return ok/(l.length/2);
+});
+return est.h[d];
+}
+/* Tiempo esperado para matar con un ritmo. Si no alcanza un cargador, se suma la recarga y se vuelve a intentar. */
+function tiempo(est,d,B,rec){
+var p=aciertos(est,d), n=est.n, t=est.t, lleva=[1], A=0, S=0, pk=0, i, h;
+for(i=0;i<n;i++){
+var pi=p[i], mata=(lleva[B-1]||0)*pi;
+A+=mata*t[i]; S+=mata*(i+1); pk+=mata;
+for(h=Math.min(B-1,i+1);h>=0;h--) lleva[h]=(lleva[h]||0)*(1-pi)+(h>0?(lleva[h-1]||0)*pi:0);
+}
+var q=Math.max(pk,0.02);
+return {real:(A+(1-pk)*(t[n-1]+rec))/q,ac:Math.min(1,B/((S+(1-pk)*n)/q)),pk:pk,id:est.id};
+}
+function evaluar(e,d,hp){
+var dn=danoEn(e,d); if(dn===null) return null;
+var B=Math.ceil(hp/dn-1e-9), ms=msEntreDisparos(e.weapon,e.clase)||getApproxRPM(e.weapon,e.clase), teo=(B-1)*ms;
+var sm=simular(e);
+if(!sm) return {teo:teo,real:null};
+if(sm.libre) return {teo:teo,real:teo,ac:1,pk:1,id:'auto'};
+var rec=statDe(e,'Vel. de recarga')||RECARGA_DEF, mejor=null;
+sm.estr.forEach(function(est){ var v=tiempo(est,d,B,rec); if(!mejor||v.real<mejor.real) mejor=v; });
+mejor.teo=teo; mejor.real=Math.max(mejor.real,teo);
+return mejor;
+}
+/* ---------- configuracion derivada ---------- */
+function grupos(){
+if(META.dist==='exact'){ return [[Math.max(0,Math.min(200,Math.round(+META.exact||0)))]]; }
+if(META.dist==='all') return ZONES.map(function(z){ return z.d; });
+return [(zona(META.dist)||ZONES[0]).d];
+}
 function distText(){
 if(META.dist==='exact') return 'los '+Math.round(META.exact)+' m';
-if(META.dist==='all'){ var sp=getSpecs(), tot=sp.reduce(function(a,s){return a+s.w;},0); return 'todas las distancias ('+sp.map(function(s){ var z=ZONES.filter(function(q){return q.id===s.z;})[0]; return z.short+' '+Math.round(s.w/tot*100)+' %'; }).join(' - ')+')'; }
-return ZONES.filter(function(q){return q.id===META.dist;})[0].name.toLowerCase();
+if(META.dist==='all') return 'todas las distancias';
+return zona(META.dist).name.toLowerCase();
 }
 function listText(a){ if(a.length<2) return a.join(''); return a.slice(0,-1).join(', ')+' y '+a[a.length-1]; }
-function poolFor(cats){ return ENTRIES.filter(function(e){ return !cats||!cats.length||cats.indexOf(e.cat)!==-1; }); }
 function allCats(){ var s={}; ENTRIES.forEach(function(e){ if(e.cat) s[e.cat]=1; }); return Object.keys(s).sort(function(a,b){return a.localeCompare(b,'es');}); }
-/* ---------- c\u00e1lculo de notas ---------- */
-function compute(pool){
-var specs=getSpecs(), act=activeParams(), mm={};
-Object.keys(STAT).forEach(function(k){ var lo=Infinity,sum=0,n=0; pool.forEach(function(e){ var v=e.raw[k]; if(v!==null){ if(v<lo) lo=v; if(v>0){ sum+=v; n++; } } }); mm[k]={lo:lo,avg:n?sum/n:1}; });
-var tt=specs.map(function(sp){ var lo=Infinity,sum=0,n=0, vals=pool.map(function(e){ var v=ttkMean(e,sp); if(v!==null){ if(v<lo) lo=v; if(v>0){ sum+=v; n++; } } return v; }); return {vals:vals,lo:lo,avg:n?sum/n:1}; });
-/* menos es mejor: proporci\u00f3n contra el mejor (mejor/valor x 100) */
-function prop(v,lo,avg){ if(v===null||v===undefined||!isFinite(lo)) return null; var eps=lo<=0?0.1*avg:0; return Math.min(100,(lo+eps)/(Math.max(v,0)+eps)*100); }
-/* m\u00e1s es mejor: el valor de la hoja tal cual (0 a 100) */
-function direct(v){ return (v===null||v===undefined)?null:Math.max(0,Math.min(100,v)); }
-function sco(k,v){ return low(k)?prop(v,mm[k].lo,mm[k].avg):direct(v); }
-function grp(e,g){ var num=0,den=0; GROUP[g].forEach(function(k){ var w=+META.sub[g][k]||0; if(w<=0) return; var n=sco(k,e.raw[k]); if(n===null) return; num+=n*w; den+=w; }); return den?num/den:null; }
-return pool.map(function(e,i){
-var tot=0,wsum=0,parts={ttk:0,ret:0,pre:0,man:0},pws={ttk:0,ret:0,pre:0,man:0},inc=false,tr=0,trw=0;
-specs.forEach(function(sp,si){
-var sc={ttk:prop(tt[si].vals[i],tt[si].lo,tt[si].avg),ret:grp(e,'ret'),pre:direct(e.raw.pre),man:grp(e,'man')}, items=[];
-act.forEach(function(p){ var w=+META.pw[p][sp.z]||0; if(sc[p]===null){ if(w>0||p==='ttk') inc=true; return; } items.push({p:p,w:w,s:sc[p],f:0}); });
-var ti=null, oth=[], ow=0;
-items.forEach(function(it){ if(it.p==='ttk') ti=it; else if(it.w>0){ oth.push(it); ow+=it.w; } });
-if(ti&&oth.length){ var share=(ti.w+ow)>0?ti.w/(ti.w+ow):1; share=Math.min(1,Math.max(share,(+META.ttkMin||0)/100)); ti.f=share; oth.forEach(function(o){ o.f=(1-share)*o.w/ow; }); }
-else if(ti){ ti.f=1; }
-else { oth.forEach(function(o){ o.f=o.w/ow; }); }
-var num=0,den=0;
-items.forEach(function(it){ if(it.f>0){ num+=it.s*it.f; den+=it.f; parts[it.p]+=it.s*sp.w; pws[it.p]+=sp.w; } });
-if(den>0){ tot+=num/den*sp.w; wsum+=sp.w; }
-if(tt[si].vals[i]!==null){ tr+=tt[si].vals[i]*sp.w; trw+=sp.w; }
+function selectedClasses(){ return CLASSES.filter(function(c){ return META.eq[c]; }); }
+/* ---------- resultado de un arma con la configuracion actual ---------- */
+var RES={};
+function resultado(e){
+if(RES[e.key]!==undefined) return RES[e.key];
+var hp=getAdvancedSettings('TTK').health, T=0,R=0,AC=0,PK=0,nt=0,nr=0, veces={};
+grupos().forEach(function(ds){
+var t=0,r=0,a=0,k=0,n=0,m=0;
+ds.forEach(function(d){ var v=evaluar(e,d,hp); if(!v) return; t+=v.teo; n++; if(v.real!==null){ r+=v.real; a+=v.ac; k+=v.pk; m++; veces[v.id]=(veces[v.id]||0)+1; } });
+if(n){ T+=t/n; nt++; } if(m){ R+=r/m; AC+=a/m; PK+=k/m; nr++; }
 });
-Object.keys(parts).forEach(function(p){ parts[p]=pws[p]>0?parts[p]/pws[p]:null; });
-return {e:e,score:wsum>0?tot/wsum:null,parts:parts,inc:inc,noTtk:!!META.params.ttk&&trw===0,ttk:trw?tr/trw:null};
-});
+var o=null;
+if(nt){
+o={e:e,teo:T/nt,real:null,total:null,ac:null,pk:null,ads:0,noSim:nr<nt};
+if(!o.noSim){ o.real=R/nr; o.ac=AC/nr; o.pk=PK/nr; o.ritmo=Object.keys(veces).sort(function(x,y){ return veces[y]-veces[x]; })[0]||'auto'; o.ads=META.usa.man?(statDe(e,'Vel. al apuntar')||0):0; o.total=o.real+o.ads; }
 }
-function topParam(){ var act=activeParams(), best=null,bw=-1; act.forEach(function(p){ var w=(+META.pw[p].c||0)+(+META.pw[p].m||0)+(+META.pw[p].l||0); if(w>bw){ bw=w; best=p; } }); return best; }
-function sorter(){ var tp=topParam(); return function(a,b){ if(!!a.noTtk!==!!b.noTtk) return a.noTtk?1:-1; if(b.score!==a.score) return b.score-a.score; var x=tp&&a.parts[tp]!==null?a.parts[tp]:-1, y=tp&&b.parts[tp]!==null?b.parts[tp]:-1; return y-x; }; }
-function baseMap(res){ var m={}; res.forEach(function(r){ if(r.e.clase==='base') m[r.e.wi]=r; }); return m; }
-function metricKeys(){
-var k=[]; if(META.params.ttk) k.push('ttk');
-if(META.params.ret) GROUP.ret.forEach(function(x){ if((+META.sub.ret[x]||0)>0) k.push(x); });
-if(META.params.pre) k.push('pre');
-if(META.params.man) GROUP.man.forEach(function(x){ if((+META.sub.man[x]||0)>0) k.push(x); });
-return k;
+RES[e.key]=o; return o;
 }
-function rawOf(r,k){ return k==='ttk'?r.ttk:r.e.raw[k]; }
-function deltaChips(r,b){
-if(!b||r===b) return '';
-var h='', ds=(r.score!==null&&b.score!==null)?r1(r.score-b.score):null;
-if(ds!==null&&ds!==0) h+='<span class="meta-d '+(ds>0?'good':'bad')+' strong" title="Diferencia de nota contra la base">Nota '+(ds>0?'+':'\u2212')+Math.abs(ds)+'</span>';
-metricKeys().forEach(function(k){
-var a=rawOf(r,k), c=rawOf(b,k); if(a===null||a===undefined||c===null||c===undefined) return;
-var d=a-c, txt=(k==='ttk')?Math.round(d):r1(d); if(txt===0) return;
-var good=low(k)?d<0:d>0;
-h+='<span class="meta-d '+(good?'good':'bad')+'" title="'+esc(k==='ttk'?'TTK promedio':STAT[k])+' contra la base">'+SHORT[k]+' '+(d>0?'+':'\u2212')+Math.abs(txt)+(k==='ttk'?' ms':'')+'</span>';
-});
-return h;
+function orden(a,b){ if((a.total===null)!==(b.total===null)) return a.total===null?1:-1; if(a.total===null) return a.teo-b.teo; return (a.total-b.total)||(a.teo-b.teo); }
+function listaDe(cats){
+var eq=selectedClasses();
+return ENTRIES.filter(function(e){ return eq.indexOf(e.clase)!==-1&&(!cats||!cats.length||cats.indexOf(e.cat)!==-1); }).map(resultado).filter(Boolean).sort(orden);
 }
-/* ---------- bot\u00f3n Comparar (alterna agregar / quitar) ---------- */
+function baseDe(r){ var b=BYKEY[r.e.wi+'|base']; return b&&b!==r.e?resultado(b):null; }
+/* ---------- boton Comparar (alterna agregar / quitar) ---------- */
 function isSel(key){ var e=BYKEY[key]; return !!e&&selectedWeaponsMP.some(function(s){ return s.weapon===e.weapon&&(s.clase||'base')===e.clase; }); }
-function addBtnInner(on,sm){ return on?'<i class="fa-solid fa-check" aria-hidden="true"></i> Agregado':(sm?'<i class="fa-solid fa-plus" aria-hidden="true"></i>':'<i class="fa-solid fa-plus" aria-hidden="true"></i> Comparar'); }
-function addBtn(key,sm){ var on=isSel(key); return '<button type="button" class="meta-add'+(sm?' sm':'')+(on?' done':'')+'" data-meta-add="'+key+'" title="'+(on?'Quitar del Comparador':'Agregar al Comparador')+'" aria-pressed="'+on+'">'+addBtnInner(on,sm)+'</button>'; }
-function refreshAddBtns(){ document.querySelectorAll('#metaRoot [data-meta-add]').forEach(function(b){ var on=isSel(b.dataset.metaAdd), sm=b.classList.contains('sm'); b.classList.toggle('done',on); b.innerHTML=addBtnInner(on,sm); b.title=on?'Quitar del Comparador':'Agregar al Comparador'; b.setAttribute('aria-pressed',on); }); }
+function addBtnInner(on){ return on?'<i class="fa-solid fa-check" aria-hidden="true"></i> Agregado':'<i class="fa-solid fa-plus" aria-hidden="true"></i> Comparar'; }
+function addBtn(key){ var on=isSel(key); return '<button type="button" class="meta-add'+(on?' done':'')+'" data-meta-add="'+key+'" title="'+(on?'Quitar del Comparador':'Agregar al Comparador')+'" aria-pressed="'+on+'">'+addBtnInner(on)+'</button>'; }
+function refreshAddBtns(){ document.querySelectorAll('#metaRoot [data-meta-add]').forEach(function(b){ var on=isSel(b.dataset.metaAdd); b.classList.toggle('done',on); b.innerHTML=addBtnInner(on); b.title=on?'Quitar del Comparador':'Agregar al Comparador'; b.setAttribute('aria-pressed',on); }); }
 function toggleCompare(key){
 var e=BYKEY[key]; if(!e) return; var removed=false;
 for(var i=selectedWeaponsMP.length-1;i>=0;i--){ var s=selectedWeaponsMP[i]; if(s.weapon===e.weapon&&(s.clase||'base')===e.clase){ selectedWeaponsMP.splice(i,1); removed=true; } }
 if(!removed) selectedWeaponsMP.push({id:++graphIdCounter,weapon:e.weapon,clase:e.clase});
 updateSelectionAndChartsMP(); refreshAddBtns();
 }
-/* ---------- render de filas ---------- */
-function scoreColor(s){ return 'hsl('+Math.round(Math.max(0,Math.min(100,s))*1.2)+',70%,42%)'; }
-function partsHtml(r){
-return '<div class="meta-parts">'+activeParams().map(function(p){ var v=r.parts[p];
-return '<div class="meta-part" title="'+esc(PNAME[p])+'"><span class="pt">'+PTAG[p]+'</span><span class="pb"><i style="width:'+(v===null?0:Math.round(v))+'%;background:'+(v===null?'#444':scoreColor(v))+'"></i></span><span class="pv">'+(v===null?'\u2014':Math.round(v))+'</span></div>'; }).join('')+'</div>';
+function sendToCompare(keys){
+var n=0; keys.forEach(function(k){ var e=BYKEY[k]; if(!e||isSel(k)) return; selectedWeaponsMP.push({id:++graphIdCounter,weapon:e.weapon,clase:e.clase}); n++; });
+if(n) updateSelectionAndChartsMP();
+return n;
 }
-function rowHtml(r,rank,b,opt){
-opt=opt||{};
+function toast(btn,txt){ var o=btn.innerHTML; btn.innerHTML='<i class="fa-solid fa-check" aria-hidden="true"></i> '+txt; btn.classList.add('done'); setTimeout(function(){ btn.innerHTML=o; btn.classList.remove('done'); },1400); }
+/* ---------- filas ---------- */
+function chip(txt,cls,tip){ return '<span class="meta-d'+(cls?' '+cls:'')+'" title="'+esc(tip)+'">'+txt+'</span>'; }
+function rowHtml(r,rank,mx){
 var e=r.e, tag=e.clase==='base'?'':'<span class="meta-eq">'+esc(e.label)+'</span>';
-var rk=rank?'<div class="meta-rank'+(rank<=3?' top':'')+'">#'+rank+'</div>':'<div class="meta-rank"></div>';
+var rk='<div class="meta-rank'+(rank<=3&&r.total!==null?' top':'')+'">#'+rank+'</div>', caja, chips='';
+if(r.total===null){
+caja='<div class="meta-scorebox mr-box"><div class="mr-bar"><i class="mr-te" style="width:'+Math.max(2,Math.round(r.teo/mx*100))+'%"></i></div><div class="mr-txt">Solo te\u00f3rico: <b>'+fms(r.teo)+'</b></div></div>';
+} else {
+var fallo=Math.max(0,r.real-r.teo), w=function(v){ return (v/mx*100).toFixed(1); };
+caja='<div class="meta-scorebox mr-box"><div class="mr-bar"><i class="mr-te" style="width:'+w(r.teo)+'%"></i><i class="mr-fa" style="width:'+w(fallo)+'%"></i><i class="mr-ap" style="width:'+w(r.ads)+'%"></i></div>'
++'<div class="mr-txt"><b>'+fms(r.total)+'</b> reales - te\u00f3rico '+fms(r.teo)+'</div></div>';
+if(usaSim()){
+chips+=chip('Acierto '+pct(r.ac),r.ac>=0.75?'good':(r.ac<0.5?'bad':''),'Parte de las balas que pegan en el cuerpo hasta matar');
+if(fallo>=1) chips+=chip('Fallos +'+fms(fallo),'','Tiempo que se pierde por las balas que no pegan y por las pausas entre r\u00e1fagas');
+if(RITMO[r.ritmo]) chips+=chip(RITMO[r.ritmo],'','Ritmo de disparo con el que esta arma mata antes a esta distancia');
+if(r.pk<0.95) chips+=chip('1 cargador '+pct(r.pk),'bad','Probabilidad de matar sin recargar');
+}
+if(META.usa.man&&r.ads>0) chips+=chip('Apuntar +'+fms(r.ads),'','Tiempo para apuntar con la mira');
+var b=baseDe(r);
+if(b&&b.total!==null){ var d=Math.round(r.total-b.total); if(d!==0) chips+=chip('vs base '+(d>0?'+':'\u2212')+fms(Math.abs(d)),(d<0?'good':'bad')+' strong','Diferencia de tiempo real contra la configuraci\u00f3n base'); }
+}
 return '<div class="meta-row">'+rk+weaponImageHtml(e.weapon,'stat-img','align-self:center;flex-shrink:0;')+
-'<div class="meta-name"><b>'+esc(e.weapon[HEADERS.ARMA])+'</b><span>'+tag+(e.cat?'<span class="meta-cat">'+esc(e.cat)+'</span>':'')+(r.noTtk?'<span class="meta-inc" title="No tiene dato de TTK: se muestra al final del ranking">sin TTK</span>':(r.inc?'<span class="meta-inc" title="Faltan datos en alg\u00fan par\u00e1metro marcado">datos incompletos</span>':''))+'</span></div>'+
-'<div class="meta-scorebox"><div class="meta-score"><i style="width:'+Math.max(4,Math.round(r.score))+'%;background:linear-gradient(90deg,rgba(255,255,255,.06),'+scoreColor(r.score)+')"></i><b>'+r1(r.score).toFixed(1)+'</b></div>'+partsHtml(r)+'</div>'+
-'<div class="meta-deltas">'+(opt.noDelta?'':deltaChips(r,b))+'</div>'+
-addBtn(e.key,false)+'</div>';
+'<div class="meta-name"><b>'+esc(e.weapon[HEADERS.ARMA])+'</b><span>'+tag+(e.cat?'<span class="meta-cat">'+esc(e.cat)+'</span>':'')+(r.total===null?'<span class="meta-inc" title="Esta arma no est\u00e1 en el motor de simulaci\u00f3n: solo se conoce su TTK te\u00f3rico y va al final">sin simulaci\u00f3n</span>':'')+'</span></div>'+
+caja+'<div class="meta-deltas">'+chips+'</div>'+addBtn(e.key)+'</div>';
 }
+function leyenda(){
+var h='<span><i class="mr-te"></i>TTK te\u00f3rico</span>';
+if(usaSim()) h+='<span><i class="mr-fa"></i>Balas falladas</span>';
+if(META.usa.man) h+='<span><i class="mr-ap"></i>Apuntar</span>';
+return '<div class="mr-ley">'+h+'</div>';
+}
+function maxDe(list){ return Math.max.apply(null,list.map(function(r){ return r.total!==null?r.total:r.teo; }).concat([1])); }
+function nm(r){ return r.e.weapon[HEADERS.ARMA]+((r.e.clase!=='base'||selectedClasses().length>1)?' ['+r.e.label+']':''); }
 /* ---------- vistas ---------- */
-function selectedClasses(){ return CLASSES.filter(function(c){ return META.eq[c]; }); }
-function noParams(){ return '<div class="meta-empty">Marca al menos un par\u00e1metro (TTK, retroceso, precisi\u00f3n o manejo) para generar el an\u00e1lisis.</div>'; }
+function sinEquip(){ return {a:'',h:'<div class="meta-empty">Marca al menos un equipamiento (Base, Equip. 1, 2 o 3).</div>'}; }
 function viewRank(){
-if(!activeParams().length) return {a:'',h:noParams()};
-var eq=selectedClasses(); if(!eq.length) return {a:'',h:'<div class="meta-empty">Marca al menos un equipamiento (Base, Equip. 1, 2 o 3).</div>'};
-var res=compute(poolFor(META.cats)), bm=baseMap(res), cmp=sorter();
-var list=res.filter(function(r){ return r.score!==null&&eq.indexOf(r.e.clase)!==-1; }).sort(cmp);
-if(!list.length) return {a:'',h:'<div class="meta-empty">Ninguna arma tiene datos para esta combinaci\u00f3n de filtros.</div>'};
-var top=list.slice(0,META.topN), h='';
-top.forEach(function(r,i){ h+=rowHtml(r,i+1,bm[r.e.wi]); });
-h='<div class="meta-listhead"><span>Mostrando <b>'+top.length+'</b> de '+list.length+' entradas</span><button type="button" class="meta-add" data-meta-addtop="'+top.slice(0,10).map(function(r){return r.e.key;}).join(',')+'"><i class="fa-solid fa-plus" aria-hidden="true"></i> Enviar top '+Math.min(10,top.length)+' al Comparador</button></div>'+h;
-return {a:analysisRank(top,list,bm,res),h:h};
+if(!selectedClasses().length) return sinEquip();
+var list=listaDe(META.cats);
+if(!list.length) return {a:'',h:'<div class="meta-empty">Ninguna arma tiene datos de da\u00f1o para esta combinaci\u00f3n de filtros.</div>'};
+var top=list.slice(0,META.topN), mx=maxDe(top), h='';
+top.forEach(function(r,i){ h+=rowHtml(r,i+1,mx); });
+h='<div class="meta-listhead"><span>Mostrando <b>'+top.length+'</b> de '+list.length+' entradas</span><button type="button" class="meta-add" data-meta-addtop="'+top.slice(0,10).map(function(r){return r.e.key;}).join(',')+'"><i class="fa-solid fa-plus" aria-hidden="true"></i> Enviar top '+Math.min(10,top.length)+' al Comparador</button></div>'+leyenda()+h;
+return {a:analisis(list),h:h};
 }
-function nm(r){ var multi=selectedClasses().length>1; return r.e.weapon[HEADERS.ARMA]+((r.e.clase!=='base'||multi)?' ['+r.e.label+']':''); }
-function analysisRank(top,list,bm,res){
-var a=top[0], s=[], n=nm(a);
-var act=activeParams(), st='Para <b>'+distText()+'</b>, priorizando '+listText(act.map(function(p){return PNAME[p];}))+', el mejor resultado es <b>'+esc(n)+'</b> con <b>'+r1(a.score).toFixed(1)+'/100</b>';
-if(top[1]){ var n2=nm(top[1]); st+=', '+r1(a.score-top[1].score).toFixed(1)+' puntos por delante de <b>'+esc(n2)+'</b>'; }
+function analisis(list){
+var a=list[0], s=[]; if(a.total===null) return '';
+var cuenta=['TTK'].concat(Object.keys(USA).filter(function(k){ return META.usa[k]; }).map(function(k){ return USA[k]; }));
+var st='Para <b>'+distText()+'</b>, contando '+listText(cuenta)+(META.usa.ret?' y con un jugador de control <b>'+NIVEL[META.nivel].t.toLowerCase()+'</b>':'')+', la mejor es <b>'+esc(nm(a))+'</b>: mata en <b>'+fms(a.total)+'</b> reales';
+if(usaSim()) st+=' (te\u00f3rico '+fms(a.teo)+', acierto '+pct(a.ac)+')';
 s.push(st+'.');
-var ps=act.filter(function(p){return a.parts[p]!==null;}).sort(function(x,y){return a.parts[y]-a.parts[x];});
-if(ps.length>1){ s.push('Destaca en '+listText(ps.slice(0,Math.min(2,ps.length-1)).map(function(p){return PNAME[p]+' ('+Math.round(a.parts[p])+')';}))+' y su punto m\u00e1s flojo es '+PNAME[ps[ps.length-1]]+' ('+Math.round(a.parts[ps[ps.length-1]])+').'); }
-var best=null; top.forEach(function(r){ var b=bm[r.e.wi]; if(r.e.clase!=='base'&&b&&b.score!==null){ var d=r.score-b.score; if(!best||d>best.d) best={r:r,d:d,b:b}; } });
-if(best&&best.d>0.05) s.push('El equipamiento que m\u00e1s mejora a su configuraci\u00f3n base es <b>'+esc(best.r.e.weapon[HEADERS.ARMA])+' ['+esc(best.r.e.label)+']</b>: sube <b>+'+r1(best.d)+'</b> puntos frente a la base.');
-var neq=top.filter(function(r){return r.e.clase!=='base';}).length; if(neq&&top.length>2) s.push(neq+' de las '+top.length+' primeras posiciones usan equipamiento.');
-if(!META.cats.length&&top.length>=5){ var c={}; top.forEach(function(r){ if(r.e.cat) c[r.e.cat]=(c[r.e.cat]||0)+1; }); var ks=Object.keys(c).sort(function(x,y){return c[y]-c[x];}); if(ks.length&&c[ks[0]]>=2) s.push('La categor\u00eda m\u00e1s repetida en el top es <b>'+esc(ks[0])+'</b> ('+c[ks[0]]+').'); }
-var nt=list.filter(function(r){return r.noTtk;}).length; if(nt) s.push(nt+' arma'+(nt>1?'s no tienen':' no tiene')+' dato de TTK y se muestra'+(nt>1?'n':'')+' al final del ranking.');
-if(META.params.ttk&&act.length>1) s.push('El TTK aporta como m\u00ednimo el <b>'+Math.round(META.ttkMin)+' %</b> de la nota.');
-var inc=list.filter(function(r){return r.inc&&!r.noTtk;}).length; if(inc) s.push(inc+' entradas tienen datos incompletos y se puntuaron solo con los par\u00e1metros disponibles.');
+if(list[1]&&list[1].total!==null) s.push('Le sigue <b>'+esc(nm(list[1]))+'</b>, '+fms(list[1].total-a.total)+' m\u00e1s lenta.');
+if(usaSim()){
+var teo=list.filter(function(r){ return r.total!==null; }).slice().sort(function(x,y){ return x.teo-y.teo; })[0];
+if(teo&&teo!==a){ var pos=list.indexOf(teo)+1; s.push('El TTK te\u00f3rico m\u00e1s r\u00e1pido es el de <b>'+esc(nm(teo))+'</b> ('+fms(teo.teo)+'), pero queda en el puesto <b>#'+pos+'</b>: su tiempo real sube a '+fms(teo.total)+' (acierto '+pct(teo.ac)+').'); }
+else if(teo) s.push('Tambi\u00e9n tiene el TTK te\u00f3rico m\u00e1s r\u00e1pido de la lista.');
+}
+var ns=list.filter(function(r){ return r.total===null; }).length;
+if(ns) s.push(ns+' arma'+(ns>1?'s no est\u00e1n':' no est\u00e1')+' en el motor de simulaci\u00f3n y aparece'+(ns>1?'n':'')+' al final solo con su TTK te\u00f3rico.');
+var hp=getAdvancedSettings('TTK').health; if(Math.abs(hp-100)>0.001) s.push('Se usa una salud de <b>'+hp+' PV</b> (Par\u00e1metros avanzados de la pesta\u00f1a TTK).');
 return s.join(' ');
 }
 function viewCats(){
-if(!activeParams().length) return {a:'',h:noParams()};
-var eq=selectedClasses(); if(!eq.length) return {a:'',h:'<div class="meta-empty">Marca al menos un equipamiento (Base, Equip. 1, 2 o 3).</div>'};
-var cats=META.cats.length?META.cats.slice().sort(function(a,b){return a.localeCompare(b,'es');}):allCats(), cmp=sorter(), h='', win=[];
+if(!selectedClasses().length) return sinEquip();
+var cats=META.cats.length?META.cats.slice().sort(function(a,b){return a.localeCompare(b,'es');}):allCats(), h='', win=[];
 cats.forEach(function(c){
-var res=compute(poolFor([c])), bm=baseMap(res), list=res.filter(function(r){ return r.score!==null&&eq.indexOf(r.e.clase)!==-1; }).sort(cmp).slice(0,3);
-if(!list.length) return;
-win.push('<b>'+esc(c)+'</b>: '+esc(list[0].e.weapon[HEADERS.ARMA])+(list[0].e.clase==='base'?'':' ['+esc(list[0].e.label)+']'));
+var list=listaDe([c]).slice(0,3); if(!list.length) return;
+var mx=maxDe(list);
+win.push('<b>'+esc(c)+'</b>: '+esc(nm(list[0])));
 h+='<div class="meta-cat-block"><div class="meta-cat-title"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> '+esc(c)+'</div>';
-list.forEach(function(r,i){ h+=rowHtml(r,i+1,bm[r.e.wi]); });
+list.forEach(function(r,i){ h+=rowHtml(r,i+1,mx); });
 h+='</div>';
 });
 if(!h) return {a:'',h:'<div class="meta-empty">Sin datos para las categor\u00edas seleccionadas.</div>'};
-return {a:'Mejor arma de cada categor\u00eda para <b>'+distText()+'</b> (cada categor\u00eda se punt\u00faa solo contra sus propias armas): '+win.join(' - ')+'.',h:h};
+return {a:'Mejor arma de cada categor\u00eda para <b>'+distText()+'</b>: '+win.join(' - ')+'.',h:leyenda()+h};
 }
 /* ---------- interfaz ---------- */
-function slider(attr,val,min,max){ return '<input type="range" min="'+(min||0)+'" max="'+(max||100)+'" step="1" value="'+val+'" '+attr+'><span class="mv">'+val+'</span>'; }
-function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function tip(t){ return ' <span class="info-tip" data-tip="'+t+'">i</span>'; }
 function buildUI(root){
 var eqH=CLASSES.map(function(c){ return '<label class="hitbox-btn"><input type="checkbox" data-meta-eq="'+c+'"><span class="hitbox-btn-text">'+CLASS_NAME[c]+'</span></label>'; }).join('');
-var dH=[['all','Todas'],['c','Corto'],['m','Medio'],['l','Largo'],['exact','Metro exacto']].map(function(d){ return '<button type="button" class="seg-btn" data-meta-dist="'+d[0]+'">'+d[1]+'</button>'; }).join('');
-var head='<div class="mw-row mw-head"><div class="mw-corner"><span class="mw-corner-d">Par\u00e1metros</span> <span class="info-tip" data-tip="TTK: tiempo para matar (usa Salud, Placas y Precisi\u00f3n de Par\u00e1metros avanzados). Retroceso: recoil vertical, horizontal y control. Precisi\u00f3n. Manejo: velocidad al apuntar, disparo de cadera y movilidad. Marca los que quieras evaluar y ajusta cu\u00e1nto pesa cada uno en cada distancia.">i</span><span class="mw-corner-m">Importancia de cada distancia</span></div>'+
-ZONES.map(function(z){ return '<div class="mw-cell mw-zh" data-z="'+z.id+'" data-lbl="'+cap(z.short)+'"><div class="mw-zn">'+z.name+'</div><div class="mw-zcap">importancia</div><div class="meta-range-row mw-zw" title="Importancia de esta distancia en el an\u00e1lisis combinado">'+slider('data-meta-zw="'+z.id+'"',META.zw[z.id])+'</div></div>'; }).join('')+'</div>';
-var rows=[['ttk','TTK'],['ret','Retroceso'],['pre','Precisi\u00f3n'],['man','Manejo']].map(function(p){
-return '<div class="mw-row"><label class="hitbox-btn mw-name"><input type="checkbox" data-meta-param="'+p[0]+'"><span class="hitbox-btn-text">'+p[1]+'</span></label>'+
-ZONES.map(function(z){ return '<div class="mw-cell" data-z="'+z.id+'" data-lbl="'+cap(z.short)+'"><div class="meta-range-row">'+slider('data-meta-pw="'+p[0]+'.'+z.id+'"',META.pw[p[0]][z.id])+'</div></div>'; }).join('')+'</div>'; }).join('');
-var subM=[['ads','Vel. al apuntar'],['hip','Disparo de cadera'],['mob','Movilidad']].map(function(k){ return '<div class="meta-range-row"><span class="rl">'+k[1]+'</span>'+slider('data-meta-sub="man.'+k[0]+'"',META.sub.man[k[0]])+'</div>'; }).join('');
-var subR=[['rv','Recoil vertical'],['rh','Recoil horizontal'],['ctl','Control']].map(function(k){ return '<div class="meta-range-row"><span class="rl">'+k[1]+'</span>'+slider('data-meta-sub="ret.'+k[0]+'"',META.sub.ret[k[0]])+'</div>'; }).join('');
+var dH=[['c','Corta'],['m','Media'],['l','Larga'],['all','Todas'],['exact','Metro exacto']].map(function(d){ return '<button type="button" class="seg-btn" data-meta-dist="'+d[0]+'">'+d[1]+'</button>'; }).join('');
+var uH='<label class="hitbox-btn fijo" title="El TTK siempre es la base"><input type="checkbox" checked disabled><span class="hitbox-btn-text">TTK</span></label>'
++[['ret','Retroceso'],['pre','Precisi\u00f3n'],['man','Manejo']].map(function(u){ return '<label class="hitbox-btn"><input type="checkbox" data-meta-usa="'+u[0]+'"><span class="hitbox-btn-text">'+u[1]+'</span></label>'; }).join('');
+var nH=Object.keys(NIVEL).map(function(k){ return '<button type="button" class="seg-btn" data-meta-nivel="'+k+'">'+NIVEL[k].t+'</button>'; }).join('');
 root.innerHTML=
-'<div class="meta-panel" id="metaPanel">'+
-'<div class="meta-head"><button type="button" class="meta-toggle" id="metaToggle" aria-expanded="true" aria-controls="metaBody"><i class="fa-solid fa-sliders" aria-hidden="true"></i><span>Configuraci\u00f3n del an\u00e1lisis</span><i class="fa-solid fa-chevron-down meta-chev" aria-hidden="true"></i></button><div class="meta-summary" id="metaSummary"></div><button type="button" class="meta-reset" id="metaReset" title="Restablecer valores"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span>Restablecer</span></button></div>'+
-'<div class="meta-body" id="metaBody"><div class="meta-layout">'+
-'<details class="meta-acc" open><summary>Equipamiento y distancia</summary><div class="meta-acc-body">'+
-'<div class="meta-grp"><div class="meta-label">Equipamiento <span class="info-tip" data-tip="Cada arma se eval\u00faa en su configuraci\u00f3n base y en los equipamientos 1, 2 y 3 que tenga. Marca los que quieras incluir en el ranking.">i</span></div><div class="meta-chips">'+eqH+'</div></div>'+
-'<div class="meta-grp"><div class="meta-label">Distancia <span class="info-tip" data-tip="Todas: combina corto (0\u201320 m), medio (21\u201375 m) y largo (76\u2013200 m) seg\u00fan su importancia. Metro exacto: eval\u00faa a una distancia concreta y solo habilita los par\u00e1metros del alcance correspondiente (0\u201320 m corto, 21\u201375 m medio, 76\u2013200 m largo).">i</span></div><div class="seg-group meta-seg" role="radiogroup" aria-label="Distancia">'+dH+'</div>'+
-'<div id="metaExactRow" class="meta-range-row" style="display:none"><span class="rl">Metros</span>'+slider('data-meta-exact="1"',META.exact,0,200)+'</div></div>'+
-'</div></details>'+
-'<details class="meta-acc" open><summary>Par\u00e1metros y pesos</summary><div class="meta-acc-body"><div class="mw" id="metaMw">'+head+rows+'</div><div class="meta-note">Los deslizadores bloqueados no aplican con la distancia o los par\u00e1metros elegidos. Con todos los par\u00e1metros marcados se puede ajustar todo.</div></div></details>'+
-'<details class="meta-acc" open><summary>Categor\u00eda y avanzado</summary><div class="meta-acc-body">'+
-'<details class="meta-dd"><summary><span>Categor\u00eda: <b id="metaCatLabel">Todas</b></span></summary><div class="meta-chips" id="metaCats"></div></details>'+
-'<details class="meta-details meta-adv"><summary><i class="fa-solid fa-gear" aria-hidden="true"></i> Avanzado</summary><div class="meta-adv-grid">'+
-'<div class="meta-adv-item"><div class="meta-sub">Zona para el TTK</div><div class="seg-group meta-seg" role="radiogroup" aria-label="Zona del TTK"><button type="button" class="seg-btn" data-meta-zone="pecho">Pecho</button><button type="button" class="seg-btn" data-meta-zone="cabeza">Cabeza</button><button type="button" class="seg-btn" data-meta-zone="estomago">Est\u00f3mago</button></div></div>'+
-'<div class="meta-adv-item"><div class="meta-sub">Peso m\u00ednimo del TTK (%) <span class="info-tip" data-tip="Cuando el TTK va combinado con otros par\u00e1metros, aporta al menos este porcentaje de la nota. S\u00fabelo para que el TTK mande m\u00e1s; b\u00e1jalo para dar m\u00e1s libertad a los dem\u00e1s.">i</span></div><div class="meta-range-row" id="metaTtkMinRow">'+slider('data-meta-ttkmin="1"',META.ttkMin,0,90)+'</div></div>'+
-'<div class="meta-adv-item"><div class="meta-sub">Manejo</div>'+subM+'</div>'+
-'<div class="meta-adv-item"><div class="meta-sub">Retroceso</div>'+subR+'</div>'+
-'</div></details>'+
-'</div></details>'+
-'</div></div></div>'+
-'<div class="meta-bar"><div class="seg-group meta-seg meta-views" role="radiogroup" aria-label="Vista"><button type="button" class="seg-btn" data-meta-view="rank"><i class="fa-solid fa-list-ol" aria-hidden="true"></i> Ranking</button><button type="button" class="seg-btn" data-meta-view="cats"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> <span class="t-long">Mejores por categor\u00eda</span><span class="t-short">Categor\u00edas</span></button></div>'+
-'<div class="meta-top" id="metaTopWrap"><span class="rl">Top</span><div class="seg-group meta-seg"><button type="button" class="seg-btn" data-meta-top="5">5</button><button type="button" class="seg-btn" data-meta-top="10">10</button><button type="button" class="seg-btn" data-meta-top="20">20</button><button type="button" class="seg-btn" data-meta-top="9999">Todos</button></div><div class="meta-step"><button type="button" data-meta-step="-1" aria-label="Menos">-</button><input type="number" id="metaTopN" min="1" max="999" inputmode="numeric" placeholder="Todos" aria-label="Cantidad de armas a mostrar"><button type="button" data-meta-step="1" aria-label="M\u00e1s">+</button></div></div></div>'+
-'<div id="metaAnalysis" class="meta-analysis" aria-live="polite"></div><div id="metaResults"></div>';
+'<div class="meta-panel"><div class="meta-panel-title"><span><i class="fa-solid fa-sliders" aria-hidden="true"></i>Qu\u00e9 buscas</span><button type="button" class="meta-reset" id="metaReset" title="Restablecer valores"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span>Restablecer</span></button></div>'
++'<div class="meta-grid">'
++'<div class="meta-block"><div class="meta-label">Distancia'+tip('Corta: 0\u201320 m. Media: 21\u201375 m. Larga: 76\u2013200 m. Todas: promedio de las tres. Metro exacto: una distancia concreta.')+'</div><div class="seg-group meta-seg" role="radiogroup" aria-label="Distancia">'+dH+'</div>'
++'<div id="metaExactRow" class="meta-range-row" style="display:none"><span class="rl">Metros</span><input type="range" min="0" max="200" step="1" value="'+META.exact+'" data-meta-exact="1" aria-label="Metros"><span class="mv">'+META.exact+'</span></div></div>'
++'<div class="meta-block"><div class="meta-label">Tener en cuenta'+tip('TTK: tiempo para matar si todas las balas pegan. Retroceso: las balas se desv\u00edan seg\u00fan el patr\u00f3n del arma. Precisi\u00f3n: se a\u00f1ade la dispersi\u00f3n de cada bala. Manejo: se suma el tiempo de apuntar. Lo que desmarques se trata como perfecto.')+'</div><div class="meta-chips">'+uH+'</div>'
++'<div class="meta-sub">Control del jugador'+tip('Qu\u00e9 tan r\u00e1pido devuelves la mira al blanco mientras disparas. Entre bala y bala, un casual corrige la mitad del desv\u00edo, un medio el 70 % y un experto el 90 %. Con armas de cadencia muy alta hay menos tiempo para corregir.')+'</div><div class="seg-group meta-seg" id="metaNivel" role="radiogroup" aria-label="Control del jugador">'+nH+'</div></div>'
++'<div class="meta-block"><div class="meta-label">Armas</div><div class="meta-chips">'+eqH+'</div>'
++'<details class="meta-dd" style="margin-top:8px"><summary><span>Categor\u00eda: <b id="metaCatLabel">Todas</b></span></summary><div class="meta-chips" id="metaCats"></div></details>'
++'<details class="meta-dd" style="margin-top:6px"><summary><span>Zona del TTK: <b id="metaZoneLabel">Pecho</b></span></summary><div class="seg-group meta-seg" style="margin-top:8px" role="radiogroup" aria-label="Zona del TTK"><button type="button" class="seg-btn" data-meta-zone="pecho">Pecho</button><button type="button" class="seg-btn" data-meta-zone="cabeza">Cabeza</button><button type="button" class="seg-btn" data-meta-zone="estomago">Est\u00f3mago</button></div></details></div>'
++'</div></div>'
++'<div class="meta-bar"><div class="seg-group meta-seg meta-views" role="radiogroup" aria-label="Vista"><button type="button" class="seg-btn" data-meta-view="rank"><i class="fa-solid fa-list-ol" aria-hidden="true"></i> Ranking</button><button type="button" class="seg-btn" data-meta-view="cats"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> <span class="t-long">Mejores por categor\u00eda</span><span class="t-short">Categor\u00edas</span></button></div>'
++'<div class="meta-top" id="metaTopWrap"><span class="rl">Top</span><div class="seg-group meta-seg"><button type="button" class="seg-btn" data-meta-top="5">5</button><button type="button" class="seg-btn" data-meta-top="10">10</button><button type="button" class="seg-btn" data-meta-top="20">20</button><button type="button" class="seg-btn" data-meta-top="9999">Todos</button></div><div class="meta-step"><button type="button" data-meta-step="-1" aria-label="Menos">-</button><input type="number" id="metaTopN" min="1" max="999" inputmode="numeric" placeholder="Todos" aria-label="Cantidad de armas a mostrar"><button type="button" data-meta-step="1" aria-label="M\u00e1s">+</button></div></div></div>'
++'<div id="metaAnalysis" class="meta-analysis" aria-live="polite"></div><div id="metaResults"></div>';
 }
 function paintCats(){
 var box=document.getElementById('metaCats'); if(!box) return;
 if(!ENTRIES){ box.innerHTML='<span class="meta-muted">Cargando\u2026</span>'; return; }
 var cs=allCats(); META.cats=META.cats.filter(function(c){ return cs.indexOf(c)!==-1; });
 box.innerHTML='<label class="hitbox-btn"><input type="checkbox" data-meta-cat="__all"'+(META.cats.length?'':' checked')+'><span class="hitbox-btn-text">Todas</span></label>'+cs.map(function(c){ return '<label class="hitbox-btn"><input type="checkbox" data-meta-cat="'+esc(c)+'"'+(META.cats.indexOf(c)!==-1?' checked':'')+'><span class="hitbox-btn-text">'+esc(c)+'</span></label>'; }).join('');
-paintSummary();
-}
-function paintSummary(){
-var lb=document.getElementById('metaCatLabel'); var cl=META.cats.length?(META.cats.length===1?META.cats[0]:META.cats.length+' seleccionadas'):'Todas'; if(lb) lb.textContent=cl;
-var box=document.getElementById('metaSummary'); if(!box) return;
-var eq=selectedClasses().map(function(c){ return CLASS_NAME[c]; }).join(' + ')||'Sin equipamiento';
-var d=META.dist==='all'?'Todas las distancias':(META.dist==='exact'?Math.round(META.exact)+' m':ZONES.filter(function(z){return z.id===META.dist;})[0].name);
-var SH={ttk:'TTK',ret:'Ret.',pre:'Prec.',man:'Manejo'};
-var p=activeParams().map(function(x){ return SH[x]; }).join(' - ')||'Sin par\u00e1metros';
-var c=META.cats.length?(META.cats.length===1?META.cats[0]:META.cats.length+' categor\u00edas'):'Todas las categor\u00edas';
-box.innerHTML=[eq,d,p,c].map(function(x){ return '<span class="sm-chip">'+esc(x)+'</span>'; }).join('');
-}
-/* Zonas aplicables seg\u00fan la distancia elegida:
-con "Metro exacto" solo se habilita el alcance al que pertenece el metro seleccionado
-(0\u201320 m corto, 21\u201375 m medio, 76\u2013200 m largo) */
-function usedZones(){
-var used={};
-if(META.dist==='all'){ ZONES.forEach(function(z){ used[z.id]=1; }); }
-else if(META.dist==='exact'){ used[zoneOf(Math.max(0,Math.min(200,Math.round(+META.exact||0))))]=1; }
-else { getSpecs().forEach(function(s){ used[s.z]=1; }); }
-return used;
 }
 function paint(){
 var root=document.getElementById('metaRoot'); if(!root) return;
+var on=function(sel,attr,val){ root.querySelectorAll(sel).forEach(function(b){ var a=String(b.dataset[attr])===String(val); b.classList.toggle('active',a); b.setAttribute('aria-pressed',a); }); };
 root.querySelectorAll('[data-meta-eq]').forEach(function(i){ i.checked=!!META.eq[i.dataset.metaEq]; });
-root.querySelectorAll('[data-meta-param]').forEach(function(i){ i.checked=!!META.params[i.dataset.metaParam]; });
-root.querySelectorAll('[data-meta-dist]').forEach(function(b){ var on=b.dataset.metaDist===META.dist; b.classList.toggle('active',on); b.setAttribute('aria-pressed',on); });
-root.querySelectorAll('[data-meta-zone]').forEach(function(b){ b.classList.toggle('active',b.dataset.metaZone===META.ttkZone); });
-root.querySelectorAll('[data-meta-view]').forEach(function(b){ b.classList.toggle('active',b.dataset.metaView===META.view); });
-root.querySelectorAll('[data-meta-top]').forEach(function(b){ b.classList.toggle('active',+b.dataset.metaTop===META.topN); });
+root.querySelectorAll('[data-meta-usa]').forEach(function(i){ i.checked=!!META.usa[i.dataset.metaUsa]; });
+on('[data-meta-dist]','metaDist',META.dist); on('[data-meta-nivel]','metaNivel',META.nivel); on('[data-meta-zone]','metaZone',META.ttkZone); on('[data-meta-view]','metaView',META.view); on('[data-meta-top]','metaTop',META.topN);
+document.getElementById('metaNivel').classList.toggle('off',!META.usa.ret);
 var tn=document.getElementById('metaTopN'); if(tn&&document.activeElement!==tn) tn.value=META.topN>=9999?'':META.topN;
 document.getElementById('metaTopWrap').style.display=META.view==='cats'?'none':'';
-document.getElementById('metaExactRow').style.display=META.dist==='exact'?'':'none';
-var mw=document.getElementById('metaMw'); if(mw) mw.classList.toggle('is-all',META.dist==='all');
-var used=usedZones();
-root.querySelectorAll('.mw-head .mw-zh').forEach(function(c){ c.classList.toggle('unused',!used[c.dataset.z]); });
-var others=activeParams().filter(function(p){ return p!=='ttk'; }).length;
-root.querySelectorAll('input[type=range]').forEach(function(r){
-var v, lock=false, d=r.dataset;
-if(d.metaZw!==undefined){ v=META.zw[d.metaZw]; }
-else if(d.metaPw!==undefined){ var a=d.metaPw.split('.'); v=META.pw[a[0]][a[1]]; lock=!META.params[a[0]]||!used[a[1]]; }
-else if(d.metaSub!==undefined){ var b=d.metaSub.split('.'); v=META.sub[b[0]][b[1]]; lock=!META.params[b[0]]; }
-else if(d.metaTtkmin!==undefined){ v=META.ttkMin; lock=!(META.params.ttk&&others>0); }
-else { v=META.exact; }
-r.value=v; r.disabled=lock; if(r.nextElementSibling) r.nextElementSibling.textContent=v;
-var cell=r.closest('.mw-cell')||r.closest('.meta-range-row'); if(cell) cell.classList.toggle('off',lock);
-});
-paintSummary();
+var ex=document.getElementById('metaExactRow'); ex.style.display=META.dist==='exact'?'':'none';
+var r=ex.querySelector('input'); r.value=META.exact; r.nextElementSibling.textContent=META.exact+' m';
+document.getElementById('metaCatLabel').textContent=META.cats.length?(META.cats.length===1?META.cats[0]:META.cats.length+' seleccionadas'):'Todas';
+document.getElementById('metaZoneLabel').textContent={pecho:'Pecho',cabeza:'Cabeza',estomago:'Est\u00f3mago'}[META.ttkZone];
 }
+function aviso(html){ return '<div class="meta-empty">'+html+'</div>'; }
 function render(){
 if(!ready) return;
 var box=document.getElementById('metaResults'), an=document.getElementById('metaAnalysis'); if(!box) return;
-if(!ENTRIES||!ENTRIES.length){ an.innerHTML=''; box.innerHTML='<div class="meta-empty">'+(typeof dataLoadState!=='undefined'&&dataLoadState==='ready'?'No hay datos de armas para analizar.':'<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando datos de armas\u2026')+'</div>'; return; }
+if(!ENTRIES||!ENTRIES.length){ an.style.display='none'; box.innerHTML=aviso(typeof dataLoadState!=='undefined'&&dataLoadState==='ready'?'No hay datos de armas para analizar.':'<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando datos de armas\u2026'); return; }
+/* El motor solo hace falta si se cuenta el retroceso o la precision. */
+if(usaSim()&&!Sim&&!falloSim){
+var R=window.bf6Retroceso, m=R&&R.mods();
+if(m&&m.Sim) Sim=m.Sim;
+else if(!R||(m&&m.fallo)) falloSim=true;
+else { an.style.display='none'; box.innerHTML=aviso('<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando la simulaci\u00f3n\u2026'); if(!pidiendo){ pidiendo=true; R.cargar().then(function(){ pidiendo=false; var x=R.mods(); if(x.Sim) Sim=x.Sim; else falloSim=true; render(); }); } return; }
+}
+/* La primera vez que se simula un nivel de jugador tarda un momento: se avisa antes de calcular. */
+var ck=usaSim()&&Sim?(META.usa.ret?NIVEL[META.nivel].c:'x')+'|'+(META.usa.pre?1:0):'';
+if(ck&&!hechos[ck]){ hechos[ck]=1; an.style.display='none'; box.innerHTML=aviso('<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Simulando las armas\u2026'); clearTimeout(renderT); renderT=setTimeout(render,30); return; }
+RES={};
 var v=META.view==='cats'?viewCats():viewRank();
+if(usaSim()&&falloSim) v.a='No se pudo cargar la simulaci\u00f3n: se muestra solo el TTK te\u00f3rico. Recarga la p\u00e1gina para intentarlo de nuevo.';
 an.innerHTML=v.a?'<i class="fa-solid fa-lightbulb" aria-hidden="true"></i><div>'+v.a+'</div>':''; an.style.display=v.a?'':'none';
 box.innerHTML=v.h;
 }
 function renderSoon(){ clearTimeout(renderT); renderT=setTimeout(render,60); }
 function refreshData(){ if(!dirty&&ENTRIES) return; ENTRIES=buildEntries(); dirty=false; paintCats(); }
-window.metaOnData=function(){ dirty=true; ENTRIES=null; if(ready){ var tab=document.getElementById('mainMeta'); if(tab&&tab.classList.contains('active')) window.metaOpen(); else paintCats(); } };
+window.metaOnData=function(){ dirty=true; ENTRIES=null; hechos={}; if(ready){ var tab=document.getElementById('mainMeta'); if(tab&&tab.classList.contains('active')) window.metaOpen(); else paintCats(); } };
 window.metaOpen=function(){ if(!ready) return; if(typeof dataLoadState!=='undefined'&&dataLoadState==='ready'&&allDataMP.length) refreshData(); paint(); render(); };
-function sendToCompare(keys){
-var n=0; keys.forEach(function(k){ var e=BYKEY[k]; if(!e) return;
-var dup=selectedWeaponsMP.some(function(s){ return s.weapon===e.weapon&&(s.clase||'base')===e.clase; });
-if(!dup){ selectedWeaponsMP.push({id:++graphIdCounter,weapon:e.weapon,clase:e.clase}); n++; } });
-if(n||keys.length){ updateSelectionAndChartsMP(); }
-return n;
-}
-function toast(btn,txt){ var o=btn.innerHTML; btn.innerHTML='<i class="fa-solid fa-check" aria-hidden="true"></i> '+txt; btn.classList.add('done'); setTimeout(function(){ btn.innerHTML=o; btn.classList.remove('done'); },1400); }
-var mq=window.matchMedia?window.matchMedia('(max-width:768px)'):{matches:false};
-function panelKey(){ return 'metaPanelOpen_d'; }
-function setOpen(o,persist){
-var p=document.getElementById('metaPanel'), b=document.getElementById('metaToggle'); if(!p) return;
-p.classList.toggle('open',o); if(b) b.setAttribute('aria-expanded',o?'true':'false');
-if(persist&&!mq.matches){ try{ localStorage.setItem(panelKey(),o?'1':'0'); }catch(e){} }
-}
-function syncAcc(){
-document.querySelectorAll('#metaRoot details.meta-acc').forEach(function(d,i){ d.open=mq.matches?(i===0):true; });
-}
-function initPanel(){
-var v=null; if(!mq.matches){ try{ v=localStorage.getItem(panelKey()); }catch(e){} }
-setOpen(v===null?!mq.matches:v==='1',false); syncAcc();
-document.querySelectorAll('#metaRoot details.meta-acc').forEach(function(d){
-d.addEventListener('toggle',function(){ if(!mq.matches||!d.open) return; document.querySelectorAll('#metaRoot details.meta-acc').forEach(function(o){ if(o!==d&&o.open) o.open=false; }); });
-});
-var onMq=function(){ var vv=null; if(!mq.matches){ try{ vv=localStorage.getItem(panelKey()); }catch(e){} } setOpen(vv===null?!mq.matches:vv==='1',false); syncAcc(); };
-if(mq.addEventListener) mq.addEventListener('change',onMq); else if(mq.addListener) mq.addListener(onMq);
-}
 function init(){
 var root=document.getElementById('metaRoot'); if(!root) return;
-load(); buildUI(root); ready=true; initPanel(); paintCats(); paint();
+load(); buildUI(root); ready=true; paintCats(); paint();
 root.addEventListener('change',function(e){
 var t=e.target;
 if(t.dataset.metaEq!==undefined){ META.eq[t.dataset.metaEq]=t.checked; }
-else if(t.dataset.metaParam!==undefined){ META.params[t.dataset.metaParam]=t.checked; }
+else if(t.dataset.metaUsa!==undefined){ META.usa[t.dataset.metaUsa]=t.checked; }
 else if(t.dataset.metaCat!==undefined){
 var c=t.dataset.metaCat;
 if(c==='__all') META.cats=[]; else { var i=META.cats.indexOf(c); if(t.checked&&i===-1) META.cats.push(c); if(!t.checked&&i!==-1) META.cats.splice(i,1); }
@@ -3221,32 +3225,21 @@ save(); paint(); render();
 root.addEventListener('input',function(e){
 var t=e.target;
 if(t.id==='metaTopN'){ if(t.value==='') return; var n=parseInt(t.value,10); META.topN=(isNaN(n)||n<1)?10:Math.min(n,999); save(); paint(); renderSoon(); return; }
-if(t.type!=='range') return;
-var v=parseInt(t.value,10)||0;
-if(t.dataset.metaZw!==undefined) META.zw[t.dataset.metaZw]=v;
-else if(t.dataset.metaPw!==undefined){ var p=t.dataset.metaPw.split('.'); META.pw[p[0]][p[1]]=v; }
-else if(t.dataset.metaSub!==undefined){ var q=t.dataset.metaSub.split('.'); META.sub[q[0]][q[1]]=v; }
-else if(t.dataset.metaTtkmin!==undefined) META.ttkMin=v;
-else if(t.dataset.metaExact!==undefined) META.exact=v;
-else return;
-if(t.nextElementSibling) t.nextElementSibling.textContent=v;
-save();
-/* Con "Metro exacto", al mover los metros se habilitan los par\u00e1metros del alcance correspondiente */
-if(t.dataset.metaExact!==undefined) paint();
-renderSoon();
+if(t.dataset.metaExact===undefined) return;
+META.exact=parseInt(t.value,10)||0; t.nextElementSibling.textContent=META.exact+' m'; save(); renderSoon();
 });
 root.addEventListener('click',function(e){
 if(e.target.closest('.info-tip')){ e.preventDefault(); return; }
 var b=e.target.closest('button'); if(!b) return;
-if(b.id==='metaToggle'){ setOpen(!document.getElementById('metaPanel').classList.contains('open'),true); return; }
 if(b.dataset.metaDist!==undefined){ META.dist=b.dataset.metaDist; }
+else if(b.dataset.metaNivel!==undefined){ META.nivel=b.dataset.metaNivel; }
 else if(b.dataset.metaZone!==undefined){ META.ttkZone=b.dataset.metaZone; }
 else if(b.dataset.metaView!==undefined){ META.view=b.dataset.metaView; }
 else if(b.dataset.metaTop!==undefined){ META.topN=parseInt(b.dataset.metaTop,10); }
 else if(b.dataset.metaStep!==undefined){ var sg=parseInt(b.dataset.metaStep,10), cur=META.topN; if(cur>=9999){ META.topN=sg>0?9999:20; } else { META.topN=Math.max(1,Math.min(999,cur+sg)); } }
-else if(b.id==='metaReset'){ var keep=META.cats; META=clone(DEF); META.cats=[]; paintCats(); }
+else if(b.id==='metaReset'){ META=clone(DEF); paintCats(); }
 else if(b.dataset.metaAdd!==undefined){ toggleCompare(b.dataset.metaAdd); return; }
-else if(b.dataset.metaAddtop!==undefined){ var k=b.dataset.metaAddtop.split(','); var m=sendToCompare(k); refreshAddBtns(); toast(b,m+' agregadas'); return; }
+else if(b.dataset.metaAddtop!==undefined){ var m=sendToCompare(b.dataset.metaAddtop.split(',')); refreshAddBtns(); toast(b,m+' agregadas'); return; }
 else return;
 save(); paint(); render();
 });
@@ -3908,7 +3901,7 @@ document.addEventListener('click', function(e){
 });
 var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ if($('rcPlots')) redibujar(); }, 120); });
 /* mods(): el motor ya cargado, para la subpestana Dispersion (no lo descarga otra vez). */
-window.bf6Retroceso = { render: render, cargar: cargar, mods: function(){ return { Sim: Sim, Mot: Mot, fallo: fallo }; } };
+window.bf6Retroceso = { render: render, cargar: cargar, armar: armar, mods: function(){ return { Sim: Sim, Mot: Mot, fallo: fallo }; } };
 if(typeof selectedRecoilWeapons !== 'undefined' && selectedRecoilWeapons.length) render();
 })();
 </script>
