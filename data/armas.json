@@ -1,6 +1,6 @@
 {
  "formato": 1,
- "actualizado": "2026-11-11",
+ "actualizado": "2026-11-17",
  "fuente": "Migrado desde la hoja datosbf6. Correcciones según BF6 Weapon Analyzer (Temporada 5, v2.1.1.0).",
  "esquema": {
   "estadisticas": [
@@ -5672,7 +5672,6 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
    "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   },
   {
@@ -5772,7 +5771,6 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
    "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   },
   {
@@ -5883,7 +5881,6 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
    "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   },
   {
@@ -5970,7 +5967,6 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
    "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   },
   {
@@ -6070,7 +6066,6 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
    "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   },
   {
@@ -6169,7 +6164,6 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
    "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   },
   {
@@ -6269,7 +6263,6 @@
     ]
    },
    "equipamientos": [],
-   "revisar": true,
    "notas": "Agregada desde BF6 Weapon Analyzer (Temporada 5, v2.1.1.0). Revisar en el juego y agregar la imagen."
   },
   {
