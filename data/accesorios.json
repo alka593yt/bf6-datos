@@ -38,28 +38,28 @@
   },
   "Flash Comp": {
    "grupo": "boca",
-   "es": "Compensador apagallamas",
-   "revisado": false
+   "es": "Compensador de destello",
+   "revisado": true
   },
   "Flash Hider": {
    "grupo": "boca",
-   "es": "Apagallamas",
-   "revisado": false
+   "es": "Supresor de destello",
+   "revisado": true
   },
   "Hybrid Suppressor K": {
    "grupo": "boca",
-   "es": "Supresor híbrido K",
-   "revisado": false
+   "es": "Silenciador híbrido K",
+   "revisado": true
   },
   "Hybrid Suppressor L": {
    "grupo": "boca",
-   "es": "Supresor híbrido L",
-   "revisado": false
+   "es": "Silenciadorhíbrido L",
+   "revisado": true
   },
   "Hybrid Suppressor S": {
    "grupo": "boca",
-   "es": "Supresor híbrido S",
-   "revisado": false
+   "es": "Silenciador híbrido S",
+   "revisado": true
   },
   "Lightened Suppressor": {
    "grupo": "boca",
@@ -73,8 +73,8 @@
   },
   "Long Suppressor": {
    "grupo": "boca",
-   "es": "Supresor largo",
-   "revisado": false
+   "es": "Silenciador largo",
+   "revisado": true
   },
   "Multi-Port Brake": {
    "grupo": "boca",
@@ -83,8 +83,8 @@
   },
   "Single-Port Brake": {
    "grupo": "boca",
-   "es": "Freno de un puerto",
-   "revisado": false
+   "es": "Freno de puerto único",
+   "revisado": true
   },
   "Slant Brake": {
    "grupo": "boca",
@@ -93,8 +93,8 @@
   },
   "Standard Suppressor": {
    "grupo": "boca",
-   "es": "Supresor estándar",
-   "revisado": false
+   "es": "Silenciador estándar",
+   "revisado": true
   },
   "Thread Protector": {
    "grupo": "boca",
