@@ -28,8 +28,8 @@
   },
   "CQB Suppressor": {
    "grupo": "boca",
-   "es": "Supresor CQB",
-   "revisado": false
+   "es": "Silenciador de corta distancia",
+   "revisado": true
   },
   "Double-Port Brake": {
    "grupo": "boca",
