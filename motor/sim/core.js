@@ -233,17 +233,16 @@ export function spreadDynamics(w, aimState = _ctx.aimState) {
     ['inc', 'firingCoef', 'firingExp', 'firingOffset', 'notFiringCoef', 'notFiringExp',
       'notFiringOffset', 'distExp'], `${w.id} spreadDyn.${aimState}`);
   if (dyn.distExpMove != null) requireNumber(dyn.distExpMove, `${w.id} spreadDyn.${aimState}.distExpMove`);
-  if (aimState === 'ads') return { ...dyn, inc: w.recoilIncAds == null ? dyn.inc : requireNumber(w.recoilIncAds, `${w.id} recoilIncAds`) };
+  // Manually selected semi-auto adds no spread per shot in hip or ADS
+  // (GBM_NoIncrease_Semi_P00; ATTACHMENT_BUGS.md entry 26).
   if (w._manualSingleNoBloom) return { ...dyn, inc: 0 };
+  if (aimState === 'ads') return { ...dyn, inc: w.recoilIncAds == null ? dyn.inc : requireNumber(w.recoilIncAds, `${w.id} recoilIncAds`) };
   return dyn;
 }
 
 /** Per-shot spread increase for the current weapon + aim state. */
 export function selectedSpreadIncFor(w) {
-  const { aimState } = _ctx;
-  const dyn = spreadDynamics(w);
-  if (aimState === 'ads') return w.recoilIncAds ?? dyn.inc;
-  return dyn.inc;
+  return spreadDynamics(w).inc;
 }
 
 // Burst fire and multi-round pump cycles share the rounds-then-pause cadence.
@@ -384,12 +383,16 @@ export function simulateSpread(w, shotCount) {
  * Compensation is read from ctx.compensationFn() — pages provide their own.
  */
 /**
- * Global scale on every weapon's recovery factor. Measured from impact pairs and bursts on the
- * AK-205 (0.8, L4040) and confirmed within one band on the LMR27 (0.85 to 0.9, L4041); the stored
- * factors in data/weapons.json are the source operands and are left as read. The Control attribute
- * bar in weapon-attributes.js is deliberately unscaled: it matches the in-game stat screen.
+ * Global scale on every weapon's recovery factor, and the recovery offset the simulator uses in
+ * place of the stored RecoilDecreaseOffset (0.06). Both are fitted to bullet-hole pairs and bursts
+ * on four recovery profiles (AK-205, LMR27, TR-7, M433): offset 0 with scale 0.865 fits better than
+ * the stored offset with 0.8, also on weapons left out of the fit (RECOIL_SPREAD_MODEL.md, 19 November
+ * 2026). The stored factors and offsets in data/weapons.json are the source operands and are left as
+ * read. The Control attribute bar in weapon-attributes.js is deliberately unscaled: it matches the
+ * in-game stat screen.
  */
-export const RECOIL_RECOVERY_SCALE = 0.8;
+export const RECOIL_RECOVERY_SCALE = 0.865;
+export const RECOIL_RECOVERY_OFFSET = 0;
 
 export function genRecoilPts(w, seed = 0, shots = 20) {
   const { compensationFn } = _ctx;
@@ -401,7 +404,7 @@ export function genRecoilPts(w, seed = 0, shots = 20) {
     ? (w._adsRecoilDecayMult ?? 1) : (w._hipRecoilDecayMult ?? 1));
   const decExp  = group.decExp;
   const timeExp = group.decTimeExp;
-  const decOffset = group.decOffset;
+  const decOffset = RECOIL_RECOVERY_OFFSET;
   const amount      = selectedRecoilAmountFor(w);
   const variation   = selectedRecoilVariationFor(w);
   const compensation = compensationFn() / 100;
